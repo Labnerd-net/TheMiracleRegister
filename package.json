@@ -14,9 +14,12 @@
   },
   "dependencies": {
     "@astrojs/cloudflare": "^13.6.0",
+    "@hono/zod-openapi": "^1.4.0",
     "@neondatabase/serverless": "^0.10.4",
     "astro": "^6.4.2",
-    "drizzle-orm": "^0.45.2"
+    "drizzle-orm": "^0.45.2",
+    "hono": "^4.12.23",
+    "zod": "^4.4.3"
   },
   "devDependencies": {
     "dotenv": "^16.5.0",
