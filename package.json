@@ -4,13 +4,18 @@
   "private": true,
   "type": "module",
   "scripts": {
+    "dev": "astro dev",
+    "build": "astro build",
+    "preview": "astro preview",
     "test": "vitest run",
     "db:generate": "drizzle-kit generate",
     "db:migrate": "drizzle-kit migrate",
     "db:studio": "drizzle-kit studio"
   },
   "dependencies": {
+    "@astrojs/cloudflare": "^13.6.0",
     "@neondatabase/serverless": "^0.10.4",
+    "astro": "^6.4.2",
     "drizzle-orm": "^0.45.2"
   },
   "devDependencies": {
