@@ -14,8 +14,8 @@ A data-driven website documenting miracles attributed to Catholic saints. Focuse
 |---|---|
 | Language | TypeScript (full stack) |
 | Frontend | Astro with Cloudflare adapter |
-| API layer | Hono (mounted as Cloudflare Pages Function at `/api/v1/*`) |
-| Hosting | Cloudflare Pages (NOT replaced by Workers) |
+| API layer | Hono (mounted as Cloudflare Worker at `/api/v1/*`) |
+| Hosting | Cloudflare Workers (with static assets) |
 | Database | Neon (serverless Postgres) — dev branch for local, prod branch for production |
 | ORM | Drizzle (`drizzle-orm/neon-http`) |
 | Validation + types + OpenAPI | Zod schemas via `@hono/zod-openapi` — single source of truth |
@@ -152,7 +152,7 @@ All routes under `/api/v1/`. Hono + `@hono/zod-openapi` — OpenAPI spec generat
 ## Implementation Order
 
 1. Drizzle schema + Neon setup (dev branch + prod branch)
-2. Astro + Cloudflare Pages base
+2. Astro + Cloudflare Workers base
 3. Hono API layer wired up with `@hono/zod-openapi`
 4. Static pages rendering from DB
 5. API endpoints + OpenAPI spec (generated, always in sync)
@@ -195,7 +195,7 @@ Research notes in Nextcloud: `MiraclesProject/Research/`
 
 ## Key Decisions & Rationale
 
-- **Cloudflare Pages over self-hosting:** Avoids downtime when homelab is offline
+- **Cloudflare Workers over self-hosting:** Avoids downtime when homelab is offline; Workers is Cloudflare's forward-looking full-stack platform (Pages is frozen — no new investment)
 - **Hono for API layer:** Native Cloudflare Workers support, first-class `@hono/zod-openapi` integration
 - **Drizzle over Prisma:** SQL-first, lighter, better Neon compatibility
 - **`miracle_sources` table over JSON blob:** Enables filtering and full-text search on sources
