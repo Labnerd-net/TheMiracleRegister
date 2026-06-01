@@ -6,6 +6,7 @@ import { eq } from "drizzle-orm";
 const db = createDb(process.env.DATABASE_URL!);
 
 const images: Record<string, string> = {
+  "carlo-acutis": "https://upload.wikimedia.org/wikipedia/commons/0/09/St._Carlo_Acutis.jpg",
   "john-paul-ii": "https://upload.wikimedia.org/wikipedia/commons/3/34/JPII_29_09_2004_2.JPG",
   "mother-teresa": "https://upload.wikimedia.org/wikipedia/commons/8/8e/MotherTeresa_090.jpg",
   "padre-pio": "https://upload.wikimedia.org/wikipedia/commons/5/51/Padre_Pio_portrait.jpg",
