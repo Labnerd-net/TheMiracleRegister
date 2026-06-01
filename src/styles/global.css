@@ -45,8 +45,7 @@
 }
 
 /* ── Dark mode — deep burgundy library ─────────────────────────────── */
-@media (prefers-color-scheme: dark) {
-  :root {
+[data-theme="dark"] {
     --color-accent:        #d4737e;
     --color-accent-hover:  #e0848e;
     --color-accent-light:  #2a1218;
@@ -68,7 +67,6 @@
     --rule-soft: #361c26;
 
     --shadow-card: 0 4px 20px rgba(0,0,0,0.4);
-  }
 }
 
 /* ── Base ───────────────────────────────────────────────────────────── */
