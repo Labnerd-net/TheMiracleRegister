@@ -38,18 +38,6 @@ export const miracleType = pgEnum("miracle_type", [
   "other",
 ]);
 
-export const miracleSubtype = pgEnum("miracle_subtype", [
-  "cancer",
-  "neurological",
-  "infectious",
-  "obstetric",
-  "orthopedic",
-  "gastrointestinal",
-  "cardiovascular",
-  "dermatological",
-  "respiratory",
-  "other",
-]);
 
 export const datePrecision = pgEnum("date_precision", [
   "exact_day",

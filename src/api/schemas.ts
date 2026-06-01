@@ -51,12 +51,7 @@ export const MiracleListItemSchema = z
       "healing", "nature", "eucharistic", "stigmata", "incorruptibility",
       "apparition", "miraculous_image", "prophecy", "bilocation", "other",
     ]),
-    subtype: z
-      .enum([
-        "cancer", "neurological", "infectious", "obstetric", "orthopedic",
-        "gastrointestinal", "cardiovascular", "dermatological", "respiratory", "other",
-      ])
-      .nullable(),
+    topics: z.array(z.string()).nullable(),
     country: z.string().nullable(),
     date_of_event: z.string().nullable(),
     date_precision: z.enum(["exact_day", "month", "year", "decade", "century", "unknown"]),
@@ -89,6 +84,7 @@ export const SaintDetailSchema = z
       .nullable(),
     canonization_stage: z.enum(["saint", "blessed", "venerable", "servant_of_god"]),
     patronage: z.array(z.string()).nullable(),
+    noted_for: z.array(z.string()).nullable(),
     biography_short: z.string().nullable(),
     total_attributed_miracles: z.number().int().nullable(),
     image_url: z.string().nullable(),
@@ -120,12 +116,7 @@ export const MiracleDetailSchema = z
       "healing", "nature", "eucharistic", "stigmata", "incorruptibility",
       "apparition", "miraculous_image", "prophecy", "bilocation", "other",
     ]),
-    subtype: z
-      .enum([
-        "cancer", "neurological", "infectious", "obstetric", "orthopedic",
-        "gastrointestinal", "cardiovascular", "dermatological", "respiratory", "other",
-      ])
-      .nullable(),
+    topics: z.array(z.string()).nullable(),
     date_of_event: z.string().nullable(),
     date_precision: z.enum(["exact_day", "month", "year", "decade", "century", "unknown"]),
     timing_relative_to_saint_death: z.enum(["during_lifetime", "posthumous", "not_applicable"]),
@@ -199,7 +190,8 @@ export const MiraclesQuerySchema = z.object({
 });
 
 export const SearchQuerySchema = z.object({
-  q: z.string().min(1),
+  q: z.string().optional(),
+  topic: z.string().optional(),
   page: z.coerce.number().int().positive().default(1),
   limit: z.coerce.number().int().positive().max(100).default(20),
 });
