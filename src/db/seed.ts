@@ -352,7 +352,6 @@ async function seed() {
         ],
         biography_short: LOREM_BIO,
         total_attributed_miracles: 2,
-        image_url: "https://upload.wikimedia.org/wikipedia/commons/0/09/St._Carlo_Acutis.jpg",
         wikipedia_url: "https://en.wikipedia.org/wiki/Carlo_Acutis",
       },
       {
