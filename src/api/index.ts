@@ -3,10 +3,9 @@ import miracles from "./routes/miracles";
 import saints from "./routes/saints";
 import search from "./routes/search";
 import types from "./routes/types";
+import type { ApiEnv } from "./env";
 
-type Env = { Bindings: { DATABASE_URL: string } };
-
-const app = new OpenAPIHono<Env>().basePath("/api/v1");
+const app = new OpenAPIHono<ApiEnv>().basePath("/api/v1");
 
 app.route("/saints", saints);
 app.route("/miracles", miracles);

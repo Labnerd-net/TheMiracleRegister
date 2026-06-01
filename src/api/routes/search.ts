@@ -3,10 +3,9 @@ import { or, sql } from "drizzle-orm";
 import { createDb } from "../../db";
 import { miracles, saints } from "../../db/schema";
 import { SearchQuerySchema, SearchResultSchema, envelopeSchema } from "../schemas";
+import type { ApiEnv } from "../env";
 
-type Env = { Bindings: { DATABASE_URL: string } };
-
-const search = new OpenAPIHono<Env>();
+const search = new OpenAPIHono<ApiEnv>();
 
 search.openapi(
   createRoute({
