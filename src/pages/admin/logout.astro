@@ -1,0 +1,15 @@
+---
+import { clearSessionCookieHeader } from "../../lib/auth";
+
+if (Astro.request.method === "POST") {
+  return new Response(null, {
+    status: 302,
+    headers: {
+      Location: "/admin/login",
+      "Set-Cookie": clearSessionCookieHeader(),
+    },
+  });
+}
+
+return Astro.redirect("/admin");
+---

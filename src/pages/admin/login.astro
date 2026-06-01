@@ -1,0 +1,59 @@
+---
+import { env } from "cloudflare:workers";
+import { SESSION_COOKIE, createSessionToken, sessionCookieHeader } from "../../lib/auth";
+
+let error = "";
+const next = Astro.url.searchParams.get("next") ?? "/admin";
+
+if (Astro.request.method === "POST") {
+  const form = await Astro.request.formData();
+  const password = form.get("password")?.toString() ?? "";
+
+  if (password === env.ADMIN_PASSWORD) {
+    const token = await createSessionToken(env.ADMIN_PASSWORD, env.SESSION_SECRET);
+    return new Response(null, {
+      status: 302,
+      headers: {
+        Location: next,
+        "Set-Cookie": sessionCookieHeader(token),
+      },
+    });
+  } else {
+    error = "Incorrect password.";
+  }
+}
+---
+
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Admin Login — The Miracles Register</title>
+    <style>
+      *, *::before, *::after { box-sizing: border-box; }
+      body { font-family: system-ui, sans-serif; display: flex; align-items: center; justify-content: center; min-height: 100vh; margin: 0; background: #f5f5f5; }
+      .card { background: white; border: 1px solid #ddd; border-radius: 8px; padding: 2rem; width: 100%; max-width: 360px; }
+      h1 { font-size: 1.2rem; margin: 0 0 0.25rem; }
+      p { font-size: 0.85rem; color: #666; margin: 0 0 1.5rem; }
+      label { display: block; font-size: 0.8rem; font-weight: 600; margin-bottom: 0.3rem; }
+      input { width: 100%; padding: 0.5rem 0.75rem; border: 1px solid #ccc; border-radius: 4px; font-size: 0.95rem; margin-bottom: 1rem; }
+      input:focus { outline: 2px solid #2a5db0; border-color: #2a5db0; }
+      button { width: 100%; padding: 0.6rem; background: #2a5db0; color: white; border: none; border-radius: 4px; font-size: 0.95rem; cursor: pointer; }
+      button:hover { background: #1e4a8a; }
+      .error { background: #fee2e2; border: 1px solid #fca5a5; border-radius: 4px; padding: 0.6rem 0.75rem; margin-bottom: 1rem; font-size: 0.85rem; color: #991b1b; }
+    </style>
+  </head>
+  <body>
+    <div class="card">
+      <h1>The Miracles Register</h1>
+      <p>Admin access</p>
+      {error && <div class="error">{error}</div>}
+      <form method="post">
+        <input type="hidden" name="next" value={next} />
+        <label for="password">Password</label>
+        <input type="password" id="password" name="password" autofocus required />
+        <button type="submit">Sign in</button>
+      </form>
+    </div>
+  </body>
+</html>

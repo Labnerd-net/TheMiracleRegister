@@ -1,0 +1,65 @@
+---
+import AdminBase from "../../../layouts/AdminBase.astro";
+import { createDb } from "../../../db";
+import { miracles, saints } from "../../../db/schema";
+import { asc, eq } from "drizzle-orm";
+import { env } from "cloudflare:workers";
+
+const db = createDb(env.DATABASE_URL);
+const allMiracles = await db
+  .select({
+    slug: miracles.slug,
+    title: miracles.title,
+    type: miracles.type,
+    date_of_event: miracles.date_of_event,
+    used_for_beatification: miracles.used_for_beatification,
+    used_for_canonization: miracles.used_for_canonization,
+    saint_name: saints.name,
+    saint_slug: saints.slug,
+  })
+  .from(miracles)
+  .innerJoin(saints, eq(miracles.saint_id, saints.id))
+  .orderBy(asc(saints.name), asc(miracles.title));
+---
+
+<AdminBase title="Miracles">
+  <div style="display:flex;align-items:baseline;justify-content:space-between;margin-bottom:1.5rem">
+    <h1>Miracles <span style="font-size:1rem;font-weight:normal;color:#666">({allMiracles.length})</span></h1>
+    <a href="/admin/miracles/new" class="btn btn-primary">+ New Miracle</a>
+  </div>
+
+  <table>
+    <thead>
+      <tr>
+        <th>Title</th>
+        <th>Saint</th>
+        <th>Type</th>
+        <th>Date</th>
+        <th>Used For</th>
+        <th></th>
+      </tr>
+    </thead>
+    <tbody>
+      {allMiracles.map((m) => (
+        <tr>
+          <td><a href={`/miracles/${m.slug}`} target="_blank">{m.title}</a></td>
+          <td><a href={`/saints/${m.saint_slug}`} target="_blank">{m.saint_name}</a></td>
+          <td>{m.type}</td>
+          <td>{m.date_of_event ?? "—"}</td>
+          <td>
+            {m.used_for_beatification && <span class="badge">beatification</span>}
+            {m.used_for_canonization && <span class="badge badge-green">canonization</span>}
+          </td>
+          <td><a href={`/admin/miracles/${m.slug}/edit`}>Edit</a></td>
+        </tr>
+      ))}
+    </tbody>
+  </table>
+</AdminBase>
+
+<style>
+  .btn { display: inline-block; padding: 0.5rem 1.25rem; border-radius: 4px; font-size: 0.875rem; text-decoration: none; }
+  .btn-primary { background: #2a5db0; color: white; }
+  .badge { display: inline-block; font-size: 0.7rem; padding: 0.15rem 0.4rem; border-radius: 3px; background: #e8f0fe; color: #2a5db0; margin-right: 0.2rem; }
+  .badge-green { background: #dcfce7; color: #166534; }
+</style>

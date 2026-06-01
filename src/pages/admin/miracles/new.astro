@@ -1,0 +1,283 @@
+---
+import AdminBase from "../../../layouts/AdminBase.astro";
+import { createDb } from "../../../db";
+import { miracles, saints } from "../../../db/schema";
+import { asc } from "drizzle-orm";
+import { slugify } from "../../../lib/slugify";
+import { MIRACLE_TOPICS } from "../../../db/topics";
+import { env } from "cloudflare:workers";
+
+const db = createDb(env.DATABASE_URL);
+const allSaints = await db
+  .select({ id: saints.id, name: saints.name })
+  .from(saints)
+  .orderBy(asc(saints.name));
+
+let error = "";
+
+if (Astro.request.method === "POST") {
+  const form = await Astro.request.formData();
+  const get = (key: string) => form.get(key)?.toString().trim() ?? "";
+  const getBool = (key: string) => form.get(key) === "true";
+  const getTopics = () => form.getAll("topics").map((v) => v.toString());
+
+  const title = get("title");
+  const slug = get("slug") || slugify(title);
+
+  try {
+    await db.insert(miracles).values({
+      slug,
+      title,
+      saint_id: parseInt(get("saint_id")),
+      miracle_category: (get("miracle_category") as any) || "intercessory",
+      type: (get("type") as any) || "healing",
+      topics: getTopics(),
+      date_of_event: get("date_of_event") || null,
+      date_precision: (get("date_precision") as any) || "year",
+      timing_relative_to_saint_death: (get("timing_relative_to_saint_death") as any) || "posthumous",
+      location_name: get("location_name") || null,
+      country: get("country") || null,
+      region: get("region") || null,
+      recipient_name: get("recipient_name") || null,
+      recipient_privacy: (get("recipient_privacy") as any) || "public",
+      recipient_age_at_event: get("recipient_age_at_event") ? parseInt(get("recipient_age_at_event")) : null,
+      recipient_gender: (get("recipient_gender") as any) || "unknown",
+      medical_diagnosis: get("medical_diagnosis") || null,
+      cure_details: get("cure_details") || null,
+      cure_characteristics: (get("cure_characteristics") as any) || "not_applicable",
+      was_medically_verified: getBool("was_medically_verified"),
+      medical_verification_date: get("medical_verification_date") || null,
+      intercessory_medium: (get("intercessory_medium") as any) || "prayer_only",
+      vatican_recognized: getBool("vatican_recognized"),
+      vatican_decree_date: get("vatican_decree_date") || null,
+      vatican_medical_board_verdict: get("vatican_medical_board_verdict") || null,
+      used_for_beatification: getBool("used_for_beatification"),
+      used_for_canonization: getBool("used_for_canonization"),
+      synopsis: get("synopsis") || null,
+      has_primary_sources: getBool("has_primary_sources"),
+    });
+    return Astro.redirect("/admin/miracles");
+  } catch (e: any) {
+    error = e?.message ?? "Failed to save miracle.";
+  }
+}
+---
+
+<AdminBase title="New Miracle">
+  <a href="/admin/miracles" style="font-size:0.85rem;display:block;margin-bottom:1rem">← Miracles</a>
+  <h1>New Miracle</h1>
+
+  {error && <div class="error">{error}</div>}
+
+  <form method="post">
+    <fieldset>
+      <legend>Identity</legend>
+      <div class="field">
+        <label for="title">Title *</label>
+        <input type="text" id="title" name="title" required />
+      </div>
+      <div class="two-col">
+        <div class="field">
+          <label for="slug">Slug</label>
+          <input type="text" id="slug" name="slug" placeholder="auto-generated from title" />
+        </div>
+        <div class="field">
+          <label for="saint_id">Saint *</label>
+          <select id="saint_id" name="saint_id" required>
+            <option value="">— select —</option>
+            {allSaints.map((s) => <option value={s.id}>{s.name}</option>)}
+          </select>
+        </div>
+        <div class="field">
+          <label for="miracle_category">Category</label>
+          <select id="miracle_category" name="miracle_category">
+            <option value="intercessory">Intercessory</option>
+            <option value="associated">Associated</option>
+          </select>
+        </div>
+        <div class="field">
+          <label for="type">Type</label>
+          <select id="type" name="type">
+            {["healing","nature","eucharistic","stigmata","incorruptibility","apparition","miraculous_image","prophecy","bilocation","other"].map((t) => (
+              <option value={t}>{t}</option>
+            ))}
+          </select>
+        </div>
+      </div>
+    </fieldset>
+
+    <fieldset>
+      <legend>Topics</legend>
+      <div class="checkbox-group">
+        {MIRACLE_TOPICS.map((t) => (
+          <label><input type="checkbox" name="topics" value={t} />{t}</label>
+        ))}
+      </div>
+    </fieldset>
+
+    <fieldset>
+      <legend>Date &amp; Location</legend>
+      <div class="two-col">
+        <div class="field">
+          <label for="date_of_event">Date</label>
+          <input type="date" id="date_of_event" name="date_of_event" />
+        </div>
+        <div class="field">
+          <label for="date_precision">Date Precision</label>
+          <select id="date_precision" name="date_precision">
+            {["exact_day","month","year","decade","century","unknown"].map((t) => (
+              <option value={t}>{t}</option>
+            ))}
+          </select>
+        </div>
+        <div class="field">
+          <label for="timing_relative_to_saint_death">Timing</label>
+          <select id="timing_relative_to_saint_death" name="timing_relative_to_saint_death">
+            <option value="posthumous">Posthumous</option>
+            <option value="during_lifetime">During Lifetime</option>
+            <option value="not_applicable">Not Applicable</option>
+          </select>
+        </div>
+        <div class="field">
+          <label for="country">Country</label>
+          <input type="text" id="country" name="country" />
+        </div>
+        <div class="field">
+          <label for="region">Region</label>
+          <input type="text" id="region" name="region" />
+        </div>
+        <div class="field">
+          <label for="location_name">Location Name</label>
+          <input type="text" id="location_name" name="location_name" />
+        </div>
+      </div>
+    </fieldset>
+
+    <fieldset>
+      <legend>Recipient</legend>
+      <div class="two-col">
+        <div class="field">
+          <label for="recipient_name">Name</label>
+          <input type="text" id="recipient_name" name="recipient_name" />
+        </div>
+        <div class="field">
+          <label for="recipient_privacy">Privacy</label>
+          <select id="recipient_privacy" name="recipient_privacy">
+            {["public","first_name_only","confidential","not_applicable"].map((t) => (
+              <option value={t}>{t}</option>
+            ))}
+          </select>
+        </div>
+        <div class="field">
+          <label for="recipient_age_at_event">Age at Event</label>
+          <input type="number" id="recipient_age_at_event" name="recipient_age_at_event" min="0" />
+        </div>
+        <div class="field">
+          <label for="recipient_gender">Gender</label>
+          <select id="recipient_gender" name="recipient_gender">
+            {["male","female","unknown","not_applicable"].map((t) => (
+              <option value={t}>{t}</option>
+            ))}
+          </select>
+        </div>
+      </div>
+    </fieldset>
+
+    <fieldset>
+      <legend>Medical</legend>
+      <div class="field">
+        <label for="medical_diagnosis">Diagnosis</label>
+        <input type="text" id="medical_diagnosis" name="medical_diagnosis" />
+      </div>
+      <div class="field">
+        <label for="cure_details">Cure Details</label>
+        <textarea id="cure_details" name="cure_details" rows="4"></textarea>
+      </div>
+      <div class="two-col">
+        <div class="field">
+          <label for="cure_characteristics">Cure Characteristics</label>
+          <select id="cure_characteristics" name="cure_characteristics">
+            {["instant_complete","gradual_complete","instant_partial","gradual_partial","not_applicable"].map((t) => (
+              <option value={t}>{t}</option>
+            ))}
+          </select>
+        </div>
+        <div class="field">
+          <label for="intercessory_medium">Intercessory Medium</label>
+          <select id="intercessory_medium" name="intercessory_medium">
+            {["prayer_only","relic","blessed_oil","medallion","visitation","tomb_prayer","saint_image","not_applicable","other"].map((t) => (
+              <option value={t}>{t}</option>
+            ))}
+          </select>
+        </div>
+        <div class="field">
+          <label>
+            <input type="hidden" name="was_medically_verified" value="false" />
+            <input type="checkbox" name="was_medically_verified" value="true" />
+            Medically Verified
+          </label>
+        </div>
+        <div class="field">
+          <label for="medical_verification_date">Verification Date</label>
+          <input type="date" id="medical_verification_date" name="medical_verification_date" />
+        </div>
+      </div>
+    </fieldset>
+
+    <fieldset>
+      <legend>Vatican</legend>
+      <div class="two-col">
+        <div class="field">
+          <label>
+            <input type="hidden" name="vatican_recognized" value="false" />
+            <input type="checkbox" name="vatican_recognized" value="true" />
+            Vatican Recognized
+          </label>
+        </div>
+        <div class="field">
+          <label for="vatican_decree_date">Decree Date</label>
+          <input type="date" id="vatican_decree_date" name="vatican_decree_date" />
+        </div>
+        <div class="field">
+          <label>
+            <input type="hidden" name="used_for_beatification" value="false" />
+            <input type="checkbox" name="used_for_beatification" value="true" />
+            Used for Beatification
+          </label>
+        </div>
+        <div class="field">
+          <label>
+            <input type="hidden" name="used_for_canonization" value="false" />
+            <input type="checkbox" name="used_for_canonization" value="true" />
+            Used for Canonization
+          </label>
+        </div>
+      </div>
+      <div class="field">
+        <label for="vatican_medical_board_verdict">Medical Board Verdict</label>
+        <input type="text" id="vatican_medical_board_verdict" name="vatican_medical_board_verdict" />
+      </div>
+    </fieldset>
+
+    <fieldset>
+      <legend>Content</legend>
+      <div class="field">
+        <label for="synopsis">Synopsis</label>
+        <textarea id="synopsis" name="synopsis" rows="8"></textarea>
+        <p class="hint">500–1000 words narrative</p>
+      </div>
+      <div class="field">
+        <label>
+          <input type="hidden" name="has_primary_sources" value="false" />
+          <input type="checkbox" name="has_primary_sources" value="true" />
+          Has Primary Sources
+        </label>
+      </div>
+    </fieldset>
+
+    <div class="form-actions">
+      <button type="submit" class="btn btn-primary">Create Miracle</button>
+      <a href="/admin/miracles" class="btn btn-secondary">Cancel</a>
+    </div>
+  </form>
+</AdminBase>
