@@ -1,0 +1,57 @@
+---
+import Base from "../../layouts/Base.astro";
+import { createDb } from "../../db";
+import { miracles, saints } from "../../db/schema";
+import { asc, eq } from "drizzle-orm";
+
+import { env } from "cloudflare:workers";
+const db = createDb(env.DATABASE_URL);
+
+const allMiracles = await db
+  .select({
+    slug: miracles.slug,
+    title: miracles.title,
+    type: miracles.type,
+    miracle_category: miracles.miracle_category,
+    topics: miracles.topics,
+    date_of_event: miracles.date_of_event,
+    country: miracles.country,
+    was_medically_verified: miracles.was_medically_verified,
+    vatican_recognized: miracles.vatican_recognized,
+    saint_slug: saints.slug,
+    saint_name: saints.name,
+  })
+  .from(miracles)
+  .innerJoin(saints, eq(miracles.saint_id, saints.id))
+  .orderBy(asc(saints.name), asc(miracles.title));
+---
+
+<Base title="Miracles">
+  <h1>Miracles</h1>
+  <p class="meta">{allMiracles.length} miracles in the register</p>
+
+  <table>
+    <thead>
+      <tr>
+        <th>Title</th>
+        <th>Saint</th>
+        <th>Type</th>
+        <th>Date</th>
+        <th>Country</th>
+        <th>Topics</th>
+      </tr>
+    </thead>
+    <tbody>
+      {allMiracles.map((m) => (
+        <tr>
+          <td><a href={`/miracles/${m.slug}`}>{m.title}</a></td>
+          <td><a href={`/saints/${m.saint_slug}`}>{m.saint_name}</a></td>
+          <td>{m.type}</td>
+          <td>{m.date_of_event ?? "—"}</td>
+          <td>{m.country ?? "—"}</td>
+          <td>{m.topics?.map((t) => <span class="tag">{t}</span>)}</td>
+        </tr>
+      ))}
+    </tbody>
+  </table>
+</Base>

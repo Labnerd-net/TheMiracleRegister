@@ -1,11 +1,33 @@
 ---
+import Base from "../layouts/Base.astro";
+import { createDb } from "../db";
+import { saints, miracles } from "../db/schema";
+import { sql } from "drizzle-orm";
+
+import { env } from "cloudflare:workers";
+const db = createDb(env.DATABASE_URL);
+
+const [{ saintCount }] = await db.select({ saintCount: sql<number>`count(*)::int` }).from(saints);
+const [{ miracleCount }] = await db.select({ miracleCount: sql<number>`count(*)::int` }).from(miracles);
 ---
-<html lang="en">
-  <head>
-    <meta charset="utf-8" />
-    <title>The Miracles Register</title>
-  </head>
-  <body>
-    <h1>The Miracles Register</h1>
-  </body>
-</html>
+
+<Base title="Home">
+  <h1>The Miracles Register</h1>
+  <p class="meta">A structured database of miracles attributed to Catholic saints</p>
+
+  <p>
+    This register documents canonization miracles — healings and phenomena formally investigated
+    by the Vatican's medical board and recognised as part of the canonization process — alongside
+    notable associated miracles for the saints in our collection.
+  </p>
+
+  <p>
+    Currently documenting <strong>{saintCount} saints</strong> and <strong>{miracleCount} miracles</strong>.
+  </p>
+
+  <h2>Browse</h2>
+  <ul>
+    <li><a href="/saints">All Saints</a> — biographies, patronages, and miracle records</li>
+    <li><a href="/miracles">All Miracles</a> — searchable by saint, type, and topic</li>
+  </ul>
+</Base>

@@ -1,0 +1,95 @@
+---
+import Base from "../../layouts/Base.astro";
+import { createDb } from "../../db";
+import { miracles, saints, miracleSources } from "../../db/schema";
+import { eq } from "drizzle-orm";
+
+import { env } from "cloudflare:workers";
+const db = createDb(env.DATABASE_URL);
+
+const { slug } = Astro.params;
+
+const [miracle] = await db
+  .select()
+  .from(miracles)
+  .where(eq(miracles.slug, slug!));
+
+if (!miracle) return Astro.redirect("/404");
+
+const [saint] = await db
+  .select({ slug: saints.slug, name: saints.name })
+  .from(saints)
+  .where(eq(saints.id, miracle.saint_id));
+
+const sources = await db
+  .select()
+  .from(miracleSources)
+  .where(eq(miracleSources.miracle_id, miracle.id));
+---
+
+<Base title={miracle.title}>
+  <a href="/miracles" class="back">← All Miracles</a>
+
+  <h1>{miracle.title}</h1>
+  <p class="meta">
+    {miracle.miracle_category} miracle ·{" "}
+    {saint && <a href={`/saints/${saint.slug}`}>{saint.name}</a>}
+  </p>
+
+  <dl>
+    <dt>Type</dt><dd>{miracle.type}</dd>
+    {miracle.topics && miracle.topics.length > 0 && (
+      <><dt>Topics</dt><dd>{miracle.topics.map((t) => <span class="tag">{t}</span>)}</dd></>
+    )}
+    {miracle.date_of_event && <><dt>Date</dt><dd>{miracle.date_of_event} ({miracle.date_precision})</dd></>}
+    {miracle.country && <><dt>Location</dt><dd>{miracle.location_name ? `${miracle.location_name}, ` : ""}{miracle.country}{miracle.region ? ` (${miracle.region})` : ""}</dd></>}
+    <dt>Timing</dt><dd>{miracle.timing_relative_to_saint_death.replace(/_/g, " ")}</dd>
+    {miracle.recipient_name && <><dt>Recipient</dt><dd>{miracle.recipient_name}</dd></>}
+    {miracle.recipient_age_at_event && <><dt>Age at Event</dt><dd>{miracle.recipient_age_at_event}</dd></>}
+    {miracle.medical_diagnosis && <><dt>Diagnosis</dt><dd>{miracle.medical_diagnosis}</dd></>}
+    <dt>Cure</dt><dd>{miracle.cure_characteristics.replace(/_/g, " ")}</dd>
+    <dt>Medically Verified</dt><dd>{miracle.was_medically_verified ? "Yes" : "No"}</dd>
+    {miracle.medical_verification_date && <><dt>Verified</dt><dd>{miracle.medical_verification_date}</dd></>}
+    <dt>Vatican Recognized</dt><dd>{miracle.vatican_recognized ? "Yes" : "No"}</dd>
+    {miracle.vatican_decree_date && <><dt>Vatican Decree</dt><dd>{miracle.vatican_decree_date}</dd></>}
+    {miracle.vatican_medical_board_verdict && <><dt>Medical Board</dt><dd>{miracle.vatican_medical_board_verdict}</dd></>}
+    {miracle.intercessory_medium !== "not_applicable" && (
+      <><dt>Intercessory Medium</dt><dd>{miracle.intercessory_medium.replace(/_/g, " ")}</dd></>
+    )}
+    {(miracle.used_for_beatification || miracle.used_for_canonization) && (
+      <><dt>Used For</dt><dd>
+        {miracle.used_for_beatification && <span class="badge">Beatification</span>}
+        {" "}
+        {miracle.used_for_canonization && <span class="badge">Canonization</span>}
+      </dd></>
+    )}
+  </dl>
+
+  {miracle.cure_details && (
+    <>
+      <h2>Cure Details</h2>
+      <p>{miracle.cure_details}</p>
+    </>
+  )}
+
+  {miracle.synopsis && (
+    <>
+      <h2>Synopsis</h2>
+      <p>{miracle.synopsis}</p>
+    </>
+  )}
+
+  {sources.length > 0 && (
+    <>
+      <h2>Sources</h2>
+      <ul>
+        {sources.map((s) => (
+          <li>
+            {s.url ? <a href={s.url} target="_blank" rel="noopener">{s.title ?? s.url}</a> : s.title}
+            {" "}<span class="meta">({s.source_type})</span>
+          </li>
+        ))}
+      </ul>
+    </>
+  )}
+</Base>

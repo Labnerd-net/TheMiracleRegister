@@ -4,7 +4,9 @@ import saints from "./routes/saints";
 import search from "./routes/search";
 import types from "./routes/types";
 
-const app = new OpenAPIHono().basePath("/api/v1");
+type Env = { Bindings: { DATABASE_URL: string } };
+
+const app = new OpenAPIHono<Env>().basePath("/api/v1");
 
 app.route("/saints", saints);
 app.route("/miracles", miracles);

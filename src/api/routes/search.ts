@@ -1,10 +1,12 @@
 import { OpenAPIHono, createRoute, z } from "@hono/zod-openapi";
 import { or, sql } from "drizzle-orm";
-import { db } from "../../db";
+import { createDb } from "../../db";
 import { miracles, saints } from "../../db/schema";
 import { SearchQuerySchema, SearchResultSchema, envelopeSchema } from "../schemas";
 
-const search = new OpenAPIHono();
+type Env = { Bindings: { DATABASE_URL: string } };
+
+const search = new OpenAPIHono<Env>();
 
 search.openapi(
   createRoute({
@@ -27,6 +29,7 @@ search.openapi(
       return c.json({ data: [], meta: { page, limit, total: 0 }, error: "Provide q or topic" });
     }
 
+    const db = createDb(c.env.DATABASE_URL);
     const results: Array<{ type: "saint" | "miracle"; slug: string; title: string; excerpt: string | null }> = [];
 
     if (topic) {

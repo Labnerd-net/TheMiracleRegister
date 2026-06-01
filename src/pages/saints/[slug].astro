@@ -1,0 +1,123 @@
+---
+import Base from "../../layouts/Base.astro";
+import { createDb } from "../../db";
+import { saints, miracles, saintRelations } from "../../db/schema";
+import { eq } from "drizzle-orm";
+
+import { env } from "cloudflare:workers";
+const db = createDb(env.DATABASE_URL);
+
+const { slug } = Astro.params;
+
+const [saint] = await db.select().from(saints).where(eq(saints.slug, slug!));
+
+if (!saint) return Astro.redirect("/404");
+
+const saintMiracles = await db
+  .select({
+    slug: miracles.slug,
+    title: miracles.title,
+    type: miracles.type,
+    miracle_category: miracles.miracle_category,
+    topics: miracles.topics,
+    date_of_event: miracles.date_of_event,
+    date_precision: miracles.date_precision,
+    country: miracles.country,
+    recipient_name: miracles.recipient_name,
+    medical_diagnosis: miracles.medical_diagnosis,
+    was_medically_verified: miracles.was_medically_verified,
+    vatican_recognized: miracles.vatican_recognized,
+    used_for_beatification: miracles.used_for_beatification,
+    used_for_canonization: miracles.used_for_canonization,
+  })
+  .from(miracles)
+  .where(eq(miracles.saint_id, saint.id));
+
+const relations = await db
+  .select({ related_saint_id: saintRelations.related_saint_id, relation_type: saintRelations.relation_type })
+  .from(saintRelations)
+  .where(eq(saintRelations.saint_id, saint.id));
+
+const relatedSaints =
+  relations.length > 0
+    ? await db
+        .select({ id: saints.id, slug: saints.slug, name: saints.name })
+        .from(saints)
+        .where(
+          eq(saints.id, relations[0].related_saint_id)
+        )
+    : [];
+---
+
+<Base title={saint.name}>
+  <a href="/saints" class="back">← All Saints</a>
+
+  <h1>{saint.name}</h1>
+  {saint.birth_name && saint.birth_name !== saint.name && (
+    <p class="meta">Born {saint.birth_name}</p>
+  )}
+
+  <dl>
+    {saint.feast_day && <><dt>Feast Day</dt><dd>{saint.feast_day}</dd></>}
+    {saint.nationality && <><dt>Nationality</dt><dd>{saint.nationality}</dd></>}
+    {saint.religious_order && <><dt>Religious Order</dt><dd>{saint.religious_order}</dd></>}
+    {saint.birth_date && <><dt>Born</dt><dd>{saint.birth_date}{saint.birth_place ? `, ${saint.birth_place}` : ""}</dd></>}
+    {saint.death_date && <><dt>Died</dt><dd>{saint.death_date}{saint.death_place ? `, ${saint.death_place}` : ""}</dd></>}
+    {saint.beatification_date && <><dt>Beatified</dt><dd>{saint.beatification_date}{saint.beatified_by ? ` by ${saint.beatified_by}` : ""}</dd></>}
+    {saint.canonization_date && <><dt>Canonized</dt><dd>{saint.canonization_date}{saint.canonized_by ? ` by ${saint.canonized_by}` : ""}</dd></>}
+    <dt>Stage</dt><dd><span class="badge">{saint.canonization_stage}</span></dd>
+    {saint.patronage && saint.patronage.length > 0 && (
+      <><dt>Patronage</dt><dd>{saint.patronage.join(", ")}</dd></>
+    )}
+    {saint.noted_for && saint.noted_for.length > 0 && (
+      <><dt>Noted For</dt><dd>{saint.noted_for.join(", ")}</dd></>
+    )}
+    {relatedSaints.length > 0 && (
+      <><dt>Related</dt><dd>
+        {relatedSaints.map((r) => (
+          <a href={`/saints/${r.slug}`}>{r.name}</a>
+        ))}
+      </dd></>
+    )}
+  </dl>
+
+  {saint.biography_short && (
+    <>
+      <h2>Biography</h2>
+      <p>{saint.biography_short}</p>
+    </>
+  )}
+
+  <h2>Miracles ({saintMiracles.length})</h2>
+  {saintMiracles.length === 0 ? (
+    <p class="meta">No miracles recorded.</p>
+  ) : (
+    <table>
+      <thead>
+        <tr>
+          <th>Title</th>
+          <th>Type</th>
+          <th>Date</th>
+          <th>Country</th>
+          <th>Topics</th>
+          <th>Vatican</th>
+        </tr>
+      </thead>
+      <tbody>
+        {saintMiracles.map((m) => (
+          <tr>
+            <td><a href={`/miracles/${m.slug}`}>{m.title}</a>
+              {m.used_for_beatification && <> <span class="badge">beatification</span></>}
+              {m.used_for_canonization && <> <span class="badge">canonization</span></>}
+            </td>
+            <td>{m.type}</td>
+            <td>{m.date_of_event ?? "—"}</td>
+            <td>{m.country ?? "—"}</td>
+            <td>{m.topics?.map((t) => <span class="tag">{t}</span>)}</td>
+            <td>{m.vatican_recognized ? "✓" : "—"}</td>
+          </tr>
+        ))}
+      </tbody>
+    </table>
+  )}
+</Base>
