@@ -91,7 +91,7 @@ Saint pages show related saints as links. API response includes a `related_saint
 | title | text | |
 | miracle_category | enum | intercessory, associated |
 | type | enum | healing, nature, eucharistic, stigmata, incorruptibility, apparition, miraculous_image, prophecy, bilocation, other |
-| topics | text[] | GIN indexed — unified tag field: medical conditions, life situations, spiritual themes, saint-specific phenomena. Canonical list in `src/db/topics.ts`. |
+| topics | text[] | GIN indexed — unified tag field. Canonical list in `src/db/topics.ts` (see below). |
 | date_of_event | date | nullable |
 | date_precision | enum | exact_day, month, year, decade, century, unknown |
 | timing_relative_to_saint_death | enum | during_lifetime, posthumous, not_applicable |
@@ -117,6 +117,18 @@ Saint pages show related saints as links. API response includes a `related_saint
 | synopsis | text | 500–1000 words narrative |
 | has_primary_sources | boolean | |
 | created_at, updated_at | timestamptz | |
+
+### Miracle Topics
+
+Canonical list defined in `src/db/topics.ts`. Open-ended `text[]` (not enum) so new topics can be added without a schema migration — update the const and redeploy. Validated at the app layer via Zod in admin routes.
+
+| Category | Topics |
+|---|---|
+| Medical conditions | `cancer`, `neurological`, `gastrointestinal`, `cardiovascular`, `infectious`, `respiratory`, `orthopedic`, `obstetric`, `dermatological` |
+| Life stages & roles | `children`, `mothers`, `fathers`, `pregnancy-and-childbirth`, `marriage`, `youth`, `elderly` |
+| Life circumstances | `addiction`, `prisoners`, `loss-grief`, `financial-hardship`, `workplace`, `native-and-indigenous` |
+| Spiritual & devotional | `technology`, `pro-life`, `conversion`, `hope`, `perseverance`, `eucharistic`, `marian`, `martyrs`, `missionaries`, `saints-of-everyday-life`, `spiritual-direction` |
+| Saint-specific phenomena | `stigmata`, `bilocation`, `incorruptibility`, `miraculous-images`, `saints-bodies` |
 
 ### `miracle_sources` (replaces JSON blob)
 
