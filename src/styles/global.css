@@ -1,4 +1,6 @@
 @import "tailwindcss";
+@source "../**/*.astro";
+@source "../**/*.ts";
 
 @import "@fontsource/cormorant-garamond/300.css";
 @import "@fontsource/cormorant-garamond/300-italic.css";
