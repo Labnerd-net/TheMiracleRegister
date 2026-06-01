@@ -16,11 +16,16 @@
   },
   "dependencies": {
     "@astrojs/cloudflare": "^13.6.0",
+    "@fontsource/cormorant-garamond": "^5.2.11",
+    "@fontsource/eb-garamond": "^5.2.7",
+    "@fontsource/inter": "^5.2.8",
     "@hono/zod-openapi": "^1.4.0",
     "@neondatabase/serverless": "^0.10.4",
+    "@tailwindcss/vite": "^4.3.0",
     "astro": "^6.4.2",
     "drizzle-orm": "^0.45.2",
     "hono": "^4.12.23",
+    "tailwindcss": "^4.3.0",
     "zod": "^4.4.3"
   },
   "devDependencies": {

@@ -1,58 +1,206 @@
 ---
+import "../styles/global.css";
+
 interface Props {
   title: string;
+  description?: string;
 }
-const { title } = Astro.props;
+const { title, description } = Astro.props;
+const fullTitle = title === "Home"
+  ? "The Miracles Register"
+  : `${title} — The Miracles Register`;
 ---
 
 <html lang="en">
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <title>{title} — The Miracles Register</title>
-    <style>
-      *, *::before, *::after { box-sizing: border-box; }
-      body {
-        font-family: Georgia, serif;
-        max-width: 900px;
-        margin: 0 auto;
-        padding: 1rem 1.5rem 3rem;
-        color: #1a1a1a;
-        line-height: 1.6;
-      }
-      nav {
-        border-bottom: 1px solid #ddd;
-        padding-bottom: 0.75rem;
-        margin-bottom: 2rem;
-        display: flex;
-        gap: 1.5rem;
-        align-items: baseline;
-      }
-      nav a { text-decoration: none; color: #555; font-family: system-ui, sans-serif; font-size: 0.9rem; }
-      nav a:hover { color: #000; }
-      nav .site-title { font-size: 1rem; font-weight: bold; color: #000; margin-right: auto; }
-      h1 { font-size: 1.8rem; margin-bottom: 0.25rem; }
-      h2 { font-size: 1.3rem; margin-top: 2rem; }
-      a { color: #2a5db0; }
-      table { border-collapse: collapse; width: 100%; font-size: 0.9rem; }
-      th { text-align: left; border-bottom: 2px solid #ddd; padding: 0.4rem 0.75rem; font-family: system-ui, sans-serif; font-size: 0.8rem; text-transform: uppercase; letter-spacing: 0.05em; color: #666; }
-      td { border-bottom: 1px solid #eee; padding: 0.5rem 0.75rem; vertical-align: top; }
-      tr:last-child td { border-bottom: none; }
-      .tag { display: inline-block; background: #f0f0f0; border-radius: 3px; padding: 0.1rem 0.4rem; font-size: 0.75rem; font-family: system-ui, sans-serif; margin: 0.1rem; color: #444; }
-      .meta { font-family: system-ui, sans-serif; font-size: 0.85rem; color: #666; }
-      .badge { display: inline-block; font-size: 0.7rem; font-family: system-ui, sans-serif; padding: 0.15rem 0.4rem; border-radius: 3px; background: #e8f0fe; color: #2a5db0; }
-      dl { display: grid; grid-template-columns: max-content 1fr; gap: 0.25rem 1.5rem; font-size: 0.9rem; }
-      dt { font-family: system-ui, sans-serif; font-size: 0.8rem; text-transform: uppercase; letter-spacing: 0.04em; color: #888; align-self: start; padding-top: 0.1rem; }
-      dd { margin: 0; }
-      .back { font-family: system-ui, sans-serif; font-size: 0.85rem; margin-bottom: 1.5rem; display: block; }
-    </style>
+    <title>{fullTitle}</title>
+    {description && <meta name="description" content={description} />}
   </head>
-  <body>
-    <nav>
-      <a href="/" class="site-title">The Miracles Register</a>
-      <a href="/saints">Saints</a>
-      <a href="/miracles">Miracles</a>
-    </nav>
-    <slot />
+  <body class="min-h-screen flex flex-col">
+
+    <header class="site-header sticky top-0 z-10">
+      <div class="max-w-6xl mx-auto px-8 h-20 flex items-center justify-between">
+        <a href="/" class="site-logo">The Miracles Register</a>
+        <nav class="flex items-center gap-10">
+          <a href="/saints" class="nav-link">Saints</a>
+          <a href="/miracles" class="nav-link">Miracles</a>
+        </nav>
+      </div>
+    </header>
+
+    <main class="flex-1">
+      <slot />
+    </main>
+
+    <footer class="site-footer mt-24">
+      <div class="max-w-6xl mx-auto px-8 py-12 flex flex-col sm:flex-row items-center justify-between gap-6">
+        <span class="site-logo">The Miracles Register</span>
+        <div class="flex flex-col sm:flex-row items-center gap-6">
+          <a href="/saints" class="nav-link">Saints</a>
+          <a href="/miracles" class="nav-link">Miracles</a>
+          <span class="rule-dot">·</span>
+          <p style="font-family:var(--font-sans);font-size:0.72rem;letter-spacing:0.04em;color:var(--text-4)">
+            A structured database of Vatican-recognised miracles
+          </p>
+        </div>
+      </div>
+    </footer>
+
   </body>
 </html>
+
+<style is:global>
+  a { color: var(--color-accent); }
+  a:hover { color: var(--color-accent-hover); }
+
+  .site-header {
+    background: var(--bg-surface);
+    border-bottom: 1px solid var(--rule);
+  }
+
+  .site-footer {
+    background: var(--bg-surface);
+    border-top: 1px solid var(--rule);
+  }
+
+  .site-logo {
+    font-family: var(--font-display);
+    font-size: 1.35rem;
+    font-weight: 400;
+    letter-spacing: 0.04em;
+    color: var(--text-1);
+    text-decoration: none;
+    transition: opacity 0.2s;
+  }
+  .site-logo:hover { opacity: 0.65; color: var(--text-1); }
+
+  .nav-link {
+    font-family: var(--font-sans);
+    font-size: 0.72rem;
+    font-weight: 500;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--text-3);
+    text-decoration: none;
+    transition: color 0.2s;
+  }
+  .nav-link:hover { color: var(--text-1); }
+
+  .rule-dot { color: var(--rule-mid); }
+
+  .font-sans    { font-family: var(--font-sans); }
+  .font-serif   { font-family: var(--font-serif); }
+  .font-display { font-family: var(--font-display); }
+
+  .eyebrow {
+    font-family: var(--font-sans);
+    font-size: 0.65rem;
+    font-weight: 600;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--text-4);
+  }
+
+  .tag {
+    font-family: var(--font-sans);
+    font-size: 0.63rem;
+    font-weight: 500;
+    letter-spacing: 0.03em;
+    background-color: var(--bg-elevated);
+    color: var(--text-3);
+    border-radius: 0;
+    padding: 0.18rem 0.5rem;
+    display: inline-block;
+    white-space: nowrap;
+    text-decoration: none;
+  }
+
+  .stage-badge {
+    font-family: var(--font-sans);
+    font-size: 0.58rem;
+    font-weight: 600;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    border-radius: 0;
+    padding: 0.2rem 0.55rem;
+    display: inline-block;
+    white-space: nowrap;
+  }
+  .stage-badge.saint {
+    background-color: var(--color-accent-light);
+    color: var(--color-accent);
+  }
+  .stage-badge.blessed {
+    background-color: var(--bg-elevated);
+    color: var(--color-gold);
+  }
+  .stage-badge.venerable,
+  .stage-badge.servant_of_god {
+    background-color: var(--bg-elevated);
+    color: var(--text-3);
+  }
+
+  .used-badge {
+    font-family: var(--font-sans);
+    font-size: 0.58rem;
+    font-weight: 600;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    background-color: var(--bg-elevated);
+    color: var(--text-4);
+    border-radius: 0;
+    padding: 0.2rem 0.5rem;
+    display: inline-block;
+  }
+
+  .meta-grid {
+    display: grid;
+    grid-template-columns: max-content 1fr;
+    gap: 0.5rem 1.5rem;
+  }
+  .meta-grid dt {
+    font-family: var(--font-sans);
+    font-size: 0.62rem;
+    font-weight: 600;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--text-4);
+    padding-top: 0.2rem;
+    white-space: nowrap;
+  }
+  .meta-grid dd {
+    margin: 0;
+    color: var(--text-2);
+    font-size: 0.85rem;
+    font-family: var(--font-sans);
+  }
+
+  .saint-placeholder {
+    background: var(--bg-elevated);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--text-4);
+    font-family: var(--font-display);
+    font-size: 3.5rem;
+    font-weight: 300;
+  }
+
+  .card {
+    background: var(--bg-surface);
+    border: 1px solid var(--rule);
+    transition: box-shadow 0.3s;
+  }
+  .card:hover { box-shadow: var(--shadow-card); }
+
+  .page-header {
+    background: var(--bg-surface);
+    border-bottom: 1px solid var(--rule);
+  }
+
+  .section-rule {
+    border-bottom: 1px solid var(--rule);
+  }
+</style>

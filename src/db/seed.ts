@@ -44,7 +44,7 @@ async function seed() {
         ],
         biography_short: LOREM_BIO,
         total_attributed_miracles: 2,
-        image_url: "https://commons.wikimedia.org/wiki/File:JPII_29_09_2004_2.JPG",
+        image_url: "https://upload.wikimedia.org/wikipedia/commons/3/34/JPII_29_09_2004_2.JPG",
         wikipedia_url: "https://en.wikipedia.org/wiki/Pope_John_Paul_II",
       },
       {
@@ -75,7 +75,7 @@ async function seed() {
         ],
         biography_short: LOREM_BIO,
         total_attributed_miracles: 2,
-        image_url: "https://commons.wikimedia.org/wiki/File:MotherTeresa_090.jpg",
+        image_url: "https://upload.wikimedia.org/wikipedia/commons/8/8e/MotherTeresa_090.jpg",
         wikipedia_url: "https://en.wikipedia.org/wiki/Mother_Teresa",
       },
       {
@@ -108,7 +108,7 @@ async function seed() {
         ],
         biography_short: LOREM_BIO,
         total_attributed_miracles: 2,
-        image_url: "https://commons.wikimedia.org/wiki/File:Padre_Pio_portrait.jpg",
+        image_url: "https://upload.wikimedia.org/wikipedia/commons/5/51/Padre_Pio_portrait.jpg",
         wikipedia_url: "https://en.wikipedia.org/wiki/Padre_Pio",
       },
       {
@@ -140,7 +140,7 @@ async function seed() {
         biography_short: LOREM_BIO,
         total_attributed_miracles: 2,
         image_url:
-          "https://commons.wikimedia.org/wiki/File:Saint_Faustyna_Kowalska_portrait_(1931).jpg",
+          "https://upload.wikimedia.org/wikipedia/commons/0/0c/Saint_Faustyna_Kowalska_portrait_%281931%29.jpg",
         wikipedia_url: "https://en.wikipedia.org/wiki/Faustina_Kowalska",
       },
       {
@@ -171,7 +171,7 @@ async function seed() {
         ],
         biography_short: LOREM_BIO,
         total_attributed_miracles: 2,
-        image_url: "https://commons.wikimedia.org/wiki/File:GiannaBerettaMolla.jpg",
+        image_url: "https://upload.wikimedia.org/wikipedia/commons/8/87/GiannaBerettaMolla.jpg",
         wikipedia_url: "https://en.wikipedia.org/wiki/Gianna_Beretta_Molla",
       },
       {
@@ -202,7 +202,7 @@ async function seed() {
         ],
         biography_short: LOREM_BIO,
         total_attributed_miracles: 2,
-        image_url: "https://commons.wikimedia.org/wiki/File:Kateri_Tekakwitha_1690.jpg",
+        image_url: "https://upload.wikimedia.org/wikipedia/commons/1/14/Kateri_Tekakwitha_1690.jpg",
         wikipedia_url: "https://en.wikipedia.org/wiki/Kateri_Tekakwitha",
       },
       {
@@ -233,7 +233,7 @@ async function seed() {
         ],
         biography_short: LOREM_BIO,
         total_attributed_miracles: 2,
-        image_url: "https://commons.wikimedia.org/wiki/File:Frere_Andre_1920.jpg",
+        image_url: "https://upload.wikimedia.org/wikipedia/commons/e/e6/Fr%C3%A8re_Andr%C3%A9_1920.jpg",
         wikipedia_url: "https://en.wikipedia.org/wiki/Andre_Bessette",
       },
       {
@@ -264,7 +264,7 @@ async function seed() {
         ],
         biography_short: LOREM_BIO,
         total_attributed_miracles: 2,
-        image_url: "https://commons.wikimedia.org/wiki/File:Fr.Maximilian_Kolbe_1939.jpg",
+        image_url: "https://upload.wikimedia.org/wikipedia/commons/e/e9/Fr.Maximilian_Kolbe_1939.jpg",
         wikipedia_url: "https://en.wikipedia.org/wiki/Maximilian_Kolbe",
       },
       {
@@ -293,7 +293,7 @@ async function seed() {
         ],
         biography_short: LOREM_BIO,
         total_attributed_miracles: 1,
-        image_url: "https://commons.wikimedia.org/wiki/File:Louis_Martin_1.jpg",
+        image_url: "https://upload.wikimedia.org/wikipedia/commons/3/38/Louis_Martin_1.jpg",
         wikipedia_url: "https://en.wikipedia.org/wiki/Louis_and_Zelie_Martin",
       },
       {
@@ -322,7 +322,7 @@ async function seed() {
         ],
         biography_short: LOREM_BIO,
         total_attributed_miracles: 1,
-        image_url: "https://commons.wikimedia.org/wiki/File:Louis_Martin_1.jpg",
+        image_url: "https://upload.wikimedia.org/wikipedia/commons/a/a2/Z%C3%A9lie_Martin_1.jpg",
         wikipedia_url: "https://en.wikipedia.org/wiki/Louis_and_Zelie_Martin",
       },
       {
@@ -381,7 +381,7 @@ async function seed() {
         ],
         biography_short: LOREM_BIO,
         total_attributed_miracles: 2,
-        image_url: "https://commons.wikimedia.org/wiki/File:Juan-Diego.jpg",
+        image_url: "https://upload.wikimedia.org/wikipedia/commons/c/ca/Juan-Diego.jpg",
         wikipedia_url: "https://en.wikipedia.org/wiki/Juan_Diego",
       },
     ])

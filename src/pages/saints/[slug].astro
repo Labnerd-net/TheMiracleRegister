@@ -3,18 +3,16 @@ import Base from "../../layouts/Base.astro";
 import { createDb } from "../../db";
 import { saints, miracles, saintRelations } from "../../db/schema";
 import { eq } from "drizzle-orm";
-
 import { env } from "cloudflare:workers";
-const db = createDb(env.DATABASE_URL);
 
 const { slug } = Astro.params;
+const db = createDb(env.DATABASE_URL);
 
 const [saint] = await db.select().from(saints).where(eq(saints.slug, slug!));
-
 if (!saint) return Astro.redirect("/404");
 
-const saintMiracles = await db
-  .select({
+const [saintMiracles, relatedRows] = await Promise.all([
+  db.select({
     slug: miracles.slug,
     title: miracles.title,
     type: miracles.type,
@@ -29,95 +27,187 @@ const saintMiracles = await db
     vatican_recognized: miracles.vatican_recognized,
     used_for_beatification: miracles.used_for_beatification,
     used_for_canonization: miracles.used_for_canonization,
+    cure_details: miracles.cure_details,
+  }).from(miracles).where(eq(miracles.saint_id, saint.id)),
+  db.select({
+    id: saints.id, slug: saints.slug, name: saints.name,
+    relation_type: saintRelations.relation_type,
   })
-  .from(miracles)
-  .where(eq(miracles.saint_id, saint.id));
-
-const relations = await db
-  .select({ related_saint_id: saintRelations.related_saint_id, relation_type: saintRelations.relation_type })
   .from(saintRelations)
-  .where(eq(saintRelations.saint_id, saint.id));
-
-const relatedSaints =
-  relations.length > 0
-    ? await db
-        .select({ id: saints.id, slug: saints.slug, name: saints.name })
-        .from(saints)
-        .where(
-          eq(saints.id, relations[0].related_saint_id)
-        )
-    : [];
+  .innerJoin(saints, eq(saintRelations.related_saint_id, saints.id))
+  .where(eq(saintRelations.saint_id, saint.id)),
+]);
 ---
 
 <Base title={saint.name}>
-  <a href="/saints" class="back">← All Saints</a>
 
-  <h1>{saint.name}</h1>
-  {saint.birth_name && saint.birth_name !== saint.name && (
-    <p class="meta">Born {saint.birth_name}</p>
-  )}
+  <div class="page-header">
+    <div class="max-w-6xl mx-auto px-8 py-4">
+      <a href="/saints" style="font-family:var(--font-sans);font-size:0.68rem;font-weight:500;letter-spacing:0.08em;text-transform:uppercase;color:var(--text-4);text-decoration:none">
+        ← Saints
+      </a>
+    </div>
 
-  <dl>
-    {saint.feast_day && <><dt>Feast Day</dt><dd>{saint.feast_day}</dd></>}
-    {saint.nationality && <><dt>Nationality</dt><dd>{saint.nationality}</dd></>}
-    {saint.religious_order && <><dt>Religious Order</dt><dd>{saint.religious_order}</dd></>}
-    {saint.birth_date && <><dt>Born</dt><dd>{saint.birth_date}{saint.birth_place ? `, ${saint.birth_place}` : ""}</dd></>}
-    {saint.death_date && <><dt>Died</dt><dd>{saint.death_date}{saint.death_place ? `, ${saint.death_place}` : ""}</dd></>}
-    {saint.beatification_date && <><dt>Beatified</dt><dd>{saint.beatification_date}{saint.beatified_by ? ` by ${saint.beatified_by}` : ""}</dd></>}
-    {saint.canonization_date && <><dt>Canonized</dt><dd>{saint.canonization_date}{saint.canonized_by ? ` by ${saint.canonized_by}` : ""}</dd></>}
-    <dt>Stage</dt><dd><span class="badge">{saint.canonization_stage}</span></dd>
-    {saint.patronage && saint.patronage.length > 0 && (
-      <><dt>Patronage</dt><dd>{saint.patronage.join(", ")}</dd></>
-    )}
-    {saint.noted_for && saint.noted_for.length > 0 && (
-      <><dt>Noted For</dt><dd>{saint.noted_for.join(", ")}</dd></>
-    )}
-    {relatedSaints.length > 0 && (
-      <><dt>Related</dt><dd>
-        {relatedSaints.map((r) => (
-          <a href={`/saints/${r.slug}`}>{r.name}</a>
-        ))}
-      </dd></>
-    )}
-  </dl>
+    <div class="max-w-6xl mx-auto px-8 pb-16 lg:grid lg:grid-cols-[1fr_280px] lg:gap-16 lg:items-start">
+      <div class="pt-8">
+        <div class="flex items-center gap-3 mb-6">
+          <span class={`stage-badge ${saint.canonization_stage}`}>{saint.canonization_stage}</span>
+          {saint.canonization_type && (
+            <span style="font-family:var(--font-sans);font-size:0.65rem;color:var(--text-4);letter-spacing:0.04em">{saint.canonization_type.replace(/_/g," ")}</span>
+          )}
+        </div>
+        <h1 style="font-family:var(--font-display);font-size:clamp(2.5rem,6vw,4.5rem);font-weight:300;color:var(--text-1);line-height:1.05;margin-bottom:0.6rem;letter-spacing:-0.01em">
+          {saint.name}
+        </h1>
+        {saint.birth_name && saint.birth_name !== saint.name && (
+          <p style="font-family:var(--font-sans);font-size:0.8rem;color:var(--text-4);margin-bottom:1.5rem;font-style:italic">{saint.birth_name}</p>
+        )}
 
-  {saint.biography_short && (
-    <>
-      <h2>Biography</h2>
-      <p>{saint.biography_short}</p>
-    </>
-  )}
+        <div class="flex flex-wrap gap-x-8 gap-y-3 mt-7 pt-7" style="border-top:1px solid var(--rule)">
+          {saint.feast_day && (
+            <div>
+              <p style="font-family:var(--font-sans);font-size:0.6rem;font-weight:600;letter-spacing:0.1em;text-transform:uppercase;color:var(--text-4);margin-bottom:0.3rem">Feast Day</p>
+              <p style="font-family:var(--font-sans);font-size:0.82rem;color:var(--text-2)">{saint.feast_day}</p>
+            </div>
+          )}
+          {saint.nationality && (
+            <div>
+              <p style="font-family:var(--font-sans);font-size:0.6rem;font-weight:600;letter-spacing:0.1em;text-transform:uppercase;color:var(--text-4);margin-bottom:0.3rem">Nationality</p>
+              <p style="font-family:var(--font-sans);font-size:0.82rem;color:var(--text-2)">{saint.nationality}</p>
+            </div>
+          )}
+          {saint.religious_order && (
+            <div>
+              <p style="font-family:var(--font-sans);font-size:0.6rem;font-weight:600;letter-spacing:0.1em;text-transform:uppercase;color:var(--text-4);margin-bottom:0.3rem">Order</p>
+              <p style="font-family:var(--font-sans);font-size:0.82rem;color:var(--text-2)">{saint.religious_order}</p>
+            </div>
+          )}
+          {saint.canonization_date && (
+            <div>
+              <p style="font-family:var(--font-sans);font-size:0.6rem;font-weight:600;letter-spacing:0.1em;text-transform:uppercase;color:var(--text-4);margin-bottom:0.3rem">Canonized</p>
+              <p style="font-family:var(--font-sans);font-size:0.82rem;color:var(--text-2)">{saint.canonization_date}</p>
+            </div>
+          )}
+          {relatedRows.length > 0 && (
+            <div>
+              <p style="font-family:var(--font-sans);font-size:0.6rem;font-weight:600;letter-spacing:0.1em;text-transform:uppercase;color:var(--text-4);margin-bottom:0.3rem">Related</p>
+              {relatedRows.map((r) => (
+                <a href={`/saints/${r.slug}`} style="font-family:var(--font-sans);font-size:0.82rem;display:block">{r.name}</a>
+              ))}
+            </div>
+          )}
+        </div>
+      </div>
 
-  <h2>Miracles ({saintMiracles.length})</h2>
-  {saintMiracles.length === 0 ? (
-    <p class="meta">No miracles recorded.</p>
-  ) : (
-    <table>
-      <thead>
-        <tr>
-          <th>Title</th>
-          <th>Type</th>
-          <th>Date</th>
-          <th>Country</th>
-          <th>Topics</th>
-          <th>Vatican</th>
-        </tr>
-      </thead>
-      <tbody>
-        {saintMiracles.map((m) => (
-          <tr>
-            <td><a href={`/miracles/${m.slug}`}>{m.title}</a>
-              {m.used_for_beatification && <> <span class="badge">beatification</span></>}
-              {m.used_for_canonization && <> <span class="badge">canonization</span></>}
-            </td>
-            <td>{m.type}</td>
-            <td>{m.date_of_event ?? "—"}</td>
-            <td>{m.country ?? "—"}</td>
-            <td>{m.topics?.map((t) => <span class="tag">{t}</span>)}</td>
-            <td>{m.vatican_recognized ? "✓" : "—"}</td>
-          </tr>
-        ))}
-      </tbody>
-    </table>
-  )}
+      <div class="mt-8 lg:mt-8">
+        {saint.image_url ? (
+          <div class="aspect-[3/4] overflow-hidden" style="background:var(--bg-elevated)">
+            <img src={saint.image_url} alt={saint.name} class="w-full h-full object-cover object-top" />
+          </div>
+        ) : (
+          <div class="aspect-[3/4] saint-placeholder">
+            {saint.name.charAt(0)}
+          </div>
+        )}
+      </div>
+    </div>
+  </div>
+
+  <div class="max-w-6xl mx-auto px-8 py-14 lg:grid lg:grid-cols-[1fr_240px] lg:gap-12">
+
+    <div>
+      {saint.patronage && saint.patronage.length > 0 && (
+        <div class="mb-9 pb-9 section-rule">
+          <p class="eyebrow mb-3">Patronage</p>
+          <p style="font-family:var(--font-sans);font-size:0.875rem;color:var(--text-3);line-height:1.8">{saint.patronage.join(" · ")}</p>
+        </div>
+      )}
+
+      {saint.noted_for && saint.noted_for.length > 0 && (
+        <div class="mb-9 pb-9 section-rule">
+          <p class="eyebrow mb-3">Noted For</p>
+          <p style="font-family:var(--font-sans);font-size:0.875rem;color:var(--text-3);line-height:1.8">{saint.noted_for.join(" · ")}</p>
+        </div>
+      )}
+
+      {saint.biography_short && (
+        <div class="mb-11 pb-11 section-rule">
+          <p class="eyebrow mb-5">Biography</p>
+          <p style="font-size:1.05rem;color:var(--text-2);line-height:1.8">{saint.biography_short}</p>
+        </div>
+      )}
+
+      <div>
+        <p class="eyebrow mb-6">Miracles <span style="color:var(--text-5);font-weight:400">({saintMiracles.length})</span></p>
+        {saintMiracles.length === 0 ? (
+          <p style="font-family:var(--font-sans);font-size:0.875rem;color:var(--text-4)">No miracles recorded.</p>
+        ) : (
+          <div class="space-y-3">
+            {saintMiracles.map((m) => (
+              <a href={`/miracles/${m.slug}`} class="block no-underline group">
+                <div class="card p-6">
+                  <div class="flex items-start justify-between gap-4 mb-3">
+                    <h3 style="font-family:var(--font-display);font-size:1.25rem;font-weight:400;color:var(--text-1);line-height:1.3;transition:color 0.2s" class="group-hover:text-[--color-accent]">
+                      {m.title}
+                    </h3>
+                    <div class="shrink-0 flex gap-1.5">
+                      {m.used_for_beatification && <span class="used-badge">Beat.</span>}
+                      {m.used_for_canonization && <span class="used-badge">Canon.</span>}
+                    </div>
+                  </div>
+
+                  {m.cure_details && (
+                    <p style="font-family:var(--font-sans);font-size:0.8rem;color:var(--text-3);line-height:1.65;margin-bottom:0.75rem">
+                      {m.cure_details.length > 160 ? m.cure_details.slice(0, 160) + "…" : m.cure_details}
+                    </p>
+                  )}
+
+                  <div class="flex flex-wrap items-center gap-3 mb-2">
+                    <span style="font-family:var(--font-sans);font-size:0.7rem;color:var(--text-4)">{m.type}</span>
+                    {m.country && <span style="font-family:var(--font-sans);font-size:0.7rem;color:var(--text-4)">{m.country}</span>}
+                    {m.date_of_event && <span style="font-family:var(--font-sans);font-size:0.7rem;color:var(--text-4)">{m.date_of_event}</span>}
+                    {m.recipient_name && <span style="font-family:var(--font-sans);font-size:0.7rem;color:var(--text-4);font-style:italic">{m.recipient_name}</span>}
+                  </div>
+
+                  {m.topics && m.topics.length > 0 && (
+                    <div class="flex flex-wrap gap-1">
+                      {m.topics.map((t) => <span class="tag">{t}</span>)}
+                    </div>
+                  )}
+                </div>
+              </a>
+            ))}
+          </div>
+        )}
+      </div>
+    </div>
+
+    <aside>
+      <div class="card p-5 sticky top-24">
+        <p class="eyebrow mb-5">Record</p>
+        <dl class="meta-grid">
+          {saint.birth_date && (
+            <><dt>Born</dt><dd>{saint.birth_date}{saint.birth_place ? <><br/><span style="color:var(--text-4)">{saint.birth_place}</span></> : ""}</dd></>
+          )}
+          {saint.death_date && (
+            <><dt>Died</dt><dd>{saint.death_date}{saint.death_place ? <><br/><span style="color:var(--text-4)">{saint.death_place}</span></> : ""}</dd></>
+          )}
+          {saint.beatification_date && (
+            <><dt>Beatified</dt><dd>{saint.beatification_date}{saint.beatified_by ? <><br/><span style="color:var(--text-4)">{saint.beatified_by}</span></> : ""}</dd></>
+          )}
+          {saint.canonization_date && (
+            <><dt>Canonized</dt><dd>{saint.canonization_date}{saint.canonized_by ? <><br/><span style="color:var(--text-4)">{saint.canonized_by}</span></> : ""}</dd></>
+          )}
+          {saint.total_attributed_miracles != null && (
+            <><dt>Miracles</dt><dd>{saint.total_attributed_miracles}</dd></>
+          )}
+          {saint.wikipedia_url && (
+            <><dt>External</dt><dd><a href={saint.wikipedia_url} target="_blank" rel="noopener" style="font-size:0.8rem">Wikipedia ↗</a></dd></>
+          )}
+        </dl>
+      </div>
+    </aside>
+
+  </div>
+
 </Base>

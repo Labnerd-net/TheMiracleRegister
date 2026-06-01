@@ -1,0 +1,83 @@
+@import "tailwindcss";
+
+@import "@fontsource/cormorant-garamond/300.css";
+@import "@fontsource/cormorant-garamond/300-italic.css";
+@import "@fontsource/cormorant-garamond/400.css";
+@import "@fontsource/cormorant-garamond/400-italic.css";
+@import "@fontsource/cormorant-garamond/600.css";
+@import "@fontsource/cormorant-garamond/600-italic.css";
+@import "@fontsource/eb-garamond/400.css";
+@import "@fontsource/eb-garamond/400-italic.css";
+@import "@fontsource/eb-garamond/600.css";
+@import "@fontsource/inter/400.css";
+@import "@fontsource/inter/500.css";
+@import "@fontsource/inter/600.css";
+
+@theme {
+  --font-display: 'Cormorant Garamond', Georgia, serif;
+  --font-serif: 'EB Garamond', Georgia, serif;
+  --font-sans: 'Inter', system-ui, sans-serif;
+}
+
+/* ── Light mode ─────────────────────────────────────────────────────── */
+:root {
+  --color-accent:        #7c2d3e;
+  --color-accent-hover:  #5e1f2d;
+  --color-accent-light:  #fdf4f5;
+  --color-gold:          #b08a4a;
+
+  --bg-page:     #fafaf8;
+  --bg-surface:  #ffffff;
+  --bg-subtle:   #f5f1eb;
+  --bg-elevated: #f4f2ef;
+
+  --text-1: #121210;
+  --text-2: #4a4a48;
+  --text-3: #6b6b69;
+  --text-4: #9a9a98;
+  --text-5: #b8b4b0;
+
+  --rule:      #ede9e4;
+  --rule-mid:  #d4d0cb;
+  --rule-soft: #e8e2d9;
+
+  --shadow-card: 0 4px 16px rgba(0,0,0,0.06);
+}
+
+/* ── Dark mode — deep burgundy library ─────────────────────────────── */
+@media (prefers-color-scheme: dark) {
+  :root {
+    --color-accent:        #d4737e;
+    --color-accent-hover:  #e0848e;
+    --color-accent-light:  #2a1218;
+    --color-gold:          #c8a870;
+
+    --bg-page:     #120a0d;
+    --bg-surface:  #1c1014;
+    --bg-subtle:   #201418;
+    --bg-elevated: #2a1820;
+
+    --text-1: #f0e6e8;
+    --text-2: #c8b0b6;
+    --text-3: #987080;
+    --text-4: #6a4852;
+    --text-5: #4a2e38;
+
+    --rule:      #2e1820;
+    --rule-mid:  #3e2030;
+    --rule-soft: #361c26;
+
+    --shadow-card: 0 4px 20px rgba(0,0,0,0.4);
+  }
+}
+
+/* ── Base ───────────────────────────────────────────────────────────── */
+body {
+  font-family: var(--font-serif);
+  font-size: 1.125rem;
+  line-height: 1.7;
+  background-color: var(--bg-page);
+  color: var(--text-1);
+  -webkit-font-smoothing: antialiased;
+  transition: background-color 0.2s, color 0.2s;
+}

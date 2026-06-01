@@ -3,47 +3,69 @@ import Base from "../../layouts/Base.astro";
 import { createDb } from "../../db";
 import { saints } from "../../db/schema";
 import { asc } from "drizzle-orm";
-
 import { env } from "cloudflare:workers";
-const db = createDb(env.DATABASE_URL);
 
+const db = createDb(env.DATABASE_URL);
 const allSaints = await db
   .select({
     slug: saints.slug,
     name: saints.name,
+    birth_name: saints.birth_name,
     feast_day: saints.feast_day,
     nationality: saints.nationality,
     canonization_stage: saints.canonization_stage,
     total_attributed_miracles: saints.total_attributed_miracles,
+    image_url: saints.image_url,
+    death_date: saints.death_date,
+    canonization_date: saints.canonization_date,
   })
   .from(saints)
   .orderBy(asc(saints.name));
 ---
 
 <Base title="Saints">
-  <h1>Saints</h1>
-  <p class="meta">{allSaints.length} saints in the register</p>
 
-  <table>
-    <thead>
-      <tr>
-        <th>Name</th>
-        <th>Feast Day</th>
-        <th>Nationality</th>
-        <th>Stage</th>
-        <th>Miracles</th>
-      </tr>
-    </thead>
-    <tbody>
+  <div class="page-header">
+    <div class="max-w-6xl mx-auto px-8 py-16">
+      <p class="eyebrow mb-4">The Register</p>
+      <h1 style="font-family:var(--font-display);font-size:clamp(2.5rem,5vw,4rem);font-weight:300;color:var(--text-1);line-height:1.05;letter-spacing:-0.01em">Saints</h1>
+      <p style="font-family:var(--font-sans);font-size:0.8rem;color:var(--text-4);margin-top:0.6rem;letter-spacing:0.02em">{allSaints.length} saints documented</p>
+    </div>
+  </div>
+
+  <div class="max-w-6xl mx-auto px-8 py-14">
+    <div class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-x-6 gap-y-10">
       {allSaints.map((s) => (
-        <tr>
-          <td><a href={`/saints/${s.slug}`}>{s.name}</a></td>
-          <td>{s.feast_day ?? "—"}</td>
-          <td>{s.nationality ?? "—"}</td>
-          <td><span class="badge">{s.canonization_stage}</span></td>
-          <td>{s.total_attributed_miracles ?? "—"}</td>
-        </tr>
+        <a href={`/saints/${s.slug}`} class="saint-card-link group no-underline">
+          <div class="aspect-[3/4] overflow-hidden mb-4" style="background:var(--bg-elevated)">
+            {s.image_url ? (
+              <img
+                src={s.image_url}
+                alt={s.name}
+                class="w-full h-full object-cover object-top saint-img"
+              />
+            ) : (
+              <div class="saint-placeholder w-full h-full">
+                {s.name.charAt(0)}
+              </div>
+            )}
+          </div>
+
+          <div>
+            <h2 style="font-family:var(--font-display);font-size:1.2rem;font-weight:400;color:var(--text-1);line-height:1.25;margin-bottom:0.35rem;transition:color 0.2s" class="group-hover:text-[--color-accent]">
+              {s.name}
+            </h2>
+            <div class="flex items-center gap-2 flex-wrap mb-1.5">
+              <span class={`stage-badge ${s.canonization_stage}`}>{s.canonization_stage}</span>
+            </div>
+            <div style="font-family:var(--font-sans);font-size:0.7rem;color:var(--text-4);line-height:1.6">
+              {s.feast_day && <span class="block">{s.feast_day}</span>}
+              {s.nationality && <span class="block">{s.nationality}</span>}
+            </div>
+          </div>
+        </a>
       ))}
-    </tbody>
-  </table>
+    </div>
+  </div>
+
 </Base>

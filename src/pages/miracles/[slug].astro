@@ -3,93 +3,171 @@ import Base from "../../layouts/Base.astro";
 import { createDb } from "../../db";
 import { miracles, saints, miracleSources } from "../../db/schema";
 import { eq } from "drizzle-orm";
-
 import { env } from "cloudflare:workers";
-const db = createDb(env.DATABASE_URL);
 
 const { slug } = Astro.params;
+const db = createDb(env.DATABASE_URL);
 
-const [miracle] = await db
-  .select()
-  .from(miracles)
-  .where(eq(miracles.slug, slug!));
-
+const [miracle] = await db.select().from(miracles).where(eq(miracles.slug, slug!));
 if (!miracle) return Astro.redirect("/404");
 
-const [saint] = await db
-  .select({ slug: saints.slug, name: saints.name })
-  .from(saints)
-  .where(eq(saints.id, miracle.saint_id));
+const [[saint], sources] = await Promise.all([
+  db.select({ slug: saints.slug, name: saints.name, canonization_stage: saints.canonization_stage, image_url: saints.image_url })
+    .from(saints).where(eq(saints.id, miracle.saint_id)),
+  db.select().from(miracleSources).where(eq(miracleSources.miracle_id, miracle.id)),
+]);
 
-const sources = await db
-  .select()
-  .from(miracleSources)
-  .where(eq(miracleSources.miracle_id, miracle.id));
+const fmt = (s: string) => s.replace(/_/g, " ");
 ---
 
 <Base title={miracle.title}>
-  <a href="/miracles" class="back">← All Miracles</a>
 
-  <h1>{miracle.title}</h1>
-  <p class="meta">
-    {miracle.miracle_category} miracle ·{" "}
-    {saint && <a href={`/saints/${saint.slug}`}>{saint.name}</a>}
-  </p>
+  <div class="page-header">
+    <div class="max-w-6xl mx-auto px-8 py-4">
+      <a href="/miracles" style="font-family:var(--font-sans);font-size:0.68rem;font-weight:500;letter-spacing:0.08em;text-transform:uppercase;color:var(--text-4);text-decoration:none">← Miracles</a>
+    </div>
+    <div class="max-w-6xl mx-auto px-8 pb-14 pt-6 lg:grid lg:grid-cols-[1fr_220px] lg:gap-16 lg:items-start">
+      <div>
+        <div class="flex items-center gap-3 mb-5">
+          <span style="font-family:var(--font-sans);font-size:0.65rem;font-weight:600;letter-spacing:0.1em;text-transform:uppercase;color:var(--text-4)">{fmt(miracle.miracle_category)} miracle</span>
+          <span style="color:var(--rule-mid)">·</span>
+          <span style="font-family:var(--font-sans);font-size:0.65rem;font-weight:600;letter-spacing:0.1em;text-transform:uppercase;color:var(--text-4)">{fmt(miracle.type)}</span>
+        </div>
+        <h1 style="font-family:var(--font-display);font-size:clamp(2rem,5vw,3.5rem);font-weight:300;color:var(--text-1);line-height:1.1;margin-bottom:1.5rem;letter-spacing:-0.01em">{miracle.title}</h1>
 
-  <dl>
-    <dt>Type</dt><dd>{miracle.type}</dd>
-    {miracle.topics && miracle.topics.length > 0 && (
-      <><dt>Topics</dt><dd>{miracle.topics.map((t) => <span class="tag">{t}</span>)}</dd></>
-    )}
-    {miracle.date_of_event && <><dt>Date</dt><dd>{miracle.date_of_event} ({miracle.date_precision})</dd></>}
-    {miracle.country && <><dt>Location</dt><dd>{miracle.location_name ? `${miracle.location_name}, ` : ""}{miracle.country}{miracle.region ? ` (${miracle.region})` : ""}</dd></>}
-    <dt>Timing</dt><dd>{miracle.timing_relative_to_saint_death.replace(/_/g, " ")}</dd>
-    {miracle.recipient_name && <><dt>Recipient</dt><dd>{miracle.recipient_name}</dd></>}
-    {miracle.recipient_age_at_event && <><dt>Age at Event</dt><dd>{miracle.recipient_age_at_event}</dd></>}
-    {miracle.medical_diagnosis && <><dt>Diagnosis</dt><dd>{miracle.medical_diagnosis}</dd></>}
-    <dt>Cure</dt><dd>{miracle.cure_characteristics.replace(/_/g, " ")}</dd>
-    <dt>Medically Verified</dt><dd>{miracle.was_medically_verified ? "Yes" : "No"}</dd>
-    {miracle.medical_verification_date && <><dt>Verified</dt><dd>{miracle.medical_verification_date}</dd></>}
-    <dt>Vatican Recognized</dt><dd>{miracle.vatican_recognized ? "Yes" : "No"}</dd>
-    {miracle.vatican_decree_date && <><dt>Vatican Decree</dt><dd>{miracle.vatican_decree_date}</dd></>}
-    {miracle.vatican_medical_board_verdict && <><dt>Medical Board</dt><dd>{miracle.vatican_medical_board_verdict}</dd></>}
-    {miracle.intercessory_medium !== "not_applicable" && (
-      <><dt>Intercessory Medium</dt><dd>{miracle.intercessory_medium.replace(/_/g, " ")}</dd></>
-    )}
-    {(miracle.used_for_beatification || miracle.used_for_canonization) && (
-      <><dt>Used For</dt><dd>
-        {miracle.used_for_beatification && <span class="badge">Beatification</span>}
-        {" "}
-        {miracle.used_for_canonization && <span class="badge">Canonization</span>}
-      </dd></>
-    )}
-  </dl>
+        {saint && (
+          <a href={`/saints/${saint.slug}`} class="inline-flex items-center gap-2.5 no-underline group">
+            {saint.image_url && (
+              <div class="w-8 h-8 rounded-full overflow-hidden shrink-0" style="background:var(--bg-elevated)">
+                <img src={saint.image_url} alt={saint.name} class="w-full h-full object-cover object-top" />
+              </div>
+            )}
+            <span style="font-family:var(--font-sans);font-size:0.82rem;font-weight:500;color:var(--color-accent)" class="group-hover:underline">{saint.name}</span>
+            <span class={`stage-badge ${saint.canonization_stage}`}>{saint.canonization_stage}</span>
+          </a>
+        )}
 
-  {miracle.cure_details && (
-    <>
-      <h2>Cure Details</h2>
-      <p>{miracle.cure_details}</p>
-    </>
-  )}
+        <div class="flex flex-wrap gap-x-8 gap-y-3 mt-7 pt-7" style="border-top:1px solid var(--rule)">
+          {miracle.date_of_event && (
+            <div>
+              <p style="font-family:var(--font-sans);font-size:0.6rem;font-weight:600;letter-spacing:0.1em;text-transform:uppercase;color:var(--text-4);margin-bottom:0.3rem">Date</p>
+              <p style="font-family:var(--font-sans);font-size:0.82rem;color:var(--text-2)">{miracle.date_of_event} <span style="color:var(--text-4);font-size:0.72rem">({fmt(miracle.date_precision)})</span></p>
+            </div>
+          )}
+          {miracle.country && (
+            <div>
+              <p style="font-family:var(--font-sans);font-size:0.6rem;font-weight:600;letter-spacing:0.1em;text-transform:uppercase;color:var(--text-4);margin-bottom:0.3rem">Location</p>
+              <p style="font-family:var(--font-sans);font-size:0.82rem;color:var(--text-2)">{[miracle.location_name, miracle.country].filter(Boolean).join(", ")}</p>
+            </div>
+          )}
+          {miracle.recipient_name && (
+            <div>
+              <p style="font-family:var(--font-sans);font-size:0.6rem;font-weight:600;letter-spacing:0.1em;text-transform:uppercase;color:var(--text-4);margin-bottom:0.3rem">Recipient</p>
+              <p style="font-family:var(--font-sans);font-size:0.82rem;color:var(--text-2)">{miracle.recipient_name}{miracle.recipient_age_at_event != null ? ` (age ${miracle.recipient_age_at_event})` : ""}</p>
+            </div>
+          )}
+          {(miracle.used_for_beatification || miracle.used_for_canonization) && (
+            <div>
+              <p style="font-family:var(--font-sans);font-size:0.6rem;font-weight:600;letter-spacing:0.1em;text-transform:uppercase;color:var(--text-4);margin-bottom:0.3rem">Used For</p>
+              <div class="flex gap-1.5">
+                {miracle.used_for_beatification && <span class="used-badge">Beatification</span>}
+                {miracle.used_for_canonization && <span class="used-badge">Canonization</span>}
+              </div>
+            </div>
+          )}
+        </div>
+      </div>
 
-  {miracle.synopsis && (
-    <>
-      <h2>Synopsis</h2>
-      <p>{miracle.synopsis}</p>
-    </>
-  )}
+      {miracle.topics && miracle.topics.length > 0 && (
+        <div class="mt-8 lg:mt-8">
+          <p class="eyebrow mb-4">Topics</p>
+          <div class="flex flex-wrap gap-1.5">
+            {miracle.topics.map((t) => <span class="tag">{t}</span>)}
+          </div>
+        </div>
+      )}
+    </div>
+  </div>
 
-  {sources.length > 0 && (
-    <>
-      <h2>Sources</h2>
-      <ul>
-        {sources.map((s) => (
-          <li>
-            {s.url ? <a href={s.url} target="_blank" rel="noopener">{s.title ?? s.url}</a> : s.title}
-            {" "}<span class="meta">({s.source_type})</span>
-          </li>
-        ))}
-      </ul>
-    </>
-  )}
+  <div class="max-w-6xl mx-auto px-8 py-14 lg:grid lg:grid-cols-[1fr_240px] lg:gap-12">
+
+    <div>
+      {miracle.vatican_medical_board_verdict && (
+        <blockquote class="pl-6 mb-11" style="border-left:2px solid var(--color-gold)">
+          <p style="font-family:var(--font-display);font-size:1.35rem;font-weight:300;font-style:italic;color:var(--text-2);line-height:1.55;margin-bottom:0.6rem">{miracle.vatican_medical_board_verdict}</p>
+          <footer style="font-family:var(--font-sans);font-size:0.65rem;font-weight:600;letter-spacing:0.1em;text-transform:uppercase;color:var(--text-4)">Vatican Medical Board</footer>
+        </blockquote>
+      )}
+
+      {miracle.medical_diagnosis && (
+        <section class="mb-9 pb-9 section-rule">
+          <p class="eyebrow mb-4">Medical Diagnosis</p>
+          <p style="font-family:var(--font-sans);font-size:0.875rem;color:var(--text-3);line-height:1.8">{miracle.medical_diagnosis}</p>
+        </section>
+      )}
+
+      {miracle.cure_details && (
+        <section class="mb-9 pb-9 section-rule">
+          <p class="eyebrow mb-4">Cure Details</p>
+          <p style="font-size:1.05rem;color:var(--text-2);line-height:1.8">{miracle.cure_details}</p>
+        </section>
+      )}
+
+      {miracle.synopsis && (
+        <section class="mb-9 pb-9 section-rule">
+          <p class="eyebrow mb-5">Synopsis</p>
+          <div style="font-size:1.05rem;color:var(--text-2);line-height:1.8" class="space-y-4">
+            {miracle.synopsis.split("\n\n").map((para) => <p>{para}</p>)}
+          </div>
+        </section>
+      )}
+
+      {sources.length > 0 && (
+        <section>
+          <p class="eyebrow mb-5">Sources</p>
+          <ul class="space-y-3">
+            {sources.map((s) => (
+              <li class="flex items-baseline gap-4">
+                <span style="font-family:var(--font-sans);font-size:0.6rem;font-weight:600;letter-spacing:0.1em;text-transform:uppercase;color:var(--text-4);white-space:nowrap">{fmt(s.source_type)}</span>
+                {s.url ? (
+                  <a href={s.url} target="_blank" rel="noopener" style="font-family:var(--font-sans);font-size:0.85rem">{s.title ?? s.url} ↗</a>
+                ) : (
+                  <span style="font-family:var(--font-sans);font-size:0.85rem;color:var(--text-3)">{s.title}</span>
+                )}
+              </li>
+            ))}
+          </ul>
+        </section>
+      )}
+    </div>
+
+    <aside>
+      <div class="card p-5 sticky top-24">
+        <p class="eyebrow mb-5">Full Record</p>
+        <dl class="meta-grid">
+          <dt>Category</dt><dd>{fmt(miracle.miracle_category)}</dd>
+          <dt>Type</dt><dd>{fmt(miracle.type)}</dd>
+          <dt>Timing</dt><dd>{fmt(miracle.timing_relative_to_saint_death)}</dd>
+          <dt>Cure</dt><dd>{fmt(miracle.cure_characteristics)}</dd>
+          {miracle.intercessory_medium !== "not_applicable" && (
+            <><dt>Medium</dt><dd>{fmt(miracle.intercessory_medium)}</dd></>
+          )}
+          <dt>Verified</dt><dd>{miracle.was_medically_verified ? "Yes" : "No"}</dd>
+          {miracle.medical_verification_date && (
+            <><dt>Verified</dt><dd>{miracle.medical_verification_date}</dd></>
+          )}
+          <dt>Vatican</dt><dd>{miracle.vatican_recognized ? "Recognised" : "Not recognised"}</dd>
+          {miracle.vatican_decree_date && (
+            <><dt>Decree</dt><dd>{miracle.vatican_decree_date}</dd></>
+          )}
+          {miracle.recipient_gender !== "not_applicable" && (
+            <><dt>Gender</dt><dd style="text-transform:capitalize">{miracle.recipient_gender}</dd></>
+          )}
+          <dt>Privacy</dt><dd style="text-transform:capitalize">{fmt(miracle.recipient_privacy)}</dd>
+        </dl>
+      </div>
+    </aside>
+
+  </div>
+
 </Base>
