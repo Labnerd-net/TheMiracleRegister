@@ -16,7 +16,7 @@ const [[{ saintCount }], [{ miracleCount }], featuredSaints] = await Promise.all
     nationality: saints.nationality,
     canonization_stage: saints.canonization_stage,
     feast_day: saints.feast_day,
-  }).from(saints).orderBy(asc(saints.name)).limit(4),
+  }).from(saints).orderBy(asc(saints.name)),
 ]);
 ---
 
@@ -60,35 +60,39 @@ const [[{ saintCount }], [{ miracleCount }], featuredSaints] = await Promise.all
     </div>
   </section>
 
-  <!-- Featured saints -->
-  <section class="max-w-6xl mx-auto px-8 py-20">
-    <div class="flex items-baseline justify-between mb-10">
-      <p class="eyebrow">Featured Saints</p>
-      <a href="/saints" style="font-family:var(--font-sans);font-size:0.7rem;font-weight:500;color:var(--color-accent);text-decoration:none;letter-spacing:0.05em">View all →</a>
+  <!-- Featured saints carousel -->
+  <section class="py-20" style="overflow:hidden">
+    <div class="max-w-6xl mx-auto px-8">
+      <div class="flex items-baseline justify-between mb-10">
+        <p class="eyebrow">Featured Saints</p>
+        <a href="/saints" style="font-family:var(--font-sans);font-size:0.7rem;font-weight:500;color:var(--color-accent);text-decoration:none;letter-spacing:0.05em">View all →</a>
+      </div>
     </div>
-    <div class="grid grid-cols-2 lg:grid-cols-4 gap-6">
-      {featuredSaints.map((s) => (
-        <a href={`/saints/${s.slug}`} class="saint-card-link group no-underline">
-          <div class="aspect-[3/4] overflow-hidden mb-4" style="background:var(--bg-elevated)">
-            {s.image_url ? (
-              <img
-                src={s.image_url}
-                alt={s.name}
-                class="w-full h-full object-cover object-top saint-img"
-              />
-            ) : (
-              <div class="saint-placeholder w-full h-full" />
-            )}
-          </div>
-          <p style="font-family:var(--font-display);font-size:1.25rem;font-weight:400;color:var(--text-1);line-height:1.25;margin-bottom:0.35rem;transition:color 0.2s" class="group-hover:text-[--color-accent]">
-            {s.name}
-          </p>
-          <div class="flex items-center gap-2">
-            <span class={`stage-badge ${s.canonization_stage}`}>{s.canonization_stage}</span>
-            {s.nationality && <span style="font-family:var(--font-sans);font-size:0.68rem;color:var(--text-4)">{s.nationality}</span>}
-          </div>
-        </a>
-      ))}
+    <div class="carousel-viewport">
+      <div class="carousel-track" id="saints-track">
+        {featuredSaints.map((s) => (
+          <a href={`/saints/${s.slug}`} class="saint-card-link carousel-card group no-underline">
+            <div class="aspect-[3/4] overflow-hidden mb-4" style="background:var(--bg-elevated)">
+              {s.image_url ? (
+                <img
+                  src={s.image_url}
+                  alt={s.name}
+                  class="w-full h-full object-cover object-top saint-img"
+                />
+              ) : (
+                <div class="saint-placeholder w-full h-full" />
+              )}
+            </div>
+            <p style="font-family:var(--font-display);font-size:1.25rem;font-weight:400;color:var(--text-1);line-height:1.25;margin-bottom:0.35rem;transition:color 0.2s" class="group-hover:text-[--color-accent]">
+              {s.name}
+            </p>
+            <div class="flex items-center gap-2">
+              <span class={`stage-badge ${s.canonization_stage}`}>{s.canonization_stage}</span>
+              {s.nationality && <span style="font-family:var(--font-sans);font-size:0.68rem;color:var(--text-4)">{s.nationality}</span>}
+            </div>
+          </a>
+        ))}
+      </div>
     </div>
   </section>
 
@@ -155,4 +159,65 @@ const [[{ saintCount }], [{ miracleCount }], featuredSaints] = await Promise.all
 
   .saint-img { transition: transform 0.7s ease; }
   .saint-card-link:hover .saint-img { transform: scale(1.04); }
+
+  .carousel-viewport {
+    padding-left: calc((100vw - min(100vw - 4rem, 72rem)) / 2 + 2rem);
+    overflow: hidden;
+  }
+
+  .carousel-track {
+    display: flex;
+    gap: 1.5rem;
+    transition: transform 0.6s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+    will-change: transform;
+  }
+
+  .carousel-card {
+    flex: 0 0 calc(25% - 1.125rem);
+    min-width: 200px;
+  }
+
+  @media (max-width: 768px) {
+    .carousel-card { flex: 0 0 calc(50% - 0.75rem); }
+  }
 </style>
+
+<script>
+  const track = document.getElementById('saints-track') as HTMLElement;
+  if (track) {
+    const cards = track.children;
+    let current = 0;
+    let paused = false;
+
+    function getCardWidth(): number {
+      const card = cards[0] as HTMLElement;
+      const gap = 24;
+      return card.offsetWidth + gap;
+    }
+
+    function advance() {
+      if (paused) return;
+      current = (current + 1) % cards.length;
+      track.style.transform = `translateX(-${current * getCardWidth()}px)`;
+
+      // wrap: once we've advanced past the last card, jump back silently
+      if (current === cards.length - 1) {
+        setTimeout(() => {
+          track.style.transition = 'none';
+          current = 0;
+          track.style.transform = 'translateX(0)';
+          requestAnimationFrame(() => {
+            requestAnimationFrame(() => {
+              track.style.transition = '';
+            });
+          });
+        }, 650);
+      }
+    }
+
+    track.addEventListener('mouseenter', () => { paused = true; });
+    track.addEventListener('mouseleave', () => { paused = false; });
+
+    setInterval(advance, 3000);
+  }
+</script>
