@@ -168,7 +168,6 @@ const [[{ saintCount }], [{ miracleCount }], featuredSaints] = await Promise.all
   .carousel-track {
     display: flex;
     gap: 1.5rem;
-    transition: transform 0.6s cubic-bezier(0.25, 0.46, 0.45, 0.94);
     will-change: transform;
   }
 
@@ -185,32 +184,38 @@ const [[{ saintCount }], [{ miracleCount }], featuredSaints] = await Promise.all
 <script>
   const track = document.getElementById('saints-track') as HTMLElement;
   if (track) {
-    const cards = track.children;
-    let current = 0;
+    const originals = Array.from(track.children) as HTMLElement[];
+    const count = originals.length;
+
+    // Prepend AND append clones so there is always content on both sides
+    // Track layout: [pre-clones 0..N-1] [originals 0..N-1] [post-clones 0..N-1]
+    originals.forEach(card => track.appendChild(card.cloneNode(true)));
+    originals.slice().reverse().forEach(card => track.prepend(card.cloneNode(true)));
+
+    // Start at position N so originals are visible
+    let current = count;
+    track.style.transition = 'none';
+    track.style.transform = `translateX(-${current * (originals[0].offsetWidth + 24)}px)`;
+
     let paused = false;
 
     function getCardWidth(): number {
-      const card = cards[0] as HTMLElement;
-      const gap = 24;
-      return card.offsetWidth + gap;
+      return originals[0].offsetWidth + 24;
     }
 
     function advance() {
       if (paused) return;
-      current = (current + 1) % cards.length;
+      current++;
+      track.style.transition = 'transform 0.6s cubic-bezier(0.25, 0.46, 0.45, 0.94)';
       track.style.transform = `translateX(-${current * getCardWidth()}px)`;
 
-      // wrap: once we've advanced past the last card, jump back silently
-      if (current === cards.length - 1) {
+      // When we've consumed all originals, jump back to the originals silently
+      if (current >= count * 2) {
         setTimeout(() => {
           track.style.transition = 'none';
-          current = 0;
-          track.style.transform = 'translateX(0)';
-          requestAnimationFrame(() => {
-            requestAnimationFrame(() => {
-              track.style.transition = '';
-            });
-          });
+          void track.offsetHeight;
+          current = count;
+          track.style.transform = `translateX(-${current * getCardWidth()}px)`;
         }, 650);
       }
     }
