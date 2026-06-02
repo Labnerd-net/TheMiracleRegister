@@ -4,7 +4,7 @@
 
 A data-driven website documenting miracles attributed to Catholic saints. Focused on canonization miracles (Vatican-confirmed) with medical documentation, narrative synopses, source trails, and a public REST API. No existing site covers saint intercession miracles as a structured, searchable database — this fills that gap.
 
-**Domain:** themiracleregister.org (registered May 2026)
+**Domain:** themiracleregister.org (registered May 2026) — no "s" in "miracle"
 
 ---
 
