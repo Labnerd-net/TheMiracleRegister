@@ -63,6 +63,7 @@ A data-driven website documenting miracles attributed to Catholic saints. Focuse
 | canonization_stage | enum | saint, blessed, venerable, servant_of_god — **mutable, not static** |
 | patronage | text[] | GIN indexed |
 | noted_for | text[] | GIN indexed — informal/biographical connections, fills gaps where no formal patronage exists |
+| themes | text[] | GIN indexed — standardized spiritual/devotional tags. Canonical list in `src/db/topics.ts` (`SAINT_THEMES`). |
 | biography_short | text | ~300 words |
 | total_attributed_miracles | integer | optional |
 | image_url | text | |
@@ -91,7 +92,7 @@ Saint pages show related saints as links. API response includes a `related_saint
 | title | text | |
 | miracle_category | enum | intercessory, associated |
 | type | enum | healing, nature, eucharistic, stigmata, incorruptibility, apparition, miraculous_image, prophecy, bilocation, other |
-| topics | text[] | GIN indexed — unified tag field. Canonical list in `src/db/topics.ts` (see below). |
+| topics | text[] | GIN indexed — life circumstance/role tags for the miracle recipient or context. Canonical list in `src/db/topics.ts` (`MIRACLE_TOPICS`). |
 | date_of_event | date | nullable |
 | date_precision | enum | exact_day, month, year, decade, century, unknown |
 | timing_relative_to_saint_death | enum | during_lifetime, posthumous, not_applicable |
@@ -102,7 +103,6 @@ Saint pages show related saints as links. API response includes a `related_saint
 | recipient_name | text | null for associated miracles |
 | recipient_privacy | enum | public, first_name_only, confidential, not_applicable |
 | recipient_age_at_event | integer | optional |
-| recipient_gender | enum | male, female, unknown, not_applicable |
 | medical_diagnosis | text | null for non-healing |
 | cure_details | text | |
 | cure_characteristics | enum | instant_complete, gradual_complete, instant_partial, gradual_partial, not_applicable |
@@ -118,17 +118,22 @@ Saint pages show related saints as links. API response includes a `related_saint
 | has_primary_sources | boolean | |
 | created_at, updated_at | timestamptz | |
 
-### Miracle Topics
+### Topics & Themes
 
-Canonical list defined in `src/db/topics.ts`. Open-ended `text[]` (not enum) so new topics can be added without a schema migration — update the const and redeploy. Validated at the app layer via Zod in admin routes.
+Both lists are defined in `src/db/topics.ts` as `text[]` (not enums) so values can be added without a schema migration — update the const and redeploy.
+
+**`MIRACLE_TOPICS`** — tags on miracle records describing the recipient or context. Used for filtering ("show miracles for mothers", "show miracles involving youth").
 
 | Category | Topics |
 |---|---|
-| Medical conditions | `cancer`, `neurological`, `gastrointestinal`, `cardiovascular`, `infectious`, `respiratory`, `orthopedic`, `obstetric`, `dermatological` |
 | Life stages & roles | `children`, `mothers`, `fathers`, `pregnancy-and-childbirth`, `marriage`, `youth`, `elderly` |
-| Life circumstances | `addiction`, `prisoners`, `loss-grief`, `financial-hardship`, `workplace`, `native-and-indigenous` |
-| Spiritual & devotional | `technology`, `pro-life`, `conversion`, `hope`, `perseverance`, `eucharistic`, `marian`, `martyrs`, `missionaries`, `saints-of-everyday-life`, `spiritual-direction` |
-| Saint-specific phenomena | `stigmata`, `bilocation`, `incorruptibility`, `miraculous-images`, `saints-bodies` |
+| Life circumstances | `addiction`, `prisoners`, `loss-grief`, `financial-hardship`, `workplace`, `native-and-indigenous`, `pro-life` |
+
+Medical conditions are **not** topics — use `medical_diagnosis` (free text). Phenomena (stigmata, bilocation, etc.) are **not** topics — use the `type` enum.
+
+**`SAINT_THEMES`** — tags on saint records describing spiritual/devotional character. Used for biography pages and saint discovery.
+
+`hope`, `perseverance`, `conversion`, `eucharistic`, `marian`, `martyrs`, `missionaries`, `saints-of-everyday-life`, `spiritual-direction`, `technology`
 
 ### `miracle_sources` (replaces JSON blob)
 
@@ -215,4 +220,5 @@ Research notes in Nextcloud: `MiraclesProject/Research/`
 - **`saint_relations` join table over self-FK:** Handles pairs and groups, extensible
 - **Zod as single source of truth:** Drives runtime validation, TypeScript types, and OpenAPI spec
 - **Neon dev branch:** Separate dev and prod database branches to avoid schema accidents
+- **`MIRACLE_TOPICS` vs `SAINT_THEMES`:** Topics tag miracle records with life circumstances/roles (who the recipient was, what their situation was). Themes tag saint records with spiritual/devotional character. Medical conditions belong in `medical_diagnosis`; phenomena belong in the `type` enum — neither should appear as topics.
 - **Carlo Acutis' Eucharistic miracle site** (miracolieucaristici.org) is out of scope — different focus entirely
