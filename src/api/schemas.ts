@@ -128,7 +128,6 @@ export const MiracleDetailSchema = z
     recipient_name: z.string().nullable(),
     recipient_privacy: z.enum(["public", "first_name_only", "confidential", "not_applicable"]),
     recipient_age_at_event: z.number().int().nullable(),
-    recipient_gender: z.enum(["male", "female", "unknown", "not_applicable"]),
     medical_diagnosis: z.string().nullable(),
     cure_details: z.string().nullable(),
     cure_characteristics: z.enum([

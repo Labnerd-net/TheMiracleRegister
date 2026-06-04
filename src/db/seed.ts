@@ -428,7 +428,6 @@ async function seed() {
       country: "France",
       recipient_name: "Sr. Marie Simon-Pierre",
       recipient_privacy: "public",
-      recipient_gender: "female",
       medical_diagnosis: "Parkinson's disease (diagnosed 2001)",
       cure_details:
         "Severe Parkinson's — could not write or drive. On the night of June 2, she felt compelled to write JPII's name and found her hand steady. Complete recovery.",
@@ -457,7 +456,6 @@ async function seed() {
       country: "Costa Rica",
       recipient_name: "Floribeth Mora Diaz",
       recipient_privacy: "public",
-      recipient_gender: "female",
       medical_diagnosis: "Severe brain aneurysm (diagnosed April 2011, terminal, sent home to die)",
       cure_details:
         "While watching JPII's beatification on TV, she heard his voice say \"Don't be afraid. I am with you.\" She felt immediate improvement.",
@@ -489,7 +487,6 @@ async function seed() {
       region: "West Bengal",
       recipient_name: "Monica Besra",
       recipient_privacy: "public",
-      recipient_gender: "female",
       medical_diagnosis: "Large benign abdominal/ovarian tumor",
       cure_details:
         "After applying a medallion of Mother Teresa and praying, she felt intense warmth and the tumor disappeared.",
@@ -519,7 +516,6 @@ async function seed() {
       region: "Sao Paulo",
       recipient_name: "Marcilio Haddad Andrino",
       recipient_privacy: "public",
-      recipient_gender: "male",
       medical_diagnosis: "Multiple brain abscesses / viral meningoencephalitis with hydrocephalus",
       cure_details:
         "In a coma, on life support, family told to prepare for his death. His wife prayed with a relic. Doctors found him conscious the next morning with all symptoms gone.",
@@ -550,7 +546,6 @@ async function seed() {
       country: "Italy",
       recipient_name: "Consiglia De Martino",
       recipient_privacy: "public",
-      recipient_gender: "female",
       medical_diagnosis: "Ruptured stomach / severe peritonitis from burst appendix",
       cure_details:
         "Near death after botched surgery. Father brought a photo of Padre Pio to her hospital room. She saw a vision of a Capuchin friar who said \"Don't you know I only work at night?\" Healed instantly.",
@@ -578,7 +573,6 @@ async function seed() {
       country: "Italy",
       recipient_name: "Matteo Pio Colella",
       recipient_privacy: "public",
-      recipient_gender: "male",
       recipient_age_at_event: 7,
       medical_diagnosis: "Coma after meningitis, severe brain damage, multiple organ failure",
       cure_details:
@@ -606,7 +600,6 @@ async function seed() {
       location_name: "San Giovanni Rotondo, Italy",
       country: "Italy",
       recipient_privacy: "not_applicable",
-      recipient_gender: "not_applicable",
       cure_details:
         "Received visible stigmata (wounds of Christ) on hands, feet, and side. Visible for 50 years until his death. Examined by multiple doctors, Vatican investigators, and photographers. Remained fresh and never became infected despite no treatment.",
       cure_characteristics: "not_applicable",
@@ -631,7 +624,6 @@ async function seed() {
       location_name: "Multiple locations worldwide",
       country: "Italy",
       recipient_privacy: "not_applicable",
-      recipient_gender: "not_applicable",
       cure_details:
         "Numerous documented accounts of Padre Pio appearing in two places simultaneously. Often reported during WWII when soldiers saw him on battlefields, only to learn he was at the monastery in Italy. Also reported in confessionals, during Mass, and at bedsides of the dying.",
       cure_characteristics: "not_applicable",
@@ -660,7 +652,6 @@ async function seed() {
       region: "Massachusetts",
       recipient_name: "Maureen Digan",
       recipient_privacy: "public",
-      recipient_gender: "female",
       medical_diagnosis: "Lymphedema (chronic, severe leg swelling, unable to walk for 36 years)",
       cure_details:
         "While visiting St. Faustina's tomb in Poland, prayed and felt a cracking sensation. Swelling drained immediately and she could walk.",
@@ -690,7 +681,6 @@ async function seed() {
       region: "Maryland",
       recipient_name: "Fr. Ronald Pytel",
       recipient_privacy: "public",
-      recipient_gender: "male",
       medical_diagnosis: "Advanced arteriosclerosis, severe angina (needed bypass surgery)",
       cure_details:
         "Told he needed bypass surgery. After praying to Faustina, symptoms disappeared and medical tests showed a normal heart.",
@@ -719,7 +709,6 @@ async function seed() {
       country: "Poland",
       recipient_name: "St. Faustina Kowalska",
       recipient_privacy: "public",
-      recipient_gender: "female",
       cure_details:
         "Multiple visions of Jesus Christ beginning February 22, 1931. Jesus appeared with rays of red and white light, instructing Faustina to have an image painted (\"Jesus, I trust in You\"). Dictated the Chaplet of Divine Mercy and established Divine Mercy Sunday. Faustina recorded everything in her Diary (600+ pages), later approved by the Vatican.",
       cure_characteristics: "not_applicable",
@@ -747,7 +736,6 @@ async function seed() {
       country: "Brazil",
       recipient_name: "Sr. Maria Vergine Colombo",
       recipient_privacy: "public",
-      recipient_gender: "female",
       medical_diagnosis: "Malignant, metastasizing breast tumor",
       cure_details:
         "During surgery for mastectomy, tumor was found vanished. Only a biopsy scar remained.",
@@ -774,7 +762,6 @@ async function seed() {
       country: "Brazil",
       recipient_name: "Elizabeth Comparini",
       recipient_privacy: "public",
-      recipient_gender: "female",
       medical_diagnosis: "Severe placental abruption with hemorrhaging and fetal distress",
       cure_details:
         "Doctors told her both she and baby would die. She prayed to Gianna. Bleeding stopped, both survived healthy.",
@@ -802,7 +789,6 @@ async function seed() {
       timing_relative_to_saint_death: "posthumous",
       country: "USA",
       recipient_privacy: "confidential",
-      recipient_gender: "male",
       medical_diagnosis: "Severe illness (records not publicly detailed)",
       cure_details: "Healed through prayer to Kateri.",
       cure_characteristics: "instant_complete",
@@ -829,7 +815,6 @@ async function seed() {
       region: "Washington",
       recipient_name: "Jake Finkbonner",
       recipient_privacy: "public",
-      recipient_gender: "male",
       recipient_age_at_event: 6,
       medical_diagnosis: "Necrotizing fasciitis (flesh-eating bacteria) from facial injury",
       cure_details:
@@ -859,7 +844,6 @@ async function seed() {
       region: "Quebec",
       recipient_name: "St. Kateri Tekakwitha",
       recipient_privacy: "public",
-      recipient_gender: "female",
       recipient_age_at_event: 24,
       medical_diagnosis: "Smallpox scarring (survived epidemic at age 4, left with facial scarring and impaired vision)",
       cure_details:
@@ -890,7 +874,6 @@ async function seed() {
       region: "Quebec",
       recipient_name: "Joseph Audet",
       recipient_privacy: "public",
-      recipient_gender: "male",
       medical_diagnosis: "Severe tuberculosis (incurable, given up on by doctors)",
       cure_details:
         "Prayed at St. Joseph's Oratory, applied oil from lamp burning at St. Joseph's statue. Brother Andre blessed him and he recovered.",
@@ -918,7 +901,6 @@ async function seed() {
       region: "Quebec",
       recipient_name: "Mario De Montigny",
       recipient_privacy: "public",
-      recipient_gender: "male",
       recipient_age_at_event: 10,
       medical_diagnosis: "Severe tarsal fracture to foot that would not heal (after ATV accident)",
       cure_details:
@@ -948,7 +930,6 @@ async function seed() {
       country: "Poland",
       recipient_name: "Maria Gasior",
       recipient_privacy: "public",
-      recipient_gender: "female",
       medical_diagnosis: "Intestinal tuberculosis (advanced, considered terminal)",
       cure_details: "Prayed to Maximilian Kolbe for intercession. Complete recovery.",
       cure_characteristics: "instant_complete",
@@ -973,7 +954,6 @@ async function seed() {
       country: "Italy",
       recipient_name: "Angela Testoni",
       recipient_privacy: "public",
-      recipient_gender: "female",
       medical_diagnosis: "Calcified peritoneum / severe intestinal disease (extensive calcificatio peritonealis)",
       cure_details: "Healing attributed to Kolbe's intercession. Declared medically inexplicable.",
       cure_characteristics: "instant_complete",
@@ -1001,7 +981,6 @@ async function seed() {
       country: "Spain",
       recipient_name: "Carmen",
       recipient_privacy: "first_name_only",
-      recipient_gender: "female",
       medical_diagnosis: "Severe lung condition (terminal respiratory disease)",
       cure_details: "Healing prayed for through the intercession of Louis and Zelie Martin.",
       cure_characteristics: "instant_complete",
@@ -1027,7 +1006,6 @@ async function seed() {
       country: "Italy",
       recipient_name: "Pietro",
       recipient_privacy: "first_name_only",
-      recipient_gender: "male",
       recipient_age_at_event: 0,
       medical_diagnosis: "Severe respiratory failure (near death, doctors gave no hope)",
       cure_details:
@@ -1058,7 +1036,6 @@ async function seed() {
       country: "Brazil",
       recipient_name: "Matheus Vianna",
       recipient_privacy: "first_name_only",
-      recipient_gender: "male",
       medical_diagnosis: "Rare pancreatic disease (possibly annular pancreas)",
       cure_details:
         "Mother prayed to Carlo after learning about his story. Doctors said surgery was only option. Boy recovered spontaneously.",
@@ -1087,7 +1064,6 @@ async function seed() {
       region: "Tuscany",
       recipient_name: "Valeria Valverde",
       recipient_privacy: "public",
-      recipient_gender: "female",
       medical_diagnosis: "Brain haemorrhage from falling off a bicycle; doctors gave low chance of survival",
       cure_details:
         "Mother Lilliana prayed for Carlo's intercession and visited his tomb in Assisi. Same day, Valeria began breathing independently. Next day, she was able to walk with all evidence of the haemorrhage having disappeared.",
@@ -1117,7 +1093,6 @@ async function seed() {
       country: "Italy",
       region: "Umbria",
       recipient_privacy: "not_applicable",
-      recipient_gender: "not_applicable",
       cure_details:
         "Carlo's body was exhumed in 2007 and found to have undergone normal decay (not incorrupt). His remains are displayed in a glass tomb at the Sanctuary of Santa Maria Maggiore in Assisi, covered with a wax layer molded to resemble his living appearance — a common Italian tradition also used for St. John XXIII. The Church has NOT declared his body incorrupt. He wears a tracksuit and sneakers. Popular online claims of incorruptibility are inaccurate.",
       cure_characteristics: "not_applicable",
@@ -1146,7 +1121,6 @@ async function seed() {
       country: "Mexico",
       recipient_name: "Juan José Barragán Silva",
       recipient_privacy: "public",
-      recipient_gender: "male",
       recipient_age_at_event: 20,
       medical_diagnosis:
         "Severe trauma from 10m head-first fall: spinal/neck/cranial fractures, intracranial hemorrhage",
@@ -1179,7 +1153,6 @@ async function seed() {
       country: "Mexico",
       region: "Mexico City",
       recipient_privacy: "not_applicable",
-      recipient_gender: "not_applicable",
       cure_details:
         "Our Lady appeared to Juan Diego. Bishop demanded a sign. Juan Diego gathered Castilian roses (out of season) in his tilma. When opened before the bishop, the image of Our Lady was miraculously imprinted on the fabric.",
       cure_characteristics: "not_applicable",

@@ -42,7 +42,6 @@ if (Astro.request.method === "POST") {
       recipient_name: get("recipient_name") || null,
       recipient_privacy: (get("recipient_privacy") as any) || miracle.recipient_privacy,
       recipient_age_at_event: get("recipient_age_at_event") ? parseInt(get("recipient_age_at_event")) : null,
-      recipient_gender: (get("recipient_gender") as any) || miracle.recipient_gender,
       medical_diagnosis: get("medical_diagnosis") || null,
       cure_details: get("cure_details") || null,
       cure_characteristics: (get("cure_characteristics") as any) || miracle.cure_characteristics,
@@ -181,14 +180,6 @@ const currentTopics = new Set(v.topics ?? []);
         <div class="field">
           <label for="recipient_age_at_event">Age at Event</label>
           <input type="number" id="recipient_age_at_event" name="recipient_age_at_event" value={v.recipient_age_at_event ?? ""} min="0" />
-        </div>
-        <div class="field">
-          <label for="recipient_gender">Gender</label>
-          <select id="recipient_gender" name="recipient_gender">
-            {["male","female","unknown","not_applicable"].map((t) => (
-              <option value={t} selected={v.recipient_gender === t}>{t}</option>
-            ))}
-          </select>
         </div>
       </div>
     </fieldset>

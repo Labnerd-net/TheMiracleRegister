@@ -60,13 +60,6 @@ export const recipientPrivacy = pgEnum("recipient_privacy", [
   "not_applicable",
 ]);
 
-export const recipientGender = pgEnum("recipient_gender", [
-  "male",
-  "female",
-  "unknown",
-  "not_applicable",
-]);
-
 export const cureCharacteristics = pgEnum("cure_characteristics", [
   "instant_complete",
   "gradual_complete",

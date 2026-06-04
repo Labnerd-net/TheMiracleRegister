@@ -15,6 +15,13 @@
       "when": 1780272496567,
       "tag": "0001_sour_annihilus",
       "breakpoints": true
+    },
+    {
+      "idx": 2,
+      "version": "7",
+      "when": 1780540773702,
+      "tag": "0002_stormy_darkstar",
+      "breakpoints": true
     }
   ]
 }

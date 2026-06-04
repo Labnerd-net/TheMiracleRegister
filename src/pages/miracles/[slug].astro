@@ -160,9 +160,6 @@ const fmt = (s: string) => s.replace(/_/g, " ");
           {miracle.vatican_decree_date && (
             <><dt>Decree</dt><dd>{miracle.vatican_decree_date}</dd></>
           )}
-          {miracle.recipient_gender !== "not_applicable" && (
-            <><dt>Gender</dt><dd style="text-transform:capitalize">{miracle.recipient_gender}</dd></>
-          )}
           <dt>Privacy</dt><dd style="text-transform:capitalize">{fmt(miracle.recipient_privacy)}</dd>
         </dl>
       </div>
