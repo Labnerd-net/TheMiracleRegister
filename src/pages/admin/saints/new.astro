@@ -3,6 +3,7 @@ import AdminBase from "../../../layouts/AdminBase.astro";
 import { createDb } from "../../../db";
 import { saints } from "../../../db/schema";
 import { slugify } from "../../../lib/slugify";
+import { SAINT_THEMES } from "../../../db/topics";
 import { env } from "cloudflare:workers";
 
 let error = "";
@@ -12,6 +13,7 @@ if (Astro.request.method === "POST") {
   const get = (key: string) => form.get(key)?.toString().trim() ?? "";
   const getArr = (key: string) =>
     get(key).split(",").map((s) => s.trim()).filter(Boolean);
+  const getThemes = () => form.getAll("themes").map((v) => v.toString());
 
   const name = get("name");
   const slug = get("slug") || slugify(name);
@@ -37,6 +39,7 @@ if (Astro.request.method === "POST") {
       canonization_stage: (get("canonization_stage") as any) || "saint",
       patronage: getArr("patronage"),
       noted_for: getArr("noted_for"),
+      themes: getThemes(),
       biography_short: get("biography_short") || null,
       total_attributed_miracles: get("total_attributed_miracles")
         ? parseInt(get("total_attributed_miracles"))
@@ -161,6 +164,14 @@ if (Astro.request.method === "POST") {
       <div class="field">
         <label for="noted_for">Noted For</label>
         <input type="text" id="noted_for" name="noted_for" placeholder="comma-separated" />
+      </div>
+      <div class="field">
+        <label>Themes</label>
+        <div class="checkbox-group">
+          {SAINT_THEMES.map((t) => (
+            <label><input type="checkbox" name="themes" value={t} />{t}</label>
+          ))}
+        </div>
       </div>
     </fieldset>
 

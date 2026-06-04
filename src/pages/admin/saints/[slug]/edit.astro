@@ -3,6 +3,7 @@ import AdminBase from "../../../../layouts/AdminBase.astro";
 import { createDb } from "../../../../db";
 import { saints } from "../../../../db/schema";
 import { eq } from "drizzle-orm";
+import { SAINT_THEMES } from "../../../../db/topics";
 import { env } from "cloudflare:workers";
 
 const { slug } = Astro.params;
@@ -19,6 +20,7 @@ if (Astro.request.method === "POST") {
   const get = (key: string) => form.get(key)?.toString().trim() ?? "";
   const getArr = (key: string) =>
     get(key).split(",").map((s) => s.trim()).filter(Boolean);
+  const getThemes = () => form.getAll("themes").map((v) => v.toString());
 
   try {
     await db.update(saints).set({
@@ -39,6 +41,7 @@ if (Astro.request.method === "POST") {
       canonization_stage: (get("canonization_stage") as any) || saint.canonization_stage,
       patronage: getArr("patronage"),
       noted_for: getArr("noted_for"),
+      themes: getThemes(),
       biography_short: get("biography_short") || null,
       total_attributed_miracles: get("total_attributed_miracles")
         ? parseInt(get("total_attributed_miracles"))
@@ -166,6 +169,17 @@ const join = (arr: string[] | null) => arr?.join(", ") ?? "";
         <label for="noted_for">Noted For</label>
         <input type="text" id="noted_for" name="noted_for" value={join(v.noted_for)} />
         <p class="hint">Comma-separated</p>
+      </div>
+      <div class="field">
+        <label>Themes</label>
+        <div class="checkbox-group">
+          {SAINT_THEMES.map((t) => (
+            <label>
+              <input type="checkbox" name="themes" value={t} checked={v.themes?.includes(t)} />
+              {t}
+            </label>
+          ))}
+        </div>
       </div>
     </fieldset>
 

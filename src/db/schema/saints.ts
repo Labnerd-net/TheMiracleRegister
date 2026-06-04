@@ -31,6 +31,7 @@ export const saints = pgTable(
     canonization_stage: canonizationStage("canonization_stage").notNull(),
     patronage: text("patronage").array(),
     noted_for: text("noted_for").array(),
+    themes: text("themes").array(),
     biography_short: text("biography_short"),
     total_attributed_miracles: integer("total_attributed_miracles"),
     image_url: text("image_url"),
@@ -46,5 +47,6 @@ export const saints = pgTable(
   (t) => [
     index("saints_patronage_gin_idx").using("gin", t.patronage),
     index("saints_noted_for_gin_idx").using("gin", t.noted_for),
+    index("saints_themes_gin_idx").using("gin", t.themes),
   ]
 );

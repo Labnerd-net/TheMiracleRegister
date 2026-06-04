@@ -1,14 +1,4 @@
 export const MIRACLE_TOPICS = [
-  // Medical conditions
-  "cancer",
-  "neurological",
-  "gastrointestinal",
-  "cardiovascular",
-  "infectious",
-  "respiratory",
-  "orthopedic",
-  "obstetric",
-  "dermatological",
   // Life stages and roles
   "children",
   "mothers",
@@ -24,24 +14,22 @@ export const MIRACLE_TOPICS = [
   "financial-hardship",
   "workplace",
   "native-and-indigenous",
-  // Spiritual and devotional
-  "technology",
   "pro-life",
-  "conversion",
+] as const;
+
+export type MiracleTopic = (typeof MIRACLE_TOPICS)[number];
+
+export const SAINT_THEMES = [
   "hope",
   "perseverance",
+  "conversion",
   "eucharistic",
   "marian",
   "martyrs",
   "missionaries",
   "saints-of-everyday-life",
   "spiritual-direction",
-  // Saint-specific phenomena
-  "stigmata",
-  "bilocation",
-  "incorruptibility",
-  "miraculous-images",
-  "saints-bodies",
+  "technology",
 ] as const;
 
-export type MiracleTopic = (typeof MIRACLE_TOPICS)[number];
+export type SaintTheme = (typeof SAINT_THEMES)[number];
