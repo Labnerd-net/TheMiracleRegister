@@ -60,10 +60,14 @@ const fmt = (s: string) => s.replace(/_/g, " ");
               <p style="font-family:var(--font-sans);font-size:0.82rem;color:var(--text-2)">{[miracle.location_name, miracle.country].filter(Boolean).join(", ")}</p>
             </div>
           )}
-          {miracle.recipient_name && (
+          {miracle.recipient_privacy !== "not_applicable" && (
             <div>
               <p style="font-family:var(--font-sans);font-size:0.6rem;font-weight:600;letter-spacing:0.1em;text-transform:uppercase;color:var(--text-4);margin-bottom:0.3rem">Recipient</p>
-              <p style="font-family:var(--font-sans);font-size:0.82rem;color:var(--text-2)">{miracle.recipient_name}{miracle.recipient_age_at_event != null ? ` (age ${miracle.recipient_age_at_event})` : ""}</p>
+              {miracle.recipient_privacy === "confidential" ? (
+                <p style="font-family:var(--font-sans);font-size:0.82rem;color:var(--text-4);font-style:italic">Name withheld</p>
+              ) : (
+                <p style="font-family:var(--font-sans);font-size:0.82rem;color:var(--text-2)">{miracle.recipient_name}{miracle.recipient_age_at_event != null ? ` (age ${miracle.recipient_age_at_event})` : ""}</p>
+              )}
             </div>
           )}
           {(miracle.used_for_beatification || miracle.used_for_canonization) && (
@@ -160,7 +164,6 @@ const fmt = (s: string) => s.replace(/_/g, " ");
           {miracle.vatican_decree_date && (
             <><dt>Decree</dt><dd>{miracle.vatican_decree_date}</dd></>
           )}
-          <dt>Privacy</dt><dd style="text-transform:capitalize">{fmt(miracle.recipient_privacy)}</dd>
         </dl>
       </div>
     </aside>
