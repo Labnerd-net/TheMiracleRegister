@@ -194,7 +194,7 @@ All routes under `/api/v1/`. Hono + `@hono/zod-openapi` — OpenAPI spec generat
 | 7 | Andre Bessette | 2 + thousands | Tuberculosis, foot fracture |
 | 8 | Maximilian Kolbe | 2 | Intestinal TB, peritoneal calcification — martyr |
 | 9 | Louis & Zelie Martin | 2 | Respiratory, respiratory — married couple, linked via saint_relations |
-| 10 | Carlo Acutis | 2 | Pancreatic, head trauma — currently blessed, canonization pending |
+| 10 | Carlo Acutis | 2 | Pancreatic, head trauma — canonized September 7, 2025 |
 | 11 | Juan Diego | 1 + Tilma | Fall/coma, equipollent beatification |
 
 Research notes in Nextcloud: `MiraclesProject/Research/`
