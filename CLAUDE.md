@@ -220,4 +220,5 @@ Research notes in Nextcloud: `MiraclesProject/Research/`
 - **Zod as single source of truth:** Drives runtime validation, TypeScript types, and OpenAPI spec
 - **Neon dev branch:** Separate dev and prod database branches to avoid schema accidents
 - **`MIRACLE_TOPICS` vs `SAINT_THEMES`:** Topics tag miracle records with life circumstances/roles (who the recipient was, what their situation was). Themes tag saint records with spiritual/devotional character. Medical conditions belong in `medical_diagnosis`; phenomena belong in the `type` enum — neither should appear as topics.
+- **`noted_for` removed:** Was redundant with `themes` (structured) and `biography_short` (narrative). Saints have two tag fields: `patronage` (formal Catholic designation) and `themes` (standardized spiritual tags).
 - **Carlo Acutis' Eucharistic miracle site** (miracolieucaristici.org) is out of scope — different focus entirely
