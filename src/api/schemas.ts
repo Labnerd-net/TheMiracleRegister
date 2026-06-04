@@ -84,7 +84,6 @@ export const SaintDetailSchema = z
       .nullable(),
     canonization_stage: z.enum(["saint", "blessed", "venerable", "servant_of_god"]),
     patronage: z.array(z.string()).nullable(),
-    noted_for: z.array(z.string()).nullable(),
     themes: z.array(z.string()).nullable(),
     biography_short: z.string().nullable(),
     total_attributed_miracles: z.number().int().nullable(),

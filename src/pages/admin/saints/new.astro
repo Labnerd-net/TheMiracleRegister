@@ -38,7 +38,6 @@ if (Astro.request.method === "POST") {
       canonization_type: (get("canonization_type") as any) || null,
       canonization_stage: (get("canonization_stage") as any) || "saint",
       patronage: getArr("patronage"),
-      noted_for: getArr("noted_for"),
       themes: getThemes(),
       biography_short: get("biography_short") || null,
       total_attributed_miracles: get("total_attributed_miracles")
@@ -160,10 +159,6 @@ if (Astro.request.method === "POST") {
       <div class="field">
         <label for="patronage">Patronage</label>
         <input type="text" id="patronage" name="patronage" placeholder="comma-separated" />
-      </div>
-      <div class="field">
-        <label for="noted_for">Noted For</label>
-        <input type="text" id="noted_for" name="noted_for" placeholder="comma-separated" />
       </div>
       <div class="field">
         <label>Themes</label>

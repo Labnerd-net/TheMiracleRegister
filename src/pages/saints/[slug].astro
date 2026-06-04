@@ -123,13 +123,6 @@ const [saintMiracles, relatedRows] = await Promise.all([
         </div>
       )}
 
-      {saint.noted_for && saint.noted_for.length > 0 && (
-        <div class="mb-9 pb-9 section-rule">
-          <p class="eyebrow mb-3">Noted For</p>
-          <p style="font-family:var(--font-sans);font-size:0.875rem;color:var(--text-3);line-height:1.8">{saint.noted_for.join(" · ")}</p>
-        </div>
-      )}
-
       {saint.biography_short && (
         <div class="mb-11 pb-11 section-rule">
           <p class="eyebrow mb-5">Biography</p>

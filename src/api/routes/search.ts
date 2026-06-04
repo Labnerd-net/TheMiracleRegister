@@ -38,7 +38,7 @@ search.openapi(
         .where(
           or(
             sql`${topic} = ANY(${saints.patronage})`,
-            sql`${topic} = ANY(${saints.noted_for})`
+            sql`${topic} = ANY(${saints.themes})`
           )
         );
 

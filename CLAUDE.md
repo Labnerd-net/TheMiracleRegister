@@ -62,7 +62,6 @@ A data-driven website documenting miracles attributed to Catholic saints. Focuse
 | canonization_type | enum | confessor, martyr, virgin, married_couple, other |
 | canonization_stage | enum | saint, blessed, venerable, servant_of_god — **mutable, not static** |
 | patronage | text[] | GIN indexed |
-| noted_for | text[] | GIN indexed — informal/biographical connections, fills gaps where no formal patronage exists |
 | themes | text[] | GIN indexed — standardized spiritual/devotional tags. Canonical list in `src/db/topics.ts` (`SAINT_THEMES`). |
 | biography_short | text | ~300 words |
 | total_attributed_miracles | integer | optional |
