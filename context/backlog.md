@@ -21,9 +21,6 @@
 
 ## Performance
 
-### Medium
-- **#12 [src/pages/saints/index.astro:9, src/pages/miracles/index.astro:9]** Both public list pages fetch all records with no pagination. Fix: add `LIMIT`/`OFFSET` and pagination UI, or cache at the Cloudflare edge.
-
 ### Low
 - **#15 [src/api/routes/miracles.ts:91, src/pages/miracles/[slug].astro:11, src/pages/saints/[slug].astro:11]** Detail pages use `db.select()` (`SELECT *`), pulling all columns including large text fields. Fix: replace with explicit field lists matching the response schema.
 
@@ -32,7 +29,6 @@
 ## Improvements & Refactors
 
 ### Medium
-- **#18 [src/pages/admin/*/new.astro, src/pages/admin/*/edit.astro]** Admin forms parse `form.get()` without full Zod validation. Zod schemas already exist in `src/api/schemas.ts`. Fix: reuse schemas to validate form data before insert/update.
 - **#19 [src/pages/admin/]** Admin list pages render all records with no pagination. Fix: add `LIMIT`/`OFFSET` with page controls.
 
 ### Low
@@ -63,7 +59,7 @@
 |----------|------|--------|-----|-------|
 | Security | 0 | 0 | 1 | 1 |
 | Bugs | 0 | 0 | 1 | 1 |
-| Performance | 0 | 1 | 1 | 2 |
-| Improvements & Refactors | 0 | 2 | 1 | 3 |
+| Performance | 0 | 0 | 1 | 1 |
+| Improvements & Refactors | 0 | 1 | 1 | 2 |
 | Feature Ideas | 0 | 5 | 4 | 9 |
-| **Total** | **0** | **8** | **8** | **16** |
+| **Total** | **0** | **6** | **8** | **14** |

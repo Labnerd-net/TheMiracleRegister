@@ -1,26 +1,43 @@
 ---
 import AdminBase from "../../../layouts/AdminBase.astro";
 import { createDb } from "../../../db";
-import { saints, miracles } from "../../../db/schema";
-import { asc, eq, sql } from "drizzle-orm";
+import { saints } from "../../../db/schema";
+import { asc, count } from "drizzle-orm";
 import { env } from "cloudflare:workers";
 
+const PAGE_SIZE = 25;
+const rawPage = parseInt(Astro.url.searchParams.get("page") ?? "1");
+const page = Math.max(1, isNaN(rawPage) ? 1 : rawPage);
+const offset = (page - 1) * PAGE_SIZE;
+
 const db = createDb(env.DATABASE_URL);
-const allSaints = await db
-  .select({
-    slug: saints.slug,
-    name: saints.name,
-    canonization_stage: saints.canonization_stage,
-    feast_day: saints.feast_day,
-    nationality: saints.nationality,
-  })
-  .from(saints)
-  .orderBy(asc(saints.name));
+
+const [[{ total }], pageSaints] = await Promise.all([
+  db.select({ total: count() }).from(saints),
+  db
+    .select({
+      slug: saints.slug,
+      name: saints.name,
+      canonization_stage: saints.canonization_stage,
+      feast_day: saints.feast_day,
+      nationality: saints.nationality,
+    })
+    .from(saints)
+    .orderBy(asc(saints.name))
+    .limit(PAGE_SIZE)
+    .offset(offset),
+]);
+
+const totalPages = Math.max(1, Math.ceil(total / PAGE_SIZE));
+if (page > totalPages) return Astro.redirect(`/admin/saints?page=${totalPages}`);
+
+const hasPrev = page > 1;
+const hasNext = page < totalPages;
 ---
 
 <AdminBase title="Saints">
   <div style="display:flex;align-items:baseline;justify-content:space-between;margin-bottom:1.5rem">
-    <h1>Saints <span style="font-size:1rem;font-weight:normal;color:#666">({allSaints.length})</span></h1>
+    <h1>Saints <span style="font-size:1rem;font-weight:normal;color:#666">({total})</span></h1>
     <a href="/admin/saints/new" class="btn btn-primary">+ New Saint</a>
   </div>
 
@@ -35,7 +52,7 @@ const allSaints = await db
       </tr>
     </thead>
     <tbody>
-      {allSaints.map((s) => (
+      {pageSaints.map((s) => (
         <tr>
           <td><a href={`/saints/${s.slug}`} target="_blank">{s.name}</a></td>
           <td><span class="badge">{s.canonization_stage}</span></td>
@@ -46,10 +63,42 @@ const allSaints = await db
       ))}
     </tbody>
   </table>
+
+  {totalPages > 1 && (
+    <nav class="pagination">
+      {hasPrev
+        ? <a href={`/admin/saints?page=${page - 1}`} class="pagination-btn">← Previous</a>
+        : <span class="pagination-btn disabled">← Previous</span>
+      }
+      <span class="pagination-info">Page {page} of {totalPages}</span>
+      {hasNext
+        ? <a href={`/admin/saints?page=${page + 1}`} class="pagination-btn">Next →</a>
+        : <span class="pagination-btn disabled">Next →</span>
+      }
+    </nav>
+  )}
 </AdminBase>
 
 <style>
   .btn { display: inline-block; padding: 0.5rem 1.25rem; border-radius: 4px; font-size: 0.875rem; text-decoration: none; }
   .btn-primary { background: #2a5db0; color: white; }
   .badge { display: inline-block; font-size: 0.7rem; padding: 0.15rem 0.4rem; border-radius: 3px; background: #e8f0fe; color: #2a5db0; }
+  .pagination {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 1.5rem;
+    margin-top: 2rem;
+    padding-top: 1.5rem;
+    border-top: 1px solid #e5e7eb;
+  }
+  .pagination-btn {
+    font-size: 0.8rem;
+    font-weight: 500;
+    color: #2a5db0;
+    text-decoration: none;
+  }
+  .pagination-btn:hover { text-decoration: underline; }
+  .pagination-btn.disabled { color: #9ca3af; cursor: default; }
+  .pagination-info { font-size: 0.78rem; color: #6b7280; }
 </style>
