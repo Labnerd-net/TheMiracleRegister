@@ -69,7 +69,7 @@ const [[{ saintCount }], [{ miracleCount }], featuredSaints] = await Promise.all
       </div>
     </div>
     <div class="carousel-viewport">
-      <div class="carousel-track" id="saints-track">
+      <div class="carousel-track">
         {featuredSaints.map((s) => (
           <a href={`/saints/${s.slug}`} class="saint-card-link carousel-card group no-underline">
             <div class="aspect-[3/4] overflow-hidden mb-4" style="background:var(--bg-elevated)">
@@ -162,18 +162,21 @@ const [[{ saintCount }], [{ miracleCount }], featuredSaints] = await Promise.all
 
   .carousel-viewport {
     padding-left: calc((100vw - min(100vw - 4rem, 72rem)) / 2 + 2rem);
-    overflow: hidden;
+    overflow-x: auto;
+    scroll-snap-type: x mandatory;
+    scrollbar-width: none;
   }
+  .carousel-viewport::-webkit-scrollbar { display: none; }
 
   .carousel-track {
     display: flex;
     gap: 1.5rem;
-    will-change: transform;
   }
 
   .carousel-card {
     flex: 0 0 calc(25% - 1.125rem);
     min-width: 200px;
+    scroll-snap-align: start;
   }
 
   @media (max-width: 768px) {
@@ -182,47 +185,21 @@ const [[{ saintCount }], [{ miracleCount }], featuredSaints] = await Promise.all
 </style>
 
 <script>
-  const track = document.getElementById('saints-track') as HTMLElement;
-  if (track) {
-    const originals = Array.from(track.children) as HTMLElement[];
-    const count = originals.length;
-
-    // Prepend AND append clones so there is always content on both sides
-    // Track layout: [pre-clones 0..N-1] [originals 0..N-1] [post-clones 0..N-1]
-    originals.forEach(card => track.appendChild(card.cloneNode(true)));
-    originals.slice().reverse().forEach(card => track.prepend(card.cloneNode(true)));
-
-    // Start at position N so originals are visible
-    let current = count;
-    track.style.transition = 'none';
-    track.style.transform = `translateX(-${current * (originals[0].offsetWidth + 24)}px)`;
-
+  const viewport = document.querySelector('.carousel-viewport') as HTMLElement;
+  if (viewport) {
     let paused = false;
-
-    function getCardWidth(): number {
-      return originals[0].offsetWidth + 24;
-    }
-
-    function advance() {
+    viewport.addEventListener('mouseenter', () => { paused = true; });
+    viewport.addEventListener('mouseleave', () => { paused = false; });
+    setInterval(() => {
       if (paused) return;
-      current++;
-      track.style.transition = 'transform 0.6s cubic-bezier(0.25, 0.46, 0.45, 0.94)';
-      track.style.transform = `translateX(-${current * getCardWidth()}px)`;
-
-      // When we've consumed all originals, jump back to the originals silently
-      if (current >= count * 2) {
-        setTimeout(() => {
-          track.style.transition = 'none';
-          void track.offsetHeight;
-          current = count;
-          track.style.transform = `translateX(-${current * getCardWidth()}px)`;
-        }, 650);
+      const card = viewport.querySelector('.carousel-card') as HTMLElement;
+      const cardWidth = card ? card.offsetWidth + 24 : 0;
+      const maxScroll = viewport.scrollWidth - viewport.clientWidth;
+      if (viewport.scrollLeft + cardWidth >= maxScroll) {
+        viewport.scrollTo({ left: 0, behavior: 'smooth' });
+      } else {
+        viewport.scrollBy({ left: cardWidth, behavior: 'smooth' });
       }
-    }
-
-    track.addEventListener('mouseenter', () => { paused = true; });
-    track.addEventListener('mouseleave', () => { paused = false; });
-
-    setInterval(advance, 3000);
+    }, 3000);
   }
 </script>
