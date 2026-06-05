@@ -2,14 +2,15 @@
 
 ## Current Feature Spec File
 
-Full-text search (#25): implement `?q=term` on `/api/v1/search`. Currently the param is accepted but silently returns empty. Use ILIKE across saints (name, biography_short) and miracles (title, synopsis, medical_diagnosis, cure_details). Queries parallelized. Works alongside existing `?topic` param — both can be combined. Min length 2 enforced on q.
+Public list pagination (#12): add `?page=N` pagination to `/saints` and `/miracles`. Page size 20. Parallel count + data queries via Drizzle. Prev/next + "Page X of Y" UI. No JS required — pure URL navigation.
 
 ## Current Feature Plan File
 
-1. Tighten `SearchQuerySchema.q` to `z.string().min(2).optional()`
-2. Add ILIKE q-search branch in `src/api/routes/search.ts` using parallel queries
-3. Dedup combined q + topic results by type+slug key
-4. Build + verify
+1. Parse `?page` from `Astro.url.searchParams` (default 1, clamp ≥ 1)
+2. Run `count()` + paginated `.limit(PAGE_SIZE).offset(...)` in parallel
+3. Compute `totalPages`, `hasPrev`, `hasNext`
+4. Add pagination UI below each list
+5. Build + verify
 
 ## History
 
