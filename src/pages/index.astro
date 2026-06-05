@@ -69,7 +69,7 @@ const [[{ saintCount }], [{ miracleCount }], featuredSaints] = await Promise.all
       </div>
     </div>
     <div class="carousel-viewport">
-      <div class="carousel-track">
+      <div class="carousel-track" id="saints-track">
         {featuredSaints.map((s) => (
           <a href={`/saints/${s.slug}`} class="saint-card-link carousel-card group no-underline">
             <div class="aspect-[3/4] overflow-hidden mb-4" style="background:var(--bg-elevated)">
@@ -162,21 +162,18 @@ const [[{ saintCount }], [{ miracleCount }], featuredSaints] = await Promise.all
 
   .carousel-viewport {
     padding-left: calc((100vw - min(100vw - 4rem, 72rem)) / 2 + 2rem);
-    overflow-x: auto;
-    scroll-snap-type: x mandatory;
-    scrollbar-width: none;
+    overflow: hidden;
   }
-  .carousel-viewport::-webkit-scrollbar { display: none; }
 
   .carousel-track {
     display: flex;
     gap: 1.5rem;
+    will-change: transform;
   }
 
   .carousel-card {
     flex: 0 0 calc(25% - 1.125rem);
     min-width: 200px;
-    scroll-snap-align: start;
   }
 
   @media (max-width: 768px) {
@@ -185,62 +182,47 @@ const [[{ saintCount }], [{ miracleCount }], featuredSaints] = await Promise.all
 </style>
 
 <script>
-  const viewport = document.querySelector('.carousel-viewport') as HTMLElement;
-  if (viewport) {
+  const track = document.getElementById('saints-track') as HTMLElement;
+  if (track) {
+    const originals = Array.from(track.children) as HTMLElement[];
+    const count = originals.length;
+
+    // Prepend AND append clones so there is always content on both sides
+    // Track layout: [pre-clones 0..N-1] [originals 0..N-1] [post-clones 0..N-1]
+    originals.forEach(card => track.appendChild(card.cloneNode(true)));
+    originals.slice().reverse().forEach(card => track.prepend(card.cloneNode(true)));
+
+    // Start at position N so originals are visible
+    let current = count;
+    track.style.transition = 'none';
+    track.style.transform = `translateX(-${current * (originals[0].offsetWidth + 24)}px)`;
+
     let paused = false;
-    viewport.addEventListener('mouseenter', () => { paused = true; });
-    viewport.addEventListener('mouseleave', () => { paused = false; });
 
-    const track = viewport.querySelector('.carousel-track') as HTMLElement;
-    const origCards = Array.from(track.querySelectorAll('.carousel-card')) as HTMLElement[];
-    const n = origCards.length;
-
-    if (n > 0) {
-      // Snap edge is at the content boundary (after padding-left)
-      const paddingLeft = parseFloat(getComputedStyle(viewport).paddingLeft) || 0;
-
-      // Distance between consecutive snap positions (card width + gap), measured once at rest
-      const cardStep = n > 1
-        ? origCards[1].getBoundingClientRect().left - origCards[0].getBoundingClientRect().left
-        : origCards[0].offsetWidth + parseFloat(getComputedStyle(track).gap || '0');
-
-      // Clone all cards so the loop advances forward without reversing
-      origCards.forEach(card => track.appendChild(card.cloneNode(true)));
-
-      let idx = 0;
-      let resetting = false;
-
-      const snapTarget = (card: Element) =>
-        viewport.scrollLeft
-        + card.getBoundingClientRect().left
-        - viewport.getBoundingClientRect().left
-        - paddingLeft;
-
-      setInterval(() => {
-        if (paused || resetting) return;
-        idx++;
-        const all = track.querySelectorAll('.carousel-card');
-        viewport.scrollTo({ left: snapTarget(all[idx]), behavior: 'smooth' });
-
-        if (idx >= n) {
-          resetting = true;
-          // Wait for the smooth scroll to fully complete before resetting
-          viewport.addEventListener('scrollend', () => {
-            const realIdx = idx - n;
-            // Arithmetic position avoids getBCR inaccuracy during a live scroll
-            const realLeft = viewport.scrollLeft - n * cardStep;
-            // Disable snap so the instant jump doesn't trigger a snap animation
-            viewport.style.scrollSnapType = 'none';
-            viewport.scrollTo({ left: realLeft, behavior: 'instant' as ScrollBehavior });
-            // Re-enable snap after the browser has painted the new position
-            requestAnimationFrame(() => requestAnimationFrame(() => {
-              viewport.style.scrollSnapType = '';
-              idx = realIdx;
-              resetting = false;
-            }));
-          }, { once: true });
-        }
-      }, 3000);
+    function getCardWidth(): number {
+      return originals[0].offsetWidth + 24;
     }
+
+    function advance() {
+      if (paused) return;
+      current++;
+      track.style.transition = 'transform 0.6s cubic-bezier(0.25, 0.46, 0.45, 0.94)';
+      track.style.transform = `translateX(-${current * getCardWidth()}px)`;
+
+      // When we've consumed all post-clones, jump back to the originals silently
+      if (current >= count * 2) {
+        setTimeout(() => {
+          track.style.transition = 'none';
+          void track.offsetHeight;
+          current = count;
+          track.style.transform = `translateX(-${current * getCardWidth()}px)`;
+        }, 650);
+      }
+    }
+
+    track.addEventListener('mouseenter', () => { paused = true; });
+    track.addEventListener('mouseleave', () => { paused = false; });
+
+    setInterval(advance, 3000);
   }
 </script>
