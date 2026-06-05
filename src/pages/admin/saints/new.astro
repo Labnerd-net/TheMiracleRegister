@@ -4,6 +4,8 @@ import { createDb } from "../../../db";
 import { saints } from "../../../db/schema";
 import { slugify } from "../../../lib/slugify";
 import { SAINT_THEMES } from "../../../db/topics";
+import { canonizationType, canonizationStage } from "../../../db/schema/enums";
+import { parseEnum } from "../../../lib/form-utils";
 import { env } from "cloudflare:workers";
 
 let error = "";
@@ -35,8 +37,8 @@ if (Astro.request.method === "POST") {
       beatified_by: get("beatified_by") || null,
       canonization_date: get("canonization_date") || null,
       canonized_by: get("canonized_by") || null,
-      canonization_type: (get("canonization_type") as any) || null,
-      canonization_stage: (get("canonization_stage") as any) || "saint",
+      canonization_type: parseEnum(get("canonization_type"), canonizationType.enumValues),
+      canonization_stage: parseEnum(get("canonization_stage"), canonizationStage.enumValues, "saint")!,
       patronage: getArr("patronage"),
       themes: getThemes(),
       biography_short: get("biography_short") || null,

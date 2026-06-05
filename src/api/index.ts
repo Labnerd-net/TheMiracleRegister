@@ -1,4 +1,5 @@
 import { OpenAPIHono } from "@hono/zod-openapi";
+import { cors } from "hono/cors";
 import miracles from "./routes/miracles";
 import saints from "./routes/saints";
 import search from "./routes/search";
@@ -6,6 +7,8 @@ import types from "./routes/types";
 import type { ApiEnv } from "./env";
 
 const app = new OpenAPIHono<ApiEnv>().basePath("/api/v1");
+
+app.use("*", cors());
 
 app.route("/saints", saints);
 app.route("/miracles", miracles);

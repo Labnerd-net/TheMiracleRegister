@@ -9,12 +9,12 @@
 
 ### High
 - ~~**#1 [src/pages/admin/login.astro:12]** Open redirect on login~~ — **Fixed 2026-06-05.** `next` param now validated to start with `/` and not `//` before use as redirect target.
-- **#2 [src/api/index.ts / src/pages/api/v1/[...route].ts]** No CORS configuration on the public Hono API. Browsers making cross-origin requests have no explicit policy. For a public REST API, add Hono's `cors()` middleware: `import { cors } from 'hono/cors'; app.use('*', cors());` — scope to read-only if admin mutations are added.
-- **#3 [src/pages/admin/saints/new.astro:38, src/pages/admin/miracles/new.astro:32]** Enum fields cast directly to `as any` before DB insert, bypassing TypeScript type safety entirely. Any HTTP client can submit arbitrary strings for every enum column (type, canonization_stage, miracle_category, recipient_privacy, etc.). While Postgres will throw on invalid values, there is no server-side whitelist before the DB call. Fix: validate each enum field against its known values before insert; remove all `as any` casts.
-- **#4 [src/pages/admin/login.astro:51]** No rate limiting on the login form. A POST to `/admin/login` with arbitrary passwords can be repeated indefinitely. Fix: apply Cloudflare Workers Rate Limiting at the route level, or add a short artificial delay on failed attempts.
+- ~~**#2 [src/api/index.ts]** No CORS configuration on the public Hono API~~ — **Fixed 2026-06-05.** Added `cors()` middleware from `hono/cors` to all `/api/v1/*` routes.
+- ~~**#3 [admin form files]** Enum fields cast to `as any` bypassing TypeScript and server-side validation~~ — **Fixed 2026-06-05.** Created `src/lib/form-utils.ts` with a `parseEnum` helper; all 4 admin form files updated to validate against `pgEnum.enumValues` before insert/update.
+- ~~**#4 [src/pages/admin/login.astro]** No rate limiting on login form~~ — **Fixed 2026-06-05.** Added 300ms delay on failed login attempts. Cloudflare WAF rules recommended for production.
 
 ### Medium
-- **#5 [src/api/routes/search.ts:39–43]** The `topic` query parameter is not validated against the canonical `MIRACLE_TOPICS` or `SAINT_THEMES` values in `src/db/topics.ts`. Any arbitrary string is passed to Postgres as a parameter, enabling value enumeration. Fix: restrict `topic` in `SearchQuerySchema` using `z.enum([...MIRACLE_TOPICS, ...SAINT_THEMES])`.
+- ~~**#5 [src/api/routes/search.ts]** `topic` query param not validated against canonical topic lists~~ — **Fixed 2026-06-05.** `SearchQuerySchema.topic` now uses `z.enum([...MIRACLE_TOPICS, ...SAINT_THEMES])` — invalid values return a 400.
 
 ### Low
 - **#6 [src/layouts/Base.astro:19, src/pages/index.astro:19]** Umami analytics `data-website-id` UUID and script host (`umami.labnerd.net`) are hard-coded in source, revealing analytics infrastructure. Low risk (Umami IDs are public by design), but would need to change for staging/forks. Consider moving to an env var if multi-environment.

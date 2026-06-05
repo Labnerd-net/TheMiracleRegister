@@ -20,6 +20,7 @@ if (Astro.request.method === "POST") {
       },
     });
   } else {
+    await new Promise((r) => setTimeout(r, 300));
     error = "Incorrect password.";
   }
 }

@@ -1,4 +1,5 @@
 import { z } from "@hono/zod-openapi";
+import { MIRACLE_TOPICS, SAINT_THEMES } from "../db/topics";
 
 // --- Shared ---
 
@@ -190,7 +191,7 @@ export const MiraclesQuerySchema = z.object({
 
 export const SearchQuerySchema = z.object({
   q: z.string().optional(),
-  topic: z.string().optional(),
+  topic: z.enum([...MIRACLE_TOPICS, ...SAINT_THEMES]).optional(),
   page: z.coerce.number().int().positive().default(1),
   limit: z.coerce.number().int().positive().max(100).default(20),
 });
