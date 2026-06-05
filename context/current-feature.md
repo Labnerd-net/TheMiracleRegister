@@ -2,22 +2,16 @@
 
 ## Current Feature Spec File
 
-Refactor/improvements batch (backlog items #16, #20, #21, #23, #24):
-- #16: Extract get/getBool/getArr/getMulti form helpers into form-utils.ts
-- #20: Replace JS carousel with CSS scroll-snap + minimal scroll JS
-- #21: Extract admin dashboard inline styles to scoped <style> block
-- #23: Add warning comment to seed.ts about Lorem Ipsum placeholder content
-- #24: Add API docs link to public footer
-
 ## Current Feature Plan File
 
-1. Add `formHelpers(form)` factory to `src/lib/form-utils.ts`; update all 4 admin form files
-2. Replace carousel JS (cloning + transform) with CSS scroll-snap + scrollBy setInterval
-3. Extract admin/index.astro inline styles to <style> block
-4. Add warning comment at top of src/db/seed.ts
-5. Add API docs link in src/layouts/Base.astro footer
-
 ## History
+
+### Backlog — Security, Performance, Bug, and Refactor Batches
+Worked through the generated backlog (context/backlog.md). Closed 20 items across four batches:
+- **Security:** Open redirect on login fixed (next param validation); CORS middleware added to all /api/v1/* routes; enum `as any` casts replaced with typed `parseEnum` helper (src/lib/form-utils.ts) across all 4 admin forms; 300ms failed-login delay added; search `?topic` param restricted to canonical MIRACLE_TOPICS + SAINT_THEMES via z.enum.
+- **Performance:** DB indexes added for miracles(saint_id, type, country) + migration applied; homepage carousel capped at 8 saints; search topic queries parallelized with Promise.all and synopsis excerpt moved to Postgres LEFT(); Cache-Control middleware added (saints 1h, miracles 30m, types 24h, search no-store).
+- **Bug:** Duplicate "Verified" label on miracle detail page fixed ("Verified On").
+- **Refactors:** `formHelpers(form)` factory extracted to form-utils.ts, removing inline helper duplication from all 4 admin forms; carousel replaced with CSS scroll-snap + minimal scrollBy JS; admin dashboard inline styles extracted to scoped classes; seed.ts warning comment added; API docs link added to public footer.
 
 ### Admin Panel
 Password-protected admin panel at /admin/*. Auth via HMAC-SHA256 session tokens (Web Crypto API, no external deps), validated by Astro middleware. Secrets: ADMIN_PASSWORD and SESSION_SECRET as Cloudflare secrets. Pages: dashboard, saints list/create/edit, miracles list/create/edit. Topics shown as checkboxes from MIRACLE_TOPICS canonical list. .dev.vars has placeholder dev credentials. Production secrets must be set via wrangler secret put. Build clean, 11 tests pass.
