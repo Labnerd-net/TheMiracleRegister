@@ -2,17 +2,19 @@
 
 ## Current Feature Spec File
 
-Public list pagination (#12): add `?page=N` pagination to `/saints` and `/miracles`. Page size 20. Parallel count + data queries via Drizzle. Prev/next + "Page X of Y" UI. No JS required — pure URL navigation.
+Admin form Zod validation (#18): add Zod validation to the 4 admin form POST handlers before DB calls. Dedicated form schemas (not API response schemas) validate required fields and the saint_id numeric field, which currently silently becomes NaN on missing input. On failure, display a clean error message instead of a raw DB error.
 
 ## Current Feature Plan File
 
-1. Parse `?page` from `Astro.url.searchParams` (default 1, clamp ≥ 1)
-2. Run `count()` + paginated `.limit(PAGE_SIZE).offset(...)` in parallel
-3. Compute `totalPages`, `hasPrev`, `hasNext`
-4. Add pagination UI below each list
-5. Build + verify
+1. Create `src/lib/form-schemas.ts` with `SaintFormSchema` (name required) and `MiracleFormSchema` (title required, saint_id must be digits)
+2. Wire `safeParse` into all 4 admin POST handlers before the DB call
+3. On failure, join Zod error messages into the existing `error` string
+4. Build + verify
 
 ## History
+
+### Public List Pagination (#12)
+Added `?page=N` pagination to `/saints` and `/miracles`. Page size 20. Parallel `count()` + paginated data queries via Drizzle. Prev/next + "Page X of Y" UI renders only when total exceeds one page. Out-of-range page redirects to last valid page. No JS required.
 
 ### Backlog — Security, Performance, Bug, and Refactor Batches
 Worked through the generated backlog (context/backlog.md). Closed 20 items across four batches:
