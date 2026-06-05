@@ -16,7 +16,7 @@ const [[{ saintCount }], [{ miracleCount }], featuredSaints] = await Promise.all
     nationality: saints.nationality,
     canonization_stage: saints.canonization_stage,
     feast_day: saints.feast_day,
-  }).from(saints).orderBy(asc(saints.name)).limit(8),
+  }).from(saints).orderBy(asc(saints.name)),
 ]);
 ---
 
@@ -187,18 +187,23 @@ const [[{ saintCount }], [{ miracleCount }], featuredSaints] = await Promise.all
 <script>
   const viewport = document.querySelector('.carousel-viewport') as HTMLElement;
   if (viewport) {
+    let idx = 0;
     let paused = false;
     viewport.addEventListener('mouseenter', () => { paused = true; });
     viewport.addEventListener('mouseleave', () => { paused = false; });
+
+    const cards = Array.from(viewport.querySelectorAll('.carousel-card')) as HTMLElement[];
+
     setInterval(() => {
-      if (paused) return;
-      const card = viewport.querySelector('.carousel-card') as HTMLElement;
-      const cardWidth = card ? card.offsetWidth + 24 : 0;
-      const maxScroll = viewport.scrollWidth - viewport.clientWidth;
-      if (viewport.scrollLeft >= maxScroll - 1) {
-        viewport.scrollTo({ left: 0, behavior: 'smooth' });
+      if (paused || !cards.length) return;
+      idx = (idx + 1) % cards.length;
+      if (idx === 0) {
+        viewport.scrollTo({ left: 0, behavior: 'instant' as ScrollBehavior });
       } else {
-        viewport.scrollBy({ left: cardWidth, behavior: 'smooth' });
+        const targetLeft = viewport.scrollLeft
+          + cards[idx].getBoundingClientRect().left
+          - viewport.getBoundingClientRect().left;
+        viewport.scrollTo({ left: targetLeft, behavior: 'smooth' });
       }
     }, 3000);
   }
