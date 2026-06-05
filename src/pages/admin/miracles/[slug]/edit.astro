@@ -4,6 +4,11 @@ import { createDb } from "../../../../db";
 import { miracles, saints } from "../../../../db/schema";
 import { asc, eq } from "drizzle-orm";
 import { MIRACLE_TOPICS } from "../../../../db/topics";
+import {
+  miracleCategory, miracleType, datePrecision, timingRelativeToSaintDeath,
+  recipientPrivacy, cureCharacteristics, intercessoryMedium,
+} from "../../../../db/schema/enums";
+import { parseEnum } from "../../../../lib/form-utils";
 import { env } from "cloudflare:workers";
 
 const { slug } = Astro.params;
@@ -30,24 +35,24 @@ if (Astro.request.method === "POST") {
     await db.update(miracles).set({
       title: get("title") || miracle.title,
       saint_id: parseInt(get("saint_id")) || miracle.saint_id,
-      miracle_category: (get("miracle_category") as any) || miracle.miracle_category,
-      type: (get("type") as any) || miracle.type,
+      miracle_category: parseEnum(get("miracle_category"), miracleCategory.enumValues) ?? miracle.miracle_category,
+      type: parseEnum(get("type"), miracleType.enumValues) ?? miracle.type,
       topics: getTopics(),
       date_of_event: get("date_of_event") || null,
-      date_precision: (get("date_precision") as any) || miracle.date_precision,
-      timing_relative_to_saint_death: (get("timing_relative_to_saint_death") as any) || miracle.timing_relative_to_saint_death,
+      date_precision: parseEnum(get("date_precision"), datePrecision.enumValues) ?? miracle.date_precision,
+      timing_relative_to_saint_death: parseEnum(get("timing_relative_to_saint_death"), timingRelativeToSaintDeath.enumValues) ?? miracle.timing_relative_to_saint_death,
       location_name: get("location_name") || null,
       country: get("country") || null,
       region: get("region") || null,
       recipient_name: get("recipient_name") || null,
-      recipient_privacy: (get("recipient_privacy") as any) || miracle.recipient_privacy,
+      recipient_privacy: parseEnum(get("recipient_privacy"), recipientPrivacy.enumValues) ?? miracle.recipient_privacy,
       recipient_age_at_event: get("recipient_age_at_event") ? parseInt(get("recipient_age_at_event")) : null,
       medical_diagnosis: get("medical_diagnosis") || null,
       cure_details: get("cure_details") || null,
-      cure_characteristics: (get("cure_characteristics") as any) || miracle.cure_characteristics,
+      cure_characteristics: parseEnum(get("cure_characteristics"), cureCharacteristics.enumValues) ?? miracle.cure_characteristics,
       was_medically_verified: getBool("was_medically_verified"),
       medical_verification_date: get("medical_verification_date") || null,
-      intercessory_medium: (get("intercessory_medium") as any) || miracle.intercessory_medium,
+      intercessory_medium: parseEnum(get("intercessory_medium"), intercessoryMedium.enumValues) ?? miracle.intercessory_medium,
       vatican_recognized: getBool("vatican_recognized"),
       vatican_decree_date: get("vatican_decree_date") || null,
       vatican_medical_board_verdict: get("vatican_medical_board_verdict") || null,

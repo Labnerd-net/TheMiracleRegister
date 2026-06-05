@@ -2,7 +2,19 @@
 
 ## Current Feature Spec File
 
+Security batch (backlog items #2, #3, #4, #5):
+- #2: Add CORS middleware to the public Hono API
+- #3: Replace `as any` enum casts in admin forms with validated parseEnum helper
+- #4: Add failed-login delay to slow brute force on admin login
+- #5: Validate `topic` search param against canonical MIRACLE_TOPICS + SAINT_THEMES
+
 ## Current Feature Plan File
+
+1. Add `cors()` middleware in `src/api/index.ts`
+2. Create `src/lib/form-utils.ts` with `parseEnum` helper using pgEnum `.enumValues`
+3. Update `saints/new.astro`, `saints/[slug]/edit.astro`, `miracles/new.astro`, `miracles/[slug]/edit.astro` to use `parseEnum`
+4. Add 300ms delay on failed login in `src/pages/admin/login.astro`
+5. Tighten `SearchQuerySchema.topic` to `z.enum([...MIRACLE_TOPICS, ...SAINT_THEMES])`
 
 ## History
 

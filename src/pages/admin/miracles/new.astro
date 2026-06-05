@@ -5,6 +5,11 @@ import { miracles, saints } from "../../../db/schema";
 import { asc } from "drizzle-orm";
 import { slugify } from "../../../lib/slugify";
 import { MIRACLE_TOPICS } from "../../../db/topics";
+import {
+  miracleCategory, miracleType, datePrecision, timingRelativeToSaintDeath,
+  recipientPrivacy, cureCharacteristics, intercessoryMedium,
+} from "../../../db/schema/enums";
+import { parseEnum } from "../../../lib/form-utils";
 import { env } from "cloudflare:workers";
 
 const db = createDb(env.DATABASE_URL);
@@ -29,24 +34,24 @@ if (Astro.request.method === "POST") {
       slug,
       title,
       saint_id: parseInt(get("saint_id")),
-      miracle_category: (get("miracle_category") as any) || "intercessory",
-      type: (get("type") as any) || "healing",
+      miracle_category: parseEnum(get("miracle_category"), miracleCategory.enumValues, "intercessory")!,
+      type: parseEnum(get("type"), miracleType.enumValues, "healing")!,
       topics: getTopics(),
       date_of_event: get("date_of_event") || null,
-      date_precision: (get("date_precision") as any) || "year",
-      timing_relative_to_saint_death: (get("timing_relative_to_saint_death") as any) || "posthumous",
+      date_precision: parseEnum(get("date_precision"), datePrecision.enumValues, "year")!,
+      timing_relative_to_saint_death: parseEnum(get("timing_relative_to_saint_death"), timingRelativeToSaintDeath.enumValues, "posthumous")!,
       location_name: get("location_name") || null,
       country: get("country") || null,
       region: get("region") || null,
       recipient_name: get("recipient_name") || null,
-      recipient_privacy: (get("recipient_privacy") as any) || "public",
+      recipient_privacy: parseEnum(get("recipient_privacy"), recipientPrivacy.enumValues, "public")!,
       recipient_age_at_event: get("recipient_age_at_event") ? parseInt(get("recipient_age_at_event")) : null,
       medical_diagnosis: get("medical_diagnosis") || null,
       cure_details: get("cure_details") || null,
-      cure_characteristics: (get("cure_characteristics") as any) || "not_applicable",
+      cure_characteristics: parseEnum(get("cure_characteristics"), cureCharacteristics.enumValues, "not_applicable")!,
       was_medically_verified: getBool("was_medically_verified"),
       medical_verification_date: get("medical_verification_date") || null,
-      intercessory_medium: (get("intercessory_medium") as any) || "prayer_only",
+      intercessory_medium: parseEnum(get("intercessory_medium"), intercessoryMedium.enumValues, "prayer_only")!,
       vatican_recognized: getBool("vatican_recognized"),
       vatican_decree_date: get("vatican_decree_date") || null,
       vatican_medical_board_verdict: get("vatican_medical_board_verdict") || null,
