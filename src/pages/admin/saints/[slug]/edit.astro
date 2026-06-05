@@ -3,9 +3,9 @@ import AdminBase from "../../../../layouts/AdminBase.astro";
 import { createDb } from "../../../../db";
 import { saints } from "../../../../db/schema";
 import { eq } from "drizzle-orm";
-import { SAINT_THEMES } from "../../../../db/topics";
 import { canonizationType, canonizationStage } from "../../../../db/schema/enums";
 import { parseEnum, formHelpers } from "../../../../lib/form-utils";
+import SaintForm from "../../../../components/SaintForm.astro";
 import { env } from "cloudflare:workers";
 
 const { slug } = Astro.params;
@@ -53,11 +53,8 @@ if (Astro.request.method === "POST") {
   }
 }
 
-// Re-fetch after save
 const [s] = await db.select().from(saints).where(eq(saints.slug, slug!));
 const v = s ?? saint;
-
-const join = (arr: string[] | null) => arr?.join(", ") ?? "";
 ---
 
 <AdminBase title={`Edit: ${v.name}`}>
@@ -70,138 +67,5 @@ const join = (arr: string[] | null) => arr?.join(", ") ?? "";
   {error && <div class="error">{error}</div>}
   {success && <div class="success">Saved successfully.</div>}
 
-  <form method="post">
-    <fieldset>
-      <legend>Identity</legend>
-      <div class="field">
-        <label for="name">Name *</label>
-        <input type="text" id="name" name="name" value={v.name} required />
-      </div>
-      <div class="field">
-        <label for="birth_name">Birth Name</label>
-        <input type="text" id="birth_name" name="birth_name" value={v.birth_name ?? ""} />
-      </div>
-    </fieldset>
-
-    <fieldset>
-      <legend>Life</legend>
-      <div class="two-col">
-        <div class="field">
-          <label for="birth_date">Birth Date</label>
-          <input type="date" id="birth_date" name="birth_date" value={v.birth_date ?? ""} />
-        </div>
-        <div class="field">
-          <label for="birth_place">Birth Place</label>
-          <input type="text" id="birth_place" name="birth_place" value={v.birth_place ?? ""} />
-        </div>
-        <div class="field">
-          <label for="death_date">Death Date</label>
-          <input type="date" id="death_date" name="death_date" value={v.death_date ?? ""} />
-        </div>
-        <div class="field">
-          <label for="death_place">Death Place</label>
-          <input type="text" id="death_place" name="death_place" value={v.death_place ?? ""} />
-        </div>
-        <div class="field">
-          <label for="nationality">Nationality</label>
-          <input type="text" id="nationality" name="nationality" value={v.nationality ?? ""} />
-        </div>
-        <div class="field">
-          <label for="religious_order">Religious Order</label>
-          <input type="text" id="religious_order" name="religious_order" value={v.religious_order ?? ""} />
-        </div>
-        <div class="field">
-          <label for="feast_day">Feast Day</label>
-          <input type="text" id="feast_day" name="feast_day" value={v.feast_day ?? ""} />
-        </div>
-      </div>
-    </fieldset>
-
-    <fieldset>
-      <legend>Canonization</legend>
-      <div class="two-col">
-        <div class="field">
-          <label for="beatification_date">Beatification Date</label>
-          <input type="date" id="beatification_date" name="beatification_date" value={v.beatification_date ?? ""} />
-        </div>
-        <div class="field">
-          <label for="beatified_by">Beatified By</label>
-          <input type="text" id="beatified_by" name="beatified_by" value={v.beatified_by ?? ""} />
-        </div>
-        <div class="field">
-          <label for="canonization_date">Canonization Date</label>
-          <input type="date" id="canonization_date" name="canonization_date" value={v.canonization_date ?? ""} />
-        </div>
-        <div class="field">
-          <label for="canonized_by">Canonized By</label>
-          <input type="text" id="canonized_by" name="canonized_by" value={v.canonized_by ?? ""} />
-        </div>
-        <div class="field">
-          <label for="canonization_type">Type</label>
-          <select id="canonization_type" name="canonization_type">
-            <option value="">— select —</option>
-            {["confessor","martyr","virgin","married_couple","other"].map((t) => (
-              <option value={t} selected={v.canonization_type === t}>{t}</option>
-            ))}
-          </select>
-        </div>
-        <div class="field">
-          <label for="canonization_stage">Stage *</label>
-          <select id="canonization_stage" name="canonization_stage" required>
-            {["saint","blessed","venerable","servant_of_god"].map((t) => (
-              <option value={t} selected={v.canonization_stage === t}>{t}</option>
-            ))}
-          </select>
-        </div>
-      </div>
-    </fieldset>
-
-    <fieldset>
-      <legend>Taxonomy</legend>
-      <div class="field">
-        <label for="patronage">Patronage</label>
-        <input type="text" id="patronage" name="patronage" value={join(v.patronage)} />
-        <p class="hint">Comma-separated</p>
-      </div>
-      <div class="field">
-        <label>Themes</label>
-        <div class="checkbox-group">
-          {SAINT_THEMES.map((t) => (
-            <label>
-              <input type="checkbox" name="themes" value={t} checked={v.themes?.includes(t)} />
-              {t}
-            </label>
-          ))}
-        </div>
-      </div>
-    </fieldset>
-
-    <fieldset>
-      <legend>Content</legend>
-      <div class="field">
-        <label for="biography_short">Biography</label>
-        <textarea id="biography_short" name="biography_short" rows="8">{v.biography_short ?? ""}</textarea>
-        <p class="hint">~300 words</p>
-      </div>
-      <div class="two-col">
-        <div class="field">
-          <label for="total_attributed_miracles">Total Attributed Miracles</label>
-          <input type="number" id="total_attributed_miracles" name="total_attributed_miracles" value={v.total_attributed_miracles ?? ""} min="0" />
-        </div>
-      </div>
-      <div class="field">
-        <label for="image_url">Image URL</label>
-        <input type="url" id="image_url" name="image_url" value={v.image_url ?? ""} />
-      </div>
-      <div class="field">
-        <label for="wikipedia_url">Wikipedia URL</label>
-        <input type="url" id="wikipedia_url" name="wikipedia_url" value={v.wikipedia_url ?? ""} />
-      </div>
-    </fieldset>
-
-    <div class="form-actions">
-      <button type="submit" class="btn btn-primary">Save Changes</button>
-      <a href="/admin/saints" class="btn btn-secondary">Cancel</a>
-    </div>
-  </form>
+  <SaintForm saint={v} />
 </AdminBase>

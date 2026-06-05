@@ -1,0 +1,232 @@
+---
+import { MIRACLE_TOPICS } from "../db/topics";
+import {
+  miracleCategory, miracleType, datePrecision, timingRelativeToSaintDeath,
+  recipientPrivacy, cureCharacteristics, intercessoryMedium,
+} from "../db/schema/enums";
+import type { miracles, saints } from "../db/schema";
+
+type Miracle = typeof miracles.$inferSelect;
+type SaintOption = Pick<typeof saints.$inferSelect, "id" | "name">;
+
+interface Props {
+  miracle?: Miracle;
+  allSaints: SaintOption[];
+}
+
+const { miracle, allSaints } = Astro.props;
+const v = miracle;
+const currentTopics = new Set(v?.topics ?? []);
+---
+
+<form method="post">
+  <fieldset>
+    <legend>Identity</legend>
+    <div class="field">
+      <label for="title">Title *</label>
+      <input type="text" id="title" name="title" value={v?.title ?? ""} required />
+    </div>
+    <div class="two-col">
+      {!v && (
+        <div class="field">
+          <label for="slug">Slug</label>
+          <input type="text" id="slug" name="slug" placeholder="auto-generated from title" />
+        </div>
+      )}
+      <div class="field">
+        <label for="saint_id">Saint *</label>
+        <select id="saint_id" name="saint_id" required>
+          {!v && <option value="">— select —</option>}
+          {allSaints.map((s) => (
+            <option value={s.id} selected={s.id === v?.saint_id}>{s.name}</option>
+          ))}
+        </select>
+      </div>
+      <div class="field">
+        <label for="miracle_category">Category</label>
+        <select id="miracle_category" name="miracle_category">
+          {miracleCategory.enumValues.map((t) => (
+            <option value={t} selected={v ? v.miracle_category === t : t === "intercessory"}>{t}</option>
+          ))}
+        </select>
+      </div>
+      <div class="field">
+        <label for="type">Type</label>
+        <select id="type" name="type">
+          {miracleType.enumValues.map((t) => (
+            <option value={t} selected={v ? v.type === t : t === "healing"}>{t}</option>
+          ))}
+        </select>
+      </div>
+    </div>
+  </fieldset>
+
+  <fieldset>
+    <legend>Topics</legend>
+    <div class="checkbox-group">
+      {MIRACLE_TOPICS.map((t) => (
+        <label>
+          <input type="checkbox" name="topics" value={t} checked={currentTopics.has(t)} />
+          {t}
+        </label>
+      ))}
+    </div>
+  </fieldset>
+
+  <fieldset>
+    <legend>Date &amp; Location</legend>
+    <div class="two-col">
+      <div class="field">
+        <label for="date_of_event">Date</label>
+        <input type="date" id="date_of_event" name="date_of_event" value={v?.date_of_event ?? ""} />
+      </div>
+      <div class="field">
+        <label for="date_precision">Date Precision</label>
+        <select id="date_precision" name="date_precision">
+          {datePrecision.enumValues.map((t) => (
+            <option value={t} selected={v ? v.date_precision === t : t === "year"}>{t}</option>
+          ))}
+        </select>
+      </div>
+      <div class="field">
+        <label for="timing_relative_to_saint_death">Timing</label>
+        <select id="timing_relative_to_saint_death" name="timing_relative_to_saint_death">
+          {timingRelativeToSaintDeath.enumValues.map((t) => (
+            <option value={t} selected={v ? v.timing_relative_to_saint_death === t : t === "posthumous"}>{t}</option>
+          ))}
+        </select>
+      </div>
+      <div class="field">
+        <label for="country">Country</label>
+        <input type="text" id="country" name="country" value={v?.country ?? ""} />
+      </div>
+      <div class="field">
+        <label for="region">Region</label>
+        <input type="text" id="region" name="region" value={v?.region ?? ""} />
+      </div>
+      <div class="field">
+        <label for="location_name">Location Name</label>
+        <input type="text" id="location_name" name="location_name" value={v?.location_name ?? ""} />
+      </div>
+    </div>
+  </fieldset>
+
+  <fieldset>
+    <legend>Recipient</legend>
+    <div class="two-col">
+      <div class="field">
+        <label for="recipient_name">Name</label>
+        <input type="text" id="recipient_name" name="recipient_name" value={v?.recipient_name ?? ""} />
+      </div>
+      <div class="field">
+        <label for="recipient_privacy">Privacy</label>
+        <select id="recipient_privacy" name="recipient_privacy">
+          {recipientPrivacy.enumValues.map((t) => (
+            <option value={t} selected={v ? v.recipient_privacy === t : t === "public"}>{t}</option>
+          ))}
+        </select>
+      </div>
+      <div class="field">
+        <label for="recipient_age_at_event">Age at Event</label>
+        <input type="number" id="recipient_age_at_event" name="recipient_age_at_event" value={v?.recipient_age_at_event ?? ""} min="0" />
+      </div>
+    </div>
+  </fieldset>
+
+  <fieldset>
+    <legend>Medical</legend>
+    <div class="field">
+      <label for="medical_diagnosis">Diagnosis</label>
+      <input type="text" id="medical_diagnosis" name="medical_diagnosis" value={v?.medical_diagnosis ?? ""} />
+    </div>
+    <div class="field">
+      <label for="cure_details">Cure Details</label>
+      <textarea id="cure_details" name="cure_details" rows="4">{v?.cure_details ?? ""}</textarea>
+    </div>
+    <div class="two-col">
+      <div class="field">
+        <label for="cure_characteristics">Cure Characteristics</label>
+        <select id="cure_characteristics" name="cure_characteristics">
+          {cureCharacteristics.enumValues.map((t) => (
+            <option value={t} selected={v ? v.cure_characteristics === t : t === "not_applicable"}>{t}</option>
+          ))}
+        </select>
+      </div>
+      <div class="field">
+        <label for="intercessory_medium">Intercessory Medium</label>
+        <select id="intercessory_medium" name="intercessory_medium">
+          {intercessoryMedium.enumValues.map((t) => (
+            <option value={t} selected={v ? v.intercessory_medium === t : t === "prayer_only"}>{t}</option>
+          ))}
+        </select>
+      </div>
+      <div class="field">
+        <label>
+          <input type="hidden" name="was_medically_verified" value="false" />
+          <input type="checkbox" name="was_medically_verified" value="true" checked={v?.was_medically_verified} />
+          Medically Verified
+        </label>
+      </div>
+      <div class="field">
+        <label for="medical_verification_date">Verification Date</label>
+        <input type="date" id="medical_verification_date" name="medical_verification_date" value={v?.medical_verification_date ?? ""} />
+      </div>
+    </div>
+  </fieldset>
+
+  <fieldset>
+    <legend>Vatican</legend>
+    <div class="two-col">
+      <div class="field">
+        <label>
+          <input type="hidden" name="vatican_recognized" value="false" />
+          <input type="checkbox" name="vatican_recognized" value="true" checked={v?.vatican_recognized} />
+          Vatican Recognized
+        </label>
+      </div>
+      <div class="field">
+        <label for="vatican_decree_date">Decree Date</label>
+        <input type="date" id="vatican_decree_date" name="vatican_decree_date" value={v?.vatican_decree_date ?? ""} />
+      </div>
+      <div class="field">
+        <label>
+          <input type="hidden" name="used_for_beatification" value="false" />
+          <input type="checkbox" name="used_for_beatification" value="true" checked={v?.used_for_beatification} />
+          Used for Beatification
+        </label>
+      </div>
+      <div class="field">
+        <label>
+          <input type="hidden" name="used_for_canonization" value="false" />
+          <input type="checkbox" name="used_for_canonization" value="true" checked={v?.used_for_canonization} />
+          Used for Canonization
+        </label>
+      </div>
+    </div>
+    <div class="field">
+      <label for="vatican_medical_board_verdict">Medical Board Verdict</label>
+      <input type="text" id="vatican_medical_board_verdict" name="vatican_medical_board_verdict" value={v?.vatican_medical_board_verdict ?? ""} />
+    </div>
+  </fieldset>
+
+  <fieldset>
+    <legend>Content</legend>
+    <div class="field">
+      <label for="synopsis">Synopsis</label>
+      <textarea id="synopsis" name="synopsis" rows={v ? 10 : 8}>{v?.synopsis ?? ""}</textarea>
+      <p class="hint">500–1000 words narrative</p>
+    </div>
+    <div class="field">
+      <label>
+        <input type="hidden" name="has_primary_sources" value="false" />
+        <input type="checkbox" name="has_primary_sources" value="true" checked={v?.has_primary_sources} />
+        Has Primary Sources
+      </label>
+    </div>
+  </fieldset>
+
+  <div class="form-actions">
+    <button type="submit" class="btn btn-primary">{v ? "Save Changes" : "Create Miracle"}</button>
+    <a href="/admin/miracles" class="btn btn-secondary">Cancel</a>
+  </div>
+</form>

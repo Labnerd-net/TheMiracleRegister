@@ -35,7 +35,7 @@
 ## Improvements & Refactors
 
 ### High
-- **#17 [src/pages/admin/*/new.astro, src/pages/admin/*/edit.astro]** Admin forms duplicate 150–200 lines of form UI between new/edit variants for both saints and miracles. Fix: extract `src/components/SaintForm.astro` and `src/components/MiracleForm.astro` accepting optional entity props, keeping POST logic in the `.astro` page files.
+- ~~**#17 [admin form pages]** ~150–200 lines of form UI duplicated between new/edit variants~~ — **Fixed 2026-06-05.** Extracted `src/components/SaintForm.astro` and `src/components/MiracleForm.astro`. Each accepts an optional entity prop; presence determines pre-fill, button label, and slug field visibility. POST logic remains in the page files.
 
 ### Medium
 - **#18 [src/pages/admin/*/new.astro, src/pages/admin/*/edit.astro]** Admin forms manually parse `form.get()` without full Zod validation. Zod schemas already exist in `src/api/schemas.ts`. Fix: reuse existing Zod schemas to validate form data before insert/update. Best tackled after #17.
