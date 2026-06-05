@@ -10,6 +10,19 @@ const app = new OpenAPIHono<ApiEnv>().basePath("/api/v1");
 
 app.use("*", cors());
 
+const cache = (maxAge: number) => async (c: any, next: () => Promise<void>) => {
+  await next();
+  c.header("Cache-Control", `public, max-age=${maxAge}, stale-while-revalidate=60`);
+};
+
+app.use("/saints/*", cache(3600));
+app.use("/miracles/*", cache(1800));
+app.use("/types/*", cache(86400));
+app.use("/search/*", async (c: any, next: () => Promise<void>) => {
+  await next();
+  c.header("Cache-Control", "no-store");
+});
+
 app.route("/saints", saints);
 app.route("/miracles", miracles);
 app.route("/types", types);

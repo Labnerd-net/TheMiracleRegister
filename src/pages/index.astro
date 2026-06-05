@@ -16,7 +16,7 @@ const [[{ saintCount }], [{ miracleCount }], featuredSaints] = await Promise.all
     nationality: saints.nationality,
     canonization_stage: saints.canonization_stage,
     feast_day: saints.feast_day,
-  }).from(saints).orderBy(asc(saints.name)),
+  }).from(saints).orderBy(asc(saints.name)).limit(8),
 ]);
 ---
 

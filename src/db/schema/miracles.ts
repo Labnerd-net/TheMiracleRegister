@@ -55,5 +55,10 @@ export const miracles = pgTable(
       .defaultNow()
       .$onUpdate(() => new Date()),
   },
-  (t) => [index("miracles_topics_gin_idx").using("gin", t.topics)]
+  (t) => [
+    index("miracles_topics_gin_idx").using("gin", t.topics),
+    index("miracles_saint_id_idx").on(t.saint_id),
+    index("miracles_type_idx").on(t.type),
+    index("miracles_country_idx").on(t.country),
+  ]
 );
