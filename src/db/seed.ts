@@ -1,3 +1,5 @@
+// WARNING: Biographies and synopses below are Lorem Ipsum placeholders.
+// Replace with primary-source content before any production deployment.
 import "dotenv/config";
 import { createDb } from "./index";
 import * as schema from "./schema";

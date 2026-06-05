@@ -9,7 +9,7 @@ import {
   miracleCategory, miracleType, datePrecision, timingRelativeToSaintDeath,
   recipientPrivacy, cureCharacteristics, intercessoryMedium,
 } from "../../../db/schema/enums";
-import { parseEnum } from "../../../lib/form-utils";
+import { parseEnum, formHelpers } from "../../../lib/form-utils";
 import { env } from "cloudflare:workers";
 
 const db = createDb(env.DATABASE_URL);
@@ -22,9 +22,7 @@ let error = "";
 
 if (Astro.request.method === "POST") {
   const form = await Astro.request.formData();
-  const get = (key: string) => form.get(key)?.toString().trim() ?? "";
-  const getBool = (key: string) => form.get(key) === "true";
-  const getTopics = () => form.getAll("topics").map((v) => v.toString());
+  const { get, getBool, getMulti } = formHelpers(form);
 
   const title = get("title");
   const slug = get("slug") || slugify(title);
@@ -36,7 +34,7 @@ if (Astro.request.method === "POST") {
       saint_id: parseInt(get("saint_id")),
       miracle_category: parseEnum(get("miracle_category"), miracleCategory.enumValues, "intercessory")!,
       type: parseEnum(get("type"), miracleType.enumValues, "healing")!,
-      topics: getTopics(),
+      topics: getMulti("topics"),
       date_of_event: get("date_of_event") || null,
       date_precision: parseEnum(get("date_precision"), datePrecision.enumValues, "year")!,
       timing_relative_to_saint_death: parseEnum(get("timing_relative_to_saint_death"), timingRelativeToSaintDeath.enumValues, "posthumous")!,

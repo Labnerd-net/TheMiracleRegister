@@ -2,19 +2,20 @@
 
 ## Current Feature Spec File
 
-Performance batch (backlog items #10, #11, #13, #14):
-- #10: Add missing DB indexes on miracles (saint_id, type, country) + migrate
-- #11: Limit homepage featuredSaints query to 8 rows
-- #13: Parallelize search topic queries with Promise.all; use Postgres LEFT() for synopsis excerpt
-- #14: Add Cache-Control headers to API routes
+Refactor/improvements batch (backlog items #16, #20, #21, #23, #24):
+- #16: Extract get/getBool/getArr/getMulti form helpers into form-utils.ts
+- #20: Replace JS carousel with CSS scroll-snap + minimal scroll JS
+- #21: Extract admin dashboard inline styles to scoped <style> block
+- #23: Add warning comment to seed.ts about Lorem Ipsum placeholder content
+- #24: Add API docs link to public footer
 
 ## Current Feature Plan File
 
-1. Add indexes to `src/db/schema/miracles.ts` for saint_id, type, country
-2. Run `npm run db:generate && npm run db:migrate`
-3. Add `.limit(8)` to featuredSaints in `src/pages/index.astro`
-4. Parallelize saint + miracle queries in `src/api/routes/search.ts`; replace .slice(0,200) with sql`LEFT(..., 200)`
-5. Add Cache-Control middleware to `src/api/index.ts` with per-route overrides
+1. Add `formHelpers(form)` factory to `src/lib/form-utils.ts`; update all 4 admin form files
+2. Replace carousel JS (cloning + transform) with CSS scroll-snap + scrollBy setInterval
+3. Extract admin/index.astro inline styles to <style> block
+4. Add warning comment at top of src/db/seed.ts
+5. Add API docs link in src/layouts/Base.astro footer
 
 ## History
 

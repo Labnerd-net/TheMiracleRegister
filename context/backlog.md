@@ -53,19 +53,19 @@
 ## Improvements & Refactors
 
 ### High
-- **#16 [src/pages/admin/*/new.astro, src/pages/admin/*/edit.astro — 4 files]** The `get`, `getBool`, `getArr`, and `getThemes` form helpers are defined identically inline in all four admin form files (saints/new, saints/edit, miracles/new, miracles/edit). Fix: extract to `src/lib/form-utils.ts` and import.
+- ~~**#16 [4 admin form files]** Inline form helpers duplicated across all admin forms~~ — **Fixed 2026-06-05.** Added `formHelpers(form)` factory to `src/lib/form-utils.ts`; all 4 admin files now import and destructure it.
 - **#17 [src/pages/admin/*/new.astro, src/pages/admin/*/edit.astro]** Admin forms duplicate 150–200 lines of form UI between new/edit variants for both saints and miracles. Fix: extract `src/components/SaintForm.astro` and `src/components/MiracleForm.astro` accepting optional entity props, keeping POST logic in the `.astro` page files.
 
 ### Medium
 - **#18 [src/pages/admin/*/new.astro, src/pages/admin/*/edit.astro]** Admin forms manually parse `form.get()` and type-cast enums without validation. Zod schemas already exist in `src/api/schemas.ts`. Fix: reuse existing Zod schemas to validate form data before insert/update, replacing manual parsing and `as any` casts.
 - **#19 [src/pages/admin/]** Admin saint/miracle list pages have no pagination — they render all records. As the dataset grows this will degrade the admin experience. Fix: add `LIMIT`/`OFFSET` with page controls to admin list pages.
-- **#20 [src/pages/index.astro:184–227]** Carousel uses JavaScript for layout calculations (`getCardWidth()`) and positional transforms. Fix: replace with CSS `scroll-snap-type: x mandatory` and `scroll-snap-align: start` on cards — removes JS dependency and improves mobile performance.
+- ~~**#20 [src/pages/index.astro]** Carousel uses complex JS with card cloning and transform positioning~~ — **Fixed 2026-06-05.** Replaced with CSS scroll-snap; JS reduced to a minimal scrollBy setInterval (~12 lines vs 45).
 
 ### Low
-- **#21 [src/pages/admin/index.astro:17–19]** Admin dashboard uses pervasive inline `style` attributes for layout rather than the CSS class system already present in `AdminBase.astro` (which defines `.badge`, `.btn`, etc.). Fix: extract dashboard card styles into the AdminBase stylesheet or a scoped `<style>` block.
+- ~~**#21 [src/pages/admin/index.astro]** Admin dashboard pervasive inline styles~~ — **Fixed 2026-06-05.** Extracted to named classes in scoped `<style>` block.
 - **#22 [src/db/update-images.ts]** One-off migration script committed permanently with sequential `await` calls in a loop rather than a batched `UPDATE`. It has served its purpose but remains in git. If future image updates are needed, use a `CASE WHEN` batched update. Low priority since the script is already run.
-- **#23 [src/db/seed.ts]** Seed data uses Lorem Ipsum for biographies and synopses. Consider adding a warning comment at the top to prevent accidental deployment of placeholder content.
-- **#24 [src/api/]** The auto-generated OpenAPI docs at `/api/v1/doc` are not linked from the site or README. Add a link in the site footer or a dedicated `/api` page to improve discoverability for external consumers.
+- ~~**#23 [src/db/seed.ts]** No warning about Lorem Ipsum placeholder content~~ — **Fixed 2026-06-05.** Added warning comment at top of file.
+- ~~**#24 [src/layouts/Base.astro]** OpenAPI docs not linked from the site~~ — **Fixed 2026-06-05.** Added "API" link to public footer pointing to `/api/v1/doc`.
 
 ---
 

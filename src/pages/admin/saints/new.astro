@@ -5,17 +5,14 @@ import { saints } from "../../../db/schema";
 import { slugify } from "../../../lib/slugify";
 import { SAINT_THEMES } from "../../../db/topics";
 import { canonizationType, canonizationStage } from "../../../db/schema/enums";
-import { parseEnum } from "../../../lib/form-utils";
+import { parseEnum, formHelpers } from "../../../lib/form-utils";
 import { env } from "cloudflare:workers";
 
 let error = "";
 
 if (Astro.request.method === "POST") {
   const form = await Astro.request.formData();
-  const get = (key: string) => form.get(key)?.toString().trim() ?? "";
-  const getArr = (key: string) =>
-    get(key).split(",").map((s) => s.trim()).filter(Boolean);
-  const getThemes = () => form.getAll("themes").map((v) => v.toString());
+  const { get, getArr, getMulti } = formHelpers(form);
 
   const name = get("name");
   const slug = get("slug") || slugify(name);
@@ -40,7 +37,7 @@ if (Astro.request.method === "POST") {
       canonization_type: parseEnum(get("canonization_type"), canonizationType.enumValues),
       canonization_stage: parseEnum(get("canonization_stage"), canonizationStage.enumValues, "saint")!,
       patronage: getArr("patronage"),
-      themes: getThemes(),
+      themes: getMulti("themes"),
       biography_short: get("biography_short") || null,
       total_attributed_miracles: get("total_attributed_miracles")
         ? parseInt(get("total_attributed_miracles"))
