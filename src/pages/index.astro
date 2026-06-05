@@ -195,7 +195,7 @@ const [[{ saintCount }], [{ miracleCount }], featuredSaints] = await Promise.all
       const card = viewport.querySelector('.carousel-card') as HTMLElement;
       const cardWidth = card ? card.offsetWidth + 24 : 0;
       const maxScroll = viewport.scrollWidth - viewport.clientWidth;
-      if (viewport.scrollLeft + cardWidth >= maxScroll) {
+      if (viewport.scrollLeft >= maxScroll - 1) {
         viewport.scrollTo({ left: 0, behavior: 'smooth' });
       } else {
         viewport.scrollBy({ left: cardWidth, behavior: 'smooth' });
