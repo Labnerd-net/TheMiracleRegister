@@ -2,25 +2,42 @@
 import Base from "../../layouts/Base.astro";
 import { createDb } from "../../db";
 import { saints } from "../../db/schema";
-import { asc } from "drizzle-orm";
+import { asc, count } from "drizzle-orm";
 import { env } from "cloudflare:workers";
 
+const PAGE_SIZE = 20;
+const rawPage = parseInt(Astro.url.searchParams.get("page") ?? "1");
+const page = Math.max(1, isNaN(rawPage) ? 1 : rawPage);
+const offset = (page - 1) * PAGE_SIZE;
+
 const db = createDb(env.DATABASE_URL);
-const allSaints = await db
-  .select({
-    slug: saints.slug,
-    name: saints.name,
-    birth_name: saints.birth_name,
-    feast_day: saints.feast_day,
-    nationality: saints.nationality,
-    canonization_stage: saints.canonization_stage,
-    total_attributed_miracles: saints.total_attributed_miracles,
-    image_url: saints.image_url,
-    death_date: saints.death_date,
-    canonization_date: saints.canonization_date,
-  })
-  .from(saints)
-  .orderBy(asc(saints.name));
+
+const [[{ total }], pageSaints] = await Promise.all([
+  db.select({ total: count() }).from(saints),
+  db
+    .select({
+      slug: saints.slug,
+      name: saints.name,
+      birth_name: saints.birth_name,
+      feast_day: saints.feast_day,
+      nationality: saints.nationality,
+      canonization_stage: saints.canonization_stage,
+      total_attributed_miracles: saints.total_attributed_miracles,
+      image_url: saints.image_url,
+      death_date: saints.death_date,
+      canonization_date: saints.canonization_date,
+    })
+    .from(saints)
+    .orderBy(asc(saints.name))
+    .limit(PAGE_SIZE)
+    .offset(offset),
+]);
+
+const totalPages = Math.max(1, Math.ceil(total / PAGE_SIZE));
+if (page > totalPages) return Astro.redirect(`/saints?page=${totalPages}`);
+
+const hasPrev = page > 1;
+const hasNext = page < totalPages;
 ---
 
 <Base title="Saints">
@@ -29,13 +46,13 @@ const allSaints = await db
     <div class="max-w-6xl mx-auto px-8 py-16">
       <p class="eyebrow mb-4">The Register</p>
       <h1 style="font-family:var(--font-display);font-size:clamp(2.5rem,5vw,4rem);font-weight:300;color:var(--text-1);line-height:1.05;letter-spacing:-0.01em">Saints</h1>
-      <p style="font-family:var(--font-sans);font-size:0.8rem;color:var(--text-4);margin-top:0.6rem;letter-spacing:0.02em">{allSaints.length} saints documented</p>
+      <p style="font-family:var(--font-sans);font-size:0.8rem;color:var(--text-4);margin-top:0.6rem;letter-spacing:0.02em">{total} saints documented</p>
     </div>
   </div>
 
   <div class="max-w-6xl mx-auto px-8 py-14">
     <div class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-x-6 gap-y-10">
-      {allSaints.map((s) => (
+      {pageSaints.map((s) => (
         <a href={`/saints/${s.slug}`} class="saint-card-link group no-underline">
           <div class="aspect-[3/4] overflow-hidden mb-4" style="background:var(--bg-elevated)">
             {s.image_url ? (
@@ -66,6 +83,50 @@ const allSaints = await db
         </a>
       ))}
     </div>
+
+    {totalPages > 1 && (
+      <nav class="pagination" aria-label="Page navigation">
+        {hasPrev
+          ? <a href={`/saints?page=${page - 1}`} class="pagination-btn">← Previous</a>
+          : <span class="pagination-btn disabled">← Previous</span>
+        }
+        <span class="pagination-info">Page {page} of {totalPages}</span>
+        {hasNext
+          ? <a href={`/saints?page=${page + 1}`} class="pagination-btn">Next →</a>
+          : <span class="pagination-btn disabled">Next →</span>
+        }
+      </nav>
+    )}
   </div>
 
 </Base>
+
+<style>
+  .pagination {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 1.5rem;
+    margin-top: 3rem;
+    padding-top: 2rem;
+    border-top: 1px solid var(--rule-light);
+  }
+  .pagination-btn {
+    font-family: var(--font-sans);
+    font-size: 0.8rem;
+    font-weight: 500;
+    color: var(--color-accent);
+    text-decoration: none;
+    letter-spacing: 0.03em;
+  }
+  .pagination-btn:hover { text-decoration: underline; }
+  .pagination-btn.disabled {
+    color: var(--text-4);
+    cursor: default;
+  }
+  .pagination-info {
+    font-family: var(--font-sans);
+    font-size: 0.78rem;
+    color: var(--text-3);
+  }
+</style>
