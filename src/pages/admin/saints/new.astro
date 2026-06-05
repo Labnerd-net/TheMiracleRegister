@@ -5,6 +5,7 @@ import { saints } from "../../../db/schema";
 import { slugify } from "../../../lib/slugify";
 import { canonizationType, canonizationStage } from "../../../db/schema/enums";
 import { parseEnum, formHelpers } from "../../../lib/form-utils";
+import { SaintFormSchema, formatZodErrors } from "../../../lib/form-schemas";
 import SaintForm from "../../../components/SaintForm.astro";
 import { env } from "cloudflare:workers";
 
@@ -17,7 +18,10 @@ if (Astro.request.method === "POST") {
   const name = get("name");
   const slug = get("slug") || slugify(name);
 
-  try {
+  const validation = SaintFormSchema.safeParse({ name, canonization_stage: get("canonization_stage") });
+  if (!validation.success) {
+    error = formatZodErrors(validation);
+  } else try {
     const db = createDb(env.DATABASE_URL);
     await db.insert(saints).values({
       slug,

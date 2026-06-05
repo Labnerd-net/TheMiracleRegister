@@ -8,6 +8,7 @@ import {
   recipientPrivacy, cureCharacteristics, intercessoryMedium,
 } from "../../../../db/schema/enums";
 import { parseEnum, formHelpers } from "../../../../lib/form-utils";
+import { MiracleFormSchema, formatZodErrors } from "../../../../lib/form-schemas";
 import MiracleForm from "../../../../components/MiracleForm.astro";
 import { env } from "cloudflare:workers";
 
@@ -29,7 +30,10 @@ if (Astro.request.method === "POST") {
   const form = await Astro.request.formData();
   const { get, getBool, getMulti } = formHelpers(form);
 
-  try {
+  const validation = MiracleFormSchema.safeParse({ title: get("title"), saint_id: get("saint_id") });
+  if (!validation.success) {
+    error = formatZodErrors(validation);
+  } else try {
     await db.update(miracles).set({
       title: get("title") || miracle.title,
       saint_id: parseInt(get("saint_id")) || miracle.saint_id,

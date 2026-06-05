@@ -5,6 +5,7 @@ import { saints } from "../../../../db/schema";
 import { eq } from "drizzle-orm";
 import { canonizationType, canonizationStage } from "../../../../db/schema/enums";
 import { parseEnum, formHelpers } from "../../../../lib/form-utils";
+import { SaintFormSchema, formatZodErrors } from "../../../../lib/form-schemas";
 import SaintForm from "../../../../components/SaintForm.astro";
 import { env } from "cloudflare:workers";
 
@@ -21,7 +22,10 @@ if (Astro.request.method === "POST") {
   const form = await Astro.request.formData();
   const { get, getArr, getMulti } = formHelpers(form);
 
-  try {
+  const validation = SaintFormSchema.safeParse({ name: get("name"), canonization_stage: get("canonization_stage") });
+  if (!validation.success) {
+    error = formatZodErrors(validation);
+  } else try {
     await db.update(saints).set({
       name: get("name") || saint.name,
       birth_name: get("birth_name") || null,
