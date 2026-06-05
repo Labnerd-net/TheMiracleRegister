@@ -27,7 +27,7 @@
 - **#7 [src/api/routes/search.ts:24–61]** The `q` (full-text search) parameter is defined in the OpenAPI spec and accepted by the route, but never implemented — it silently returns an empty result set for any text query. This is a broken API contract presented as functional. Fix: implement full-text search with Postgres `tsvector`/`to_tsquery` or ILIKE, or return a `501 Not Implemented` response with an explanatory message.
 
 ### Medium
-- **#8 [src/pages/miracles/[slug].astro:160]** Duplicate "Verified" label in the Full Record sidebar — both `was_medically_verified` (line 159) and `medical_verification_date` (line 161–163) render as `<dt>Verified</dt>`. A miracle with both values will show two "Verified" entries with no distinction. Fix: change the second label to "Verified On" or "Verification Date".
+- ~~**#8 [src/pages/miracles/[slug].astro]** Duplicate "Verified" label in miracle detail sidebar~~ — **Fixed 2026-06-05.** Second label changed to "Verified On".
 
 ### Low
 - **#9 [src/pages/admin/miracles/[slug]/edit.astro, src/pages/admin/saints/[slug]/edit.astro]** Post-save re-fetch of the miracle/saint is unconditional on every request, including GETs where the data hasn't changed. Also, `allSaints` is fetched on every request regardless of success/failure. Acceptable now but worth noting for future optimization.

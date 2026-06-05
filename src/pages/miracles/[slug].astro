@@ -158,7 +158,7 @@ const fmt = (s: string) => s.replace(/_/g, " ");
           )}
           <dt>Verified</dt><dd>{miracle.was_medically_verified ? "Yes" : "No"}</dd>
           {miracle.medical_verification_date && (
-            <><dt>Verified</dt><dd>{miracle.medical_verification_date}</dd></>
+            <><dt>Verified On</dt><dd>{miracle.medical_verification_date}</dd></>
           )}
           <dt>Vatican</dt><dd>{miracle.vatican_recognized ? "Recognised" : "Not recognised"}</dd>
           {miracle.vatican_decree_date && (
