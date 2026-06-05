@@ -195,39 +195,50 @@ const [[{ saintCount }], [{ miracleCount }], featuredSaints] = await Promise.all
     const origCards = Array.from(track.querySelectorAll('.carousel-card')) as HTMLElement[];
     const n = origCards.length;
 
-    // The snap edge is the content edge (after padding-left), so subtract it
-    // when computing scroll targets from getBoundingClientRect.
-    const paddingLeft = parseFloat(getComputedStyle(viewport).paddingLeft) || 0;
-
-    // Clone all cards so the loop continues forward without jumping back
-    origCards.forEach(card => track.appendChild(card.cloneNode(true)));
-
-    let idx = 0;
-    let resetting = false;
-
-    const snapTarget = (card: Element) =>
-      viewport.scrollLeft
-      + card.getBoundingClientRect().left
-      - viewport.getBoundingClientRect().left
-      - paddingLeft;
-
     if (n > 0) {
+      // Snap edge is at the content boundary (after padding-left)
+      const paddingLeft = parseFloat(getComputedStyle(viewport).paddingLeft) || 0;
+
+      // Distance between consecutive snap positions (card width + gap), measured once at rest
+      const cardStep = n > 1
+        ? origCards[1].getBoundingClientRect().left - origCards[0].getBoundingClientRect().left
+        : origCards[0].offsetWidth + parseFloat(getComputedStyle(track).gap || '0');
+
+      // Clone all cards so the loop advances forward without reversing
+      origCards.forEach(card => track.appendChild(card.cloneNode(true)));
+
+      let idx = 0;
+      let resetting = false;
+
+      const snapTarget = (card: Element) =>
+        viewport.scrollLeft
+        + card.getBoundingClientRect().left
+        - viewport.getBoundingClientRect().left
+        - paddingLeft;
+
       setInterval(() => {
         if (paused || resetting) return;
         idx++;
         const all = track.querySelectorAll('.carousel-card');
         viewport.scrollTo({ left: snapTarget(all[idx]), behavior: 'smooth' });
 
-        // When we enter the clone set, schedule a silent reset to the real cards
         if (idx >= n) {
           resetting = true;
-          setTimeout(() => {
+          // Wait for the smooth scroll to fully complete before resetting
+          viewport.addEventListener('scrollend', () => {
             const realIdx = idx - n;
-            const all2 = track.querySelectorAll('.carousel-card');
-            viewport.scrollTo({ left: snapTarget(all2[realIdx]), behavior: 'instant' as ScrollBehavior });
-            idx = realIdx;
-            resetting = false;
-          }, 700);
+            // Arithmetic position avoids getBCR inaccuracy during a live scroll
+            const realLeft = viewport.scrollLeft - n * cardStep;
+            // Disable snap so the instant jump doesn't trigger a snap animation
+            viewport.style.scrollSnapType = 'none';
+            viewport.scrollTo({ left: realLeft, behavior: 'instant' as ScrollBehavior });
+            // Re-enable snap after the browser has painted the new position
+            requestAnimationFrame(() => requestAnimationFrame(() => {
+              viewport.style.scrollSnapType = '';
+              idx = realIdx;
+              resetting = false;
+            }));
+          }, { once: true });
         }
       }, 3000);
     }
