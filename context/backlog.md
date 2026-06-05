@@ -5,13 +5,6 @@
 
 ---
 
-## Security
-
-### Low
-- **#6 [src/layouts/Base.astro:19, src/pages/index.astro:19]** Umami analytics `data-website-id` and script host are hard-coded in source. Low risk (Umami IDs are public by design), but consider moving to an env var if staging/fork support is needed.
-
----
-
 ## Bugs
 
 ### Low
@@ -27,12 +20,6 @@
 ---
 
 ## Improvements & Refactors
-
-### Medium
-- **#19 [src/pages/admin/]** Admin list pages render all records with no pagination. Fix: add `LIMIT`/`OFFSET` with page controls.
-
-### Low
-- **#22 [src/db/update-images.ts]** One-off migration script committed permanently. Has served its purpose; remove or replace with batched `CASE WHEN` approach if needed again.
 
 ---
 
@@ -57,9 +44,9 @@
 
 | Category | High | Medium | Low | Total |
 |----------|------|--------|-----|-------|
-| Security | 0 | 0 | 1 | 1 |
+| Security | 0 | 0 | 0 | 0 |
 | Bugs | 0 | 0 | 1 | 1 |
 | Performance | 0 | 0 | 1 | 1 |
-| Improvements & Refactors | 0 | 1 | 1 | 2 |
+| Improvements & Refactors | 0 | 0 | 0 | 0 |
 | Feature Ideas | 0 | 5 | 4 | 9 |
-| **Total** | **0** | **6** | **8** | **14** |
+| **Total** | **0** | **5** | **6** | **11** |
