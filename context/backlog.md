@@ -37,18 +37,13 @@
 ## Performance
 
 ### High
-- **#10 [src/db/schema/ — missing indexes]** No index on `miracles.saint_id` (FK used in every saint detail join), `miracles.type`, `miracles.country`, `saints.slug`, or `miracles.slug`. Slug lookups run on every detail page load. Fix: add indexes in the schema files and run `drizzle-kit generate`:
-  - `index("miracles_saint_id_idx").on(miracles.saint_id)`
-  - `index("miracles_slug_idx").on(miracles.slug)`
-  - `index("saints_slug_idx").on(saints.slug)`
-  - `index("miracles_type_idx").on(miracles.type)`
-  - `index("miracles_country_idx").on(miracles.country)`
+- ~~**#10 [src/db/schema/miracles.ts]** Missing indexes on miracles (saint_id, type, country)~~ — **Fixed 2026-06-05.** Added 3 btree indexes; migration `0005_melodic_moondragon.sql` applied to dev branch. Note: slug columns already indexed via unique constraints.
 
 ### Medium
-- **#11 [src/pages/index.astro:18]** Homepage fetches all saints with no `LIMIT` to populate the featured carousel. As the dataset grows this always dumps the full saints table. Fix: add `.limit(8)` or add a `featured` boolean column.
+- ~~**#11 [src/pages/index.astro]** Homepage featuredSaints query unbounded~~ — **Fixed 2026-06-05.** Added `.limit(8)` to the carousel query.
 - **#12 [src/pages/saints/index.astro:9, src/pages/miracles/index.astro:9]** Both public list pages fetch all records with no pagination — full table dumps including joins. The API layer has pagination; the SSR pages don't use it. Fix: add `LIMIT`/`OFFSET` and pagination UI, or cache rendered pages at the Cloudflare edge.
-- **#13 [src/api/routes/search.ts:35–60]** Topic search issues two sequential queries (saints then miracles) and does in-memory pagination via `results.slice()`. Fix: parallelize with `Promise.all`. Also, the full `synopsis` column is loaded just to slice 200 chars client-side — use Postgres `LEFT(synopsis, 200)` instead.
-- **#14 [src/api/routes/]** No `Cache-Control` headers on any API responses. Saints and miracles are stable data. Fix: add response cache headers (`max-age=3600` for saints/miracles detail, `max-age=86400` for types/metadata, no cache for search).
+- ~~**#13 [src/api/routes/search.ts]** Sequential topic queries + full synopsis loaded for 200-char excerpt~~ — **Fixed 2026-06-05.** Queries parallelized with `Promise.all`; excerpt now uses `LEFT(synopsis, 200)` in Postgres.
+- ~~**#14 [src/api/index.ts]** No Cache-Control headers on API responses~~ — **Fixed 2026-06-05.** Route-level middleware added: saints 1h, miracles 30m, types 24h, search no-store.
 
 ### Low
 - **#15 [src/api/routes/miracles.ts:91, src/pages/miracles/[slug].astro:11, src/pages/saints/[slug].astro:11]** Detail pages use `db.select()` (effectively `SELECT *`), pulling all columns including large text fields (`synopsis`, `cure_details`, `vatican_medical_board_verdict`) even when not all are needed. Also exposes future columns immediately. Fix: replace with explicit field lists matching the response schema.

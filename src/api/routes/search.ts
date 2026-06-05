@@ -32,31 +32,31 @@ search.openapi(
     const results: Array<{ type: "saint" | "miracle"; slug: string; title: string; excerpt: string | null }> = [];
 
     if (topic) {
-      const matchingSaints = await db
-        .select({ slug: saints.slug, name: saints.name })
-        .from(saints)
-        .where(
-          or(
-            sql`${topic} = ANY(${saints.patronage})`,
-            sql`${topic} = ANY(${saints.themes})`
-          )
-        );
-
-      const matchingMiracles = await db
-        .select({ slug: miracles.slug, title: miracles.title, synopsis: miracles.synopsis })
-        .from(miracles)
-        .where(sql`${topic} = ANY(${miracles.topics})`);
+      const [matchingSaints, matchingMiracles] = await Promise.all([
+        db
+          .select({ slug: saints.slug, name: saints.name })
+          .from(saints)
+          .where(
+            or(
+              sql`${topic} = ANY(${saints.patronage})`,
+              sql`${topic} = ANY(${saints.themes})`
+            )
+          ),
+        db
+          .select({
+            slug: miracles.slug,
+            title: miracles.title,
+            excerpt: sql<string | null>`LEFT(${miracles.synopsis}, 200)`,
+          })
+          .from(miracles)
+          .where(sql`${topic} = ANY(${miracles.topics})`),
+      ]);
 
       for (const s of matchingSaints) {
         results.push({ type: "saint", slug: s.slug, title: s.name, excerpt: null });
       }
       for (const m of matchingMiracles) {
-        results.push({
-          type: "miracle",
-          slug: m.slug,
-          title: m.title,
-          excerpt: m.synopsis ? m.synopsis.slice(0, 200) : null,
-        });
+        results.push({ type: "miracle", slug: m.slug, title: m.title, excerpt: m.excerpt });
       }
     }
 

@@ -2,19 +2,19 @@
 
 ## Current Feature Spec File
 
-Security batch (backlog items #2, #3, #4, #5):
-- #2: Add CORS middleware to the public Hono API
-- #3: Replace `as any` enum casts in admin forms with validated parseEnum helper
-- #4: Add failed-login delay to slow brute force on admin login
-- #5: Validate `topic` search param against canonical MIRACLE_TOPICS + SAINT_THEMES
+Performance batch (backlog items #10, #11, #13, #14):
+- #10: Add missing DB indexes on miracles (saint_id, type, country) + migrate
+- #11: Limit homepage featuredSaints query to 8 rows
+- #13: Parallelize search topic queries with Promise.all; use Postgres LEFT() for synopsis excerpt
+- #14: Add Cache-Control headers to API routes
 
 ## Current Feature Plan File
 
-1. Add `cors()` middleware in `src/api/index.ts`
-2. Create `src/lib/form-utils.ts` with `parseEnum` helper using pgEnum `.enumValues`
-3. Update `saints/new.astro`, `saints/[slug]/edit.astro`, `miracles/new.astro`, `miracles/[slug]/edit.astro` to use `parseEnum`
-4. Add 300ms delay on failed login in `src/pages/admin/login.astro`
-5. Tighten `SearchQuerySchema.topic` to `z.enum([...MIRACLE_TOPICS, ...SAINT_THEMES])`
+1. Add indexes to `src/db/schema/miracles.ts` for saint_id, type, country
+2. Run `npm run db:generate && npm run db:migrate`
+3. Add `.limit(8)` to featuredSaints in `src/pages/index.astro`
+4. Parallelize saint + miracle queries in `src/api/routes/search.ts`; replace .slice(0,200) with sql`LEFT(..., 200)`
+5. Add Cache-Control middleware to `src/api/index.ts` with per-route overrides
 
 ## History
 
