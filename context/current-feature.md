@@ -2,7 +2,14 @@
 
 ## Current Feature Spec File
 
+Full-text search (#25): implement `?q=term` on `/api/v1/search`. Currently the param is accepted but silently returns empty. Use ILIKE across saints (name, biography_short) and miracles (title, synopsis, medical_diagnosis, cure_details). Queries parallelized. Works alongside existing `?topic` param — both can be combined. Min length 2 enforced on q.
+
 ## Current Feature Plan File
+
+1. Tighten `SearchQuerySchema.q` to `z.string().min(2).optional()`
+2. Add ILIKE q-search branch in `src/api/routes/search.ts` using parallel queries
+3. Dedup combined q + topic results by type+slug key
+4. Build + verify
 
 ## History
 

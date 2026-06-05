@@ -15,7 +15,7 @@
 ## Bugs
 
 ### High
-- **#7 [src/api/routes/search.ts:24–61]** The `q` (full-text search) parameter is defined in the OpenAPI spec and accepted by the route, but never implemented — it silently returns an empty result set for any text query. This is a broken API contract presented as functional. Fix: implement full-text search with Postgres `tsvector`/`to_tsquery` or ILIKE, or return a `501 Not Implemented` response with an explanatory message.
+- ~~**#7 [src/api/routes/search.ts]** `?q` search silently returned empty — broken API contract~~ — **Fixed 2026-06-05.** Resolved by #25 implementation.
 
 ### Low
 - **#9 [src/pages/admin/miracles/[slug]/edit.astro, src/pages/admin/saints/[slug]/edit.astro]** Post-save re-fetch of the miracle/saint is unconditional on every request, including GETs where the data hasn't changed. Also, `allSaints` is fetched on every request regardless of success/failure. Acceptable now but worth noting for future optimization.
@@ -49,7 +49,7 @@
 ## Feature Ideas
 
 ### High
-- **#25 [src/api/routes/search.ts — implement existing stub]** Full-text search on miracle synopses, medical diagnoses, and cure details. The `?q` parameter is already in the schema and OpenAPI spec but returns empty. Implement with Postgres `tsvector`/`to_tsquery` or `ILIKE` across `synopsis`, `medical_diagnosis`, `cure_details`, `saints.name`, and `saints.biography_short`. This is the most compelling public-facing feature gap.
+- ~~**#25 [src/api/routes/search.ts]** `?q` full-text search silently returned empty~~ — **Fixed 2026-06-05.** Implemented ILIKE search across saints (name, biography_short) and miracles (title, synopsis, medical_diagnosis, cure_details). Parallel queries, deduplication, combinable with `?topic`. Min length 2 enforced.
 
 ### Medium
 - **#26 [src/pages/miracles/index.astro]** Interactive filtering UI on the miracles list page. The API already supports filtering by `saint_id`, `type`, `country`, `year_from`, `year_to` (`src/api/schemas.ts:176–189`), but the frontend has no filter controls. Add a filter panel with dropdowns for miracle type, country, and year range.
