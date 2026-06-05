@@ -2,16 +2,20 @@
 
 ## Current Feature Spec File
 
-Admin form Zod validation (#18): add Zod validation to the 4 admin form POST handlers before DB calls. Dedicated form schemas (not API response schemas) validate required fields and the saint_id numeric field, which currently silently becomes NaN on missing input. On failure, display a clean error message instead of a raw DB error.
+Admin list pagination (#19): add `?page=N` pagination to `/admin/saints` and `/admin/miracles`. Page size 25. Parallel count + data queries. Prev/next + "Page X of Y" UI matching the existing admin table layout. No JS required.
 
 ## Current Feature Plan File
 
-1. Create `src/lib/form-schemas.ts` with `SaintFormSchema` (name required) and `MiracleFormSchema` (title required, saint_id must be digits)
-2. Wire `safeParse` into all 4 admin POST handlers before the DB call
-3. On failure, join Zod error messages into the existing `error` string
-4. Build + verify
+1. Parse `?page` from `Astro.url.searchParams` (default 1, clamp ≥ 1)
+2. Run `count()` + paginated select in parallel
+3. Redirect out-of-range pages to last valid page
+4. Add pagination controls below each table
+5. Build + verify
 
 ## History
+
+### Admin Form Zod Validation (#18)
+Created `src/lib/form-schemas.ts` with `SaintFormSchema` (name, canonization_stage required) and `MiracleFormSchema` (title required, saint_id must be digits). Wired `safeParse` into all 4 admin POST handlers before DB calls. Invalid input now shows a clean error message instead of a raw DB exception.
 
 ### Public List Pagination (#12)
 Added `?page=N` pagination to `/saints` and `/miracles`. Page size 20. Parallel `count()` + paginated data queries via Drizzle. Prev/next + "Page X of Y" UI renders only when total exceeds one page. Out-of-range page redirects to last valid page. No JS required.
