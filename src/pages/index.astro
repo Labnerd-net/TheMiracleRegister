@@ -187,24 +187,49 @@ const [[{ saintCount }], [{ miracleCount }], featuredSaints] = await Promise.all
 <script>
   const viewport = document.querySelector('.carousel-viewport') as HTMLElement;
   if (viewport) {
-    let idx = 0;
     let paused = false;
     viewport.addEventListener('mouseenter', () => { paused = true; });
     viewport.addEventListener('mouseleave', () => { paused = false; });
 
-    const cards = Array.from(viewport.querySelectorAll('.carousel-card')) as HTMLElement[];
+    const track = viewport.querySelector('.carousel-track') as HTMLElement;
+    const origCards = Array.from(track.querySelectorAll('.carousel-card')) as HTMLElement[];
+    const n = origCards.length;
 
-    setInterval(() => {
-      if (paused || !cards.length) return;
-      idx = (idx + 1) % cards.length;
-      if (idx === 0) {
-        viewport.scrollTo({ left: 0, behavior: 'instant' as ScrollBehavior });
-      } else {
-        const targetLeft = viewport.scrollLeft
-          + cards[idx].getBoundingClientRect().left
-          - viewport.getBoundingClientRect().left;
-        viewport.scrollTo({ left: targetLeft, behavior: 'smooth' });
-      }
-    }, 3000);
+    // The snap edge is the content edge (after padding-left), so subtract it
+    // when computing scroll targets from getBoundingClientRect.
+    const paddingLeft = parseFloat(getComputedStyle(viewport).paddingLeft) || 0;
+
+    // Clone all cards so the loop continues forward without jumping back
+    origCards.forEach(card => track.appendChild(card.cloneNode(true)));
+
+    let idx = 0;
+    let resetting = false;
+
+    const snapTarget = (card: Element) =>
+      viewport.scrollLeft
+      + card.getBoundingClientRect().left
+      - viewport.getBoundingClientRect().left
+      - paddingLeft;
+
+    if (n > 0) {
+      setInterval(() => {
+        if (paused || resetting) return;
+        idx++;
+        const all = track.querySelectorAll('.carousel-card');
+        viewport.scrollTo({ left: snapTarget(all[idx]), behavior: 'smooth' });
+
+        // When we enter the clone set, schedule a silent reset to the real cards
+        if (idx >= n) {
+          resetting = true;
+          setTimeout(() => {
+            const realIdx = idx - n;
+            const all2 = track.querySelectorAll('.carousel-card');
+            viewport.scrollTo({ left: snapTarget(all2[realIdx]), behavior: 'instant' as ScrollBehavior });
+            idx = realIdx;
+            resetting = false;
+          }, 700);
+        }
+      }, 3000);
+    }
   }
 </script>
