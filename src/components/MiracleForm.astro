@@ -137,11 +137,11 @@ const currentTopics = new Set(v?.topics ?? []);
     <legend>Medical</legend>
     <div class="field">
       <label for="medical_diagnosis">Diagnosis</label>
-      <input type="text" id="medical_diagnosis" name="medical_diagnosis" value={v?.medical_diagnosis ?? ""} />
+      <textarea id="medical_diagnosis" name="medical_diagnosis" rows="3">{v?.medical_diagnosis ?? ""}</textarea>
     </div>
     <div class="field">
       <label for="cure_details">Cure Details</label>
-      <textarea id="cure_details" name="cure_details" rows="4">{v?.cure_details ?? ""}</textarea>
+      <textarea id="cure_details" name="cure_details" rows="6">{v?.cure_details ?? ""}</textarea>
     </div>
     <div class="two-col">
       <div class="field">
@@ -205,7 +205,7 @@ const currentTopics = new Set(v?.topics ?? []);
     </div>
     <div class="field">
       <label for="vatican_medical_board_verdict">Medical Board Verdict</label>
-      <input type="text" id="vatican_medical_board_verdict" name="vatican_medical_board_verdict" value={v?.vatican_medical_board_verdict ?? ""} />
+      <textarea id="vatican_medical_board_verdict" name="vatican_medical_board_verdict" rows="3">{v?.vatican_medical_board_verdict ?? ""}</textarea>
     </div>
   </fieldset>
 
@@ -213,7 +213,7 @@ const currentTopics = new Set(v?.topics ?? []);
     <legend>Content</legend>
     <div class="field">
       <label for="synopsis">Synopsis</label>
-      <textarea id="synopsis" name="synopsis" rows={v ? 10 : 8}>{v?.synopsis ?? ""}</textarea>
+      <textarea id="synopsis" name="synopsis" rows={v ? 20 : 16}>{v?.synopsis ?? ""}</textarea>
       <p class="hint">500–1000 words narrative</p>
     </div>
     <div class="field">
