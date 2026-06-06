@@ -66,7 +66,10 @@ const v = s ?? saint;
 ---
 
 <AdminBase title={`Edit: ${v.name}`}>
-  <a href="/admin/saints" style="font-size:0.85rem;display:block;margin-bottom:1rem">← Saints</a>
+  <div style="display:flex;justify-content:space-between;align-items:baseline;margin-bottom:1rem">
+    <a href="/admin/saints" style="font-size:0.85rem">← Saints</a>
+    <a href={`/admin/saints/${slug}/delete`} style="font-size:0.85rem;color:#dc2626">Delete saint</a>
+  </div>
   <h1>Edit: {v.name}</h1>
   <p style="font-size:0.85rem;color:#666;margin-bottom:1.5rem">
     Slug: <code>{slug}</code> · <a href={`/saints/${slug}`} target="_blank">View public page ↗</a>

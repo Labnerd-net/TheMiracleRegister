@@ -1,0 +1,45 @@
+---
+import AdminBase from "../../../../layouts/AdminBase.astro";
+import { createDb } from "../../../../db";
+import { saints, miracles } from "../../../../db/schema";
+import { eq, count } from "drizzle-orm";
+import { env } from "cloudflare:workers";
+
+const { slug } = Astro.params;
+const db = createDb(env.DATABASE_URL);
+
+const [saint] = await db.select().from(saints).where(eq(saints.slug, slug!));
+if (!saint) return Astro.redirect("/admin/saints");
+
+const [{ miracleCount }] = await db
+  .select({ miracleCount: count() })
+  .from(miracles)
+  .where(eq(miracles.saint_id, saint.id));
+
+if (Astro.request.method === "POST") {
+  await db.delete(miracles).where(eq(miracles.saint_id, saint.id));
+  await db.delete(saints).where(eq(saints.id, saint.id));
+  return Astro.redirect("/admin/saints");
+}
+---
+
+<AdminBase title={`Delete: ${saint.name}`}>
+  <a href={`/admin/saints/${slug}/edit`} style="font-size:0.85rem;display:block;margin-bottom:1rem">← Back to Edit</a>
+  <h1>Delete Saint</h1>
+
+  <div class="error" style="margin-bottom:1.5rem">
+    <strong>This action is permanent and cannot be undone.</strong>
+  </div>
+
+  <p>You are about to delete <strong>{saint.name}</strong>.</p>
+  {miracleCount > 0 && (
+    <p>This will also delete <strong>{miracleCount} miracle{miracleCount !== 1 ? "s" : ""}</strong> associated with this saint.</p>
+  )}
+
+  <form method="post" style="margin-top:1.5rem;display:flex;gap:1rem;align-items:center">
+    <button type="submit" class="btn" style="background:#dc2626;color:white;padding:0.5rem 1.25rem;border-radius:4px;font-size:0.9rem;font-family:inherit;cursor:pointer;border:none">
+      Delete {saint.name}
+    </button>
+    <a href={`/admin/saints/${slug}/edit`} class="btn btn-secondary">Cancel</a>
+  </form>
+</AdminBase>

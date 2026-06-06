@@ -74,7 +74,10 @@ const v = m ?? miracle;
 ---
 
 <AdminBase title={`Edit: ${v.title}`}>
-  <a href="/admin/miracles" style="font-size:0.85rem;display:block;margin-bottom:1rem">← Miracles</a>
+  <div style="display:flex;justify-content:space-between;align-items:baseline;margin-bottom:1rem">
+    <a href="/admin/miracles" style="font-size:0.85rem">← Miracles</a>
+    <a href={`/admin/miracles/${slug}/delete`} style="font-size:0.85rem;color:#dc2626">Delete miracle</a>
+  </div>
   <h1 style="font-size:1.2rem">Edit: {v.title}</h1>
   <p style="font-size:0.85rem;color:#666;margin-bottom:1.5rem">
     Slug: <code>{slug}</code> · <a href={`/miracles/${slug}`} target="_blank">View public page ↗</a>
