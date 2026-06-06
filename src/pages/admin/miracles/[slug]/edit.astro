@@ -133,7 +133,7 @@ const v = m ?? miracle;
       <p style="font-size:0.85rem;color:#888;margin-bottom:1rem">No sources added yet.</p>
     )}
 
-    {sources.map((s) => (
+    {sources.map((s, i) => (
       <div style="display:flex;align-items:baseline;gap:0.75rem;padding:0.5rem 0;border-bottom:1px solid #eee">
         <div style="flex:1;min-width:0">
           <div style="font-size:0.875rem;font-weight:600;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">
@@ -144,6 +144,7 @@ const v = m ?? miracle;
             {s.accessed_date && <> · accessed {s.accessed_date}</>}
           </div>
         </div>
+        <code style="font-size:0.75rem;color:#666;flex-shrink:0">[^{i + 1}]</code>
         <form method="post" style="flex-shrink:0">
           <input type="hidden" name="_action" value="delete_source" />
           <input type="hidden" name="source_id" value={s.id} />

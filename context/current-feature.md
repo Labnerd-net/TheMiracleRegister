@@ -2,11 +2,32 @@
 
 ## Current Feature Spec File
 
-_None_
+### Inline Citations for Biography and Synopsis Fields (Backlog #31)
+
+**Goal:** Give editors a Wikipedia-style citation system for narrative fields. Sources are stored in a dedicated table and referenced inline using `[^N]` markers. Public pages render superscript links that jump to a numbered footnote list at the bottom of the page.
+
+**Scope:**
+- New `saint_sources` table (mirrors existing `miracle_sources`)
+- `[^N]` markers in `biography_short` (saints) and `synopsis` / `cure_details` (miracles) render as superscript citation links
+- Numbered footnote list rendered below the narrative on public pages, with back-links (↩)
+- Saint edit page gets a Sources section matching the miracle edit page
+- Both source editors show the `[^N]` marker for each source so editors know which number to insert inline
+
+**Out of scope:** A clipboard copy button for citation markers (static display is sufficient for now).
 
 ## Current Feature Plan File
 
-_None_
+### Implementation Plan
+
+1. Create `src/db/schema/saint-sources.ts` — mirrors `miracle_sources`, FK to `saints.id`
+2. Export from `src/db/schema/index.ts`
+3. Update `src/lib/markdown.ts` — add `renderMarkdownWithCitations()` that pre-processes `[^N]` → `<sup><a>` before passing to marked; leave `renderMarkdown()` unchanged
+4. Add footnote styles to `src/styles/global.css` (`.footnotes`, `.citation`, `.fn-type`, `.fn-back`)
+5. Update `src/pages/saints/[slug].astro` — fetch `saint_sources`, use `renderMarkdownWithCitations` for biography, render footnote list below
+6. Update `src/pages/miracles/[slug].astro` — use `renderMarkdownWithCitations` for synopsis and cure_details, render footnote list below existing sources list
+7. Update `src/pages/admin/saints/[slug]/edit.astro` — add source add/delete POST handling, fetch sources, render Sources fieldset with `[^N]` markers
+8. Update `src/pages/admin/miracles/[slug]/edit.astro` — add `[^N]` marker display to existing source rows
+9. Generate migration (`drizzle-kit generate`), verify SQL, apply (`drizzle-kit migrate`), verify build
 
 ## History
 

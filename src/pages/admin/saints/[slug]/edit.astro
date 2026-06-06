@@ -1,9 +1,9 @@
 ---
 import AdminBase from "../../../../layouts/AdminBase.astro";
 import { createDb } from "../../../../db";
-import { saints } from "../../../../db/schema";
-import { eq } from "drizzle-orm";
-import { canonizationType, canonizationStage } from "../../../../db/schema/enums";
+import { saints, saintSources } from "../../../../db/schema";
+import { asc, eq } from "drizzle-orm";
+import { canonizationType, canonizationStage, sourceType } from "../../../../db/schema/enums";
 import { parseEnum, formHelpers } from "../../../../lib/form-utils";
 import { SaintFormSchema, formatZodErrors } from "../../../../lib/form-schemas";
 import SaintForm from "../../../../components/SaintForm.astro";
@@ -17,11 +17,40 @@ if (!saint) return Astro.redirect("/admin/saints");
 
 let error = "";
 let success = false;
+let sourceError = "";
+let sourceSuccess = "";
 
 if (Astro.request.method === "POST") {
   const form = await Astro.request.formData();
   const { get, getBool, getArr, getMulti } = formHelpers(form);
+  const action = get("_action");
 
+  if (action === "add_source") {
+    const url = get("source_url");
+    const title = get("source_title");
+    const type = parseEnum(get("source_type"), sourceType.enumValues, "other");
+    const accessed = get("source_accessed_date");
+    if (!url || !title) {
+      sourceError = "URL and title are required.";
+    } else try {
+      await db.insert(saintSources).values({
+        saint_id: saint.id,
+        url,
+        title,
+        source_type: type!,
+        accessed_date: accessed || null,
+      });
+      sourceSuccess = "Source added.";
+    } catch (e: any) {
+      sourceError = e?.message ?? "Failed to add source.";
+    }
+  } else if (action === "delete_source") {
+    const sourceId = parseInt(get("source_id"));
+    if (sourceId) {
+      await db.delete(saintSources).where(eq(saintSources.id, sourceId));
+      sourceSuccess = "Source removed.";
+    }
+  } else {
   const validation = SaintFormSchema.safeParse({ name: get("name"), canonization_stage: get("canonization_stage") });
   if (!validation.success) {
     error = formatZodErrors(validation);
@@ -60,9 +89,13 @@ if (Astro.request.method === "POST") {
   } catch (e: any) {
     error = e?.message ?? "Failed to save.";
   }
+  } // end main form action
 }
 
-const [s] = await db.select().from(saints).where(eq(saints.slug, slug!));
+const [[s], sources] = await Promise.all([
+  db.select().from(saints).where(eq(saints.slug, slug!)),
+  db.select().from(saintSources).where(eq(saintSources.saint_id, saint.id)).orderBy(asc(saintSources.id)),
+]);
 const v = s ?? saint;
 ---
 
@@ -80,4 +113,65 @@ const v = s ?? saint;
   {success && <div class="success">Saved successfully.</div>}
 
   <SaintForm saint={v} />
+
+  <fieldset style="margin-top:2rem">
+    <legend>Sources</legend>
+
+    {sourceError && <div class="error" style="margin-bottom:1rem">{sourceError}</div>}
+    {sourceSuccess && <div class="success" style="margin-bottom:1rem">{sourceSuccess}</div>}
+
+    {sources.length === 0 && (
+      <p style="font-size:0.85rem;color:#888;margin-bottom:1rem">No sources added yet.</p>
+    )}
+
+    {sources.map((s, i) => (
+      <div style="display:flex;align-items:baseline;gap:0.75rem;padding:0.5rem 0;border-bottom:1px solid #eee">
+        <div style="flex:1;min-width:0">
+          <div style="font-size:0.875rem;font-weight:600;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">
+            <a href={s.url} target="_blank" rel="noopener">{s.title}</a>
+          </div>
+          <div style="font-size:0.75rem;color:#888;margin-top:0.1rem">
+            {s.source_type.replace(/_/g, " ")}
+            {s.accessed_date && <> · accessed {s.accessed_date}</>}
+          </div>
+        </div>
+        <code style="font-size:0.75rem;color:#666;flex-shrink:0">[^{i + 1}]</code>
+        <form method="post" style="flex-shrink:0">
+          <input type="hidden" name="_action" value="delete_source" />
+          <input type="hidden" name="source_id" value={s.id} />
+          <button type="submit" style="background:none;border:none;color:#dc2626;font-size:0.8rem;cursor:pointer;padding:0">Remove</button>
+        </form>
+      </div>
+    ))}
+
+    <div style="margin-top:1.25rem">
+      <p style="font-size:0.8rem;font-weight:600;color:#444;margin-bottom:0.75rem">Add Source</p>
+      <form method="post">
+        <input type="hidden" name="_action" value="add_source" />
+        <div class="two-col" style="margin-bottom:0.75rem">
+          <div class="field">
+            <label for="source_title">Title *</label>
+            <input type="text" id="source_title" name="source_title" />
+          </div>
+          <div class="field">
+            <label for="source_type">Type</label>
+            <select id="source_type" name="source_type">
+              {sourceType.enumValues.map((t) => (
+                <option value={t}>{t.replace(/_/g, " ")}</option>
+              ))}
+            </select>
+          </div>
+        </div>
+        <div class="field" style="margin-bottom:0.75rem">
+          <label for="source_url">URL *</label>
+          <input type="url" id="source_url" name="source_url" />
+        </div>
+        <div class="field" style="margin-bottom:0.75rem">
+          <label for="source_accessed_date">Accessed Date</label>
+          <input type="date" id="source_accessed_date" name="source_accessed_date" style="max-width:200px" />
+        </div>
+        <button type="submit" class="btn btn-primary">Add Source</button>
+      </form>
+    </div>
+  </fieldset>
 </AdminBase>

@@ -95,3 +95,12 @@ body {
 .prose li { margin-bottom: 0.25em; }
 .prose sup { font-size: 0.75em; vertical-align: super; }
 .prose sub { font-size: 0.75em; vertical-align: sub; }
+a.citation { color: var(--color-accent); text-decoration: none; font-weight: 500; }
+a.citation:hover { text-decoration: underline; }
+ol.footnotes { margin-top: 1.5rem; padding-left: 1.5em; border-top: 1px solid var(--rule-light); padding-top: 1rem; font-family: var(--font-sans); font-size: 0.78rem; color: var(--text-3); line-height: 1.6; }
+ol.footnotes li { margin-bottom: 0.4em; }
+ol.footnotes a { color: var(--text-2); text-underline-offset: 2px; }
+ol.footnotes a:hover { color: var(--color-accent); }
+.fn-type { color: var(--text-4); margin-left: 0.4em; }
+.fn-back { color: var(--text-4); margin-left: 0.3em; font-size: 0.85em; text-decoration: none; }
+.fn-back:hover { color: var(--color-accent); }
