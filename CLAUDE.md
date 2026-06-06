@@ -150,6 +150,19 @@ Separate table for scalability and search. Enables filtering by source type.
 | source_type | enum | vatican_decree, news_article, book, academic, other |
 | accessed_date | date | optional |
 
+### `saint_sources`
+
+Mirrors `miracle_sources` for saint biography sources. Supports `[^N]` inline citation markers in `biography_short`. Sources are numbered by insertion order (`id` asc); `[^1]` links to the first source, `[^2]` to the second, etc.
+
+| Column | Type | Notes |
+|---|---|---|
+| id | integer PK | |
+| saint_id | FK → saints | |
+| url | text | |
+| title | text | |
+| source_type | enum | vatican_decree, news_article, book, academic, other |
+| accessed_date | date | optional |
+
 ---
 
 ## API Endpoints

@@ -2,34 +2,16 @@
 
 ## Current Feature Spec File
 
-### Inline Citations for Biography and Synopsis Fields (Backlog #31)
-
-**Goal:** Give editors a Wikipedia-style citation system for narrative fields. Sources are stored in a dedicated table and referenced inline using `[^N]` markers. Public pages render superscript links that jump to a numbered footnote list at the bottom of the page.
-
-**Scope:**
-- New `saint_sources` table (mirrors existing `miracle_sources`)
-- `[^N]` markers in `biography_short` (saints) and `synopsis` / `cure_details` (miracles) render as superscript citation links
-- Numbered footnote list rendered below the narrative on public pages, with back-links (↩)
-- Saint edit page gets a Sources section matching the miracle edit page
-- Both source editors show the `[^N]` marker for each source so editors know which number to insert inline
-
-**Out of scope:** A clipboard copy button for citation markers (static display is sufficient for now).
+_None_
 
 ## Current Feature Plan File
 
-### Implementation Plan
-
-1. Create `src/db/schema/saint-sources.ts` — mirrors `miracle_sources`, FK to `saints.id`
-2. Export from `src/db/schema/index.ts`
-3. Update `src/lib/markdown.ts` — add `renderMarkdownWithCitations()` that pre-processes `[^N]` → `<sup><a>` before passing to marked; leave `renderMarkdown()` unchanged
-4. Add footnote styles to `src/styles/global.css` (`.footnotes`, `.citation`, `.fn-type`, `.fn-back`)
-5. Update `src/pages/saints/[slug].astro` — fetch `saint_sources`, use `renderMarkdownWithCitations` for biography, render footnote list below
-6. Update `src/pages/miracles/[slug].astro` — use `renderMarkdownWithCitations` for synopsis and cure_details, render footnote list below existing sources list
-7. Update `src/pages/admin/saints/[slug]/edit.astro` — add source add/delete POST handling, fetch sources, render Sources fieldset with `[^N]` markers
-8. Update `src/pages/admin/miracles/[slug]/edit.astro` — add `[^N]` marker display to existing source rows
-9. Generate migration (`drizzle-kit generate`), verify SQL, apply (`drizzle-kit migrate`), verify build
+_None_
 
 ## History
+
+### Inline Citations (#31)
+Added `saint_sources` table (mirrors `miracle_sources`) for storing biography sources. `[^N]` markers in `biography_short`, `synopsis`, and `cure_details` render as superscript citation links on public pages via `renderMarkdownWithCitations()`. A numbered footnote list with back-links (↩) renders below the narrative. Saint edit page gains a full Sources section (add/delete) matching the miracle edit page. Both source editors display the `[^N]` marker per row so editors know which number to use inline. Migration 0009 applied to Neon dev.
 
 ### Drizzle Schema and Neon Setup
 Initialized the full TypeScript project and database layer. Defined all 4 tables (saints, saint_relations, miracles, miracle_sources) split per file, 13 Postgres enums, Drizzle config, Neon client, and migration tooling. Migration applied successfully to Neon dev branch.
