@@ -255,6 +255,13 @@ const currentTopics = new Set(v?.topics ?? []);
         Has Primary Sources
       </label>
     </div>
+    <div class="field">
+      <label>
+        <input type="hidden" name="published" value="false" />
+        <input type="checkbox" name="published" value="true" checked={v?.published} />
+        Published (visible on public site)
+      </label>
+    </div>
   </fieldset>
 
   <div class="form-actions">

@@ -1,5 +1,5 @@
 import { OpenAPIHono, createRoute, z } from "@hono/zod-openapi";
-import { ilike, or, sql } from "drizzle-orm";
+import { and, eq, ilike, or, sql } from "drizzle-orm";
 import { createDb } from "../../db";
 import { miracles, saints } from "../../db/schema";
 import { SearchQuerySchema, SearchResultSchema, envelopeSchema } from "../schemas";
@@ -49,7 +49,7 @@ search.openapi(
             excerpt: sql<string | null>`LEFT(${saints.biography_short}, 200)`,
           })
           .from(saints)
-          .where(or(ilike(saints.name, pattern), ilike(saints.biography_short, pattern))),
+          .where(and(eq(saints.published, true), or(ilike(saints.name, pattern), ilike(saints.biography_short, pattern)))),
         db
           .select({
             slug: miracles.slug,
@@ -58,11 +58,14 @@ search.openapi(
           })
           .from(miracles)
           .where(
-            or(
-              ilike(miracles.title, pattern),
-              ilike(miracles.synopsis, pattern),
-              ilike(miracles.medical_diagnosis, pattern),
-              ilike(miracles.cure_details, pattern),
+            and(
+              eq(miracles.published, true),
+              or(
+                ilike(miracles.title, pattern),
+                ilike(miracles.synopsis, pattern),
+                ilike(miracles.medical_diagnosis, pattern),
+                ilike(miracles.cure_details, pattern),
+              )
             )
           ),
       ]);
@@ -76,7 +79,7 @@ search.openapi(
         db
           .select({ slug: saints.slug, name: saints.name })
           .from(saints)
-          .where(or(sql`${topic} = ANY(${saints.patronage})`, sql`${topic} = ANY(${saints.themes})`)),
+          .where(and(eq(saints.published, true), or(sql`${topic} = ANY(${saints.patronage})`, sql`${topic} = ANY(${saints.themes})`))),
         db
           .select({
             slug: miracles.slug,
@@ -84,7 +87,7 @@ search.openapi(
             excerpt: sql<string | null>`LEFT(${miracles.synopsis}, 200)`,
           })
           .from(miracles)
-          .where(sql`${topic} = ANY(${miracles.topics})`),
+          .where(and(eq(miracles.published, true), sql`${topic} = ANY(${miracles.topics})`)),
       ]);
 
       for (const s of matchingSaints) push({ type: "saint", slug: s.slug, title: s.name, excerpt: null });

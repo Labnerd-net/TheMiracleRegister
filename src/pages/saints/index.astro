@@ -2,7 +2,7 @@
 import Base from "../../layouts/Base.astro";
 import { createDb } from "../../db";
 import { saints } from "../../db/schema";
-import { asc, count } from "drizzle-orm";
+import { asc, count, eq } from "drizzle-orm";
 import { env } from "cloudflare:workers";
 
 const PAGE_SIZE = 20;
@@ -13,7 +13,7 @@ const offset = (page - 1) * PAGE_SIZE;
 const db = createDb(env.DATABASE_URL);
 
 const [[{ total }], pageSaints] = await Promise.all([
-  db.select({ total: count() }).from(saints),
+  db.select({ total: count() }).from(saints).where(eq(saints.published, true)),
   db
     .select({
       slug: saints.slug,
@@ -28,6 +28,7 @@ const [[{ total }], pageSaints] = await Promise.all([
       canonization_date: saints.canonization_date,
     })
     .from(saints)
+    .where(eq(saints.published, true))
     .orderBy(asc(saints.name))
     .limit(PAGE_SIZE)
     .offset(offset),

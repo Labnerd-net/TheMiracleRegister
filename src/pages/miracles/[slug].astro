@@ -2,14 +2,14 @@
 import Base from "../../layouts/Base.astro";
 import { createDb } from "../../db";
 import { miracles, saints, miracleSources } from "../../db/schema";
-import { eq } from "drizzle-orm";
+import { and, eq } from "drizzle-orm";
 import { env } from "cloudflare:workers";
 import { renderMarkdown } from "../../lib/markdown";
 
 const { slug } = Astro.params;
 const db = createDb(env.DATABASE_URL);
 
-const [miracle] = await db.select().from(miracles).where(eq(miracles.slug, slug!));
+const [miracle] = await db.select().from(miracles).where(and(eq(miracles.slug, slug!), eq(miracles.published, true)));
 if (!miracle) return Astro.redirect("/404");
 
 const [[saint], sources] = await Promise.all([

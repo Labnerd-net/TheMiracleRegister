@@ -29,7 +29,7 @@ miraclesRoute.openapi(
     const offset = (page - 1) * limit;
     const db = createDb(c.env.DATABASE_URL);
 
-    const conditions = [];
+    const conditions = [eq(miracles.published, true)];
     if (saint_id !== undefined) conditions.push(eq(miracles.saint_id, saint_id));
     if (type !== undefined) conditions.push(eq(miracles.type, type));
     if (country !== undefined) conditions.push(ilike(miracles.country, `%${country}%`));
@@ -88,7 +88,7 @@ miraclesRoute.openapi(
     const { slug } = c.req.valid("param");
     const db = createDb(c.env.DATABASE_URL);
 
-    const [miracle] = await db.select().from(miracles).where(eq(miracles.slug, slug));
+    const [miracle] = await db.select().from(miracles).where(and(eq(miracles.slug, slug), eq(miracles.published, true)));
     if (!miracle) {
       return c.json({ data: null, meta: null, error: "Not found" }, 404);
     }

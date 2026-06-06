@@ -50,6 +50,13 @@
       "when": 1780714744534,
       "tag": "0006_cheerful_stature",
       "breakpoints": true
+    },
+    {
+      "idx": 7,
+      "version": "7",
+      "when": 1780761249500,
+      "tag": "0007_real_otto_octavius",
+      "breakpoints": true
     }
   ]
 }
