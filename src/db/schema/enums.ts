@@ -80,6 +80,12 @@ export const intercessoryMedium = pgEnum("intercessory_medium", [
   "other",
 ]);
 
+export const contentTier = pgEnum("content_tier", [
+  "core",
+  "catalog",
+  "stub",
+]);
+
 export const sourceType = pgEnum("source_type", [
   "vatican_decree",
   "news_article",

@@ -1,5 +1,6 @@
 import { boolean, date, index, integer, numeric, pgTable, serial, text, timestamp } from "drizzle-orm/pg-core";
 import {
+  contentTier,
   cureCharacteristics,
   datePrecision,
   intercessoryMedium,
@@ -47,6 +48,7 @@ export const miracles = pgTable(
     used_for_canonization: boolean("used_for_canonization").notNull(),
     synopsis: text("synopsis"),
     has_primary_sources: boolean("has_primary_sources").notNull(),
+    content_tier: contentTier("content_tier").notNull().default("core"),
     published: boolean("published").notNull().default(false),
     created_at: timestamp("created_at", { withTimezone: true })
       .notNull()
