@@ -9,13 +9,47 @@ import { renderMarkdownWithCitations } from "../../lib/markdown";
 const { slug } = Astro.params;
 const db = createDb(env.DATABASE_URL);
 
-const [miracle] = await db.select().from(miracles).where(and(eq(miracles.slug, slug!), eq(miracles.published, true)));
+const [miracle] = await db.select({
+  id: miracles.id,
+  saint_id: miracles.saint_id,
+  title: miracles.title,
+  miracle_category: miracles.miracle_category,
+  type: miracles.type,
+  date_of_event: miracles.date_of_event,
+  date_precision: miracles.date_precision,
+  location_name: miracles.location_name,
+  location_lat: miracles.location_lat,
+  location_lng: miracles.location_lng,
+  country: miracles.country,
+  recipient_privacy: miracles.recipient_privacy,
+  recipient_name: miracles.recipient_name,
+  recipient_age_at_event: miracles.recipient_age_at_event,
+  used_for_beatification: miracles.used_for_beatification,
+  used_for_canonization: miracles.used_for_canonization,
+  topics: miracles.topics,
+  vatican_medical_board_verdict: miracles.vatican_medical_board_verdict,
+  medical_diagnosis: miracles.medical_diagnosis,
+  cure_details: miracles.cure_details,
+  synopsis: miracles.synopsis,
+  timing_relative_to_saint_death: miracles.timing_relative_to_saint_death,
+  cure_characteristics: miracles.cure_characteristics,
+  intercessory_medium: miracles.intercessory_medium,
+  was_medically_verified: miracles.was_medically_verified,
+  medical_verification_date: miracles.medical_verification_date,
+  vatican_recognized: miracles.vatican_recognized,
+  vatican_decree_date: miracles.vatican_decree_date,
+}).from(miracles).where(and(eq(miracles.slug, slug!), eq(miracles.published, true)));
 if (!miracle) return Astro.redirect("/404");
 
 const [[saint], sources] = await Promise.all([
   db.select({ slug: saints.slug, name: saints.name, canonization_stage: saints.canonization_stage, image_url: saints.image_url })
     .from(saints).where(eq(saints.id, miracle.saint_id)),
-  db.select().from(miracleSources).where(eq(miracleSources.miracle_id, miracle.id)),
+  db.select({
+    url: miracleSources.url,
+    title: miracleSources.title,
+    source_type: miracleSources.source_type,
+    accessed_date: miracleSources.accessed_date,
+  }).from(miracleSources).where(eq(miracleSources.miracle_id, miracle.id)),
 ]);
 
 const fmt = (s: string) => s.replace(/_/g, " ");
