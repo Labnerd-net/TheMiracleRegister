@@ -30,7 +30,7 @@ app.route("/search", search);
 
 app.doc("/doc", {
   openapi: "3.0.0",
-  info: { title: "The Miracles Register API", version: "1.0.0" },
+  info: { title: "The Miracle Register API", version: "1.0.0" },
 });
 
 export default app;

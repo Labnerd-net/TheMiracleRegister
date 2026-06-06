@@ -7,8 +7,8 @@ interface Props {
 }
 const { title, description } = Astro.props;
 const fullTitle = title === "Home"
-  ? "The Miracles Register"
-  : `${title} — The Miracles Register`;
+  ? "The Miracle Register"
+  : `${title} — The Miracle Register`;
 ---
 
 <html lang="en">
@@ -33,7 +33,7 @@ const fullTitle = title === "Home"
 
     <header class="site-header sticky top-0 z-10">
       <div class="max-w-6xl mx-auto px-8 h-20 flex items-center justify-between">
-        <a href="/" class="site-logo">The Miracles Register</a>
+        <a href="/" class="site-logo">The Miracle Register</a>
         <nav class="flex items-center gap-10">
           <a href="/saints" class="nav-link">Saints</a>
           <a href="/miracles" class="nav-link">Miracles</a>
@@ -51,7 +51,7 @@ const fullTitle = title === "Home"
 
     <footer class="site-footer mt-24">
       <div class="max-w-6xl mx-auto px-8 py-12 flex flex-col sm:flex-row items-center justify-between gap-6">
-        <span class="site-logo">The Miracles Register</span>
+        <span class="site-logo">The Miracle Register</span>
         <div class="flex flex-col sm:flex-row items-center gap-6">
           <a href="/saints" class="nav-link">Saints</a>
           <a href="/miracles" class="nav-link">Miracles</a>
