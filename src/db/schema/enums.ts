@@ -86,6 +86,16 @@ export const contentTier = pgEnum("content_tier", [
   "stub",
 ]);
 
+export const locationType = pgEnum("location_type", [
+  "tomb",
+  "birthplace",
+  "death_place",
+  "shrine",
+  "relic",
+  "major_devotional_center",
+  "other",
+]);
+
 export const sourceType = pgEnum("source_type", [
   "vatican_decree",
   "news_article",

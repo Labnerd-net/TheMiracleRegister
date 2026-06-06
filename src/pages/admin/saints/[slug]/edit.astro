@@ -1,9 +1,9 @@
 ---
 import AdminBase from "../../../../layouts/AdminBase.astro";
 import { createDb } from "../../../../db";
-import { saints, saintSources } from "../../../../db/schema";
+import { saints, saintSources, saintLocations } from "../../../../db/schema";
 import { asc, eq } from "drizzle-orm";
-import { canonizationType, canonizationStage, sourceType } from "../../../../db/schema/enums";
+import { canonizationType, canonizationStage, sourceType, locationType } from "../../../../db/schema/enums";
 import { parseEnum, formHelpers } from "../../../../lib/form-utils";
 import { SaintFormSchema, formatZodErrors } from "../../../../lib/form-schemas";
 import SaintForm from "../../../../components/SaintForm.astro";
@@ -19,6 +19,8 @@ let error = "";
 let success = false;
 let sourceError = "";
 let sourceSuccess = "";
+let locationError = "";
+let locationSuccess = "";
 
 if (Astro.request.method === "POST") {
   const form = await Astro.request.formData();
@@ -50,6 +52,31 @@ if (Astro.request.method === "POST") {
       await db.delete(saintSources).where(eq(saintSources.id, sourceId));
       sourceSuccess = "Source removed.";
     }
+  } else if (action === "add_location") {
+    const name = get("location_name");
+    const type = parseEnum(get("location_type"), locationType.enumValues, "shrine");
+    const lat = get("location_lat");
+    const lng = get("location_lng");
+    if (!name) {
+      locationError = "Location name is required.";
+    } else try {
+      await db.insert(saintLocations).values({
+        saint_id: saint.id,
+        location_name: name,
+        location_type: type!,
+        lat: lat || null,
+        lng: lng || null,
+      });
+      locationSuccess = "Location added.";
+    } catch (e: any) {
+      locationError = e?.message ?? "Failed to add location.";
+    }
+  } else if (action === "delete_location") {
+    const locationId = parseInt(get("location_id"));
+    if (locationId) {
+      await db.delete(saintLocations).where(eq(saintLocations.id, locationId));
+      locationSuccess = "Location removed.";
+    }
   } else {
   const validation = SaintFormSchema.safeParse({ name: get("name"), canonization_stage: get("canonization_stage") });
   if (!validation.success) {
@@ -66,9 +93,6 @@ if (Astro.request.method === "POST") {
       death_place: get("death_place") || null,
       death_lat: get("death_lat") || null,
       death_lng: get("death_lng") || null,
-      shrine_name: get("shrine_name") || null,
-      shrine_lat: get("shrine_lat") || null,
-      shrine_lng: get("shrine_lng") || null,
       feast_day: get("feast_day") || null,
       nationality: get("nationality") || null,
       religious_order: get("religious_order") || null,
@@ -95,9 +119,10 @@ if (Astro.request.method === "POST") {
   } // end main form action
 }
 
-const [[s], sources] = await Promise.all([
+const [[s], sources, locations] = await Promise.all([
   db.select().from(saints).where(eq(saints.slug, slug!)),
   db.select().from(saintSources).where(eq(saintSources.saint_id, saint.id)).orderBy(asc(saintSources.id)),
+  db.select().from(saintLocations).where(eq(saintLocations.saint_id, saint.id)).orderBy(asc(saintLocations.id)),
 ]);
 const v = s ?? saint;
 ---
@@ -174,6 +199,66 @@ const v = s ?? saint;
           <input type="date" id="source_accessed_date" name="source_accessed_date" style="max-width:200px" />
         </div>
         <button type="submit" class="btn btn-primary">Add Source</button>
+      </form>
+    </div>
+  </fieldset>
+
+  <fieldset style="margin-top:2rem">
+    <legend>Locations</legend>
+
+    {locationError && <div class="error" style="margin-bottom:1rem">{locationError}</div>}
+    {locationSuccess && <div class="success" style="margin-bottom:1rem">{locationSuccess}</div>}
+
+    {locations.length === 0 && (
+      <p style="font-size:0.85rem;color:#888;margin-bottom:1rem">No locations added yet.</p>
+    )}
+
+    {locations.map((loc) => (
+      <div style="display:flex;align-items:baseline;gap:0.75rem;padding:0.5rem 0;border-bottom:1px solid #eee">
+        <div style="flex:1;min-width:0">
+          <div style="font-size:0.875rem;font-weight:600">{loc.location_name}</div>
+          <div style="font-size:0.75rem;color:#888;margin-top:0.1rem">
+            {loc.location_type.replace(/_/g, " ")}
+            {loc.lat && loc.lng && <> · {loc.lat}, {loc.lng}</>}
+          </div>
+        </div>
+        <form method="post" style="flex-shrink:0">
+          <input type="hidden" name="_action" value="delete_location" />
+          <input type="hidden" name="location_id" value={loc.id} />
+          <button type="submit" style="background:none;border:none;color:#dc2626;font-size:0.8rem;cursor:pointer;padding:0">Remove</button>
+        </form>
+      </div>
+    ))}
+
+    <div style="margin-top:1.25rem">
+      <p style="font-size:0.8rem;font-weight:600;color:#444;margin-bottom:0.75rem">Add Location</p>
+      <form method="post">
+        <input type="hidden" name="_action" value="add_location" />
+        <div class="two-col" style="margin-bottom:0.75rem">
+          <div class="field">
+            <label for="location_name">Name *</label>
+            <input type="text" id="location_name" name="location_name" placeholder="e.g. St. Joseph's Oratory" />
+          </div>
+          <div class="field">
+            <label for="location_type">Type</label>
+            <select id="location_type" name="location_type">
+              {locationType.enumValues.map((t) => (
+                <option value={t}>{t.replace(/_/g, " ")}</option>
+              ))}
+            </select>
+          </div>
+        </div>
+        <div class="two-col" style="margin-bottom:0.75rem">
+          <div class="field">
+            <label for="location_lat">Lat</label>
+            <input type="number" id="location_lat" name="location_lat" step="any" placeholder="e.g. 45.4871" />
+          </div>
+          <div class="field">
+            <label for="location_lng">Lng</label>
+            <input type="number" id="location_lng" name="location_lng" step="any" placeholder="e.g. -73.5877" />
+          </div>
+        </div>
+        <button type="submit" class="btn btn-primary">Add Location</button>
       </form>
     </div>
   </fieldset>
