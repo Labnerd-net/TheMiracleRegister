@@ -32,9 +32,9 @@ const fullTitle = title === "Home"
   <body class="min-h-screen flex flex-col">
 
     <header class="site-header sticky top-0 z-10">
-      <div class="max-w-6xl mx-auto px-8 h-20 flex items-center justify-between">
+      <div class="max-w-6xl mx-auto px-4 sm:px-8 h-16 sm:h-20 flex items-center justify-between">
         <a href="/" class="site-logo">The Miracle Register</a>
-        <nav class="flex items-center gap-10">
+        <nav class="flex items-center gap-5 sm:gap-10">
           <a href="/saints" class="nav-link">Saints</a>
           <a href="/miracles" class="nav-link">Miracles</a>
           <button id="theme-toggle" aria-label="Toggle dark mode" class="theme-toggle">
@@ -50,7 +50,7 @@ const fullTitle = title === "Home"
     </main>
 
     <footer class="site-footer mt-24">
-      <div class="max-w-6xl mx-auto px-8 py-12 flex flex-col sm:flex-row items-center justify-between gap-6">
+      <div class="max-w-6xl mx-auto px-4 sm:px-8 py-8 sm:py-12 flex flex-col sm:flex-row items-center justify-between gap-6">
         <span class="site-logo">The Miracle Register</span>
         <div class="flex flex-col sm:flex-row items-center gap-6">
           <a href="/saints" class="nav-link">Saints</a>
@@ -97,12 +97,15 @@ const fullTitle = title === "Home"
 
   .site-logo {
     font-family: var(--font-display);
-    font-size: 1.35rem;
+    font-size: 1.1rem;
     font-weight: 400;
     letter-spacing: 0.04em;
     color: var(--text-1);
     text-decoration: none;
     transition: opacity 0.2s;
+  }
+  @media (min-width: 640px) {
+    .site-logo { font-size: 1.35rem; }
   }
   .site-logo:hover { opacity: 0.65; color: var(--text-1); }
 

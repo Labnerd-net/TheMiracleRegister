@@ -23,10 +23,10 @@ const fmt = (s: string) => s.replace(/_/g, " ");
 <Base title={miracle.title}>
 
   <div class="page-header">
-    <div class="max-w-6xl mx-auto px-8 py-4">
+    <div class="max-w-6xl mx-auto px-4 sm:px-8 py-4">
       <a href="/miracles" style="font-family:var(--font-sans);font-size:0.68rem;font-weight:500;letter-spacing:0.08em;text-transform:uppercase;color:var(--text-4);text-decoration:none">← Miracles</a>
     </div>
-    <div class="max-w-6xl mx-auto px-8 pb-14 pt-6 lg:grid lg:grid-cols-[1fr_220px] lg:gap-16 lg:items-start">
+    <div class="max-w-6xl mx-auto px-4 sm:px-8 pb-10 sm:pb-14 pt-6 lg:grid lg:grid-cols-[1fr_220px] lg:gap-16 lg:items-start">
       <div>
         <div class="flex items-center gap-3 mb-5">
           <span style="font-family:var(--font-sans);font-size:0.65rem;font-weight:600;letter-spacing:0.1em;text-transform:uppercase;color:var(--text-4)">{fmt(miracle.miracle_category)} miracle</span>
@@ -93,7 +93,7 @@ const fmt = (s: string) => s.replace(/_/g, " ");
     </div>
   </div>
 
-  <div class="max-w-6xl mx-auto px-8 py-14 lg:grid lg:grid-cols-[1fr_240px] lg:gap-12">
+  <div class="max-w-6xl mx-auto px-4 sm:px-8 py-10 sm:py-14 lg:grid lg:grid-cols-[1fr_240px] lg:gap-12">
 
     <div>
       {miracle.vatican_medical_board_verdict && (
@@ -131,7 +131,7 @@ const fmt = (s: string) => s.replace(/_/g, " ");
           <p class="eyebrow mb-5">Sources</p>
           <ul class="space-y-3">
             {sources.map((s) => (
-              <li class="flex items-baseline gap-4">
+              <li class="flex flex-col sm:flex-row sm:items-baseline gap-1 sm:gap-4">
                 <span style="font-family:var(--font-sans);font-size:0.6rem;font-weight:600;letter-spacing:0.1em;text-transform:uppercase;color:var(--text-4);white-space:nowrap">{fmt(s.source_type)}</span>
                 {s.url ? (
                   <a href={s.url} target="_blank" rel="noopener" style="font-family:var(--font-sans);font-size:0.85rem">{s.title ?? s.url} ↗</a>
@@ -146,7 +146,7 @@ const fmt = (s: string) => s.replace(/_/g, " ");
     </div>
 
     <aside>
-      <div class="card p-5 sticky top-24">
+      <div class="card p-5 lg:sticky lg:top-24">
         <p class="eyebrow mb-5">Full Record</p>
         <dl class="meta-grid">
           <dt>Category</dt><dd>{fmt(miracle.miracle_category)}</dd>
