@@ -47,6 +47,7 @@ export const miracles = pgTable(
     used_for_canonization: boolean("used_for_canonization").notNull(),
     synopsis: text("synopsis"),
     has_primary_sources: boolean("has_primary_sources").notNull(),
+    published: boolean("published").notNull().default(false),
     created_at: timestamp("created_at", { withTimezone: true })
       .notNull()
       .defaultNow(),

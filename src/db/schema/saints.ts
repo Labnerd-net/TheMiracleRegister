@@ -1,4 +1,5 @@
 import {
+  boolean,
   date,
   index,
   integer,
@@ -40,6 +41,7 @@ export const saints = pgTable(
     total_attributed_miracles: integer("total_attributed_miracles"),
     image_url: text("image_url"),
     wikipedia_url: text("wikipedia_url"),
+    published: boolean("published").notNull().default(false),
     created_at: timestamp("created_at", { withTimezone: true })
       .notNull()
       .defaultNow(),

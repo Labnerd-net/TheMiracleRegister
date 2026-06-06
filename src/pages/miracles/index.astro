@@ -13,7 +13,7 @@ const offset = (page - 1) * PAGE_SIZE;
 const db = createDb(env.DATABASE_URL);
 
 const [[{ total }], pageMiracles] = await Promise.all([
-  db.select({ total: count() }).from(miracles),
+  db.select({ total: count() }).from(miracles).where(eq(miracles.published, true)),
   db
     .select({
       slug: miracles.slug,
@@ -33,6 +33,7 @@ const [[{ total }], pageMiracles] = await Promise.all([
     })
     .from(miracles)
     .innerJoin(saints, eq(miracles.saint_id, saints.id))
+    .where(eq(miracles.published, true))
     .orderBy(asc(saints.name), asc(miracles.title))
     .limit(PAGE_SIZE)
     .offset(offset),

@@ -2,14 +2,14 @@
 import Base from "../layouts/Base.astro";
 import { createDb } from "../db";
 import { saints, miracles } from "../db/schema";
-import { sql, asc } from "drizzle-orm";
+import { sql, asc, eq } from "drizzle-orm";
 import { env } from "cloudflare:workers";
 
 const db = createDb(env.DATABASE_URL);
 const [[{ saintCount }], [{ miracleCount }], [{ countryCount }], featuredSaints] = await Promise.all([
-  db.select({ saintCount: sql<number>`count(*)::int` }).from(saints),
-  db.select({ miracleCount: sql<number>`count(*)::int` }).from(miracles),
-  db.select({ countryCount: sql<number>`count(distinct country)::int` }).from(miracles),
+  db.select({ saintCount: sql<number>`count(*)::int` }).from(saints).where(eq(saints.published, true)),
+  db.select({ miracleCount: sql<number>`count(*)::int` }).from(miracles).where(eq(miracles.published, true)),
+  db.select({ countryCount: sql<number>`count(distinct country)::int` }).from(miracles).where(eq(miracles.published, true)),
   db.select({
     slug: saints.slug,
     name: saints.name,
@@ -17,7 +17,7 @@ const [[{ saintCount }], [{ miracleCount }], [{ countryCount }], featuredSaints]
     nationality: saints.nationality,
     canonization_stage: saints.canonization_stage,
     feast_day: saints.feast_day,
-  }).from(saints).orderBy(asc(saints.name)),
+  }).from(saints).where(eq(saints.published, true)).orderBy(asc(saints.name)),
 ]);
 ---
 

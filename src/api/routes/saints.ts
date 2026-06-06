@@ -1,5 +1,5 @@
 import { OpenAPIHono, createRoute, z } from "@hono/zod-openapi";
-import { asc, eq, sql } from "drizzle-orm";
+import { asc, eq, sql, and } from "drizzle-orm";
 import { createDb } from "../../db";
 import { miracles, saintRelations, saints } from "../../db/schema";
 import {
@@ -44,10 +44,11 @@ saintsRoute.openapi(
           total_attributed_miracles: saints.total_attributed_miracles,
         })
         .from(saints)
+        .where(eq(saints.published, true))
         .orderBy(asc(saints.name))
         .offset(offset)
         .limit(limit),
-      db.select({ total: sql<number>`count(*)::int` }).from(saints),
+      db.select({ total: sql<number>`count(*)::int` }).from(saints).where(eq(saints.published, true)),
     ]);
 
     return c.json({ data: rows, meta: { page, limit, total }, error: null }, 200);
@@ -74,7 +75,7 @@ saintsRoute.openapi(
     const { slug } = c.req.valid("param");
     const db = createDb(c.env.DATABASE_URL);
 
-    const [saint] = await db.select().from(saints).where(eq(saints.slug, slug));
+    const [saint] = await db.select().from(saints).where(and(eq(saints.slug, slug), eq(saints.published, true)));
     if (!saint) {
       return c.json({ data: null, meta: null, error: "Not found" }, 404);
     }
@@ -96,7 +97,7 @@ saintsRoute.openapi(
           saint_id: miracles.saint_id,
         })
         .from(miracles)
-        .where(eq(miracles.saint_id, saint.id)),
+        .where(and(eq(miracles.saint_id, saint.id), eq(miracles.published, true))),
       db
         .select({
           id: saints.id,

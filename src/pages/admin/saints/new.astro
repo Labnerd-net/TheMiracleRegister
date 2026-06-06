@@ -13,7 +13,7 @@ let error = "";
 
 if (Astro.request.method === "POST") {
   const form = await Astro.request.formData();
-  const { get, getArr, getMulti } = formHelpers(form);
+  const { get, getBool, getArr, getMulti } = formHelpers(form);
 
   const name = get("name");
   const slug = get("slug") || slugify(name);
@@ -52,6 +52,7 @@ if (Astro.request.method === "POST") {
         : null,
       image_url: get("image_url") || null,
       wikipedia_url: get("wikipedia_url") || null,
+      published: getBool("published"),
     });
     return Astro.redirect("/admin/saints");
   } catch (e: any) {

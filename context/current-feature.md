@@ -55,3 +55,21 @@ Replaced the static "Vatican / Primary Sources" stat with a dynamic country coun
 
 ### Miracle Location Map
 Added a Leaflet map to the miracle detail page showing a single OpenStreetMap marker at the miracle's coordinates. Only renders when both `location_lat` and `location_lng` are non-null. Leaflet CSS injected via a new `<slot name="head" />` added to Base.astro; Leaflet JS and map init loaded via `<script is:inline>` inside the layout so scripts stay within `<body>`. Marker popup shows `location_name` and `country` when available. No API key required.
+
+### Saints Location Coordinates
+Added `birth_lat`, `birth_lng`, `death_lat`, `death_lng` columns (`numeric(9,6)`) to the saints table. Drizzle migration generated and applied to both dev and production Neon branches. Fields added to `SaintForm.astro` as `type="number" step="any"` inputs. POST handlers in `new.astro` and `edit.astro` updated to read and persist all four fields.
+
+### Admin Form UX Improvements
+Added live word count to biography (SaintForm) and synopsis (MiracleForm) textareas — synopsis shows "too short / good / too long" relative to 500–1000 word target. Changed `medical_diagnosis` and `vatican_medical_board_verdict` from single-line inputs to `<textarea>` for comfortable long-text entry. Increased `cure_details` textarea from 4 to 6 rows. Added sticky save button bar (position: sticky; bottom: 0) so the button is always visible on long forms.
+
+### Admin Form Style Fix
+Fixed admin form styling not applying to child components. Astro scopes `<style>` blocks to the component's own elements — styles in `AdminBase.astro` were not reaching form elements rendered via `<slot />` from `SaintForm.astro` and `MiracleForm.astro`. Changed `<style>` to `<style is:global>` in AdminBase so all admin layout styles apply correctly.
+
+### Admin Delete
+Added two-step delete flow for saints and miracles. Edit pages now have a "Delete" link in the top-right corner. Clicking it leads to a confirmation page showing what will be cascaded (associated miracles when deleting a saint, sources when deleting a miracle). POST on confirm executes the deletion and redirects to the list. Cancel returns to the edit page.
+
+### Markdown Rendering
+Added `marked` for markdown rendering of narrative fields. `biography_short`, `cure_details`, and `synopsis` now render as HTML on public pages via a shared `src/lib/markdown.ts` helper and a `.prose` CSS class in global.css (paragraph spacing, bold, italic, links, lists). Admin textareas for these fields show a compact cheat sheet above the input covering the most common syntax for each field type.
+
+### Miracle Source Management
+Added inline source management to the miracle edit page. A Sources section below the main form lists all existing sources (title linked to URL, type, accessed date) with a per-row Remove button. An Add Source form handles url, title, type (enum dropdown), and optional accessed date. Both add and delete use a `_action` hidden field to coexist with the main miracle save form on the same page.

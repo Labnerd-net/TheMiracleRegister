@@ -2,14 +2,14 @@
 import Base from "../../layouts/Base.astro";
 import { createDb } from "../../db";
 import { saints, miracles, saintRelations } from "../../db/schema";
-import { eq } from "drizzle-orm";
+import { and, eq } from "drizzle-orm";
 import { env } from "cloudflare:workers";
 import { renderMarkdown } from "../../lib/markdown";
 
 const { slug } = Astro.params;
 const db = createDb(env.DATABASE_URL);
 
-const [saint] = await db.select().from(saints).where(eq(saints.slug, slug!));
+const [saint] = await db.select().from(saints).where(and(eq(saints.slug, slug!), eq(saints.published, true)));
 if (!saint) return Astro.redirect("/404");
 
 const [saintMiracles, relatedRows] = await Promise.all([
@@ -29,7 +29,7 @@ const [saintMiracles, relatedRows] = await Promise.all([
     used_for_beatification: miracles.used_for_beatification,
     used_for_canonization: miracles.used_for_canonization,
     cure_details: miracles.cure_details,
-  }).from(miracles).where(eq(miracles.saint_id, saint.id)),
+  }).from(miracles).where(and(eq(miracles.saint_id, saint.id), eq(miracles.published, true))),
   db.select({
     id: saints.id, slug: saints.slug, name: saints.name,
     relation_type: saintRelations.relation_type,

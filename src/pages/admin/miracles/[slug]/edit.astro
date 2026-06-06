@@ -92,6 +92,7 @@ if (Astro.request.method === "POST") {
         used_for_canonization: getBool("used_for_canonization"),
         synopsis: get("synopsis") || null,
         has_primary_sources: getBool("has_primary_sources"),
+        published: getBool("published"),
       }).where(eq(miracles.slug, slug!));
       success = true;
     } catch (e: any) {
