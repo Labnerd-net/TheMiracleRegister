@@ -33,10 +33,11 @@
 - **#30 [src/db/schema/miracles.ts]** Timeline/chronological browse at `/miracles/timeline` grouping by decade using `date_of_event`.
 
 ### Low
-- **#31 [src/pages/admin/miracles/[slug]/edit.astro]** Batch source import for admin — CSV/JSON paste to bulk-create `miracle_sources` records. Currently one-by-one only.
-- **#32 [src/pages/admin/index.astro]** Admin analytics dashboard — extend beyond total counts with aggregations by country, type, topic, canonization stage.
-- **#33 [src/pages/]** Custom 404 page. Astro falls back to a generic page; create one matching the site design.
-- **#34 [src/pages/miracles/[slug].astro:129–145]** Highlight Vatican decree sources distinctly on miracle detail pages instead of rendering them identically to news articles.
+- ~~**#31**~~ ✅ Completed — inline citations via `saint_sources` table and `[^N]` markers.
+- **#32 [src/pages/admin/miracles/[slug]/edit.astro]** Batch source import for admin — CSV/JSON paste to bulk-create `miracle_sources` records. Currently one-by-one only.
+- **#33 [src/pages/admin/index.astro]** Admin analytics dashboard — extend beyond total counts with aggregations by country, type, topic, canonization stage.
+- **#34 [src/pages/]** Custom 404 page. Astro falls back to a generic page; create one matching the site design.
+- **#35 [src/pages/miracles/[slug].astro:129–145]** Highlight Vatican decree sources distinctly on miracle detail pages instead of rendering them identically to news articles.
 
 ---
 
