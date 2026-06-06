@@ -1,10 +1,10 @@
 ---
 import Base from "../../layouts/Base.astro";
 import { createDb } from "../../db";
-import { saints, miracles, saintRelations } from "../../db/schema";
-import { and, eq } from "drizzle-orm";
+import { saints, miracles, saintRelations, saintSources } from "../../db/schema";
+import { asc, and, eq } from "drizzle-orm";
 import { env } from "cloudflare:workers";
-import { renderMarkdown } from "../../lib/markdown";
+import { renderMarkdownWithCitations } from "../../lib/markdown";
 
 const { slug } = Astro.params;
 const db = createDb(env.DATABASE_URL);
@@ -12,7 +12,7 @@ const db = createDb(env.DATABASE_URL);
 const [saint] = await db.select().from(saints).where(and(eq(saints.slug, slug!), eq(saints.published, true)));
 if (!saint) return Astro.redirect("/404");
 
-const [saintMiracles, relatedRows] = await Promise.all([
+const [saintMiracles, relatedRows, sources] = await Promise.all([
   db.select({
     slug: miracles.slug,
     title: miracles.title,
@@ -37,6 +37,7 @@ const [saintMiracles, relatedRows] = await Promise.all([
   .from(saintRelations)
   .innerJoin(saints, eq(saintRelations.related_saint_id, saints.id))
   .where(eq(saintRelations.saint_id, saint.id)),
+  db.select().from(saintSources).where(eq(saintSources.saint_id, saint.id)).orderBy(asc(saintSources.id)),
 ]);
 ---
 
@@ -127,7 +128,22 @@ const [saintMiracles, relatedRows] = await Promise.all([
       {saint.biography_short && (
         <div class="mb-11 pb-11 section-rule">
           <p class="eyebrow mb-5">Biography</p>
-          <div class="prose" set:html={renderMarkdown(saint.biography_short)} />
+          <div class="prose" set:html={renderMarkdownWithCitations(saint.biography_short)} />
+          {sources.length > 0 && (
+            <ol class="footnotes" id="footnotes">
+              {sources.map((s, i) => (
+                <li id={`ref-${i + 1}`}>
+                  {s.url
+                    ? <a href={s.url} target="_blank" rel="noopener">{s.title ?? s.url}</a>
+                    : s.title
+                  }
+                  {s.source_type && <span class="fn-type">{s.source_type.replace(/_/g, " ")}</span>}
+                  {s.accessed_date && <span class="fn-type">· accessed {s.accessed_date}</span>}
+                  {" "}<a href={`#cite-${i + 1}`} class="fn-back">↩</a>
+                </li>
+              ))}
+            </ol>
+          )}
         </div>
       )}
 
