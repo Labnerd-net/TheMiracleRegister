@@ -73,3 +73,9 @@ Added `marked` for markdown rendering of narrative fields. `biography_short`, `c
 
 ### Miracle Source Management
 Added inline source management to the miracle edit page. A Sources section below the main form lists all existing sources (title linked to URL, type, accessed date) with a per-row Remove button. An Add Source form handles url, title, type (enum dropdown), and optional accessed date. Both add and delete use a `_action` hidden field to coexist with the main miracle save form on the same page.
+
+### Content Tier
+Added a `content_tier` enum (`core`, `catalog`, `stub`) to the miracles table to support the two-tier data model discussed with Carlo (research AI). Core entries get full narrative and medical documentation (canonization miracles); catalog entries get short synopses and links to authoritative external sources (all other approved miracle types). Defaults to `core` so existing data is unaffected. Migration 0008 applied to Neon dev branch. CLAUDE.md updated.
+
+### Published Flag
+Added `published boolean NOT NULL DEFAULT false` to both `saints` and `miracles` tables (migration 0007, applied to Neon dev). Admin forms for both entities now include a "Published (visible on public site)" checkbox. All public-facing queries — homepage stats, list pages, detail pages, and all API endpoints including search — filter to `published = true` only, so unpublished records are invisible to visitors and API consumers until explicitly published.
