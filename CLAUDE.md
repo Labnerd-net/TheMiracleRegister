@@ -116,6 +116,7 @@ Saint pages show related saints as links. API response includes a `related_saint
 | used_for_canonization | boolean | |
 | synopsis | text | 500–1000 words narrative |
 | has_primary_sources | boolean | |
+| content_tier | enum | `core` (full narrative), `catalog` (short synopsis + external links), `stub` — default core |
 | published | boolean | default false — controls public visibility |
 | created_at, updated_at | timestamptz | |
 
