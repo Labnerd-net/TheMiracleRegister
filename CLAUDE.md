@@ -57,8 +57,6 @@ A data-driven website documenting miracles attributed to Catholic saints. Focuse
 | birth_place, death_place | text | |
 | birth_lat, birth_lng | numeric(9,6) | |
 | death_lat, death_lng | numeric(9,6) | |
-| shrine_name | text | |
-| shrine_lat, shrine_lng | numeric(9,6) | |
 | beatification_date | date | |
 | beatified_by | text | |
 | canonization_date | date | |
@@ -166,6 +164,18 @@ Mirrors `miracle_sources` for saint biography sources. Supports `[^N]` inline ci
 | title | text | |
 | source_type | enum | vatican_decree, news_article, book, academic, other |
 | accessed_date | date | optional |
+
+### `saint_locations`
+
+Multiple geocoded locations per saint for map display. Managed via the saint edit page (add/delete pattern matching sources).
+
+| Column | Type | Notes |
+|---|---|---|
+| id | integer PK | |
+| saint_id | FK → saints | cascade delete |
+| location_name | text | required, e.g. "St. Joseph's Oratory" |
+| lat, lng | numeric(9,6) | optional coordinates |
+| location_type | enum | tomb, birthplace, death_place, shrine, relic, major_devotional_center, other |
 
 ---
 
