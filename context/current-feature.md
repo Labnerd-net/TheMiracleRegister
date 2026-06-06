@@ -10,9 +10,6 @@ _None_
 
 ## History
 
-### Inline Citations (#31)
-Added `saint_sources` table (mirrors `miracle_sources`) for storing biography sources. `[^N]` markers in `biography_short`, `synopsis`, and `cure_details` render as superscript citation links on public pages via `renderMarkdownWithCitations()`. A numbered footnote list with back-links (↩) renders below the narrative. Saint edit page gains a full Sources section (add/delete) matching the miracle edit page. Both source editors display the `[^N]` marker per row so editors know which number to use inline. Migration 0009 applied to Neon dev.
-
 ### Drizzle Schema and Neon Setup
 Initialized the full TypeScript project and database layer. Defined all 4 tables (saints, saint_relations, miracles, miracle_sources) split per file, 13 Postgres enums, Drizzle config, Neon client, and migration tooling. Migration applied successfully to Neon dev branch.
 
@@ -82,3 +79,6 @@ Added a `content_tier` enum (`core`, `catalog`, `stub`) to the miracles table to
 
 ### Published Flag
 Added `published boolean NOT NULL DEFAULT false` to both `saints` and `miracles` tables (migration 0007, applied to Neon dev). Admin forms for both entities now include a "Published (visible on public site)" checkbox. All public-facing queries — homepage stats, list pages, detail pages, and all API endpoints including search — filter to `published = true` only, so unpublished records are invisible to visitors and API consumers until explicitly published.
+
+### Inline Citations (#31)
+Added `saint_sources` table (mirrors `miracle_sources`) for storing biography sources. `[^N]` markers in `biography_short`, `synopsis`, and `cure_details` render as superscript citation links on public pages via `renderMarkdownWithCitations()`. A numbered footnote list with back-links (↩) renders below the narrative. Saint edit page gains a full Sources section (add/delete) matching the miracle edit page. Both source editors display the `[^N]` marker per row so editors know which number to use inline. Migration 0009 applied to Neon dev.
