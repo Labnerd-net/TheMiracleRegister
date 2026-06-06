@@ -47,12 +47,28 @@ const join = (arr: string[] | null | undefined) => arr?.join(", ") ?? "";
         <input type="text" id="birth_place" name="birth_place" value={v?.birth_place ?? ""} />
       </div>
       <div class="field">
+        <label for="birth_lat">Birth Lat</label>
+        <input type="number" id="birth_lat" name="birth_lat" value={v?.birth_lat ?? ""} step="any" placeholder="e.g. 50.0647" />
+      </div>
+      <div class="field">
+        <label for="birth_lng">Birth Lng</label>
+        <input type="number" id="birth_lng" name="birth_lng" value={v?.birth_lng ?? ""} step="any" placeholder="e.g. 19.9450" />
+      </div>
+      <div class="field">
         <label for="death_date">Death Date</label>
         <input type="date" id="death_date" name="death_date" value={v?.death_date ?? ""} />
       </div>
       <div class="field">
         <label for="death_place">Death Place</label>
         <input type="text" id="death_place" name="death_place" value={v?.death_place ?? ""} />
+      </div>
+      <div class="field">
+        <label for="death_lat">Death Lat</label>
+        <input type="number" id="death_lat" name="death_lat" value={v?.death_lat ?? ""} step="any" placeholder="e.g. 41.9029" />
+      </div>
+      <div class="field">
+        <label for="death_lng">Death Lng</label>
+        <input type="number" id="death_lng" name="death_lng" value={v?.death_lng ?? ""} step="any" placeholder="e.g. 12.4534" />
       </div>
       <div class="field">
         <label for="nationality">Nationality</label>
