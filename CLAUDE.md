@@ -55,6 +55,10 @@ A data-driven website documenting miracles attributed to Catholic saints. Focuse
 | religious_order | text | e.g. "Franciscan" |
 | nationality | text | |
 | birth_place, death_place | text | |
+| birth_lat, birth_lng | numeric(9,6) | |
+| death_lat, death_lng | numeric(9,6) | |
+| shrine_name | text | |
+| shrine_lat, shrine_lng | numeric(9,6) | |
 | beatification_date | date | |
 | beatified_by | text | |
 | canonization_date | date | |
