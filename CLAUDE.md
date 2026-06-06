@@ -67,6 +67,7 @@ A data-driven website documenting miracles attributed to Catholic saints. Focuse
 | total_attributed_miracles | integer | optional |
 | image_url | text | |
 | wikipedia_url | text | |
+| published | boolean | default false — controls public visibility |
 | created_at, updated_at | timestamptz | |
 
 ### `saint_relations` (replaces saint_group_id)
@@ -115,6 +116,7 @@ Saint pages show related saints as links. API response includes a `related_saint
 | used_for_canonization | boolean | |
 | synopsis | text | 500–1000 words narrative |
 | has_primary_sources | boolean | |
+| published | boolean | default false — controls public visibility |
 | created_at, updated_at | timestamptz | |
 
 ### Topics & Themes
