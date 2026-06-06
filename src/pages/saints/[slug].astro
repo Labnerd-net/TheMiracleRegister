@@ -37,7 +37,12 @@ const [saintMiracles, relatedRows, sources] = await Promise.all([
   .from(saintRelations)
   .innerJoin(saints, eq(saintRelations.related_saint_id, saints.id))
   .where(eq(saintRelations.saint_id, saint.id)),
-  db.select().from(saintSources).where(eq(saintSources.saint_id, saint.id)).orderBy(asc(saintSources.id)),
+  db.select({
+    url: saintSources.url,
+    title: saintSources.title,
+    source_type: saintSources.source_type,
+    accessed_date: saintSources.accessed_date,
+  }).from(saintSources).where(eq(saintSources.saint_id, saint.id)).orderBy(asc(saintSources.id)),
 ]);
 ---
 
