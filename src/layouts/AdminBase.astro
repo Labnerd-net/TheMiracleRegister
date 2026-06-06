@@ -10,7 +10,7 @@ const { title } = Astro.props;
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <title>{title} — Admin — The Miracle Register</title>
-    <style>
+    <style is:global>
       *, *::before, *::after { box-sizing: border-box; }
       body {
         font-family: system-ui, sans-serif;
