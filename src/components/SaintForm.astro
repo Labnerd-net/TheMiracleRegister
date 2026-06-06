@@ -15,6 +15,18 @@ const join = (arr: string[] | null | undefined) => arr?.join(", ") ?? "";
 ---
 
 <form method="post">
+<script>
+  function wordCount(el: HTMLTextAreaElement): number {
+    return el.value.trim() ? el.value.trim().split(/\s+/).length : 0;
+  }
+  const bio = document.getElementById('biography_short') as HTMLTextAreaElement;
+  const bioCount = document.getElementById('biography-count');
+  if (bio && bioCount) {
+    const update = () => { bioCount.textContent = `${wordCount(bio)} words — target ~300`; };
+    bio.addEventListener('input', update);
+    update();
+  }
+</script>
   <fieldset>
     <legend>Identity</legend>
     <div class="two-col">
@@ -148,7 +160,7 @@ const join = (arr: string[] | null | undefined) => arr?.join(", ") ?? "";
     <div class="field">
       <label for="biography_short">Biography</label>
       <textarea id="biography_short" name="biography_short" rows={v ? 14 : 10}>{v?.biography_short ?? ""}</textarea>
-      <p class="hint">~300 words</p>
+      <p class="hint" id="biography-count">~300 words</p>
     </div>
     <div class="two-col">
       <div class="field">

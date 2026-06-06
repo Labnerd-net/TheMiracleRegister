@@ -20,6 +20,22 @@ const currentTopics = new Set(v?.topics ?? []);
 ---
 
 <form method="post">
+<script>
+  function wordCount(el: HTMLTextAreaElement): number {
+    return el.value.trim() ? el.value.trim().split(/\s+/).length : 0;
+  }
+  const synopsis = document.getElementById('synopsis') as HTMLTextAreaElement;
+  const synopsisCount = document.getElementById('synopsis-count');
+  if (synopsis && synopsisCount) {
+    const update = () => {
+      const n = wordCount(synopsis);
+      const status = n < 500 ? ' — too short' : n > 1000 ? ' — too long' : ' — good';
+      synopsisCount.textContent = `${n} words (500–1000${status})`;
+    };
+    synopsis.addEventListener('input', update);
+    update();
+  }
+</script>
   <fieldset>
     <legend>Identity</legend>
     <div class="field">
@@ -214,7 +230,7 @@ const currentTopics = new Set(v?.topics ?? []);
     <div class="field">
       <label for="synopsis">Synopsis</label>
       <textarea id="synopsis" name="synopsis" rows={v ? 20 : 16}>{v?.synopsis ?? ""}</textarea>
-      <p class="hint">500–1000 words narrative</p>
+      <p class="hint" id="synopsis-count">500–1000 words narrative</p>
     </div>
     <div class="field">
       <label>

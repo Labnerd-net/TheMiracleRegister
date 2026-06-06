@@ -14,7 +14,7 @@ const { title } = Astro.props;
       *, *::before, *::after { box-sizing: border-box; }
       body {
         font-family: system-ui, sans-serif;
-        max-width: 1100px;
+        max-width: 1400px;
         margin: 0 auto;
         padding: 1rem 1.5rem 3rem;
         color: #1a1a1a;
@@ -44,7 +44,7 @@ const { title } = Astro.props;
       .badge-green { background: #dcfce7; color: #166534; }
       .badge-red { background: #fee2e2; color: #991b1b; }
       form { max-width: 100%; }
-      fieldset { border: 1px solid #ddd; border-radius: 6px; padding: 1rem 1.25rem; margin-bottom: 1.5rem; }
+      fieldset { border: 1px solid #ddd; border-radius: 6px; padding: 1rem 1.25rem; margin-bottom: 1.5rem; min-width: 0; width: 100%; }
       legend { font-size: 0.75rem; text-transform: uppercase; letter-spacing: 0.05em; color: #666; padding: 0 0.4rem; }
       .field { margin-bottom: 1rem; }
       .field:last-child { margin-bottom: 0; }
@@ -65,13 +65,13 @@ const { title } = Astro.props;
         outline-offset: 1px;
         border-color: #2a5db0;
       }
-      textarea { resize: vertical; min-height: 100px; }
+      textarea { resize: vertical; min-height: 100px; font-size: 1rem; line-height: 1.6; }
       .hint { font-size: 0.75rem; color: #888; margin-top: 0.2rem; }
       .checkbox-group { display: flex; flex-wrap: wrap; gap: 0.4rem; }
       .checkbox-group label { display: inline-flex; align-items: center; gap: 0.3rem; font-weight: normal; font-size: 0.8rem; color: #333; background: #f5f5f5; border: 1px solid #ddd; border-radius: 3px; padding: 0.2rem 0.5rem; cursor: pointer; }
       .checkbox-group label:has(input:checked) { background: #e8f0fe; border-color: #2a5db0; color: #2a5db0; }
       .checkbox-group input[type="checkbox"] { width: auto; }
-      .form-actions { display: flex; gap: 1rem; align-items: center; margin-top: 1.5rem; }
+      .form-actions { display: flex; gap: 1rem; align-items: center; margin-top: 1.5rem; position: sticky; bottom: 0; background: white; padding: 0.75rem 0; border-top: 1px solid #ddd; z-index: 10; }
       .btn { display: inline-block; padding: 0.5rem 1.25rem; border-radius: 4px; font-size: 0.9rem; font-family: inherit; cursor: pointer; border: none; text-decoration: none; }
       .btn-primary { background: #2a5db0; color: white; }
       .btn-primary:hover { background: #1e4a8a; }
