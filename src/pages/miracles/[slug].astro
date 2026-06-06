@@ -21,6 +21,9 @@ const fmt = (s: string) => s.replace(/_/g, " ");
 ---
 
 <Base title={miracle.title}>
+  {miracle.location_lat && miracle.location_lng && (
+    <link slot="head" rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+  )}
 
   <div class="page-header">
     <div class="max-w-6xl mx-auto px-4 sm:px-8 py-4">
@@ -126,6 +129,13 @@ const fmt = (s: string) => s.replace(/_/g, " ");
         </section>
       )}
 
+      {miracle.location_lat && miracle.location_lng && (
+        <section class="mb-9 pb-9 section-rule">
+          <p class="eyebrow mb-4">Location</p>
+          <div id="miracle-map" style="height:320px;width:100%;background:var(--bg-elevated)"></div>
+        </section>
+      )}
+
       {sources.length > 0 && (
         <section>
           <p class="eyebrow mb-5">Sources</p>
@@ -169,5 +179,26 @@ const fmt = (s: string) => s.replace(/_/g, " ");
     </aside>
 
   </div>
+
+  {miracle.location_lat && miracle.location_lng && (
+    <>
+      <script is:inline src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+      <script is:inline define:vars={{
+        lat: miracle.location_lat,
+        lng: miracle.location_lng,
+        locationName: miracle.location_name,
+        country: miracle.country,
+      }}>
+        const map = L.map('miracle-map').setView([Number(lat), Number(lng)], 7);
+        L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
+          attribution: '© <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors',
+          maxZoom: 19,
+        }).addTo(map);
+        const label = [locationName, country].filter(Boolean).join(', ');
+        const marker = L.marker([Number(lat), Number(lng)]).addTo(map);
+        if (label) marker.bindPopup(label).openPopup();
+      </script>
+    </>
+  )}
 
 </Base>
