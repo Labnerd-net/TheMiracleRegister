@@ -6,9 +6,10 @@ import { sql, asc } from "drizzle-orm";
 import { env } from "cloudflare:workers";
 
 const db = createDb(env.DATABASE_URL);
-const [[{ saintCount }], [{ miracleCount }], featuredSaints] = await Promise.all([
+const [[{ saintCount }], [{ miracleCount }], [{ countryCount }], featuredSaints] = await Promise.all([
   db.select({ saintCount: sql<number>`count(*)::int` }).from(saints),
   db.select({ miracleCount: sql<number>`count(*)::int` }).from(miracles),
+  db.select({ countryCount: sql<number>`count(distinct country)::int` }).from(miracles),
   db.select({
     slug: saints.slug,
     name: saints.name,
@@ -53,8 +54,8 @@ const [[{ saintCount }], [{ miracleCount }], featuredSaints] = await Promise.all
         <span style="font-family:var(--font-sans);font-size:0.65rem;font-weight:600;letter-spacing:0.12em;text-transform:uppercase;color:var(--text-4);margin-top:0.4rem;display:block">Miracles Recorded</span>
       </div>
       <div class="stat-item stat-item--last">
-        <span style="font-family:var(--font-display);font-size:3rem;font-weight:300;color:var(--text-1);display:block;line-height:1;letter-spacing:-0.02em">Vatican</span>
-        <span style="font-family:var(--font-sans);font-size:0.65rem;font-weight:600;letter-spacing:0.12em;text-transform:uppercase;color:var(--text-4);margin-top:0.4rem;display:block">Primary Sources</span>
+        <span style="font-family:var(--font-display);font-size:3rem;font-weight:300;color:var(--text-1);display:block;line-height:1;letter-spacing:-0.02em">{countryCount}</span>
+        <span style="font-family:var(--font-sans);font-size:0.65rem;font-weight:600;letter-spacing:0.12em;text-transform:uppercase;color:var(--text-4);margin-top:0.4rem;display:block">Countries</span>
       </div>
     </div>
   </section>
