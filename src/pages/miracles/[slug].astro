@@ -4,6 +4,7 @@ import { createDb } from "../../db";
 import { miracles, saints, miracleSources } from "../../db/schema";
 import { eq } from "drizzle-orm";
 import { env } from "cloudflare:workers";
+import { renderMarkdown } from "../../lib/markdown";
 
 const { slug } = Astro.params;
 const db = createDb(env.DATABASE_URL);
@@ -116,16 +117,14 @@ const fmt = (s: string) => s.replace(/_/g, " ");
       {miracle.cure_details && (
         <section class="mb-9 pb-9 section-rule">
           <p class="eyebrow mb-4">Cure Details</p>
-          <p style="font-size:1.05rem;color:var(--text-2);line-height:1.8">{miracle.cure_details}</p>
+          <div class="prose" set:html={renderMarkdown(miracle.cure_details)} />
         </section>
       )}
 
       {miracle.synopsis && (
         <section class="mb-9 pb-9 section-rule">
           <p class="eyebrow mb-5">Synopsis</p>
-          <div style="font-size:1.05rem;color:var(--text-2);line-height:1.8" class="space-y-4">
-            {miracle.synopsis.split("\n\n").map((para) => <p>{para}</p>)}
-          </div>
+          <div class="prose" set:html={renderMarkdown(miracle.synopsis)} />
         </section>
       )}
 

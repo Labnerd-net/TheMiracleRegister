@@ -159,6 +159,13 @@ const join = (arr: string[] | null | undefined) => arr?.join(", ") ?? "";
     <legend>Content</legend>
     <div class="field">
       <label for="biography_short">Biography</label>
+      <div class="md-cheatsheet">
+        <strong>Markdown supported —</strong>
+        <code>*italic*</code> &nbsp;
+        <code>**bold**</code> &nbsp;
+        <code>[link text](https://...)</code> &nbsp;
+        blank line = new paragraph
+      </div>
       <textarea id="biography_short" name="biography_short" rows={v ? 14 : 10}>{v?.biography_short ?? ""}</textarea>
       <p class="hint" id="biography-count">~300 words</p>
     </div>

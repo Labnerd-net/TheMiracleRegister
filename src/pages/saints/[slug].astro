@@ -4,6 +4,7 @@ import { createDb } from "../../db";
 import { saints, miracles, saintRelations } from "../../db/schema";
 import { eq } from "drizzle-orm";
 import { env } from "cloudflare:workers";
+import { renderMarkdown } from "../../lib/markdown";
 
 const { slug } = Astro.params;
 const db = createDb(env.DATABASE_URL);
@@ -126,7 +127,7 @@ const [saintMiracles, relatedRows] = await Promise.all([
       {saint.biography_short && (
         <div class="mb-11 pb-11 section-rule">
           <p class="eyebrow mb-5">Biography</p>
-          <p style="font-size:1.05rem;color:var(--text-2);line-height:1.8">{saint.biography_short}</p>
+          <div class="prose" set:html={renderMarkdown(saint.biography_short)} />
         </div>
       )}
 

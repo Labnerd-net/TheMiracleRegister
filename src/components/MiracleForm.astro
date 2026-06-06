@@ -157,6 +157,13 @@ const currentTopics = new Set(v?.topics ?? []);
     </div>
     <div class="field">
       <label for="cure_details">Cure Details</label>
+      <div class="md-cheatsheet">
+        <strong>Markdown —</strong>
+        <code>*italic*</code> &nbsp;
+        <code>**bold**</code> &nbsp;
+        <code>[link text](https://...)</code> &nbsp;
+        blank line = new paragraph
+      </div>
       <textarea id="cure_details" name="cure_details" rows="6">{v?.cure_details ?? ""}</textarea>
     </div>
     <div class="two-col">
@@ -229,6 +236,15 @@ const currentTopics = new Set(v?.topics ?? []);
     <legend>Content</legend>
     <div class="field">
       <label for="synopsis">Synopsis</label>
+      <div class="md-cheatsheet">
+        <strong>Markdown supported —</strong>
+        <code>*italic*</code> &nbsp;
+        <code>**bold**</code> &nbsp;
+        <code>[link text](https://...)</code> &nbsp;
+        blank line = new paragraph &nbsp;·&nbsp;
+        <code>- item</code> for lists &nbsp;·&nbsp;
+        <code>&lt;sup&gt;1&lt;/sup&gt;</code> for superscript
+      </div>
       <textarea id="synopsis" name="synopsis" rows={v ? 20 : 16}>{v?.synopsis ?? ""}</textarea>
       <p class="hint" id="synopsis-count">500–1000 words narrative</p>
     </div>
