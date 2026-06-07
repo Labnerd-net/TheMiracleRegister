@@ -20,6 +20,13 @@ const currentTopics = new Set(v?.topics ?? []);
 ---
 
 <form method="post">
+  <div class="field" style="margin-bottom:1rem">
+    <label>
+      <input type="hidden" name="published" value="false" />
+      <input type="checkbox" name="published" value="true" checked={v?.published} />
+      Published (visible on public site)
+    </label>
+  </div>
 <script>
   function wordCount(el: HTMLTextAreaElement): number {
     return el.value.trim() ? el.value.trim().split(/\s+/).length : 0;
@@ -266,13 +273,6 @@ const currentTopics = new Set(v?.topics ?? []);
         <input type="hidden" name="has_primary_sources" value="false" />
         <input type="checkbox" name="has_primary_sources" value="true" checked={v?.has_primary_sources} />
         Has Primary Sources
-      </label>
-    </div>
-    <div class="field">
-      <label>
-        <input type="hidden" name="published" value="false" />
-        <input type="checkbox" name="published" value="true" checked={v?.published} />
-        Published (visible on public site)
       </label>
     </div>
   </fieldset>

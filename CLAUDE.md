@@ -63,7 +63,8 @@ A data-driven website documenting miracles attributed to Catholic saints. Focuse
 | patronage | text[] | GIN indexed |
 | themes | text[] | GIN indexed — standardized spiritual/devotional tags. Canonical list in `src/db/topics.ts` (`SAINT_THEMES`). |
 | biography_short | text | ~300 words |
-| total_attributed_miracles | integer | optional |
+| gender | enum | male, female, group |
+| lay_person | boolean | true if not a religious or clergy |
 | image_url | text | |
 | wikipedia_url | text | |
 | published | boolean | default false — controls public visibility |
@@ -100,6 +101,8 @@ Saint pages show related saints as links. API response includes a `related_saint
 | country | text | |
 | region | text | optional, e.g. "Quebec" |
 | recipient_name | text | null for associated miracles |
+| recipient_gender | enum | male, female, not_applicable |
+| recipient_country | text | country recipient is from (may differ from miracle location) |
 | recipient_privacy | enum | public, first_name_only, confidential, not_applicable |
 | recipient_age_at_event | integer | optional |
 | medical_diagnosis | text | null for non-healing |

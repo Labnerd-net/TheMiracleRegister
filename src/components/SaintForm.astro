@@ -15,6 +15,13 @@ const join = (arr: string[] | null | undefined) => arr?.join(", ") ?? "";
 ---
 
 <form method="post">
+  <div class="field" style="margin-bottom:1rem">
+    <label>
+      <input type="hidden" name="published" value="false" />
+      <input type="checkbox" name="published" value="true" checked={v?.published} />
+      Published (visible on public site)
+    </label>
+  </div>
 <script>
   function wordCount(el: HTMLTextAreaElement): number {
     return el.value.trim() ? el.value.trim().split(/\s+/).length : 0;
@@ -170,13 +177,6 @@ const join = (arr: string[] | null | undefined) => arr?.join(", ") ?? "";
     <div class="field">
       <label for="wikipedia_url">Wikipedia URL</label>
       <input type="url" id="wikipedia_url" name="wikipedia_url" value={v?.wikipedia_url ?? ""} />
-    </div>
-    <div class="field">
-      <label>
-        <input type="hidden" name="published" value="false" />
-        <input type="checkbox" name="published" value="true" checked={v?.published} />
-        Published (visible on public site)
-      </label>
     </div>
   </fieldset>
 
