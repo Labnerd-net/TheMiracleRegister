@@ -229,7 +229,7 @@ async function seed() {
         gender: "male",
         lay_person: true,
         image_url: "https://upload.wikimedia.org/wikipedia/commons/3/38/Louis_Martin_1.jpg",
-        wikipedia_url: "https://en.wikipedia.org/wiki/Louis_and_Zelie_Martin",
+        wikipedia_url: "https://en.wikipedia.org/wiki/Louis_Martin_and_Marie-Az%C3%A9lie_Gu%C3%A9rin",
       },
       {
         slug: "zelie-martin",
@@ -251,7 +251,7 @@ async function seed() {
         gender: "female",
         lay_person: true,
         image_url: "https://upload.wikimedia.org/wikipedia/commons/a/a2/Z%C3%A9lie_Martin_1.jpg",
-        wikipedia_url: "https://en.wikipedia.org/wiki/Louis_and_Zelie_Martin",
+        wikipedia_url: "https://en.wikipedia.org/wiki/Louis_Martin_and_Marie-Az%C3%A9lie_Gu%C3%A9rin",
       },
       {
         slug: "carlo-acutis",
