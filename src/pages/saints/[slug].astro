@@ -130,11 +130,35 @@ const deathLocation = locations.find(l => l.location_type === "death_place");
             {saint.name.charAt(0)}
           </div>
         )}
+
+        <div class="card p-5 mt-4">
+          <p class="eyebrow mb-5">Record</p>
+          <dl class="meta-grid">
+            {saint.birth_date && (
+              <><dt>Born</dt><dd>{saint.birth_date}{birthLocation ? <><br/><span style="color:var(--text-4)">{birthLocation.location_name}</span></> : ""}</dd></>
+            )}
+            {saint.death_date && (
+              <><dt>Died</dt><dd>{saint.death_date}{deathLocation ? <><br/><span style="color:var(--text-4)">{deathLocation.location_name}</span></> : ""}</dd></>
+            )}
+            {saint.beatification_date && (
+              <><dt>Beatified</dt><dd>{saint.beatification_date}{saint.beatified_by ? <><br/><span style="color:var(--text-4)">{saint.beatified_by}</span></> : ""}</dd></>
+            )}
+            {saint.canonization_date && (
+              <><dt>Canonized</dt><dd>{saint.canonization_date}{saint.canonized_by ? <><br/><span style="color:var(--text-4)">{saint.canonized_by}</span></> : ""}</dd></>
+            )}
+            {saint.total_attributed_miracles != null && (
+              <><dt>Miracles</dt><dd>{saint.total_attributed_miracles}</dd></>
+            )}
+            {saint.wikipedia_url && (
+              <><dt>External</dt><dd><a href={saint.wikipedia_url} target="_blank" rel="noopener" style="font-size:0.8rem">Wikipedia ↗</a></dd></>
+            )}
+          </dl>
+        </div>
       </div>
     </div>
   </div>
 
-  <div class="max-w-6xl mx-auto px-4 sm:px-8 py-10 sm:py-14 lg:grid lg:grid-cols-[1fr_240px] lg:gap-12">
+  <div class="max-w-6xl mx-auto px-4 sm:px-8 py-10 sm:py-14">
 
     <div>
       {saint.patronage && saint.patronage.length > 0 && (
@@ -233,32 +257,6 @@ const deathLocation = locations.find(l => l.location_type === "death_place");
         </div>
       )}
     </div>
-
-    <aside>
-      <div class="card p-5 lg:sticky lg:top-24">
-        <p class="eyebrow mb-5">Record</p>
-        <dl class="meta-grid">
-          {saint.birth_date && (
-            <><dt>Born</dt><dd>{saint.birth_date}{birthLocation ? <><br/><span style="color:var(--text-4)">{birthLocation.location_name}</span></> : ""}</dd></>
-          )}
-          {saint.death_date && (
-            <><dt>Died</dt><dd>{saint.death_date}{deathLocation ? <><br/><span style="color:var(--text-4)">{deathLocation.location_name}</span></> : ""}</dd></>
-          )}
-          {saint.beatification_date && (
-            <><dt>Beatified</dt><dd>{saint.beatification_date}{saint.beatified_by ? <><br/><span style="color:var(--text-4)">{saint.beatified_by}</span></> : ""}</dd></>
-          )}
-          {saint.canonization_date && (
-            <><dt>Canonized</dt><dd>{saint.canonization_date}{saint.canonized_by ? <><br/><span style="color:var(--text-4)">{saint.canonized_by}</span></> : ""}</dd></>
-          )}
-          {saint.total_attributed_miracles != null && (
-            <><dt>Miracles</dt><dd>{saint.total_attributed_miracles}</dd></>
-          )}
-          {saint.wikipedia_url && (
-            <><dt>External</dt><dd><a href={saint.wikipedia_url} target="_blank" rel="noopener" style="font-size:0.8rem">Wikipedia ↗</a></dd></>
-          )}
-        </dl>
-      </div>
-    </aside>
 
   </div>
 
