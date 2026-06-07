@@ -53,6 +53,8 @@ const [saintMiracles, relatedRows, sources, locations] = await Promise.all([
 ]);
 
 const mappableLocations = locations.filter(l => l.lat && l.lng);
+const birthLocation = locations.find(l => l.location_type === "birthplace");
+const deathLocation = locations.find(l => l.location_type === "death_place");
 ---
 
 <Base title={saint.name}>
@@ -237,10 +239,10 @@ const mappableLocations = locations.filter(l => l.lat && l.lng);
         <p class="eyebrow mb-5">Record</p>
         <dl class="meta-grid">
           {saint.birth_date && (
-            <><dt>Born</dt><dd>{saint.birth_date}</dd></>
+            <><dt>Born</dt><dd>{saint.birth_date}{birthLocation ? <><br/><span style="color:var(--text-4)">{birthLocation.location_name}</span></> : ""}</dd></>
           )}
           {saint.death_date && (
-            <><dt>Died</dt><dd>{saint.death_date}</dd></>
+            <><dt>Died</dt><dd>{saint.death_date}{deathLocation ? <><br/><span style="color:var(--text-4)">{deathLocation.location_name}</span></> : ""}</dd></>
           )}
           {saint.beatification_date && (
             <><dt>Beatified</dt><dd>{saint.beatification_date}{saint.beatified_by ? <><br/><span style="color:var(--text-4)">{saint.beatified_by}</span></> : ""}</dd></>
