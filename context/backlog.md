@@ -1,6 +1,6 @@
 # Project Backlog
 
-> Generated: 2026-06-04 — Last updated: 2026-06-06
+> Generated: 2026-06-04 — Last updated: 2026-06-07
 > Focus: Full audit
 
 ---
@@ -23,6 +23,8 @@
 ## Feature Ideas
 
 ### Medium
+- **#37 [src/pages/map.astro]** World map page at `/map` showing all geolocated saints and miracles as pins, with toggleable layer groups (e.g. apparitions, eucharistic miracles, saint tombs/shrines, intercessory healings). Uses `saint_locations` and miracle `location_lat/lng`. Groups should map to existing `type` enum values and `location_type` enum values so no schema changes are needed.
+- **#36 [src/pages/, src/api/routes/]** Full-text search across saints and miracles. API stub at `GET /api/v1/search` exists but is unimplemented. Needs Postgres full-text search (or `ilike`) on saint name, miracle title, medical diagnosis, and cure details, plus a public `/search` page with results grouped by type.
 - **#26 [src/pages/miracles/index.astro]** Interactive filtering UI on the miracles list page. API supports `saint_id`, `type`, `country`, `year_from`, `year_to` but the frontend has no filter controls.
 - **#27 [src/pages/miracles/[slug].astro]** Related miracles by topic on the miracle detail page. GIN index on `topics` already exists. Show 3–5 miracles with overlapping topics (excluding self).
 - **#28 [src/api/routes/]** API metadata endpoint at `/api/v1/metadata` returning canonical filter options: types, countries, `MIRACLE_TOPICS`, `SAINT_THEMES`.
@@ -44,5 +46,5 @@
 | Bugs | 0 | 0 | 1 | 1 |
 | Performance | 0 | 0 | 0 | 0 |
 | Improvements & Refactors | 0 | 0 | 0 | 0 |
-| Feature Ideas | 0 | 4 | 4 | 8 |
-| **Total** | **0** | **4** | **5** | **9** |
+| Feature Ideas | 0 | 6 | 4 | 10 |
+| **Total** | **0** | **6** | **5** | **11** |
