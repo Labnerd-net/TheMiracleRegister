@@ -7,6 +7,9 @@ const db = createDb(process.env.DATABASE_URL!);
 const LOREM_BIO =
   "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum. Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium, totam rem aperiam eaque ipsa quae ab illo inventore veritatis et quasi architecto beatae vitae dicta sunt explicabo.";
 
+const LOREM_SYNOPSIS =
+  "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum. Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium, totam rem aperiam eaque ipsa quae ab illo inventore veritatis et quasi architecto beatae vitae dicta sunt explicabo. Nemo enim ipsam voluptatem quia voluptas sit aspernatur aut odit aut fugit, sed quia consequuntur magni dolores eos qui ratione voluptatem sequi nesciunt. Neque porro quisquam est, qui dolorem ipsum quia dolor sit amet consectetur adipisci velit.";
+
 const CARLO_ACUTIS_BIO_NOTE =
   "Note: Carlo's body was exhumed in 2007 and found to have undergone normal decay (not incorrupt). His remains are displayed in a glass tomb at the Sanctuary of Santa Maria Maggiore in Assisi, covered with a wax layer molded to resemble his living appearance — a common Italian tradition also used for St. John XXIII. The Church has NOT declared his body incorrupt. He wears a tracksuit and sneakers. Popular online claims of incorruptibility are inaccurate.";
 
@@ -40,6 +43,7 @@ async function seed() {
         canonization_stage: "saint",
         patronage: ["World Youth Day", "families", "young Catholics"],
         themes: ["perseverance", "missionaries", "eucharistic", "marian", "conversion"],
+        biography_short: LOREM_BIO,
         total_attributed_miracles: 2,
         image_url: "https://upload.wikimedia.org/wikipedia/commons/3/34/JPII_29_09_2004_2.JPG",
         wikipedia_url: "https://en.wikipedia.org/wiki/Pope_John_Paul_II",
@@ -61,6 +65,7 @@ async function seed() {
         canonization_stage: "saint",
         patronage: ["Missionaries of Charity", "poor and sick"],
         themes: ["conversion", "missionaries", "hope", "perseverance", "eucharistic"],
+        biography_short: LOREM_BIO,
         total_attributed_miracles: 2,
         image_url: "https://upload.wikimedia.org/wikipedia/commons/8/8e/MotherTeresa_090.jpg",
         wikipedia_url: "https://en.wikipedia.org/wiki/Mother_Teresa",
@@ -82,6 +87,7 @@ async function seed() {
         canonization_stage: "saint",
         patronage: ["stress relief", "civil defense volunteers", "adolescents"],
         themes: ["eucharistic", "marian", "spiritual-direction", "conversion", "perseverance"],
+        biography_short: LOREM_BIO,
         total_attributed_miracles: 2,
         image_url: "https://upload.wikimedia.org/wikipedia/commons/5/51/Padre_Pio_portrait.jpg",
         wikipedia_url: "https://en.wikipedia.org/wiki/Padre_Pio",
@@ -103,6 +109,7 @@ async function seed() {
         canonization_stage: "saint",
         patronage: ["Divine Mercy devotion", "sinners", "World Youth Day"],
         themes: ["conversion", "marian", "perseverance", "hope", "eucharistic"],
+        biography_short: LOREM_BIO,
         total_attributed_miracles: 2,
         image_url:
           "https://upload.wikimedia.org/wikipedia/commons/0/0c/Saint_Faustyna_Kowalska_portrait_%281931%29.jpg",
@@ -124,6 +131,7 @@ async function seed() {
         canonization_stage: "saint",
         patronage: ["mothers", "families", "physicians", "unborn children"],
         themes: ["saints-of-everyday-life", "perseverance", "marian", "hope", "eucharistic"],
+        biography_short: LOREM_BIO,
         total_attributed_miracles: 2,
         image_url: "https://upload.wikimedia.org/wikipedia/commons/8/87/GiannaBerettaMolla.jpg",
         wikipedia_url: "https://en.wikipedia.org/wiki/Gianna_Beretta_Molla",
@@ -144,6 +152,7 @@ async function seed() {
         canonization_stage: "saint",
         patronage: ["Native Americans", "ecology", "environmentalists", "exiles"],
         themes: ["conversion", "marian", "missionaries", "perseverance", "hope"],
+        biography_short: LOREM_BIO,
         total_attributed_miracles: 2,
         image_url: "https://upload.wikimedia.org/wikipedia/commons/1/14/Kateri_Tekakwitha_1690.jpg",
         wikipedia_url: "https://en.wikipedia.org/wiki/Kateri_Tekakwitha",
@@ -165,6 +174,7 @@ async function seed() {
         canonization_stage: "saint",
         patronage: ["The sick", "the grieving", "family caregivers"],
         themes: ["spiritual-direction", "eucharistic", "marian", "perseverance", "saints-of-everyday-life"],
+        biography_short: LOREM_BIO,
         total_attributed_miracles: 2,
         image_url: "https://upload.wikimedia.org/wikipedia/commons/e/e6/Fr%C3%A8re_Andr%C3%A9_1920.jpg",
         wikipedia_url: "https://en.wikipedia.org/wiki/Andre_Bessette",
@@ -186,6 +196,7 @@ async function seed() {
         canonization_stage: "saint",
         patronage: ["addicts", "journalists", "prisoners", "families", "pro-life movement"],
         themes: ["martyrs", "marian", "perseverance", "conversion", "missionaries"],
+        biography_short: LOREM_BIO,
         total_attributed_miracles: 2,
         image_url: "https://upload.wikimedia.org/wikipedia/commons/e/e9/Fr.Maximilian_Kolbe_1939.jpg",
         wikipedia_url: "https://en.wikipedia.org/wiki/Maximilian_Kolbe",
@@ -206,6 +217,7 @@ async function seed() {
         canonization_stage: "saint",
         patronage: ["married couples", "families", "parents", "Catholic families"],
         themes: ["saints-of-everyday-life", "conversion", "perseverance", "hope", "marian"],
+        biography_short: LOREM_BIO,
         total_attributed_miracles: 1,
         image_url: "https://upload.wikimedia.org/wikipedia/commons/3/38/Louis_Martin_1.jpg",
         wikipedia_url: "https://en.wikipedia.org/wiki/Louis_and_Zelie_Martin",
@@ -226,6 +238,7 @@ async function seed() {
         canonization_stage: "saint",
         patronage: ["married couples", "families", "parents", "Catholic families"],
         themes: ["saints-of-everyday-life", "conversion", "perseverance", "hope", "marian"],
+        biography_short: LOREM_BIO,
         total_attributed_miracles: 1,
         image_url: "https://upload.wikimedia.org/wikipedia/commons/a/a2/Z%C3%A9lie_Martin_1.jpg",
         wikipedia_url: "https://en.wikipedia.org/wiki/Louis_and_Zelie_Martin",
@@ -266,6 +279,7 @@ async function seed() {
         canonization_stage: "saint",
         patronage: ["indigenous peoples of the Americas"],
         themes: ["conversion", "marian", "perseverance", "hope", "saints-of-everyday-life"],
+        biography_short: LOREM_BIO,
         total_attributed_miracles: 2,
         image_url: "https://upload.wikimedia.org/wikipedia/commons/c/ca/Juan-Diego.jpg",
         wikipedia_url: "https://en.wikipedia.org/wiki/Juan_Diego",
@@ -329,6 +343,7 @@ async function seed() {
         vatican_medical_board_verdict: "Declared medically inexplicable in 2009",
         used_for_beatification: true,
         used_for_canonization: false,
+        synopsis: LOREM_SYNOPSIS,
         has_primary_sources: true,
       },
       {
@@ -358,6 +373,7 @@ async function seed() {
         vatican_medical_board_verdict: "Declared medically inexplicable in 2013",
         used_for_beatification: false,
         used_for_canonization: true,
+        synopsis: LOREM_SYNOPSIS,
         has_primary_sources: true,
       },
 
@@ -390,6 +406,7 @@ async function seed() {
         vatican_medical_board_verdict: "Declared medically inexplicable in 2002",
         used_for_beatification: true,
         used_for_canonization: false,
+        synopsis: LOREM_SYNOPSIS,
         has_primary_sources: true,
       },
       {
@@ -420,6 +437,7 @@ async function seed() {
         vatican_medical_board_verdict: "Declared medically inexplicable in 2015",
         used_for_beatification: false,
         used_for_canonization: true,
+        synopsis: LOREM_SYNOPSIS,
         has_primary_sources: true,
       },
 
@@ -450,6 +468,7 @@ async function seed() {
         vatican_medical_board_verdict: "Declared medically inexplicable",
         used_for_beatification: true,
         used_for_canonization: false,
+        synopsis: LOREM_SYNOPSIS,
         has_primary_sources: true,
       },
       {
@@ -479,6 +498,7 @@ async function seed() {
         vatican_medical_board_verdict: "Declared medically inexplicable",
         used_for_beatification: false,
         used_for_canonization: true,
+        synopsis: LOREM_SYNOPSIS,
         has_primary_sources: true,
       },
       {
@@ -505,6 +525,7 @@ async function seed() {
         vatican_medical_board_verdict: "Vatican commission (1925) declared wounds not of natural origin",
         used_for_beatification: false,
         used_for_canonization: false,
+        synopsis: LOREM_SYNOPSIS,
         has_primary_sources: true,
       },
       {
@@ -527,6 +548,7 @@ async function seed() {
         vatican_recognized: true,
         used_for_beatification: false,
         used_for_canonization: false,
+        synopsis: LOREM_SYNOPSIS,
         has_primary_sources: true,
       },
 
@@ -559,6 +581,7 @@ async function seed() {
         vatican_medical_board_verdict: "Declared medically inexplicable in 1992",
         used_for_beatification: true,
         used_for_canonization: false,
+        synopsis: LOREM_SYNOPSIS,
         has_primary_sources: true,
       },
       {
@@ -589,6 +612,7 @@ async function seed() {
         vatican_medical_board_verdict: "Declared medically inexplicable in 1999",
         used_for_beatification: false,
         used_for_canonization: true,
+        synopsis: LOREM_SYNOPSIS,
         has_primary_sources: true,
       },
       {
@@ -616,6 +640,7 @@ async function seed() {
         vatican_decree_date: "2000-01-01",
         used_for_beatification: false,
         used_for_canonization: false,
+        synopsis: LOREM_SYNOPSIS,
         has_primary_sources: true,
       },
 
@@ -647,6 +672,7 @@ async function seed() {
         vatican_medical_board_verdict: "Declared medically inexplicable",
         used_for_beatification: true,
         used_for_canonization: false,
+        synopsis: LOREM_SYNOPSIS,
         has_primary_sources: true,
       },
       {
@@ -673,6 +699,7 @@ async function seed() {
         vatican_medical_board_verdict: "Declared medically inexplicable",
         used_for_beatification: false,
         used_for_canonization: true,
+        synopsis: LOREM_SYNOPSIS,
         has_primary_sources: true,
       },
 
@@ -697,6 +724,7 @@ async function seed() {
         vatican_recognized: true,
         used_for_beatification: true,
         used_for_canonization: false,
+        synopsis: LOREM_SYNOPSIS,
         has_primary_sources: false,
       },
       {
@@ -727,6 +755,7 @@ async function seed() {
         vatican_medical_board_verdict: "Declared medically inexplicable",
         used_for_beatification: false,
         used_for_canonization: true,
+        synopsis: LOREM_SYNOPSIS,
         has_primary_sources: true,
       },
       {
@@ -757,6 +786,7 @@ async function seed() {
         vatican_recognized: true,
         used_for_beatification: false,
         used_for_canonization: false,
+        synopsis: LOREM_SYNOPSIS,
         has_primary_sources: true,
       },
 
@@ -788,6 +818,7 @@ async function seed() {
         vatican_medical_board_verdict: "Declared medically inexplicable",
         used_for_beatification: true,
         used_for_canonization: false,
+        synopsis: LOREM_SYNOPSIS,
         has_primary_sources: true,
       },
       {
@@ -815,6 +846,7 @@ async function seed() {
         vatican_medical_board_verdict: "Declared medically inexplicable",
         used_for_beatification: false,
         used_for_canonization: true,
+        synopsis: LOREM_SYNOPSIS,
         has_primary_sources: true,
       },
 
@@ -843,6 +875,7 @@ async function seed() {
         vatican_medical_board_verdict: "Declared medically inexplicable",
         used_for_beatification: true,
         used_for_canonization: false,
+        synopsis: LOREM_SYNOPSIS,
         has_primary_sources: true,
       },
       {
@@ -868,6 +901,7 @@ async function seed() {
         vatican_medical_board_verdict: "Declared medically inexplicable",
         used_for_beatification: true,
         used_for_canonization: false,
+        synopsis: LOREM_SYNOPSIS,
         has_primary_sources: true,
       },
 
@@ -897,6 +931,7 @@ async function seed() {
         vatican_medical_board_verdict: "Declared medically inexplicable",
         used_for_beatification: true,
         used_for_canonization: false,
+        synopsis: LOREM_SYNOPSIS,
         has_primary_sources: true,
       },
       {
@@ -929,6 +964,7 @@ async function seed() {
         vatican_medical_board_verdict: "Eight doctors testified no scientific explanation for the cure",
         used_for_beatification: false,
         used_for_canonization: true,
+        synopsis: LOREM_SYNOPSIS,
         has_primary_sources: true,
       },
 
@@ -959,6 +995,7 @@ async function seed() {
         vatican_medical_board_verdict: "Declared medically inexplicable",
         used_for_beatification: true,
         used_for_canonization: false,
+        synopsis: LOREM_SYNOPSIS,
         has_primary_sources: true,
       },
       {
@@ -990,6 +1027,7 @@ async function seed() {
           "Recognized as second miracle by Pope Francis on May 23, 2024; canonized Sept 7, 2025",
         used_for_beatification: false,
         used_for_canonization: true,
+        synopsis: LOREM_SYNOPSIS,
         has_primary_sources: true,
       },
 
@@ -1025,6 +1063,7 @@ async function seed() {
           "5 consultors unanimous medically inexplicable (1998); theological board unanimous (May 2001); decree signed Dec 20, 2001",
         used_for_beatification: false,
         used_for_canonization: true,
+        synopsis: LOREM_SYNOPSIS,
         has_primary_sources: true,
       },
       {
@@ -1051,6 +1090,7 @@ async function seed() {
         vatican_recognized: true,
         used_for_beatification: false,
         used_for_canonization: false,
+        synopsis: LOREM_SYNOPSIS,
         has_primary_sources: true,
       },
     ])
