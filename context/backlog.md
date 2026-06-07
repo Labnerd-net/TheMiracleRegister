@@ -30,6 +30,8 @@
 - **#28 [src/api/routes/]** API metadata endpoint at `/api/v1/metadata` returning canonical filter options: types, countries, `MIRACLE_TOPICS`, `SAINT_THEMES`.
 - **#30 [src/db/schema/miracles.ts]** Timeline/chronological browse at `/miracles/timeline` grouping by decade using `date_of_event`.
 
+- **#38 [src/pages/miracles/[slug].astro]** Show recipient country on miracle detail page when it differs from the miracle location country (e.g. "Recipient from Costa Rica" for a miracle that occurred in Florence). Adds context for pilgrimage/travel cases without cluttering records where they match.
+
 ### Low
 - **#32 [src/pages/admin/miracles/[slug]/edit.astro]** Batch source import for admin — CSV/JSON paste to bulk-create `miracle_sources` records. Currently one-by-one only.
 - **#33 [src/pages/admin/index.astro]** Admin analytics dashboard — extend beyond total counts with aggregations by country, type, topic, canonization stage.
@@ -46,5 +48,5 @@
 | Bugs | 0 | 0 | 1 | 1 |
 | Performance | 0 | 0 | 0 | 0 |
 | Improvements & Refactors | 0 | 0 | 0 | 0 |
-| Feature Ideas | 0 | 6 | 4 | 10 |
-| **Total** | **0** | **6** | **5** | **11** |
+| Feature Ideas | 0 | 7 | 4 | 11 |
+| **Total** | **0** | **7** | **5** | **12** |
