@@ -123,7 +123,7 @@ const deathLocation = locations.find(l => l.location_type === "death_place");
       <div class="mt-8 lg:mt-8">
         {saint.image_url ? (
           <div class="saint-header-img overflow-hidden" style="background:var(--bg-elevated)">
-            <img src={saint.image_url} alt={saint.name} class="w-full h-full object-cover object-top" />
+            <img src={saint.image_url} alt={saint.name} class="w-full h-full object-cover object-center" />
           </div>
         ) : (
           <div class="saint-header-img saint-placeholder">
