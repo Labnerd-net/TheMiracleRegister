@@ -145,12 +145,6 @@ const join = (arr: string[] | null | undefined) => arr?.join(", ") ?? "";
       <textarea id="biography_short" name="biography_short" rows={v ? 14 : 10}>{v?.biography_short ?? ""}</textarea>
       <p class="hint" id="biography-count">~300 words</p>
     </div>
-    <div class="two-col">
-      <div class="field">
-        <label for="total_attributed_miracles">Total Attributed Miracles</label>
-        <input type="number" id="total_attributed_miracles" name="total_attributed_miracles" value={v?.total_attributed_miracles ?? ""} min="0" />
-      </div>
-    </div>
     <div class="field">
       <label for="image_url">Image URL</label>
       <input type="url" id="image_url" name="image_url" value={v?.image_url ?? ""} />

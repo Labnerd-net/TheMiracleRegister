@@ -146,9 +146,6 @@ const deathLocation = locations.find(l => l.location_type === "death_place");
             {saint.canonization_date && (
               <><dt>Canonized</dt><dd>{saint.canonization_date}{saint.canonized_by ? <><br/><span style="color:var(--text-4)">{saint.canonized_by}</span></> : ""}</dd></>
             )}
-            {saint.total_attributed_miracles != null && (
-              <><dt>Miracles</dt><dd>{saint.total_attributed_miracles}</dd></>
-            )}
             {saint.wikipedia_url && (
               <><dt>External</dt><dd><a href={saint.wikipedia_url} target="_blank" rel="noopener" style="font-size:0.8rem">Wikipedia ↗</a></dd></>
             )}

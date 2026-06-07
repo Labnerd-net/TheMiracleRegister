@@ -41,7 +41,6 @@ saintsRoute.openapi(
           feast_day: saints.feast_day,
           nationality: saints.nationality,
           image_url: saints.image_url,
-          total_attributed_miracles: saints.total_attributed_miracles,
         })
         .from(saints)
         .where(eq(saints.published, true))

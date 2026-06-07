@@ -92,6 +92,13 @@
       "when": 1780771922169,
       "tag": "0012_glorious_shaman",
       "breakpoints": true
+    },
+    {
+      "idx": 13,
+      "version": "7",
+      "when": 1780807916959,
+      "tag": "0013_rare_beast",
+      "breakpoints": true
     }
   ]
 }

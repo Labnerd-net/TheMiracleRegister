@@ -1,0 +1,1 @@
+ALTER TABLE "saints" DROP COLUMN "total_attributed_miracles";

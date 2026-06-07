@@ -30,7 +30,6 @@ export const SaintListItemSchema = z
     feast_day: z.string().nullable(),
     nationality: z.string().nullable(),
     image_url: z.string().nullable(),
-    total_attributed_miracles: z.number().int().nullable(),
   })
   .openapi("SaintListItem");
 
@@ -87,7 +86,6 @@ export const SaintDetailSchema = z
     patronage: z.array(z.string()).nullable(),
     themes: z.array(z.string()).nullable(),
     biography_short: z.string().nullable(),
-    total_attributed_miracles: z.number().int().nullable(),
     image_url: z.string().nullable(),
     wikipedia_url: z.string().nullable(),
     related_saints: z.array(RelatedSaintSchema),

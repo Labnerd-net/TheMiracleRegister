@@ -41,9 +41,6 @@ if (Astro.request.method === "POST") {
       patronage: getArr("patronage"),
       themes: getMulti("themes"),
       biography_short: get("biography_short") || null,
-      total_attributed_miracles: get("total_attributed_miracles")
-        ? parseInt(get("total_attributed_miracles"))
-        : null,
       image_url: get("image_url") || null,
       wikipedia_url: get("wikipedia_url") || null,
       published: getBool("published"),
