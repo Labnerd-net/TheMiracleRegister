@@ -193,6 +193,20 @@ All routes under `/api/v1/`. Hono + `@hono/zod-openapi` — OpenAPI spec generat
 
 ---
 
+## Seeding
+
+- Seed script: `npm run db:seed` (`src/db/seed.ts`)
+- The seed **truncates all tables** before inserting, so it is safe to re-run
+- All seeded records default to `published = false` — they will not appear on the public site until published
+- After seeding, publish everything with:
+  ```sql
+  UPDATE saints SET published = true;
+  UPDATE miracles SET published = true;
+  ```
+- The single Neon branch is **production** (`br-proud-block-aptdevzb`). `DATABASE_URL` in `.env` points to it directly — running the seed locally hits production.
+
+---
+
 ## Implementation Order
 
 1. Drizzle schema + Neon setup (dev branch + prod branch)
