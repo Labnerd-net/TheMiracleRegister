@@ -103,3 +103,15 @@ export const sourceType = pgEnum("source_type", [
   "academic",
   "other",
 ]);
+
+export const gender = pgEnum("gender", [
+  "male",
+  "female",
+  "group",
+]);
+
+export const recipientGender = pgEnum("recipient_gender", [
+  "male",
+  "female",
+  "not_applicable",
+]);

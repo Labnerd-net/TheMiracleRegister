@@ -3,7 +3,7 @@ import AdminBase from "../../../layouts/AdminBase.astro";
 import { createDb } from "../../../db";
 import { saints } from "../../../db/schema";
 import { slugify } from "../../../lib/slugify";
-import { canonizationType, canonizationStage } from "../../../db/schema/enums";
+import { canonizationType, canonizationStage, gender } from "../../../db/schema/enums";
 import { parseEnum, formHelpers } from "../../../lib/form-utils";
 import { SaintFormSchema, formatZodErrors } from "../../../lib/form-schemas";
 import SaintForm from "../../../components/SaintForm.astro";
@@ -41,6 +41,8 @@ if (Astro.request.method === "POST") {
       patronage: getArr("patronage"),
       themes: getMulti("themes"),
       biography_short: get("biography_short") || null,
+      gender: parseEnum(get("gender"), gender.enumValues),
+      lay_person: getBool("lay_person"),
       image_url: get("image_url") || null,
       wikipedia_url: get("wikipedia_url") || null,
       published: getBool("published"),

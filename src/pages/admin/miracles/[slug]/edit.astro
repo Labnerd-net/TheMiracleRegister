@@ -5,7 +5,7 @@ import { miracles, saints, miracleSources } from "../../../../db/schema";
 import { asc, eq } from "drizzle-orm";
 import {
   miracleCategory, miracleType, datePrecision, timingRelativeToSaintDeath,
-  recipientPrivacy, cureCharacteristics, intercessoryMedium, sourceType,
+  recipientPrivacy, recipientGender, cureCharacteristics, intercessoryMedium, sourceType,
 } from "../../../../db/schema/enums";
 import { parseEnum, formHelpers } from "../../../../lib/form-utils";
 import { MiracleFormSchema, formatZodErrors } from "../../../../lib/form-schemas";
@@ -77,6 +77,8 @@ if (Astro.request.method === "POST") {
         country: get("country") || null,
         region: get("region") || null,
         recipient_name: get("recipient_name") || null,
+        recipient_gender: parseEnum(get("recipient_gender"), recipientGender.enumValues),
+        recipient_country: get("recipient_country") || null,
         recipient_privacy: parseEnum(get("recipient_privacy"), recipientPrivacy.enumValues) ?? miracle.recipient_privacy,
         recipient_age_at_event: get("recipient_age_at_event") ? parseInt(get("recipient_age_at_event")) : null,
         medical_diagnosis: get("medical_diagnosis") || null,

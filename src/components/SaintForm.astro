@@ -1,6 +1,6 @@
 ---
 import { SAINT_THEMES } from "../db/topics";
-import { canonizationType, canonizationStage } from "../db/schema/enums";
+import { canonizationType, canonizationStage, gender } from "../db/schema/enums";
 import type { saints } from "../db/schema";
 
 type Saint = typeof saints.$inferSelect;
@@ -133,6 +133,24 @@ const join = (arr: string[] | null | undefined) => arr?.join(", ") ?? "";
 
   <fieldset>
     <legend>Content</legend>
+    <div class="two-col">
+      <div class="field">
+        <label for="gender">Gender</label>
+        <select id="gender" name="gender">
+          <option value="">— select —</option>
+          {gender.enumValues.map((t) => (
+            <option value={t} selected={v?.gender === t}>{t}</option>
+          ))}
+        </select>
+      </div>
+      <div class="field">
+        <label>
+          <input type="hidden" name="lay_person" value="false" />
+          <input type="checkbox" name="lay_person" value="true" checked={v?.lay_person ?? false} />
+          Lay person (not a religious or clergy)
+        </label>
+      </div>
+    </div>
     <div class="field">
       <label for="biography_short">Biography</label>
       <div class="md-cheatsheet">

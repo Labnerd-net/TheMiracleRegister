@@ -6,6 +6,7 @@ import {
   intercessoryMedium,
   miracleCategory,
   miracleType,
+  recipientGender,
   recipientPrivacy,
   timingRelativeToSaintDeath,
 } from "./enums";
@@ -33,6 +34,8 @@ export const miracles = pgTable(
     country: text("country"),
     region: text("region"),
     recipient_name: text("recipient_name"),
+    recipient_gender: recipientGender("recipient_gender"),
+    recipient_country: text("recipient_country"),
     recipient_privacy: recipientPrivacy("recipient_privacy").notNull(),
     recipient_age_at_event: integer("recipient_age_at_event"),
     medical_diagnosis: text("medical_diagnosis"),

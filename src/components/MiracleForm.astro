@@ -2,7 +2,7 @@
 import { MIRACLE_TOPICS } from "../db/topics";
 import {
   miracleCategory, miracleType, datePrecision, timingRelativeToSaintDeath,
-  recipientPrivacy, cureCharacteristics, intercessoryMedium,
+  recipientPrivacy, recipientGender, cureCharacteristics, intercessoryMedium,
 } from "../db/schema/enums";
 import type { miracles, saints } from "../db/schema";
 
@@ -141,6 +141,19 @@ const currentTopics = new Set(v?.topics ?? []);
             <option value={t} selected={v ? v.recipient_privacy === t : t === "public"}>{t}</option>
           ))}
         </select>
+      </div>
+      <div class="field">
+        <label for="recipient_gender">Gender</label>
+        <select id="recipient_gender" name="recipient_gender">
+          <option value="">— select —</option>
+          {recipientGender.enumValues.map((t) => (
+            <option value={t} selected={v?.recipient_gender === t}>{t.replace(/_/g, " ")}</option>
+          ))}
+        </select>
+      </div>
+      <div class="field">
+        <label for="recipient_country">Recipient Country</label>
+        <input type="text" id="recipient_country" name="recipient_country" value={v?.recipient_country ?? ""} />
       </div>
       <div class="field">
         <label for="recipient_age_at_event">Age at Event</label>
