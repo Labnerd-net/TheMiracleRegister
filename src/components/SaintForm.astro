@@ -49,6 +49,10 @@ const join = (arr: string[] | null | undefined) => arr?.join(", ") ?? "";
       )}
     </div>
     <div class="field">
+      <label for="saint_name">Saint Name</label>
+      <input type="text" id="saint_name" name="saint_name" value={v?.saint_name ?? ""} placeholder="e.g. Saint Teresa of Calcutta" />
+    </div>
+    <div class="field">
       <label for="birth_name">Birth Name</label>
       <input type="text" id="birth_name" name="birth_name" value={v?.birth_name ?? ""} />
     </div>

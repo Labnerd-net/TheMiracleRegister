@@ -2,6 +2,7 @@ export * from "./enums";
 export * from "./saints";
 export * from "./saint-relations";
 export * from "./miracles";
+export * from "./miracle-saints";
 export * from "./miracle-sources";
 export * from "./saint-sources";
 export * from "./saint-locations";

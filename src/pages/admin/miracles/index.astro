@@ -1,8 +1,8 @@
 ---
 import AdminBase from "../../../layouts/AdminBase.astro";
 import { createDb } from "../../../db";
-import { miracles, saints } from "../../../db/schema";
-import { asc, count, eq } from "drizzle-orm";
+import { miracles, miracleSaints, saints } from "../../../db/schema";
+import { asc, count, eq, inArray } from "drizzle-orm";
 import { env } from "cloudflare:workers";
 
 const PAGE_SIZE = 25;
@@ -16,21 +16,39 @@ const [[{ total }], pageMiracles] = await Promise.all([
   db.select({ total: count() }).from(miracles),
   db
     .select({
+      id: miracles.id,
       slug: miracles.slug,
       title: miracles.title,
       type: miracles.type,
       date_of_event: miracles.date_of_event,
       used_for_beatification: miracles.used_for_beatification,
       used_for_canonization: miracles.used_for_canonization,
-      saint_name: saints.name,
-      saint_slug: saints.slug,
     })
     .from(miracles)
-    .innerJoin(saints, eq(miracles.saint_id, saints.id))
-    .orderBy(asc(saints.name), asc(miracles.title))
+    .orderBy(asc(miracles.title))
     .limit(PAGE_SIZE)
     .offset(offset),
 ]);
+
+const miracleIds = pageMiracles.map((m) => m.id);
+const saintLinks =
+  miracleIds.length > 0
+    ? await db
+        .select({
+          miracle_id: miracleSaints.miracle_id,
+          saint_slug: saints.slug,
+          saint_name: saints.name,
+        })
+        .from(miracleSaints)
+        .innerJoin(saints, eq(miracleSaints.saint_id, saints.id))
+        .where(inArray(miracleSaints.miracle_id, miracleIds))
+    : [];
+
+const saintsByMiracle = new Map<number, { saint_slug: string; saint_name: string }[]>();
+for (const link of saintLinks) {
+  if (!saintsByMiracle.has(link.miracle_id)) saintsByMiracle.set(link.miracle_id, []);
+  saintsByMiracle.get(link.miracle_id)!.push({ saint_slug: link.saint_slug, saint_name: link.saint_name });
+}
 
 const totalPages = Math.max(1, Math.ceil(total / PAGE_SIZE));
 if (page > totalPages) return Astro.redirect(`/admin/miracles?page=${totalPages}`);
@@ -49,7 +67,7 @@ const hasNext = page < totalPages;
     <thead>
       <tr>
         <th>Title</th>
-        <th>Saint</th>
+        <th>Saint(s)</th>
         <th>Type</th>
         <th>Date</th>
         <th>Used For</th>
@@ -57,19 +75,32 @@ const hasNext = page < totalPages;
       </tr>
     </thead>
     <tbody>
-      {pageMiracles.map((m) => (
-        <tr>
-          <td><a href={`/miracles/${m.slug}`} target="_blank">{m.title}</a></td>
-          <td><a href={`/saints/${m.saint_slug}`} target="_blank">{m.saint_name}</a></td>
-          <td>{m.type}</td>
-          <td>{m.date_of_event ?? "—"}</td>
-          <td>
-            {m.used_for_beatification && <span class="badge">beatification</span>}
-            {m.used_for_canonization && <span class="badge badge-green">canonization</span>}
-          </td>
-          <td><a href={`/admin/miracles/${m.slug}/edit`}>Edit</a></td>
-        </tr>
-      ))}
+      {pageMiracles.map((m) => {
+        const linked = saintsByMiracle.get(m.id) ?? [];
+        return (
+          <tr>
+            <td><a href={`/miracles/${m.slug}`} target="_blank">{m.title}</a></td>
+            <td>
+              {linked.length === 0
+                ? <span style="color:#aaa">—</span>
+                : linked.map((s, i) => (
+                    <>
+                      {i > 0 && ", "}
+                      <a href={`/saints/${s.saint_slug}`} target="_blank">{s.saint_name}</a>
+                    </>
+                  ))
+              }
+            </td>
+            <td>{m.type}</td>
+            <td>{m.date_of_event ?? "—"}</td>
+            <td>
+              {m.used_for_beatification && <span class="badge">beatification</span>}
+              {m.used_for_canonization && <span class="badge badge-green">canonization</span>}
+            </td>
+            <td><a href={`/admin/miracles/${m.slug}/edit`}>Edit</a></td>
+          </tr>
+        );
+      })}
     </tbody>
   </table>
 

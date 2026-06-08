@@ -29,7 +29,6 @@
 - **#27 [src/pages/miracles/[slug].astro]** Related miracles by topic on the miracle detail page. GIN index on `topics` already exists. Show 3–5 miracles with overlapping topics (excluding self).
 - **#28 [src/api/routes/]** API metadata endpoint at `/api/v1/metadata` returning canonical filter options: types, countries, `MIRACLE_TOPICS`, `SAINT_THEMES`.
 - **#30 [src/db/schema/miracles.ts]** Timeline/chronological browse at `/miracles/timeline` grouping by decade using `date_of_event`.
-
 - **#38 [src/pages/miracles/[slug].astro]** Show recipient country on miracle detail page when it differs from the miracle location country (e.g. "Recipient from Costa Rica" for a miracle that occurred in Florence). Adds context for pilgrimage/travel cases without cluttering records where they match.
 
 ### Low

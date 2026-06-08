@@ -1,7 +1,7 @@
 ---
 import Base from "../../layouts/Base.astro";
 import { createDb } from "../../db";
-import { miracles, saints, miracleSources } from "../../db/schema";
+import { miracles, saints, miracleSaints, miracleSources } from "../../db/schema";
 import { and, eq } from "drizzle-orm";
 import { env } from "cloudflare:workers";
 import { renderMarkdownWithCitations } from "../../lib/markdown";
@@ -11,7 +11,6 @@ const db = createDb(env.DATABASE_URL);
 
 const [miracle] = await db.select({
   id: miracles.id,
-  saint_id: miracles.saint_id,
   title: miracles.title,
   miracle_category: miracles.miracle_category,
   type: miracles.type,
@@ -41,9 +40,11 @@ const [miracle] = await db.select({
 }).from(miracles).where(and(eq(miracles.slug, slug!), eq(miracles.published, true)));
 if (!miracle) return Astro.redirect("/404");
 
-const [[saint], sources] = await Promise.all([
+const [miracleSaintRows, sources] = await Promise.all([
   db.select({ slug: saints.slug, name: saints.name, canonization_stage: saints.canonization_stage, image_url: saints.image_url })
-    .from(saints).where(eq(saints.id, miracle.saint_id)),
+    .from(miracleSaints)
+    .innerJoin(saints, eq(miracleSaints.saint_id, saints.id))
+    .where(eq(miracleSaints.miracle_id, miracle.id)),
   db.select({
     url: miracleSources.url,
     title: miracleSources.title,
@@ -73,16 +74,20 @@ const fmt = (s: string) => s.replace(/_/g, " ");
         </div>
         <h1 style="font-family:var(--font-display);font-size:clamp(2rem,5vw,3.5rem);font-weight:300;color:var(--text-1);line-height:1.1;margin-bottom:1.5rem;letter-spacing:-0.01em">{miracle.title}</h1>
 
-        {saint && (
-          <a href={`/saints/${saint.slug}`} class="inline-flex items-center gap-2.5 no-underline group">
-            {saint.image_url && (
-              <div class="w-8 h-8 rounded-full overflow-hidden shrink-0" style="background:var(--bg-elevated)">
-                <img src={saint.image_url} alt={saint.name} class="w-full h-full object-cover object-top" />
-              </div>
-            )}
-            <span style="font-family:var(--font-sans);font-size:0.82rem;font-weight:500;color:var(--color-accent)" class="group-hover:underline">{saint.name}</span>
-            <span class={`stage-badge ${saint.canonization_stage}`}>{saint.canonization_stage}</span>
-          </a>
+        {miracleSaintRows.length > 0 && (
+          <div class="flex flex-wrap gap-3">
+            {miracleSaintRows.map((saint) => (
+              <a href={`/saints/${saint.slug}`} class="inline-flex items-center gap-2.5 no-underline group">
+                {saint.image_url && (
+                  <div class="w-8 h-8 rounded-full overflow-hidden shrink-0" style="background:var(--bg-elevated)">
+                    <img src={saint.image_url} alt={saint.name} class="w-full h-full object-cover object-top" />
+                  </div>
+                )}
+                <span style="font-family:var(--font-sans);font-size:0.82rem;font-weight:500;color:var(--color-accent)" class="group-hover:underline">{saint.name}</span>
+                <span class={`stage-badge ${saint.canonization_stage}`}>{saint.canonization_stage}</span>
+              </a>
+            ))}
+          </div>
         )}
 
         <div class="flex flex-wrap gap-x-8 gap-y-3 mt-7 pt-7" style="border-top:1px solid var(--rule)">

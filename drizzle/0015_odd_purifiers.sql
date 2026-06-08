@@ -1,0 +1,1 @@
+ALTER TABLE "saints" ADD COLUMN "saint_name" text;

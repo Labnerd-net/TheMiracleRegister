@@ -19,6 +19,7 @@ async function seed() {
   await db.delete(schema.saintLocations);
   await db.delete(schema.saintSources);
   await db.delete(schema.saintRelations);
+  await db.delete(schema.miracleSaints);
   await db.delete(schema.miracles);
   await db.delete(schema.saints);
 
@@ -30,6 +31,7 @@ async function seed() {
       {
         slug: "john-paul-ii",
         name: "John Paul II",
+        saint_name: "Saint John Paul II",
         birth_name: "Karol Jozef Wojtyla",
         birth_date: "1920-05-18",
         death_date: "2005-04-02",
@@ -52,6 +54,7 @@ async function seed() {
       {
         slug: "mother-teresa",
         name: "Mother Teresa",
+        saint_name: "Saint Teresa of Calcutta",
         birth_name: "Anjeze Gonxhe Bojaxhiu",
         birth_date: "1910-08-26",
         death_date: "1997-09-05",
@@ -74,7 +77,8 @@ async function seed() {
       },
       {
         slug: "padre-pio",
-        name: "Padre Pio (St. Pio of Pietrelcina)",
+        name: "Padre Pio",
+        saint_name: "Saint Pio of Pietrelcina",
         birth_name: "Francesco Forgione",
         birth_date: "1887-05-25",
         death_date: "1968-09-23",
@@ -98,6 +102,7 @@ async function seed() {
       {
         slug: "faustina-kowalska",
         name: "Faustina Kowalska",
+        saint_name: "Saint Maria Faustina Kowalska",
         birth_name: "Helena Kowalska",
         birth_date: "1905-08-25",
         death_date: "1938-10-05",
@@ -122,6 +127,7 @@ async function seed() {
       {
         slug: "gianna-beretta-molla",
         name: "Gianna Beretta Molla",
+        saint_name: "Saint Gianna Beretta Molla",
         birth_name: "Gianna Beretta Molla",
         birth_date: "1922-10-04",
         death_date: "1962-04-28",
@@ -144,6 +150,7 @@ async function seed() {
       {
         slug: "kateri-tekakwitha",
         name: "Kateri Tekakwitha",
+        saint_name: "Saint Kateri Tekakwitha",
         birth_name: "Kateri Tekakwitha",
         birth_date: "1656-01-01",
         death_date: "1680-04-17",
@@ -165,7 +172,8 @@ async function seed() {
       },
       {
         slug: "andre-bessette",
-        name: "Andre Bessette (Brother Andre)",
+        name: "Brother Andre",
+        saint_name: "Saint Andre of Montreal",
         birth_name: "Andre Bessette",
         birth_date: "1845-08-09",
         death_date: "1937-01-06",
@@ -189,6 +197,7 @@ async function seed() {
       {
         slug: "maximilian-kolbe",
         name: "Maximilian Kolbe",
+        saint_name: "Saint Maximilian Kolbe",
         birth_name: "Rajmund Kolbe",
         birth_date: "1894-01-08",
         death_date: "1941-08-14",
@@ -212,6 +221,7 @@ async function seed() {
       {
         slug: "louis-martin",
         name: "Louis Martin",
+        saint_name: "Saint Louis Martin",
         birth_name: "Louis Martin",
         birth_date: "1823-08-22",
         death_date: "1894-07-29",
@@ -234,6 +244,7 @@ async function seed() {
       {
         slug: "zelie-martin",
         name: "Zélie Martin",
+        saint_name: "Saint Zélie Martin",
         birth_name: "Zelie Guerin Martin",
         birth_date: "1831-12-23",
         death_date: "1877-08-28",
@@ -256,6 +267,7 @@ async function seed() {
       {
         slug: "carlo-acutis",
         name: "Carlo Acutis",
+        saint_name: "Saint Carlo Acutis",
         birth_name: "Carlo Acutis",
         birth_date: "1991-05-03",
         death_date: "2006-10-12",
@@ -277,6 +289,7 @@ async function seed() {
       {
         slug: "juan-diego",
         name: "Juan Diego",
+        saint_name: "Saint Juan Diego",
         birth_name: "Juan Diego Cuauhtlatoatzin",
         birth_date: "1474-01-01",
         death_date: "1548-01-01",
@@ -329,7 +342,6 @@ async function seed() {
     .values([
       // ── John Paul II ──────────────────────────────────────────────────────────
       {
-        saint_id: saintId("john-paul-ii"),
         slug: "healing-of-sr-marie-simon-pierre",
         title: "Healing of Sr. Marie Simon-Pierre",
         miracle_category: "intercessory",
@@ -361,7 +373,6 @@ async function seed() {
         has_primary_sources: true,
       },
       {
-        saint_id: saintId("john-paul-ii"),
         slug: "healing-of-floribeth-mora-diaz",
         title: "Healing of Floribeth Mora Diaz",
         miracle_category: "intercessory",
@@ -395,7 +406,6 @@ async function seed() {
 
       // ── Mother Teresa ─────────────────────────────────────────────────────────
       {
-        saint_id: saintId("mother-teresa"),
         slug: "healing-of-monica-besra",
         title: "Healing of Monica Besra",
         miracle_category: "intercessory",
@@ -428,7 +438,6 @@ async function seed() {
         has_primary_sources: true,
       },
       {
-        saint_id: saintId("mother-teresa"),
         slug: "healing-of-marcilio-haddad-andrino",
         title: "Healing of Marcilio Haddad Andrino",
         miracle_category: "intercessory",
@@ -463,7 +472,6 @@ async function seed() {
 
       // ── Padre Pio ─────────────────────────────────────────────────────────────
       {
-        saint_id: saintId("padre-pio"),
         slug: "healing-of-consiglia-de-martino",
         title: "Healing of Consiglia De Martino",
         miracle_category: "intercessory",
@@ -494,7 +502,6 @@ async function seed() {
         has_primary_sources: true,
       },
       {
-        saint_id: saintId("padre-pio"),
         slug: "healing-of-matteo-pio-colella",
         title: "Healing of Matteo Pio Colella",
         miracle_category: "intercessory",
@@ -526,7 +533,6 @@ async function seed() {
         has_primary_sources: true,
       },
       {
-        saint_id: saintId("padre-pio"),
         slug: "stigmata-of-padre-pio",
         title: "The Stigmata of Padre Pio",
         miracle_category: "associated",
@@ -554,7 +560,6 @@ async function seed() {
         has_primary_sources: true,
       },
       {
-        saint_id: saintId("padre-pio"),
         slug: "bilocation-of-padre-pio",
         title: "Bilocation of Padre Pio",
         miracle_category: "associated",
@@ -580,7 +585,6 @@ async function seed() {
 
       // ── Faustina Kowalska ─────────────────────────────────────────────────────
       {
-        saint_id: saintId("faustina-kowalska"),
         slug: "healing-of-maureen-digan",
         title: "Healing of Maureen Digan",
         miracle_category: "intercessory",
@@ -613,7 +617,6 @@ async function seed() {
         has_primary_sources: true,
       },
       {
-        saint_id: saintId("faustina-kowalska"),
         slug: "healing-of-fr-ronald-pytel",
         title: "Healing of Fr. Ronald Pytel",
         miracle_category: "intercessory",
@@ -646,7 +649,6 @@ async function seed() {
         has_primary_sources: true,
       },
       {
-        saint_id: saintId("faustina-kowalska"),
         slug: "divine-mercy-revelations",
         title: "Divine Mercy Revelations to St. Faustina",
         miracle_category: "associated",
@@ -678,7 +680,6 @@ async function seed() {
 
       // ── Gianna Beretta Molla ───────────────────────────────────────────────────
       {
-        saint_id: saintId("gianna-beretta-molla"),
         slug: "healing-of-lucia-sylvia-cirilo",
         title: "Healing of Lucia Sylvia Cirilo",
         miracle_category: "intercessory",
@@ -710,7 +711,6 @@ async function seed() {
         has_primary_sources: true,
       },
       {
-        saint_id: saintId("gianna-beretta-molla"),
         slug: "healing-of-elizabeth-comparini-arcolino",
         title: "Healing of Elizabeth Comparini Arcolino",
         miracle_category: "intercessory",
@@ -741,7 +741,6 @@ async function seed() {
 
       // ── Kateri Tekakwitha ─────────────────────────────────────────────────────
       {
-        saint_id: saintId("kateri-tekakwitha"),
         slug: "healing-of-native-american-boy",
         title: "Healing of an Unnamed Native American Boy",
         miracle_category: "intercessory",
@@ -766,7 +765,6 @@ async function seed() {
         has_primary_sources: false,
       },
       {
-        saint_id: saintId("kateri-tekakwitha"),
         slug: "healing-of-jake-finkbonner",
         title: "Healing of Jake Finkbonner",
         miracle_category: "intercessory",
@@ -799,7 +797,6 @@ async function seed() {
         has_primary_sources: true,
       },
       {
-        saint_id: saintId("kateri-tekakwitha"),
         slug: "vanishing-of-smallpox-scars",
         title: "Vanishing of Smallpox Scars at Death",
         miracle_category: "associated",
@@ -834,7 +831,6 @@ async function seed() {
 
       // ── André Bessette ────────────────────────────────────────────────────────
       {
-        saint_id: saintId("andre-bessette"),
         slug: "healing-of-giuseppe-carlo-audino",
         title: "Healing of Giuseppe Carlo Audino",
         miracle_category: "intercessory",
@@ -866,7 +862,6 @@ async function seed() {
         has_primary_sources: true,
       },
       {
-        saint_id: saintId("andre-bessette"),
         slug: "healing-of-child-traumatic-brain-injury",
         title: "Healing of a Child from Traumatic Brain Injury",
         miracle_category: "intercessory",
@@ -899,7 +894,6 @@ async function seed() {
       // ── Maximilian Kolbe ──────────────────────────────────────────────────────
       // Canonized as martyr — no canonization miracle required; both miracles are for beatification.
       {
-        saint_id: saintId("maximilian-kolbe"),
         slug: "healing-of-angela-testoni",
         title: "Healing of Angela Testoni",
         miracle_category: "intercessory",
@@ -927,7 +921,6 @@ async function seed() {
         has_primary_sources: true,
       },
       {
-        saint_id: saintId("maximilian-kolbe"),
         slug: "healing-of-francis-ranier",
         title: "Healing of Francis Ranier",
         miracle_category: "intercessory",
@@ -957,7 +950,6 @@ async function seed() {
 
       // ── Louis & Zélie Martin ──────────────────────────────────────────────────
       {
-        saint_id: saintId("louis-martin"),
         slug: "healing-of-pietro-schiliro",
         title: "Healing of Pietro Schiliro",
         miracle_category: "intercessory",
@@ -987,7 +979,6 @@ async function seed() {
         has_primary_sources: true,
       },
       {
-        saint_id: saintId("zelie-martin"),
         slug: "healing-of-carmen-valencia",
         title: "Healing of Carmen (infant born in Valencia)",
         miracle_category: "intercessory",
@@ -1024,7 +1015,6 @@ async function seed() {
 
       // ── Carlo Acutis ──────────────────────────────────────────────────────────
       {
-        saint_id: saintId("carlo-acutis"),
         slug: "healing-of-matheus",
         title: "Healing of Matheus (Pancreatic Disease)",
         miracle_category: "intercessory",
@@ -1055,7 +1045,6 @@ async function seed() {
         has_primary_sources: true,
       },
       {
-        saint_id: saintId("carlo-acutis"),
         slug: "healing-of-valeria-valverde",
         title: "Healing of Valeria Valverde",
         miracle_category: "intercessory",
@@ -1091,7 +1080,6 @@ async function seed() {
 
       // ── Juan Diego ────────────────────────────────────────────────────────────
       {
-        saint_id: saintId("juan-diego"),
         slug: "healing-of-juan-jose-barragan-silva",
         title: "Healing of Juan José Barragán Silva",
         miracle_category: "intercessory",
@@ -1127,7 +1115,6 @@ async function seed() {
         has_primary_sources: true,
       },
       {
-        saint_id: saintId("juan-diego"),
         slug: "tilma-of-guadalupe",
         title: "The Tilma of Our Lady of Guadalupe",
         miracle_category: "associated",
@@ -1164,6 +1151,50 @@ async function seed() {
     if (!m) throw new Error(`Miracle not found: ${slug}`);
     return m.id;
   };
+
+  console.log("Seeding miracle saints...");
+
+  await db.insert(schema.miracleSaints).values([
+    // John Paul II
+    { miracle_id: miracleId("healing-of-sr-marie-simon-pierre"), saint_id: saintId("john-paul-ii") },
+    { miracle_id: miracleId("healing-of-floribeth-mora-diaz"), saint_id: saintId("john-paul-ii") },
+    // Mother Teresa
+    { miracle_id: miracleId("healing-of-monica-besra"), saint_id: saintId("mother-teresa") },
+    { miracle_id: miracleId("healing-of-marcilio-haddad-andrino"), saint_id: saintId("mother-teresa") },
+    // Padre Pio
+    { miracle_id: miracleId("healing-of-consiglia-de-martino"), saint_id: saintId("padre-pio") },
+    { miracle_id: miracleId("healing-of-matteo-pio-colella"), saint_id: saintId("padre-pio") },
+    { miracle_id: miracleId("stigmata-of-padre-pio"), saint_id: saintId("padre-pio") },
+    { miracle_id: miracleId("bilocation-of-padre-pio"), saint_id: saintId("padre-pio") },
+    // Faustina Kowalska
+    { miracle_id: miracleId("healing-of-maureen-digan"), saint_id: saintId("faustina-kowalska") },
+    { miracle_id: miracleId("healing-of-fr-ronald-pytel"), saint_id: saintId("faustina-kowalska") },
+    { miracle_id: miracleId("divine-mercy-revelations"), saint_id: saintId("faustina-kowalska") },
+    // Gianna Beretta Molla
+    { miracle_id: miracleId("healing-of-lucia-sylvia-cirilo"), saint_id: saintId("gianna-beretta-molla") },
+    { miracle_id: miracleId("healing-of-elizabeth-comparini-arcolino"), saint_id: saintId("gianna-beretta-molla") },
+    // Kateri Tekakwitha
+    { miracle_id: miracleId("healing-of-native-american-boy"), saint_id: saintId("kateri-tekakwitha") },
+    { miracle_id: miracleId("healing-of-jake-finkbonner"), saint_id: saintId("kateri-tekakwitha") },
+    { miracle_id: miracleId("vanishing-of-smallpox-scars"), saint_id: saintId("kateri-tekakwitha") },
+    // Andre Bessette
+    { miracle_id: miracleId("healing-of-giuseppe-carlo-audino"), saint_id: saintId("andre-bessette") },
+    { miracle_id: miracleId("healing-of-child-traumatic-brain-injury"), saint_id: saintId("andre-bessette") },
+    // Maximilian Kolbe
+    { miracle_id: miracleId("healing-of-angela-testoni"), saint_id: saintId("maximilian-kolbe") },
+    { miracle_id: miracleId("healing-of-francis-ranier"), saint_id: saintId("maximilian-kolbe") },
+    // Louis & Zélie Martin — both miracles attributed to both saints jointly
+    { miracle_id: miracleId("healing-of-pietro-schiliro"), saint_id: saintId("louis-martin") },
+    { miracle_id: miracleId("healing-of-pietro-schiliro"), saint_id: saintId("zelie-martin") },
+    { miracle_id: miracleId("healing-of-carmen-valencia"), saint_id: saintId("louis-martin") },
+    { miracle_id: miracleId("healing-of-carmen-valencia"), saint_id: saintId("zelie-martin") },
+    // Carlo Acutis
+    { miracle_id: miracleId("healing-of-matheus"), saint_id: saintId("carlo-acutis") },
+    { miracle_id: miracleId("healing-of-valeria-valverde"), saint_id: saintId("carlo-acutis") },
+    // Juan Diego
+    { miracle_id: miracleId("healing-of-juan-jose-barragan-silva"), saint_id: saintId("juan-diego") },
+    { miracle_id: miracleId("tilma-of-guadalupe"), saint_id: saintId("juan-diego") },
+  ]);
 
   console.log("Seeding miracle sources...");
 

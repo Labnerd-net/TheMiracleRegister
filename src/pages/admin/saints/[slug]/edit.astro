@@ -84,6 +84,7 @@ if (Astro.request.method === "POST") {
   } else try {
     await db.update(saints).set({
       name: get("name") || saint.name,
+      saint_name: get("saint_name") || null,
       birth_name: get("birth_name") || null,
       birth_date: get("birth_date") || null,
       death_date: get("death_date") || null,

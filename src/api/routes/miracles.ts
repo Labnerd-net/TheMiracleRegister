@@ -1,7 +1,7 @@
 import { OpenAPIHono, createRoute, z } from "@hono/zod-openapi";
-import { and, asc, eq, gte, ilike, lte, sql } from "drizzle-orm";
+import { and, asc, eq, gte, ilike, inArray, lte, sql } from "drizzle-orm";
 import { createDb } from "../../db";
-import { miracleSources, miracles, saints } from "../../db/schema";
+import { miracleSaints, miracleSources, miracles, saints } from "../../db/schema";
 import {
   MiracleDetailSchema,
   MiracleListItemSchema,
@@ -11,6 +11,29 @@ import {
 import type { ApiEnv } from "../env";
 
 const miraclesRoute = new OpenAPIHono<ApiEnv>();
+
+async function fetchSaintsForMiracles(
+  db: ReturnType<typeof createDb>,
+  miracleIds: number[]
+): Promise<Map<number, { id: number; slug: string; name: string }[]>> {
+  const map = new Map<number, { id: number; slug: string; name: string }[]>();
+  if (miracleIds.length === 0) return map;
+  const links = await db
+    .select({
+      miracle_id: miracleSaints.miracle_id,
+      id: saints.id,
+      slug: saints.slug,
+      name: saints.name,
+    })
+    .from(miracleSaints)
+    .innerJoin(saints, eq(miracleSaints.saint_id, saints.id))
+    .where(inArray(miracleSaints.miracle_id, miracleIds));
+  for (const link of links) {
+    if (!map.has(link.miracle_id)) map.set(link.miracle_id, []);
+    map.get(link.miracle_id)!.push({ id: link.id, slug: link.slug, name: link.name });
+  }
+  return map;
+}
 
 miraclesRoute.openapi(
   createRoute({
@@ -30,7 +53,14 @@ miraclesRoute.openapi(
     const db = createDb(c.env.DATABASE_URL);
 
     const conditions = [eq(miracles.published, true)];
-    if (saint_id !== undefined) conditions.push(eq(miracles.saint_id, saint_id));
+    if (saint_id !== undefined) {
+      conditions.push(
+        inArray(
+          miracles.id,
+          db.select({ id: miracleSaints.miracle_id }).from(miracleSaints).where(eq(miracleSaints.saint_id, saint_id))
+        )
+      );
+    }
     if (type !== undefined) conditions.push(eq(miracles.type, type));
     if (country !== undefined) conditions.push(ilike(miracles.country, `%${country}%`));
     if (year_from !== undefined)
@@ -54,7 +84,6 @@ miraclesRoute.openapi(
           recipient_name: miracles.recipient_name,
           was_medically_verified: miracles.was_medically_verified,
           vatican_recognized: miracles.vatican_recognized,
-          saint_id: miracles.saint_id,
         })
         .from(miracles)
         .where(where)
@@ -64,7 +93,10 @@ miraclesRoute.openapi(
       db.select({ total: sql<number>`count(*)::int` }).from(miracles).where(where),
     ]);
 
-    return c.json({ data: rows, meta: { page, limit, total }, error: null }, 200);
+    const saintsByMiracleId = await fetchSaintsForMiracles(db, rows.map((r) => r.id));
+    const data = rows.map((r) => ({ ...r, saints: saintsByMiracleId.get(r.id) ?? [] }));
+
+    return c.json({ data, meta: { page, limit, total }, error: null }, 200);
   }
 );
 
@@ -119,24 +151,28 @@ miraclesRoute.openapi(
       used_for_canonization: miracles.used_for_canonization,
       synopsis: miracles.synopsis,
       has_primary_sources: miracles.has_primary_sources,
-      saint_id: miracles.saint_id,
+      recipient_gender: miracles.recipient_gender,
+      recipient_country: miracles.recipient_country,
     }).from(miracles).where(and(eq(miracles.slug, slug), eq(miracles.published, true)));
     if (!miracle) {
       return c.json({ data: null, meta: null, error: "Not found" }, 404);
     }
 
-    const sources = await db
-      .select({
-        id: miracleSources.id,
-        url: miracleSources.url,
-        title: miracleSources.title,
-        source_type: miracleSources.source_type,
-        accessed_date: miracleSources.accessed_date,
-      })
-      .from(miracleSources)
-      .where(eq(miracleSources.miracle_id, miracle.id));
+    const [sources, saintsByMiracleId] = await Promise.all([
+      db
+        .select({
+          id: miracleSources.id,
+          url: miracleSources.url,
+          title: miracleSources.title,
+          source_type: miracleSources.source_type,
+          accessed_date: miracleSources.accessed_date,
+        })
+        .from(miracleSources)
+        .where(eq(miracleSources.miracle_id, miracle.id)),
+      fetchSaintsForMiracles(db, [miracle.id]),
+    ]);
 
-    const data = { ...miracle, sources };
+    const data = { ...miracle, saints: saintsByMiracleId.get(miracle.id) ?? [], sources };
 
     // cast needed: Hono can't reconcile 200/404 response union types at compile time
     return c.json({ data: data as z.infer<typeof MiracleDetailSchema>, meta: null, error: null }, 200);
