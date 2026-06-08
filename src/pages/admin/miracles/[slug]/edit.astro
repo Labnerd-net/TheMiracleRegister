@@ -82,6 +82,7 @@ if (Astro.request.method === "POST") {
         recipient_country: get("recipient_country") || null,
         recipient_privacy: parseEnum(get("recipient_privacy"), recipientPrivacy.enumValues) ?? miracle.recipient_privacy,
         recipient_age_at_event: get("recipient_age_at_event") ? parseInt(get("recipient_age_at_event")) : null,
+        recipient_age_approximate: getBool("recipient_age_approximate"),
         medical_diagnosis: get("medical_diagnosis") || null,
         cure_details: get("cure_details") || null,
         cure_characteristics: parseEnum(get("cure_characteristics"), cureCharacteristics.enumValues) ?? miracle.cure_characteristics,

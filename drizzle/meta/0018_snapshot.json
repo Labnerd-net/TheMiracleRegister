@@ -1,0 +1,1052 @@
+{
+  "id": "ed4eb172-d1a0-4968-bd71-e20f5ffa6bbd",
+  "prevId": "45c63d3d-6716-4c88-9827-7ee881abbde2",
+  "version": "7",
+  "dialect": "postgresql",
+  "tables": {
+    "public.saints": {
+      "name": "saints",
+      "schema": "",
+      "columns": {
+        "id": {
+          "name": "id",
+          "type": "serial",
+          "primaryKey": true,
+          "notNull": true
+        },
+        "slug": {
+          "name": "slug",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "name": {
+          "name": "name",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "saint_name": {
+          "name": "saint_name",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "birth_name": {
+          "name": "birth_name",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "birth_date": {
+          "name": "birth_date",
+          "type": "date",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "death_date": {
+          "name": "death_date",
+          "type": "date",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "feast_day": {
+          "name": "feast_day",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "religious_order": {
+          "name": "religious_order",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "nationality": {
+          "name": "nationality",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "ministry_country": {
+          "name": "ministry_country",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "beatification_date": {
+          "name": "beatification_date",
+          "type": "date",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "beatified_by": {
+          "name": "beatified_by",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "canonization_date": {
+          "name": "canonization_date",
+          "type": "date",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "canonized_by": {
+          "name": "canonized_by",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "canonization_type": {
+          "name": "canonization_type",
+          "type": "canonization_type",
+          "typeSchema": "public",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "canonization_stage": {
+          "name": "canonization_stage",
+          "type": "canonization_stage",
+          "typeSchema": "public",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "patronage": {
+          "name": "patronage",
+          "type": "text[]",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "themes": {
+          "name": "themes",
+          "type": "text[]",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "biography_short": {
+          "name": "biography_short",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "gender": {
+          "name": "gender",
+          "type": "gender",
+          "typeSchema": "public",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "lay_person": {
+          "name": "lay_person",
+          "type": "boolean",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "beatification_miracle_dispensed": {
+          "name": "beatification_miracle_dispensed",
+          "type": "boolean",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "canonization_miracle_dispensed": {
+          "name": "canonization_miracle_dispensed",
+          "type": "boolean",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "dispensation_reason": {
+          "name": "dispensation_reason",
+          "type": "dispensation_reason",
+          "typeSchema": "public",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "image_url": {
+          "name": "image_url",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "wikipedia_url": {
+          "name": "wikipedia_url",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "published": {
+          "name": "published",
+          "type": "boolean",
+          "primaryKey": false,
+          "notNull": true,
+          "default": false
+        },
+        "created_at": {
+          "name": "created_at",
+          "type": "timestamp with time zone",
+          "primaryKey": false,
+          "notNull": true,
+          "default": "now()"
+        },
+        "updated_at": {
+          "name": "updated_at",
+          "type": "timestamp with time zone",
+          "primaryKey": false,
+          "notNull": true,
+          "default": "now()"
+        }
+      },
+      "indexes": {
+        "saints_patronage_gin_idx": {
+          "name": "saints_patronage_gin_idx",
+          "columns": [
+            {
+              "expression": "patronage",
+              "isExpression": false,
+              "asc": true,
+              "nulls": "last"
+            }
+          ],
+          "isUnique": false,
+          "concurrently": false,
+          "method": "gin",
+          "with": {}
+        },
+        "saints_themes_gin_idx": {
+          "name": "saints_themes_gin_idx",
+          "columns": [
+            {
+              "expression": "themes",
+              "isExpression": false,
+              "asc": true,
+              "nulls": "last"
+            }
+          ],
+          "isUnique": false,
+          "concurrently": false,
+          "method": "gin",
+          "with": {}
+        }
+      },
+      "foreignKeys": {},
+      "compositePrimaryKeys": {},
+      "uniqueConstraints": {
+        "saints_slug_unique": {
+          "name": "saints_slug_unique",
+          "nullsNotDistinct": false,
+          "columns": [
+            "slug"
+          ]
+        }
+      },
+      "policies": {},
+      "checkConstraints": {},
+      "isRLSEnabled": false
+    },
+    "public.saint_relations": {
+      "name": "saint_relations",
+      "schema": "",
+      "columns": {
+        "saint_id": {
+          "name": "saint_id",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "related_saint_id": {
+          "name": "related_saint_id",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "relation_type": {
+          "name": "relation_type",
+          "type": "relation_type",
+          "typeSchema": "public",
+          "primaryKey": false,
+          "notNull": true
+        }
+      },
+      "indexes": {},
+      "foreignKeys": {
+        "saint_relations_saint_id_saints_id_fk": {
+          "name": "saint_relations_saint_id_saints_id_fk",
+          "tableFrom": "saint_relations",
+          "tableTo": "saints",
+          "columnsFrom": [
+            "saint_id"
+          ],
+          "columnsTo": [
+            "id"
+          ],
+          "onDelete": "no action",
+          "onUpdate": "no action"
+        },
+        "saint_relations_related_saint_id_saints_id_fk": {
+          "name": "saint_relations_related_saint_id_saints_id_fk",
+          "tableFrom": "saint_relations",
+          "tableTo": "saints",
+          "columnsFrom": [
+            "related_saint_id"
+          ],
+          "columnsTo": [
+            "id"
+          ],
+          "onDelete": "no action",
+          "onUpdate": "no action"
+        }
+      },
+      "compositePrimaryKeys": {
+        "saint_relations_saint_id_related_saint_id_relation_type_pk": {
+          "name": "saint_relations_saint_id_related_saint_id_relation_type_pk",
+          "columns": [
+            "saint_id",
+            "related_saint_id",
+            "relation_type"
+          ]
+        }
+      },
+      "uniqueConstraints": {},
+      "policies": {},
+      "checkConstraints": {},
+      "isRLSEnabled": false
+    },
+    "public.miracles": {
+      "name": "miracles",
+      "schema": "",
+      "columns": {
+        "id": {
+          "name": "id",
+          "type": "serial",
+          "primaryKey": true,
+          "notNull": true
+        },
+        "slug": {
+          "name": "slug",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "title": {
+          "name": "title",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "miracle_category": {
+          "name": "miracle_category",
+          "type": "miracle_category",
+          "typeSchema": "public",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "type": {
+          "name": "type",
+          "type": "miracle_type",
+          "typeSchema": "public",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "topics": {
+          "name": "topics",
+          "type": "text[]",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "date_of_event": {
+          "name": "date_of_event",
+          "type": "date",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "date_precision": {
+          "name": "date_precision",
+          "type": "date_precision",
+          "typeSchema": "public",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "timing_relative_to_saint_death": {
+          "name": "timing_relative_to_saint_death",
+          "type": "timing_relative_to_saint_death",
+          "typeSchema": "public",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "location_name": {
+          "name": "location_name",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "location_lat": {
+          "name": "location_lat",
+          "type": "numeric(10, 7)",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "location_lng": {
+          "name": "location_lng",
+          "type": "numeric(10, 7)",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "country": {
+          "name": "country",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "region": {
+          "name": "region",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "recipient_name": {
+          "name": "recipient_name",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "recipient_gender": {
+          "name": "recipient_gender",
+          "type": "recipient_gender",
+          "typeSchema": "public",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "recipient_country": {
+          "name": "recipient_country",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "recipient_privacy": {
+          "name": "recipient_privacy",
+          "type": "recipient_privacy",
+          "typeSchema": "public",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "recipient_age_at_event": {
+          "name": "recipient_age_at_event",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "recipient_age_approximate": {
+          "name": "recipient_age_approximate",
+          "type": "boolean",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "medical_diagnosis": {
+          "name": "medical_diagnosis",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "cure_details": {
+          "name": "cure_details",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "cure_characteristics": {
+          "name": "cure_characteristics",
+          "type": "cure_characteristics",
+          "typeSchema": "public",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "was_medically_verified": {
+          "name": "was_medically_verified",
+          "type": "boolean",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "medical_verification_date": {
+          "name": "medical_verification_date",
+          "type": "date",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "intercessory_medium": {
+          "name": "intercessory_medium",
+          "type": "intercessory_medium",
+          "typeSchema": "public",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "vatican_recognized": {
+          "name": "vatican_recognized",
+          "type": "boolean",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "vatican_decree_date": {
+          "name": "vatican_decree_date",
+          "type": "date",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "vatican_medical_board_verdict": {
+          "name": "vatican_medical_board_verdict",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "used_for_beatification": {
+          "name": "used_for_beatification",
+          "type": "boolean",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "used_for_canonization": {
+          "name": "used_for_canonization",
+          "type": "boolean",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "synopsis": {
+          "name": "synopsis",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "has_primary_sources": {
+          "name": "has_primary_sources",
+          "type": "boolean",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "content_tier": {
+          "name": "content_tier",
+          "type": "content_tier",
+          "typeSchema": "public",
+          "primaryKey": false,
+          "notNull": true,
+          "default": "'core'"
+        },
+        "published": {
+          "name": "published",
+          "type": "boolean",
+          "primaryKey": false,
+          "notNull": true,
+          "default": false
+        },
+        "created_at": {
+          "name": "created_at",
+          "type": "timestamp with time zone",
+          "primaryKey": false,
+          "notNull": true,
+          "default": "now()"
+        },
+        "updated_at": {
+          "name": "updated_at",
+          "type": "timestamp with time zone",
+          "primaryKey": false,
+          "notNull": true,
+          "default": "now()"
+        }
+      },
+      "indexes": {
+        "miracles_topics_gin_idx": {
+          "name": "miracles_topics_gin_idx",
+          "columns": [
+            {
+              "expression": "topics",
+              "isExpression": false,
+              "asc": true,
+              "nulls": "last"
+            }
+          ],
+          "isUnique": false,
+          "concurrently": false,
+          "method": "gin",
+          "with": {}
+        },
+        "miracles_type_idx": {
+          "name": "miracles_type_idx",
+          "columns": [
+            {
+              "expression": "type",
+              "isExpression": false,
+              "asc": true,
+              "nulls": "last"
+            }
+          ],
+          "isUnique": false,
+          "concurrently": false,
+          "method": "btree",
+          "with": {}
+        },
+        "miracles_country_idx": {
+          "name": "miracles_country_idx",
+          "columns": [
+            {
+              "expression": "country",
+              "isExpression": false,
+              "asc": true,
+              "nulls": "last"
+            }
+          ],
+          "isUnique": false,
+          "concurrently": false,
+          "method": "btree",
+          "with": {}
+        }
+      },
+      "foreignKeys": {},
+      "compositePrimaryKeys": {},
+      "uniqueConstraints": {
+        "miracles_slug_unique": {
+          "name": "miracles_slug_unique",
+          "nullsNotDistinct": false,
+          "columns": [
+            "slug"
+          ]
+        }
+      },
+      "policies": {},
+      "checkConstraints": {},
+      "isRLSEnabled": false
+    },
+    "public.miracle_saints": {
+      "name": "miracle_saints",
+      "schema": "",
+      "columns": {
+        "miracle_id": {
+          "name": "miracle_id",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "saint_id": {
+          "name": "saint_id",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": true
+        }
+      },
+      "indexes": {},
+      "foreignKeys": {
+        "miracle_saints_miracle_id_miracles_id_fk": {
+          "name": "miracle_saints_miracle_id_miracles_id_fk",
+          "tableFrom": "miracle_saints",
+          "tableTo": "miracles",
+          "columnsFrom": [
+            "miracle_id"
+          ],
+          "columnsTo": [
+            "id"
+          ],
+          "onDelete": "cascade",
+          "onUpdate": "no action"
+        },
+        "miracle_saints_saint_id_saints_id_fk": {
+          "name": "miracle_saints_saint_id_saints_id_fk",
+          "tableFrom": "miracle_saints",
+          "tableTo": "saints",
+          "columnsFrom": [
+            "saint_id"
+          ],
+          "columnsTo": [
+            "id"
+          ],
+          "onDelete": "cascade",
+          "onUpdate": "no action"
+        }
+      },
+      "compositePrimaryKeys": {
+        "miracle_saints_miracle_id_saint_id_pk": {
+          "name": "miracle_saints_miracle_id_saint_id_pk",
+          "columns": [
+            "miracle_id",
+            "saint_id"
+          ]
+        }
+      },
+      "uniqueConstraints": {},
+      "policies": {},
+      "checkConstraints": {},
+      "isRLSEnabled": false
+    },
+    "public.miracle_sources": {
+      "name": "miracle_sources",
+      "schema": "",
+      "columns": {
+        "id": {
+          "name": "id",
+          "type": "serial",
+          "primaryKey": true,
+          "notNull": true
+        },
+        "miracle_id": {
+          "name": "miracle_id",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "url": {
+          "name": "url",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "title": {
+          "name": "title",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "source_type": {
+          "name": "source_type",
+          "type": "source_type",
+          "typeSchema": "public",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "accessed_date": {
+          "name": "accessed_date",
+          "type": "date",
+          "primaryKey": false,
+          "notNull": false
+        }
+      },
+      "indexes": {},
+      "foreignKeys": {
+        "miracle_sources_miracle_id_miracles_id_fk": {
+          "name": "miracle_sources_miracle_id_miracles_id_fk",
+          "tableFrom": "miracle_sources",
+          "tableTo": "miracles",
+          "columnsFrom": [
+            "miracle_id"
+          ],
+          "columnsTo": [
+            "id"
+          ],
+          "onDelete": "no action",
+          "onUpdate": "no action"
+        }
+      },
+      "compositePrimaryKeys": {},
+      "uniqueConstraints": {},
+      "policies": {},
+      "checkConstraints": {},
+      "isRLSEnabled": false
+    },
+    "public.saint_sources": {
+      "name": "saint_sources",
+      "schema": "",
+      "columns": {
+        "id": {
+          "name": "id",
+          "type": "serial",
+          "primaryKey": true,
+          "notNull": true
+        },
+        "saint_id": {
+          "name": "saint_id",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "url": {
+          "name": "url",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "title": {
+          "name": "title",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "source_type": {
+          "name": "source_type",
+          "type": "source_type",
+          "typeSchema": "public",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "accessed_date": {
+          "name": "accessed_date",
+          "type": "date",
+          "primaryKey": false,
+          "notNull": false
+        }
+      },
+      "indexes": {},
+      "foreignKeys": {
+        "saint_sources_saint_id_saints_id_fk": {
+          "name": "saint_sources_saint_id_saints_id_fk",
+          "tableFrom": "saint_sources",
+          "tableTo": "saints",
+          "columnsFrom": [
+            "saint_id"
+          ],
+          "columnsTo": [
+            "id"
+          ],
+          "onDelete": "no action",
+          "onUpdate": "no action"
+        }
+      },
+      "compositePrimaryKeys": {},
+      "uniqueConstraints": {},
+      "policies": {},
+      "checkConstraints": {},
+      "isRLSEnabled": false
+    },
+    "public.saint_locations": {
+      "name": "saint_locations",
+      "schema": "",
+      "columns": {
+        "id": {
+          "name": "id",
+          "type": "serial",
+          "primaryKey": true,
+          "notNull": true
+        },
+        "saint_id": {
+          "name": "saint_id",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "location_name": {
+          "name": "location_name",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "lat": {
+          "name": "lat",
+          "type": "numeric(9, 6)",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "lng": {
+          "name": "lng",
+          "type": "numeric(9, 6)",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "location_type": {
+          "name": "location_type",
+          "type": "location_type",
+          "typeSchema": "public",
+          "primaryKey": false,
+          "notNull": true,
+          "default": "'shrine'"
+        }
+      },
+      "indexes": {},
+      "foreignKeys": {
+        "saint_locations_saint_id_saints_id_fk": {
+          "name": "saint_locations_saint_id_saints_id_fk",
+          "tableFrom": "saint_locations",
+          "tableTo": "saints",
+          "columnsFrom": [
+            "saint_id"
+          ],
+          "columnsTo": [
+            "id"
+          ],
+          "onDelete": "cascade",
+          "onUpdate": "no action"
+        }
+      },
+      "compositePrimaryKeys": {},
+      "uniqueConstraints": {},
+      "policies": {},
+      "checkConstraints": {},
+      "isRLSEnabled": false
+    }
+  },
+  "enums": {
+    "public.canonization_stage": {
+      "name": "canonization_stage",
+      "schema": "public",
+      "values": [
+        "saint",
+        "blessed",
+        "venerable",
+        "servant_of_god"
+      ]
+    },
+    "public.canonization_type": {
+      "name": "canonization_type",
+      "schema": "public",
+      "values": [
+        "confessor",
+        "martyr",
+        "virgin",
+        "married_couple",
+        "other"
+      ]
+    },
+    "public.content_tier": {
+      "name": "content_tier",
+      "schema": "public",
+      "values": [
+        "core",
+        "catalog",
+        "stub"
+      ]
+    },
+    "public.cure_characteristics": {
+      "name": "cure_characteristics",
+      "schema": "public",
+      "values": [
+        "instant_complete",
+        "gradual_complete",
+        "instant_partial",
+        "gradual_partial",
+        "not_applicable"
+      ]
+    },
+    "public.date_precision": {
+      "name": "date_precision",
+      "schema": "public",
+      "values": [
+        "exact_day",
+        "month",
+        "year",
+        "decade",
+        "century",
+        "unknown"
+      ]
+    },
+    "public.dispensation_reason": {
+      "name": "dispensation_reason",
+      "schema": "public",
+      "values": [
+        "martyr",
+        "equipollent",
+        "papal_exception"
+      ]
+    },
+    "public.gender": {
+      "name": "gender",
+      "schema": "public",
+      "values": [
+        "male",
+        "female",
+        "group"
+      ]
+    },
+    "public.intercessory_medium": {
+      "name": "intercessory_medium",
+      "schema": "public",
+      "values": [
+        "prayer_only",
+        "relic",
+        "blessed_oil",
+        "medallion",
+        "visitation",
+        "tomb_prayer",
+        "saint_image",
+        "not_applicable",
+        "other"
+      ]
+    },
+    "public.location_type": {
+      "name": "location_type",
+      "schema": "public",
+      "values": [
+        "tomb",
+        "birthplace",
+        "death_place",
+        "shrine",
+        "relic",
+        "major_devotional_center",
+        "other"
+      ]
+    },
+    "public.miracle_category": {
+      "name": "miracle_category",
+      "schema": "public",
+      "values": [
+        "intercessory",
+        "associated"
+      ]
+    },
+    "public.miracle_type": {
+      "name": "miracle_type",
+      "schema": "public",
+      "values": [
+        "healing",
+        "nature",
+        "eucharistic",
+        "stigmata",
+        "incorruptibility",
+        "apparition",
+        "miraculous_image",
+        "prophecy",
+        "bilocation",
+        "other"
+      ]
+    },
+    "public.recipient_gender": {
+      "name": "recipient_gender",
+      "schema": "public",
+      "values": [
+        "male",
+        "female",
+        "not_applicable"
+      ]
+    },
+    "public.recipient_privacy": {
+      "name": "recipient_privacy",
+      "schema": "public",
+      "values": [
+        "public",
+        "first_name_only",
+        "confidential",
+        "not_applicable"
+      ]
+    },
+    "public.relation_type": {
+      "name": "relation_type",
+      "schema": "public",
+      "values": [
+        "canonized_together",
+        "same_order"
+      ]
+    },
+    "public.source_type": {
+      "name": "source_type",
+      "schema": "public",
+      "values": [
+        "vatican_decree",
+        "news_article",
+        "book",
+        "academic",
+        "other"
+      ]
+    },
+    "public.timing_relative_to_saint_death": {
+      "name": "timing_relative_to_saint_death",
+      "schema": "public",
+      "values": [
+        "during_lifetime",
+        "posthumous",
+        "not_applicable"
+      ]
+    }
+  },
+  "schemas": {},
+  "sequences": {},
+  "roles": {},
+  "policies": {},
+  "views": {},
+  "_meta": {
+    "columns": {},
+    "schemas": {},
+    "tables": {}
+  }
+}

@@ -34,6 +34,7 @@ export const miracles = pgTable(
     recipient_country: text("recipient_country"),
     recipient_privacy: recipientPrivacy("recipient_privacy").notNull(),
     recipient_age_at_event: integer("recipient_age_at_event"),
+    recipient_age_approximate: boolean("recipient_age_approximate"),
     medical_diagnosis: text("medical_diagnosis"),
     cure_details: text("cure_details"),
     cure_characteristics: cureCharacteristics("cure_characteristics").notNull(),
