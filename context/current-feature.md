@@ -2,11 +2,13 @@
 
 ## Current Feature Spec File
 
-_None_
+Title: Miracle Dispensation Fields
+Spec file: context/specs/miracle-dispensation-fields.md
+Branch: claude/feature/miracle-dispensation-fields
 
 ## Current Feature Plan File
 
-_None_
+Plan file: context/features/miracle-dispensation-fields.md
 
 ## History
 

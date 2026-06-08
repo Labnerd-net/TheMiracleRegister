@@ -7,7 +7,7 @@ import {
   text,
   timestamp,
 } from "drizzle-orm/pg-core";
-import { canonizationStage, canonizationType, gender } from "./enums";
+import { canonizationStage, canonizationType, dispensationReason, gender } from "./enums";
 
 export const saints = pgTable(
   "saints",
@@ -33,6 +33,9 @@ export const saints = pgTable(
     biography_short: text("biography_short"),
     gender: gender("gender"),
     lay_person: boolean("lay_person"),
+    beatification_miracle_dispensed: boolean("beatification_miracle_dispensed"),
+    canonization_miracle_dispensed: boolean("canonization_miracle_dispensed"),
+    dispensation_reason: dispensationReason("dispensation_reason"),
     image_url: text("image_url"),
     wikipedia_url: text("wikipedia_url"),
     published: boolean("published").notNull().default(false),

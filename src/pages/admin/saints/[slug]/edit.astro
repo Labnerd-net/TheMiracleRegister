@@ -3,7 +3,7 @@ import AdminBase from "../../../../layouts/AdminBase.astro";
 import { createDb } from "../../../../db";
 import { saints, saintSources, saintLocations } from "../../../../db/schema";
 import { asc, eq } from "drizzle-orm";
-import { canonizationType, canonizationStage, gender, sourceType, locationType } from "../../../../db/schema/enums";
+import { canonizationType, canonizationStage, dispensationReason, gender, sourceType, locationType } from "../../../../db/schema/enums";
 import { parseEnum, formHelpers } from "../../../../lib/form-utils";
 import { SaintFormSchema, formatZodErrors } from "../../../../lib/form-schemas";
 import SaintForm from "../../../../components/SaintForm.astro";
@@ -102,6 +102,9 @@ if (Astro.request.method === "POST") {
       biography_short: get("biography_short") || null,
       gender: parseEnum(get("gender"), gender.enumValues),
       lay_person: getBool("lay_person"),
+      beatification_miracle_dispensed: getBool("beatification_miracle_dispensed"),
+      canonization_miracle_dispensed: getBool("canonization_miracle_dispensed"),
+      dispensation_reason: parseEnum(get("dispensation_reason"), dispensationReason.enumValues),
       image_url: get("image_url") || null,
       wikipedia_url: get("wikipedia_url") || null,
       published: getBool("published"),
