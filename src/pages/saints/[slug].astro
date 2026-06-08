@@ -1,7 +1,7 @@
 ---
 import Base from "../../layouts/Base.astro";
 import { createDb } from "../../db";
-import { saints, miracles, saintRelations, saintSources, saintLocations } from "../../db/schema";
+import { saints, miracles, miracleSaints, saintRelations, saintSources, saintLocations } from "../../db/schema";
 import { asc, and, eq } from "drizzle-orm";
 import { env } from "cloudflare:workers";
 import { renderMarkdownWithCitations } from "../../lib/markdown";
@@ -29,7 +29,9 @@ const [saintMiracles, relatedRows, sources, locations] = await Promise.all([
     used_for_beatification: miracles.used_for_beatification,
     used_for_canonization: miracles.used_for_canonization,
     cure_details: miracles.cure_details,
-  }).from(miracles).where(and(eq(miracles.saint_id, saint.id), eq(miracles.published, true))),
+  }).from(miracles)
+    .innerJoin(miracleSaints, eq(miracles.id, miracleSaints.miracle_id))
+    .where(and(eq(miracleSaints.saint_id, saint.id), eq(miracles.published, true))),
   db.select({
     id: saints.id, slug: saints.slug, name: saints.name,
     relation_type: saintRelations.relation_type,

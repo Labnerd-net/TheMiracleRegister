@@ -12,11 +12,13 @@ type SaintOption = Pick<typeof saints.$inferSelect, "id" | "name">;
 interface Props {
   miracle?: Miracle;
   allSaints: SaintOption[];
+  selectedSaintIds?: number[];
 }
 
-const { miracle, allSaints } = Astro.props;
+const { miracle, allSaints, selectedSaintIds = [] } = Astro.props;
 const v = miracle;
 const currentTopics = new Set(v?.topics ?? []);
+const currentSaintIds = new Set(selectedSaintIds);
 ---
 
 <form method="post">
@@ -56,14 +58,16 @@ const currentTopics = new Set(v?.topics ?? []);
           <input type="text" id="slug" name="slug" placeholder="auto-generated from title" />
         </div>
       )}
-      <div class="field">
-        <label for="saint_id">Saint *</label>
-        <select id="saint_id" name="saint_id" required>
-          {!v && <option value="">— select —</option>}
+      <div class="field" style="grid-column:1/-1">
+        <label>Saint(s) * <span style="font-weight:400;color:#888">(check all that apply)</span></label>
+        <div class="checkbox-group">
           {allSaints.map((s) => (
-            <option value={s.id} selected={s.id === v?.saint_id}>{s.name}</option>
+            <label>
+              <input type="checkbox" name="saint_ids" value={s.id} checked={currentSaintIds.has(s.id)} />
+              {s.name}
+            </label>
           ))}
-        </select>
+        </div>
       </div>
       <div class="field">
         <label for="miracle_category">Category</label>

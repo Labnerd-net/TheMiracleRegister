@@ -48,8 +48,9 @@ A data-driven website documenting miracles attributed to Catholic saints. Focuse
 |---|---|---|
 | id | integer PK | |
 | slug | text | URL-friendly, e.g. `john-paul-ii` |
-| name | text | |
-| birth_name | text | |
+| name | text | Common/recognizable devotional name — e.g. "Mother Teresa", "Padre Pio", "Brother Andre". This is the primary display name. |
+| birth_name | text | Legal name given at birth — e.g. "Anjezë Gonxhe Bojaxhiu" |
+| saint_name | text | Formal Vatican/devotional title — e.g. "Saint Teresa of Calcutta", "Saint André of Montreal". Nullable. Shown where the formal title is appropriate. |
 | birth_date, death_date | date | |
 | feast_day | text | |
 | religious_order | text | e.g. "Franciscan" |
@@ -87,7 +88,6 @@ Saint pages show related saints as links. API response includes a `related_saint
 | Column | Type | Notes |
 |---|---|---|
 | id | integer PK | |
-| saint_id | FK → saints | |
 | slug | text | |
 | title | text | |
 | miracle_category | enum | intercessory, associated |
@@ -138,6 +138,17 @@ Medical conditions are **not** topics — use `medical_diagnosis` (free text). P
 **`SAINT_THEMES`** — tags on saint records describing spiritual/devotional character. Used for biography pages and saint discovery.
 
 `hope`, `perseverance`, `conversion`, `eucharistic`, `marian`, `martyrs`, `missionaries`, `saints-of-everyday-life`, `spiritual-direction`, `technology`
+
+### `miracle_saints`
+
+Many-to-many junction table linking miracles to saints. Replaces the old `miracles.saint_id` FK. A miracle can be attributed to one saint (typical) or multiple saints jointly (e.g. Louis & Zélie Martin). Both FKs cascade on delete — deleting a saint removes their junction rows but not the miracles themselves.
+
+| Column | Type | Notes |
+|---|---|---|
+| miracle_id | FK → miracles | cascade delete |
+| saint_id | FK → saints | cascade delete |
+
+Composite PK on `(miracle_id, saint_id)`. API responses expose linked saints as `saints: [{id, slug, name}]`.
 
 ### `miracle_sources` (replaces JSON blob)
 

@@ -1,7 +1,7 @@
 ---
 import AdminBase from "../../../layouts/AdminBase.astro";
 import { createDb } from "../../../db";
-import { miracles, saints } from "../../../db/schema";
+import { miracles, miracleSaints, saints } from "../../../db/schema";
 import { asc } from "drizzle-orm";
 import { slugify } from "../../../lib/slugify";
 import {
@@ -27,15 +27,15 @@ if (Astro.request.method === "POST") {
 
   const title = get("title");
   const slug = get("slug") || slugify(title);
+  const saintIds = form.getAll("saint_ids").map(String);
 
-  const validation = MiracleFormSchema.safeParse({ title: get("title"), saint_id: get("saint_id") });
+  const validation = MiracleFormSchema.safeParse({ title: get("title"), saint_ids: saintIds });
   if (!validation.success) {
     error = formatZodErrors(validation);
   } else try {
-    await db.insert(miracles).values({
+    const [inserted] = await db.insert(miracles).values({
       slug,
       title,
-      saint_id: parseInt(get("saint_id")),
       miracle_category: parseEnum(get("miracle_category"), miracleCategory.enumValues, "intercessory")!,
       type: parseEnum(get("type"), miracleType.enumValues, "healing")!,
       topics: getMulti("topics"),
@@ -62,7 +62,12 @@ if (Astro.request.method === "POST") {
       synopsis: get("synopsis") || null,
       has_primary_sources: getBool("has_primary_sources"),
       published: getBool("published"),
-    });
+    }).returning({ id: miracles.id });
+
+    await db.insert(miracleSaints).values(
+      saintIds.map((id) => ({ miracle_id: inserted.id, saint_id: parseInt(id) }))
+    );
+
     return Astro.redirect("/admin/miracles");
   } catch (e: any) {
     error = e?.message ?? "Failed to save miracle.";

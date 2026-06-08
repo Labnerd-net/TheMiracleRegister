@@ -15,6 +15,7 @@ export const saints = pgTable(
     id: serial("id").primaryKey(),
     slug: text("slug").notNull().unique(),
     name: text("name").notNull(),
+    saint_name: text("saint_name"),
     birth_name: text("birth_name"),
     birth_date: date("birth_date"),
     death_date: date("death_date"),

@@ -26,6 +26,7 @@ export const SaintListItemSchema = z
     id: z.number().int(),
     slug: z.string(),
     name: z.string(),
+    saint_name: z.string().nullable(),
     canonization_stage: z.enum(["saint", "blessed", "venerable", "servant_of_god"]),
     feast_day: z.string().nullable(),
     nationality: z.string().nullable(),
@@ -58,7 +59,7 @@ export const MiracleListItemSchema = z
     recipient_name: z.string().nullable(),
     was_medically_verified: z.boolean(),
     vatican_recognized: z.boolean(),
-    saint_id: z.number().int(),
+    saints: z.array(z.object({ id: z.number().int(), slug: z.string(), name: z.string() })),
   })
   .openapi("MiracleListItem");
 
@@ -67,6 +68,7 @@ export const SaintDetailSchema = z
     id: z.number().int(),
     slug: z.string(),
     name: z.string(),
+    saint_name: z.string().nullable(),
     birth_name: z.string().nullable(),
     birth_date: z.string().nullable(),
     death_date: z.string().nullable(),
@@ -149,7 +151,7 @@ export const MiracleDetailSchema = z
     used_for_canonization: z.boolean(),
     synopsis: z.string().nullable(),
     has_primary_sources: z.boolean(),
-    saint_id: z.number().int(),
+    saints: z.array(z.object({ id: z.number().int(), slug: z.string(), name: z.string() })),
     sources: z.array(SourceSchema),
   })
   .openapi("MiracleDetail");

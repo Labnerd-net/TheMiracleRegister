@@ -10,15 +10,11 @@ import {
   recipientPrivacy,
   timingRelativeToSaintDeath,
 } from "./enums";
-import { saints } from "./saints";
 
 export const miracles = pgTable(
   "miracles",
   {
     id: serial("id").primaryKey(),
-    saint_id: integer("saint_id")
-      .notNull()
-      .references(() => saints.id),
     slug: text("slug").notNull().unique(),
     title: text("title").notNull(),
     miracle_category: miracleCategory("miracle_category").notNull(),
@@ -63,7 +59,6 @@ export const miracles = pgTable(
   },
   (t) => [
     index("miracles_topics_gin_idx").using("gin", t.topics),
-    index("miracles_saint_id_idx").on(t.saint_id),
     index("miracles_type_idx").on(t.type),
     index("miracles_country_idx").on(t.country),
   ]

@@ -1,7 +1,7 @@
 ---
 import AdminBase from "../../../../layouts/AdminBase.astro";
 import { createDb } from "../../../../db";
-import { miracles, saints, miracleSources } from "../../../../db/schema";
+import { miracles, miracleSaints, saints, miracleSources } from "../../../../db/schema";
 import { asc, eq } from "drizzle-orm";
 import {
   miracleCategory, miracleType, datePrecision, timingRelativeToSaintDeath,
@@ -18,10 +18,11 @@ const db = createDb(env.DATABASE_URL);
 const [miracle] = await db.select().from(miracles).where(eq(miracles.slug, slug!));
 if (!miracle) return Astro.redirect("/admin/miracles");
 
-const allSaints = await db
-  .select({ id: saints.id, name: saints.name })
-  .from(saints)
-  .orderBy(asc(saints.name));
+const [allSaints, existingLinks] = await Promise.all([
+  db.select({ id: saints.id, name: saints.name }).from(saints).orderBy(asc(saints.name)),
+  db.select({ saint_id: miracleSaints.saint_id }).from(miracleSaints).where(eq(miracleSaints.miracle_id, miracle.id)),
+]);
+let selectedSaintIds = existingLinks.map((l) => l.saint_id);
 
 let error = "";
 let success = false;
@@ -60,13 +61,13 @@ if (Astro.request.method === "POST") {
       sourceSuccess = "Source removed.";
     }
   } else {
-    const validation = MiracleFormSchema.safeParse({ title: get("title"), saint_id: get("saint_id") });
+    const saintIds = form.getAll("saint_ids").map(String);
+    const validation = MiracleFormSchema.safeParse({ title: get("title"), saint_ids: saintIds });
     if (!validation.success) {
       error = formatZodErrors(validation);
     } else try {
       await db.update(miracles).set({
         title: get("title") || miracle.title,
-        saint_id: parseInt(get("saint_id")) || miracle.saint_id,
         miracle_category: parseEnum(get("miracle_category"), miracleCategory.enumValues) ?? miracle.miracle_category,
         type: parseEnum(get("type"), miracleType.enumValues) ?? miracle.type,
         topics: getMulti("topics"),
@@ -96,6 +97,14 @@ if (Astro.request.method === "POST") {
         has_primary_sources: getBool("has_primary_sources"),
         published: getBool("published"),
       }).where(eq(miracles.slug, slug!));
+
+      // Replace saint links
+      await db.delete(miracleSaints).where(eq(miracleSaints.miracle_id, miracle.id));
+      await db.insert(miracleSaints).values(
+        saintIds.map((id) => ({ miracle_id: miracle.id, saint_id: parseInt(id) }))
+      );
+
+      selectedSaintIds = saintIds.map(Number);
       success = true;
     } catch (e: any) {
       error = e?.message ?? "Failed to save.";
@@ -123,7 +132,7 @@ const v = m ?? miracle;
   {error && <div class="error">{error}</div>}
   {success && <div class="success">Saved successfully.</div>}
 
-  <MiracleForm miracle={v} allSaints={allSaints} />
+  <MiracleForm miracle={v} allSaints={allSaints} selectedSaintIds={selectedSaintIds} />
 
   <fieldset style="margin-top:2rem">
     <legend>Sources</legend>

@@ -1,7 +1,7 @@
 ---
 import AdminBase from "../../../../layouts/AdminBase.astro";
 import { createDb } from "../../../../db";
-import { saints, miracles } from "../../../../db/schema";
+import { saints, miracleSaints } from "../../../../db/schema";
 import { eq, count } from "drizzle-orm";
 import { env } from "cloudflare:workers";
 
@@ -13,11 +13,10 @@ if (!saint) return Astro.redirect("/admin/saints");
 
 const [{ miracleCount }] = await db
   .select({ miracleCount: count() })
-  .from(miracles)
-  .where(eq(miracles.saint_id, saint.id));
+  .from(miracleSaints)
+  .where(eq(miracleSaints.saint_id, saint.id));
 
 if (Astro.request.method === "POST") {
-  await db.delete(miracles).where(eq(miracles.saint_id, saint.id));
   await db.delete(saints).where(eq(saints.id, saint.id));
   return Astro.redirect("/admin/saints");
 }
@@ -33,7 +32,7 @@ if (Astro.request.method === "POST") {
 
   <p>You are about to delete <strong>{saint.name}</strong>.</p>
   {miracleCount > 0 && (
-    <p>This will also delete <strong>{miracleCount} miracle{miracleCount !== 1 ? "s" : ""}</strong> associated with this saint.</p>
+    <p>This saint is linked to <strong>{miracleCount} miracle{miracleCount !== 1 ? "s" : ""}</strong>. Deleting this saint will remove the link — miracles attributed to multiple saints will keep their other saint links; miracles only attributed to this saint will become unlinked.</p>
   )}
 
   <form method="post" style="margin-top:1.5rem;display:flex;gap:1rem;align-items:center">
