@@ -170,6 +170,13 @@ const currentSaintIds = new Set(selectedSaintIds);
         <label for="recipient_age_at_event">Age at Event</label>
         <input type="number" id="recipient_age_at_event" name="recipient_age_at_event" value={v?.recipient_age_at_event ?? ""} min="0" />
       </div>
+      <div class="field">
+        <label>
+          <input type="hidden" name="recipient_age_approximate" value="false" />
+          <input type="checkbox" name="recipient_age_approximate" value="true" checked={v?.recipient_age_approximate ?? false} />
+          Age is approximate
+        </label>
+      </div>
     </div>
   </fieldset>
 

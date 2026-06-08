@@ -22,6 +22,7 @@ export const saints = pgTable(
     feast_day: text("feast_day"),
     religious_order: text("religious_order"),
     nationality: text("nationality"),
+    ministry_country: text("ministry_country"),
     beatification_date: date("beatification_date"),
     beatified_by: text("beatified_by"),
     canonization_date: date("canonization_date"),

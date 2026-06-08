@@ -74,6 +74,10 @@ const join = (arr: string[] | null | undefined) => arr?.join(", ") ?? "";
         <input type="text" id="nationality" name="nationality" value={v?.nationality ?? ""} />
       </div>
       <div class="field">
+        <label for="ministry_country">Country of Ministry</label>
+        <input type="text" id="ministry_country" name="ministry_country" value={v?.ministry_country ?? ""} placeholder="if different from nationality" />
+      </div>
+      <div class="field">
         <label for="religious_order">Religious Order</label>
         <input type="text" id="religious_order" name="religious_order" value={v?.religious_order ?? ""} />
       </div>
