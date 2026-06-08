@@ -4,11 +4,6 @@ import * as schema from "./schema";
 
 const db = createDb(process.env.DATABASE_URL!);
 
-const LOREM_BIO =
-  "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum. Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium, totam rem aperiam eaque ipsa quae ab illo inventore veritatis et quasi architecto beatae vitae dicta sunt explicabo.";
-
-const LOREM_SYNOPSIS =
-  "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum. Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium, totam rem aperiam eaque ipsa quae ab illo inventore veritatis et quasi architecto beatae vitae dicta sunt explicabo. Nemo enim ipsam voluptatem quia voluptas sit aspernatur aut odit aut fugit, sed quia consequuntur magni dolores eos qui ratione voluptatem sequi nesciunt. Neque porro quisquam est, qui dolorem ipsum quia dolor sit amet consectetur adipisci velit.";
 
 
 async function seed() {
@@ -153,6 +148,7 @@ He died on September 23, 1968, having celebrated his fiftieth anniversary of the
       },
       {
         slug: "gianna-beretta-molla",
+        published: true,
         name: "Gianna Beretta Molla",
         saint_name: "Saint Gianna Beretta Molla",
         birth_name: "Gianna Beretta Molla",
@@ -160,15 +156,16 @@ He died on September 23, 1968, having celebrated his fiftieth anniversary of the
         death_date: "1962-04-28",
         feast_day: "April 28",
         nationality: "Italian",
+        ministry_country: "Italy",
         beatification_date: "1994-04-24",
         beatified_by: "Pope John Paul II",
         canonization_date: "2004-05-16",
         canonized_by: "Pope John Paul II",
-        canonization_type: "married_couple",
+        canonization_type: "confessor",
         canonization_stage: "saint",
         patronage: ["mothers", "families", "physicians", "unborn children"],
         themes: ["saints-of-everyday-life", "perseverance", "marian", "hope", "eucharistic"],
-        biography_short: LOREM_BIO,
+        biography_short: `Gianna Beretta was born on October 4, 1922, in Magenta, near Milan, the tenth of thirteen children in a devout Catholic family. Several of her siblings also pursued religious life; the family's faith was not nominal but structuring. She studied medicine at the University of Pavia, specializing in pediatrics, and in 1950 opened a practice in Mesero, near her hometown, where she cared for children and expectant mothers. She was also active in the women's and youth branches of Catholic Action, and was known in her community as someone whose faith was visible in her work without being worn on her sleeve.\n\nIn 1955 she married Pietro Molla, an engineer. They had three children. She continued her medical practice throughout, balancing clinic hours with family life. By all accounts the combination was ordinary in its texture — housework, school schedules, weekend Mass — and that ordinariness became, after her death, part of what the Church meant to propose about her.\n\nIn September 1961, two months into her fourth pregnancy, she was found to have a fibroma of the uterus — a benign muscular tumor that nonetheless required treatment. Her physicians presented three options: hysterectomy, which would end the pregnancy; removal of the fibroma along with the pregnancy; or myomectomy alone, a more limited surgery that preserved the child but left Gianna at greater risk. She chose the myomectomy. She told her physicians that if it came to a choice between her life and the child's, the child should be chosen.\n\nThe baby, Gianna Emanuela, was born by caesarean section on April 21, 1962, in good health. Gianna developed septic peritonitis in the days following and died on April 28, a week after the birth. She was thirty-nine.\n\nGianna Emanuela Molla, the daughter, became a physician. She was present in Rome when her mother was beatified on April 24, 1994, and again when she was canonized on May 16, 2004 — alongside her father Pietro, who was also present. Pietro Molla lived until 2010.`,
         gender: "female",
         lay_person: true,
         image_url: "https://upload.wikimedia.org/wikipedia/commons/8/87/GiannaBerettaMolla.jpg",
@@ -853,26 +850,27 @@ Padre Pio himself rarely spoke of these events and consistently directed the acc
         date_of_event: "1977-11-09",
         date_precision: "exact_day",
         timing_relative_to_saint_death: "posthumous",
-        location_name: "Saint Francis of Assisi Hospital, Grajau",
+        location_name: "Saint Francis of Assisi Hospital, Grajaú",
         location_lat: "-5.8154034",
         location_lng: "-46.1361454",
         country: "Brazil",
-        region: "Maranhao",
+        region: "Maranhão",
         recipient_name: "Lucia Sylvia Cirilo",
         recipient_gender: "female",
         recipient_country: "Brazil",
         recipient_privacy: "public",
-        medical_diagnosis: "Recto-vaginal fistula (after stillbirth on October 22, 1977; hospital unequipped to treat)",
+        medical_diagnosis: "Recto-vaginal fistula following traumatic stillbirth; hospital lacked surgical capacity to treat",
         cure_details:
-          "After a stillbirth, Cirilo developed a severe recto-vaginal fistula. The hospital could not treat it and she was told she needed to be transferred, but believed she would not survive the trip. A nurse, Sister Bernardina de Manaus, prayed for Gianna's intercession. The next morning, Cirilo's pain had vanished and the fistula had healed completely without surgery.",
+          "Following a stillbirth, Cirilo developed a severe recto-vaginal fistula the hospital could not treat. Transfer to São Luís was recommended but her condition made the journey too dangerous. A nurse, Sister Bernardina de Manaus, prayed for Gianna's intercession. The next morning the fistula had closed completely without intervention.",
         cure_characteristics: "instant_complete",
         was_medically_verified: true,
         intercessory_medium: "prayer_only",
         vatican_recognized: true,
-        vatican_medical_board_verdict: "Declared medically inexplicable",
+        vatican_medical_board_verdict: "Declared medically inexplicable; accepted as beatification miracle",
         used_for_beatification: true,
         used_for_canonization: false,
-        synopsis: LOREM_SYNOPSIS,
+        published: true,
+        synopsis: `Lucia Sylvia Cirilo was a Brazilian woman living in the state of Maranhão. On October 22, 1977, she gave birth to a stillborn child. In the days that followed, she developed severe abdominal pain. She was brought to the Saint Francis of Assisi Hospital in Grajaú, where physicians diagnosed a recto-vaginal fistula — an abnormal passage between the rectum and vagina that had developed as a complication of the traumatic birth. The condition required surgical repair, but the hospital in Grajaú did not have the equipment or specialists to perform it. The medical team told her she would need to be transferred to São Luís for treatment. Her condition was serious enough that she and her family believed she would not survive the journey.\n\nA nurse at the hospital, Sister Bernardina de Manaus, was familiar with the cause of Gianna Beretta Molla, the Italian physician who had died in 1962 and whose beatification process had been opened. Sister Bernardina prayed for Gianna's intercession on behalf of Lucia Sylvia.\n\nThe following morning, Lucia Sylvia's pain was gone. An examination revealed that the fistula had closed completely. There had been no surgical intervention of any kind during the night. Her physicians could not account for what they found.\n\nThe case was submitted to the Vatican as part of Gianna's beatification cause. The Holy See's medical board reviewed the documentation and declared the healing medically inexplicable. It was accepted as the miracle supporting Gianna's beatification.\n\nGianna Beretta Molla was beatified by Pope John Paul II on April 24, 1994.`,
         has_primary_sources: true,
       },
       {
@@ -880,7 +878,7 @@ Padre Pio himself rarely spoke of these events and consistently directed the acc
         title: "Healing of Elizabeth Comparini Arcolino",
         miracle_category: "intercessory",
         type: "healing",
-        topics: ["pregnancy-and-childbirth", "mothers", "children", "pro-life"],
+        topics: ["pregnancy-and-childbirth", "mothers", "pro-life"],
         date_of_event: "2000-01-01",
         date_precision: "year",
         timing_relative_to_saint_death: "posthumous",
@@ -889,18 +887,18 @@ Padre Pio himself rarely spoke of these events and consistently directed the acc
         recipient_gender: "female",
         recipient_country: "Brazil",
         recipient_privacy: "public",
-        medical_diagnosis:
-          "Placental tear at 16 weeks of pregnancy, complete loss of amniotic fluid; doctors said child's survival impossible",
+        medical_diagnosis: "Complete placental rupture at 16 weeks with total loss of amniotic fluid",
         cure_details:
-          "At 16 weeks pregnant, Arcolino sustained a tear in her placenta that drained all amniotic fluid. Doctors told her the child had no chance of survival. She prayed for Gianna's intercession and delivered a healthy baby girl, Gianna Maria, via C-section. The recovery was deemed medically inexplicable.",
+          "At 16 weeks of pregnancy, complete placental rupture caused total loss of amniotic fluid. Physicians considered fetal survival impossible. After praying for Gianna's intercession, the pregnancy continued to term. Elizabeth delivered a healthy girl by C-section; the child was named Gianna Maria.",
         cure_characteristics: "gradual_complete",
         was_medically_verified: true,
         intercessory_medium: "prayer_only",
         vatican_recognized: true,
-        vatican_medical_board_verdict: "Declared medically inexplicable",
+        vatican_medical_board_verdict: "Declared medically inexplicable; accepted as canonization miracle",
         used_for_beatification: false,
         used_for_canonization: true,
-        synopsis: LOREM_SYNOPSIS,
+        published: true,
+        synopsis: `Elizabeth Comparini Arcolino was a Brazilian woman who, in 2000, was sixteen weeks pregnant when she sustained a complete rupture of her placenta with total loss of amniotic fluid. The amniotic fluid that surrounds a developing fetus is not simply protective — it is essential to fetal development. Without it, the lungs cannot develop properly, the fetus cannot move or grow normally, and the pregnancy cannot continue. At sixteen weeks, the fetus is far too young to survive outside the womb. Her physicians told her the child had no chance of survival.\n\nElizabeth prayed for the intercession of Blessed Gianna Beretta Molla, who had died in 1962 choosing her child's life over her own safety. Gianna was at that time beatified, and her cause for canonization was active.\n\nThe pregnancy continued. Contrary to what her physicians had said was impossible, Elizabeth carried the child to term. She delivered a healthy baby girl by caesarean section. The child was named Gianna Maria, after the blessed whose intercession her mother had sought. Neither the child's survival nor the continuation of a pregnancy after complete loss of amniotic fluid at sixteen weeks could be explained by her medical team.\n\nThe case was submitted to the Vatican. The Holy See's medical board reviewed it and declared the outcome medically inexplicable. It was accepted as the miracle for Gianna's canonization.\n\nGianna Beretta Molla was canonized by Pope John Paul II on May 16, 2004. Her husband Pietro and her daughter Gianna Emanuela — a physician herself — were present at the ceremony in Rome.`,
         has_primary_sources: true,
       },
 
