@@ -2,13 +2,11 @@
 
 ## Current Feature Spec File
 
-Title: Miracle Dispensation Fields
-Spec file: context/specs/miracle-dispensation-fields.md
-Branch: claude/feature/miracle-dispensation-fields
+_None_
 
 ## Current Feature Plan File
 
-Plan file: context/features/miracle-dispensation-fields.md
+_None_
 
 ## History
 
@@ -87,6 +85,9 @@ Added `saint_sources` table (mirrors `miracle_sources`) for storing biography so
 
 ### Miracle Saints Junction Table
 Replaced `miracles.saint_id` (single FK) with a `miracle_saints` many-to-many junction table. A miracle can now be attributed to one or more saints. Louis and Zélie Martin's two miracles (Pietro Schiliro, Carmen of Valencia) are linked to both saints in the seed. API responses expose `saints: [{id, slug, name}]` instead of `saint_id`. The public miracle detail page shows all linked saints as links. Admin miracle form uses a checkbox list for saint selection; edit page pre-checks existing links and does delete+reinsert on save. Saint delete confirmation updated to reflect that deletion removes junction rows, not the miracles themselves. Migration 0016 applied; data migration step preserved existing associations before dropping the column. Build clean, 11/11 tests pass.
+
+### Miracle Dispensation Fields
+Added three nullable fields to the `saints` table: `beatification_miracle_dispensed` (boolean), `canonization_miracle_dispensed` (boolean), and `dispensation_reason` (enum: martyr, equipollent, papal_exception). Covers cases where miracle requirements were waived — martyrs (Kolbe, Stein), equipollent canonization (Juan Diego), and explicit papal exception (John XXIII). Admin SaintForm updated with a new "Miracle Dispensation" fieldset. Migration 0017 applied. Build clean.
 
 ### Explicit Field Selects on Detail Pages (#15)
 Replaced four `db.select()` (SELECT *) calls with explicit field lists across three files. `src/api/routes/miracles.ts` now selects exactly the 31 fields in `MiracleDetailSchema`. `src/pages/miracles/[slug].astro` selects 29 fields for the miracle query (excluding slug, published, and unused columns) and 4 fields for the miracle sources query. `src/pages/saints/[slug].astro` selects 4 fields for the saint sources query. Excluded in all cases: `published`, `content_tier`, `created_at`, `updated_at`, and any column used only in a WHERE clause. Build clean, no behavior change.
