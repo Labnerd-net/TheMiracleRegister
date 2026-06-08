@@ -55,6 +55,7 @@ A data-driven website documenting miracles attributed to Catholic saints. Focuse
 | feast_day | text | |
 | religious_order | text | e.g. "Franciscan" |
 | nationality | text | |
+| ministry_country | text | country where the saint primarily served — may differ from nationality |
 | beatification_date | date | |
 | beatified_by | text | |
 | canonization_date | date | |
@@ -108,6 +109,7 @@ Saint pages show related saints as links. API response includes a `related_saint
 | recipient_country | text | country recipient is from (may differ from miracle location) |
 | recipient_privacy | enum | public, first_name_only, confidential, not_applicable |
 | recipient_age_at_event | integer | optional |
+| recipient_age_approximate | boolean | nullable — true when age is an estimate rather than exact |
 | medical_diagnosis | text | null for non-healing |
 | cure_details | text | |
 | cure_characteristics | enum | instant_complete, gradual_complete, instant_partial, gradual_partial, not_applicable |
