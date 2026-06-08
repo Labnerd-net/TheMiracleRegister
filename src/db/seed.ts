@@ -30,7 +30,7 @@ async function seed() {
     .values([
       {
         slug: "john-paul-ii",
-        name: "John Paul II",
+        name: "Pope John Paul II",
         saint_name: "Saint John Paul II",
         birth_name: "Karol Jozef Wojtyla",
         birth_date: "1920-05-18",
