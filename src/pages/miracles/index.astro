@@ -1,8 +1,8 @@
 ---
 import Base from "../../layouts/Base.astro";
 import { createDb } from "../../db";
-import { miracles, saints } from "../../db/schema";
-import { asc, count, eq } from "drizzle-orm";
+import { miracles, miracleSaints, saints } from "../../db/schema";
+import { asc, count, eq, inArray } from "drizzle-orm";
 import { env } from "cloudflare:workers";
 
 const PAGE_SIZE = 20;
@@ -16,6 +16,7 @@ const [[{ total }], pageMiracles] = await Promise.all([
   db.select({ total: count() }).from(miracles).where(eq(miracles.published, true)),
   db
     .select({
+      id: miracles.id,
       slug: miracles.slug,
       title: miracles.title,
       type: miracles.type,
@@ -28,16 +29,32 @@ const [[{ total }], pageMiracles] = await Promise.all([
       used_for_beatification: miracles.used_for_beatification,
       used_for_canonization: miracles.used_for_canonization,
       cure_details: miracles.cure_details,
-      saint_slug: saints.slug,
-      saint_name: saints.name,
     })
     .from(miracles)
-    .innerJoin(saints, eq(miracles.saint_id, saints.id))
     .where(eq(miracles.published, true))
-    .orderBy(asc(saints.name), asc(miracles.title))
+    .orderBy(asc(miracles.title))
     .limit(PAGE_SIZE)
     .offset(offset),
 ]);
+
+const miracleIds = pageMiracles.map((m) => m.id);
+const saintLinks =
+  miracleIds.length > 0
+    ? await db
+        .select({
+          miracle_id: miracleSaints.miracle_id,
+          saint_name: saints.name,
+        })
+        .from(miracleSaints)
+        .innerJoin(saints, eq(miracleSaints.saint_id, saints.id))
+        .where(inArray(miracleSaints.miracle_id, miracleIds))
+    : [];
+
+const saintNamesByMiracle = new Map<number, string[]>();
+for (const link of saintLinks) {
+  if (!saintNamesByMiracle.has(link.miracle_id)) saintNamesByMiracle.set(link.miracle_id, []);
+  saintNamesByMiracle.get(link.miracle_id)!.push(link.saint_name);
+}
 
 const totalPages = Math.max(1, Math.ceil(total / PAGE_SIZE));
 if (page > totalPages) return Astro.redirect(`/miracles?page=${totalPages}`);
@@ -64,7 +81,7 @@ const hasNext = page < totalPages;
             <div class="flex items-start justify-between gap-6">
               <div class="flex-1 min-w-0">
                 <div class="flex flex-wrap items-center gap-x-3 gap-y-1 mb-2">
-                  <span style="font-family:var(--font-sans);font-size:0.68rem;font-weight:600;color:var(--color-accent)">{m.saint_name}</span>
+                  <span style="font-family:var(--font-sans);font-size:0.68rem;font-weight:600;color:var(--color-accent)">{(saintNamesByMiracle.get(m.id) ?? []).join(", ")}</span>
                   <span style="color:var(--rule-mid)">·</span>
                   <span style="font-family:var(--font-sans);font-size:0.68rem;color:var(--text-4)">{m.type}</span>
                   {m.date_of_event && <><span style="color:var(--rule-mid)">·</span><span style="font-family:var(--font-sans);font-size:0.68rem;color:var(--text-4)">{m.date_of_event}</span></>}
