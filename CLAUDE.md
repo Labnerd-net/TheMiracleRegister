@@ -121,7 +121,7 @@ Saint pages show related saints as links. API response includes a `related_saint
 | vatican_medical_board_verdict | text | optional |
 | used_for_beatification | boolean | |
 | used_for_canonization | boolean | |
-| synopsis | text | 500–1000 words narrative |
+| synopsis | text | 300–500 words narrative; longer only if the case warrants it |
 | has_primary_sources | boolean | |
 | content_tier | enum | `core` (full narrative), `catalog` (short synopsis + external links), `stub` — default core |
 | published | boolean | default false — controls public visibility |

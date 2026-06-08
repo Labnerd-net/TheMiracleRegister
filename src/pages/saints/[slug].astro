@@ -57,6 +57,14 @@ const [saintMiracles, relatedRows, sources, locations] = await Promise.all([
 const mappableLocations = locations.filter(l => l.lat && l.lng);
 const birthLocation = locations.find(l => l.location_type === "birthplace");
 const deathLocation = locations.find(l => l.location_type === "death_place");
+
+const sourceTypeLabel: Record<string, string> = {
+  vatican_decree: "Vatican",
+  news_article: "Press",
+  book: "Book",
+  academic: "Reference",
+  other: "Official Site",
+};
 ---
 
 <Base title={saint.name}>
@@ -238,6 +246,24 @@ const deathLocation = locations.find(l => l.location_type === "death_place");
               </span>
             ))}
           </div>
+        </div>
+      )}
+
+      {sources.length > 0 && (
+        <div class="mt-9 pt-9 section-rule">
+          <p class="eyebrow mb-4">Sources</p>
+          <ul style="list-style:none;padding:0;margin:0;display:flex;flex-direction:column;gap:0.6rem">
+            {sources.map((s) => (
+              <li style="display:flex;align-items:baseline;gap:0.6rem">
+                <span style="font-family:var(--font-sans);font-size:0.6rem;font-weight:600;letter-spacing:0.08em;text-transform:uppercase;color:var(--text-5);white-space:nowrap;flex-shrink:0;padding-top:0.1rem">
+                  {sourceTypeLabel[s.source_type] ?? s.source_type}
+                </span>
+                <a href={s.url} target="_blank" rel="noopener" style="font-family:var(--font-sans);font-size:0.82rem;color:var(--color-accent);text-decoration:none;line-height:1.4" class="hover:underline">
+                  {s.title} ↗
+                </a>
+              </li>
+            ))}
+          </ul>
         </div>
       )}
     </div>
