@@ -170,7 +170,7 @@ Separate table for scalability and search. Enables filtering by source type.
 
 ### `saint_sources`
 
-Mirrors `miracle_sources` for saint biography sources. Supports `[^N]` inline citation markers in `biography_short`. Sources are numbered by insertion order (`id` asc); `[^1]` links to the first source, `[^2]` to the second, etc.
+Mirrors `miracle_sources` for saint biography sources.
 
 | Column | Type | Notes |
 |---|---|---|

@@ -4,7 +4,7 @@ import { createDb } from "../../db";
 import { saints, miracles, miracleSaints, saintRelations, saintSources, saintLocations } from "../../db/schema";
 import { asc, and, eq } from "drizzle-orm";
 import { env } from "cloudflare:workers";
-import { renderMarkdownWithCitations } from "../../lib/markdown";
+import { renderMarkdown } from "../../lib/markdown";
 
 const { slug } = Astro.params;
 const db = createDb(env.DATABASE_URL);
@@ -170,22 +170,7 @@ const deathLocation = locations.find(l => l.location_type === "death_place");
       {saint.biography_short && (
         <div class="mb-11 pb-11 section-rule">
           <p class="eyebrow mb-5">Biography</p>
-          <div class="prose" set:html={renderMarkdownWithCitations(saint.biography_short)} />
-          {sources.length > 0 && (
-            <ol class="footnotes" id="footnotes">
-              {sources.map((s, i) => (
-                <li id={`ref-${i + 1}`}>
-                  {s.url
-                    ? <a href={s.url} target="_blank" rel="noopener">{s.title ?? s.url}</a>
-                    : s.title
-                  }
-                  {s.source_type && <span class="fn-type">{s.source_type.replace(/_/g, " ")}</span>}
-                  {s.accessed_date && <span class="fn-type">· accessed {s.accessed_date}</span>}
-                  {" "}<a href={`#cite-${i + 1}`} class="fn-back">↩</a>
-                </li>
-              ))}
-            </ol>
-          )}
+          <div class="prose" set:html={renderMarkdown(saint.biography_short)} />
         </div>
       )}
 

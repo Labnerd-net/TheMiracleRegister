@@ -4,7 +4,7 @@ import { createDb } from "../../db";
 import { miracles, saints, miracleSaints, miracleSources } from "../../db/schema";
 import { and, eq } from "drizzle-orm";
 import { env } from "cloudflare:workers";
-import { renderMarkdownWithCitations } from "../../lib/markdown";
+import { renderMarkdown } from "../../lib/markdown";
 
 const { slug } = Astro.params;
 const db = createDb(env.DATABASE_URL);
@@ -156,14 +156,14 @@ const fmt = (s: string) => s.replace(/_/g, " ");
       {miracle.cure_details && (
         <section class="mb-9 pb-9 section-rule">
           <p class="eyebrow mb-4">Cure Details</p>
-          <div class="prose" set:html={renderMarkdownWithCitations(miracle.cure_details)} />
+          <div class="prose" set:html={renderMarkdown(miracle.cure_details)} />
         </section>
       )}
 
       {miracle.synopsis && (
         <section class="mb-9 pb-9 section-rule">
           <p class="eyebrow mb-5">Synopsis</p>
-          <div class="prose" set:html={renderMarkdownWithCitations(miracle.synopsis)} />
+          <div class="prose" set:html={renderMarkdown(miracle.synopsis)} />
         </section>
       )}
 
@@ -189,19 +189,6 @@ const fmt = (s: string) => s.replace(/_/g, " ");
               </li>
             ))}
           </ul>
-          <ol class="footnotes" id="footnotes">
-            {sources.map((s, i) => (
-              <li id={`ref-${i + 1}`}>
-                {s.url
-                  ? <a href={s.url} target="_blank" rel="noopener">{s.title ?? s.url}</a>
-                  : s.title
-                }
-                {s.source_type && <span class="fn-type">{fmt(s.source_type)}</span>}
-                {s.accessed_date && <span class="fn-type">· accessed {s.accessed_date}</span>}
-                {" "}<a href={`#cite-${i + 1}`} class="fn-back">↩</a>
-              </li>
-            ))}
-          </ol>
         </section>
       )}
     </div>
