@@ -1,6 +1,6 @@
 ---
 import { SAINT_THEMES } from "../db/topics";
-import { canonizationType, canonizationStage, gender } from "../db/schema/enums";
+import { canonizationType, canonizationStage, dispensationReason, gender } from "../db/schema/enums";
 import type { saints } from "../db/schema";
 
 type Saint = typeof saints.$inferSelect;
@@ -120,6 +120,35 @@ const join = (arr: string[] | null | undefined) => arr?.join(", ") ?? "";
           ))}
         </select>
       </div>
+    </div>
+  </fieldset>
+
+  <fieldset>
+    <legend>Miracle Dispensation</legend>
+    <div class="two-col">
+      <div class="field">
+        <label>
+          <input type="hidden" name="beatification_miracle_dispensed" value="false" />
+          <input type="checkbox" name="beatification_miracle_dispensed" value="true" checked={v?.beatification_miracle_dispensed ?? false} />
+          Beatification miracle dispensed
+        </label>
+      </div>
+      <div class="field">
+        <label>
+          <input type="hidden" name="canonization_miracle_dispensed" value="false" />
+          <input type="checkbox" name="canonization_miracle_dispensed" value="true" checked={v?.canonization_miracle_dispensed ?? false} />
+          Canonization miracle dispensed
+        </label>
+      </div>
+    </div>
+    <div class="field">
+      <label for="dispensation_reason">Reason</label>
+      <select id="dispensation_reason" name="dispensation_reason">
+        <option value="">— select —</option>
+        {dispensationReason.enumValues.map((r) => (
+          <option value={r} selected={v?.dispensation_reason === r}>{r.replace(/_/g, " ")}</option>
+        ))}
+      </select>
     </div>
   </fieldset>
 

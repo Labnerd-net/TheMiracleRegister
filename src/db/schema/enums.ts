@@ -115,3 +115,9 @@ export const recipientGender = pgEnum("recipient_gender", [
   "female",
   "not_applicable",
 ]);
+
+export const dispensationReason = pgEnum("dispensation_reason", [
+  "martyr",
+  "equipollent",
+  "papal_exception",
+]);

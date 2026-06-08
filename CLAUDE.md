@@ -66,6 +66,9 @@ A data-driven website documenting miracles attributed to Catholic saints. Focuse
 | biography_short | text | ~300 words |
 | gender | enum | male, female, group |
 | lay_person | boolean | true if not a religious or clergy |
+| beatification_miracle_dispensed | boolean | nullable — true when beatification miracle requirement was waived |
+| canonization_miracle_dispensed | boolean | nullable — true when canonization miracle requirement was waived |
+| dispensation_reason | enum | nullable — martyr, equipollent, papal_exception; only set when a dispensation boolean is true |
 | image_url | text | |
 | wikipedia_url | text | |
 | published | boolean | default false — controls public visibility |
