@@ -2,53 +2,77 @@
 import Base from "../../layouts/Base.astro";
 import { createDb } from "../../db";
 import { miracles, miracleSaints, saints } from "../../db/schema";
-import { asc, count, eq, inArray } from "drizzle-orm";
+import { and, asc, count, eq, gte, ilike, inArray, isNotNull, lte, sql } from "drizzle-orm";
 import { env } from "cloudflare:workers";
 
 const PAGE_SIZE = 20;
-const rawPage = parseInt(Astro.url.searchParams.get("page") ?? "1");
+
+// Filter params
+const sp = Astro.url.searchParams;
+const rawPage = parseInt(sp.get("page") ?? "1");
 const page = Math.max(1, isNaN(rawPage) ? 1 : rawPage);
 const offset = (page - 1) * PAGE_SIZE;
 
+const filterSaintId   = parseInt(sp.get("saint_id") ?? "") || undefined;
+const filterType      = sp.get("type") || undefined;
+const filterCountry   = sp.get("country") || undefined;
+const filterYearFrom  = parseInt(sp.get("year_from") ?? "") || undefined;
+const filterYearTo    = parseInt(sp.get("year_to") ?? "") || undefined;
+const filterBeat      = sp.get("beatification") === "1";
+const filterCanon     = sp.get("canonization") === "1";
+const hasActiveFilters = !!(filterSaintId || filterType || filterCountry || filterYearFrom || filterYearTo || filterBeat || filterCanon);
+
 const db = createDb(env.DATABASE_URL);
 
-const [[{ total }], pageMiracles] = await Promise.all([
-  db.select({ total: count() }).from(miracles).where(eq(miracles.published, true)),
+// Build where conditions
+const conditions = [eq(miracles.published, true)];
+if (filterSaintId) {
+  conditions.push(
+    inArray(miracles.id, db.select({ id: miracleSaints.miracle_id }).from(miracleSaints).where(eq(miracleSaints.saint_id, filterSaintId)))
+  );
+}
+if (filterType) conditions.push(eq(miracles.type, filterType as "healing"));
+if (filterCountry) conditions.push(ilike(miracles.country, filterCountry));
+if (filterYearFrom) conditions.push(gte(sql`EXTRACT(YEAR FROM ${miracles.date_of_event})::int`, filterYearFrom));
+if (filterYearTo) conditions.push(lte(sql`EXTRACT(YEAR FROM ${miracles.date_of_event})::int`, filterYearTo));
+if (filterBeat) conditions.push(eq(miracles.used_for_beatification, true));
+if (filterCanon) conditions.push(eq(miracles.used_for_canonization, true));
+const where = and(...conditions);
+
+const [[{ total }], pageMiracles, allSaints, countryRows] = await Promise.all([
+  db.select({ total: count() }).from(miracles).where(where),
   db
     .select({
       id: miracles.id,
       slug: miracles.slug,
       title: miracles.title,
       type: miracles.type,
-      miracle_category: miracles.miracle_category,
       topics: miracles.topics,
       date_of_event: miracles.date_of_event,
       country: miracles.country,
-      was_medically_verified: miracles.was_medically_verified,
-      vatican_recognized: miracles.vatican_recognized,
+      cure_details: miracles.cure_details,
       used_for_beatification: miracles.used_for_beatification,
       used_for_canonization: miracles.used_for_canonization,
-      cure_details: miracles.cure_details,
     })
     .from(miracles)
-    .where(eq(miracles.published, true))
+    .where(where)
     .orderBy(asc(miracles.title))
     .limit(PAGE_SIZE)
     .offset(offset),
+  db.select({ id: saints.id, name: saints.name }).from(saints).where(eq(saints.published, true)).orderBy(asc(saints.name)),
+  db.selectDistinct({ country: miracles.country }).from(miracles).where(and(eq(miracles.published, true), isNotNull(miracles.country))).orderBy(asc(miracles.country)),
 ]);
 
+const countries = countryRows.map(r => r.country).filter(Boolean) as string[];
+
 const miracleIds = pageMiracles.map((m) => m.id);
-const saintLinks =
-  miracleIds.length > 0
-    ? await db
-        .select({
-          miracle_id: miracleSaints.miracle_id,
-          saint_name: saints.name,
-        })
-        .from(miracleSaints)
-        .innerJoin(saints, eq(miracleSaints.saint_id, saints.id))
-        .where(inArray(miracleSaints.miracle_id, miracleIds))
-    : [];
+const saintLinks = miracleIds.length > 0
+  ? await db
+      .select({ miracle_id: miracleSaints.miracle_id, saint_name: saints.name })
+      .from(miracleSaints)
+      .innerJoin(saints, eq(miracleSaints.saint_id, saints.id))
+      .where(inArray(miracleSaints.miracle_id, miracleIds))
+  : [];
 
 const saintNamesByMiracle = new Map<number, string[]>();
 for (const link of saintLinks) {
@@ -57,10 +81,28 @@ for (const link of saintLinks) {
 }
 
 const totalPages = Math.max(1, Math.ceil(total / PAGE_SIZE));
-if (page > totalPages) return Astro.redirect(`/miracles?page=${totalPages}`);
+if (page > totalPages) return Astro.redirect(buildUrl(totalPages));
 
 const hasPrev = page > 1;
 const hasNext = page < totalPages;
+
+function buildUrl(p: number) {
+  const params = new URLSearchParams();
+  if (filterSaintId) params.set("saint_id", String(filterSaintId));
+  if (filterType) params.set("type", filterType);
+  if (filterCountry) params.set("country", filterCountry);
+  if (filterYearFrom) params.set("year_from", String(filterYearFrom));
+  if (filterYearTo) params.set("year_to", String(filterYearTo));
+  if (filterBeat) params.set("beatification", "1");
+  if (filterCanon) params.set("canonization", "1");
+  params.set("page", String(p));
+  return `/miracles?${params.toString()}`;
+}
+
+const MIRACLE_TYPES = [
+  "healing", "nature", "eucharistic", "stigmata", "incorruptibility",
+  "apparition", "miraculous_image", "prophecy", "bilocation", "other",
+] as const;
 ---
 
 <Base title="Miracles">
@@ -69,13 +111,82 @@ const hasNext = page < totalPages;
     <div class="max-w-6xl mx-auto px-4 sm:px-8 py-10 sm:py-16">
       <p class="eyebrow mb-4">The Register</p>
       <h1 style="font-family:var(--font-display);font-size:clamp(2.5rem,5vw,4rem);font-weight:300;color:var(--text-1);line-height:1.05;letter-spacing:-0.01em">Miracles</h1>
-      <p style="font-family:var(--font-sans);font-size:0.8rem;color:var(--text-4);margin-top:0.6rem;letter-spacing:0.02em">{total} miracles recorded</p>
+      <p id="miracles-count" style="font-family:var(--font-sans);font-size:0.8rem;color:var(--text-4);margin-top:0.6rem;letter-spacing:0.02em">{total} miracles recorded</p>
     </div>
   </div>
 
   <div class="max-w-6xl mx-auto px-4 sm:px-8 py-8 sm:py-12">
-    <div class="space-y-2">
-      {pageMiracles.map((m) => (
+
+    <!-- Filter bar -->
+    <form id="filter-form" method="get" action="/miracles" class="filter-bar">
+      <div class="filter-controls">
+
+        <div class="filter-group">
+          <label class="filter-label">Saint</label>
+          <select name="saint_id" class="filter-select">
+            <option value="">All Saints</option>
+            {allSaints.map(s => (
+              <option value={s.id} selected={s.id === filterSaintId}>{s.name}</option>
+            ))}
+          </select>
+        </div>
+
+        <div class="filter-group">
+          <label class="filter-label">Type</label>
+          <select name="type" class="filter-select">
+            <option value="">All Types</option>
+            {MIRACLE_TYPES.map(t => (
+              <option value={t} selected={t === filterType}>{t.replace(/_/g, " ")}</option>
+            ))}
+          </select>
+        </div>
+
+        <div class="filter-group">
+          <label class="filter-label">Country</label>
+          <select name="country" class="filter-select">
+            <option value="">All Countries</option>
+            {countries.map(c => (
+              <option value={c} selected={c === filterCountry}>{c}</option>
+            ))}
+          </select>
+        </div>
+
+        <div class="filter-group filter-group--year">
+          <label class="filter-label">Year</label>
+          <div class="year-range">
+            <input type="number" name="year_from" value={filterYearFrom ?? ""} placeholder="From" min="1000" max="2100" class="filter-input filter-input--year" />
+            <span class="year-sep">–</span>
+            <input type="number" name="year_to" value={filterYearTo ?? ""} placeholder="To" min="1000" max="2100" class="filter-input filter-input--year" />
+          </div>
+        </div>
+
+        <div class="filter-group filter-group--checks">
+          <label class="filter-label">Used for</label>
+          <div class="check-row">
+            <label class="check-label">
+              <input type="checkbox" name="beatification" value="1" checked={filterBeat} class="filter-check" />
+              Beatification
+            </label>
+            <label class="check-label">
+              <input type="checkbox" name="canonization" value="1" checked={filterCanon} class="filter-check" />
+              Canonization
+            </label>
+          </div>
+        </div>
+
+      </div>
+
+      <div class="filter-actions">
+        <button type="submit" class="filter-apply">Apply</button>
+        {hasActiveFilters && <a href="/miracles" class="filter-clear">Clear filters</a>}
+      </div>
+    </form>
+
+    <!-- List -->
+    <div id="miracles-list" class="space-y-2 mt-6">
+      {pageMiracles.length === 0 ? (
+        <p class="empty-state">No miracles match the selected filters.</p>
+      ) : pageMiracles.map((m) => (
         <a href={`/miracles/${m.slug}`} class="block no-underline group">
           <div class="card px-6 py-5">
             <div class="flex items-start justify-between gap-6">
@@ -83,7 +194,7 @@ const hasNext = page < totalPages;
                 <div class="flex flex-wrap items-center gap-x-3 gap-y-1 mb-2">
                   <span style="font-family:var(--font-sans);font-size:0.68rem;font-weight:600;color:var(--color-accent)">{(saintNamesByMiracle.get(m.id) ?? []).join(", ")}</span>
                   <span style="color:var(--rule-mid)">·</span>
-                  <span style="font-family:var(--font-sans);font-size:0.68rem;color:var(--text-4)">{m.type}</span>
+                  <span style="font-family:var(--font-sans);font-size:0.68rem;color:var(--text-4)">{m.type.replace(/_/g, " ")}</span>
                   {m.date_of_event && <><span style="color:var(--rule-mid)">·</span><span style="font-family:var(--font-sans);font-size:0.68rem;color:var(--text-4)">{m.date_of_event}</span></>}
                   {m.country && <><span style="color:var(--rule-mid)">·</span><span style="font-family:var(--font-sans);font-size:0.68rem;color:var(--text-4)">{m.country}</span></>}
                 </div>
@@ -116,24 +227,322 @@ const hasNext = page < totalPages;
       ))}
     </div>
 
-    {totalPages > 1 && (
-      <nav class="pagination" aria-label="Page navigation">
-        {hasPrev
-          ? <a href={`/miracles?page=${page - 1}`} class="pagination-btn">← Previous</a>
-          : <span class="pagination-btn disabled">← Previous</span>
-        }
-        <span class="pagination-info">Page {page} of {totalPages}</span>
-        {hasNext
-          ? <a href={`/miracles?page=${page + 1}`} class="pagination-btn">Next →</a>
-          : <span class="pagination-btn disabled">Next →</span>
-        }
-      </nav>
-    )}
+    <nav id="miracles-pagination" class="pagination" aria-label="Page navigation">
+      {totalPages > 1 && (
+        <>
+          {hasPrev
+            ? <a href={buildUrl(page - 1)} class="pagination-btn">← Previous</a>
+            : <span class="pagination-btn disabled">← Previous</span>
+          }
+          <span class="pagination-info">Page {page} of {totalPages}</span>
+          {hasNext
+            ? <a href={buildUrl(page + 1)} class="pagination-btn">Next →</a>
+            : <span class="pagination-btn disabled">Next →</span>
+          }
+        </>
+      )}
+    </nav>
   </div>
 
 </Base>
 
+<script>
+(function () {
+  const form = document.getElementById("filter-form") as HTMLFormElement | null;
+  const listEl = document.getElementById("miracles-list");
+  const paginationEl = document.getElementById("miracles-pagination");
+  const countEl = document.getElementById("miracles-count");
+  if (!form || !listEl || !paginationEl || !countEl) return;
+
+  let debounceTimer = 0;
+  let currentPage = 1;
+
+  function esc(str: string | null | undefined): string {
+    return String(str ?? "").replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;").replace(/"/g, "&quot;");
+  }
+
+  function buildApiUrl(fd: FormData, page: number): string {
+    const p = new URLSearchParams();
+    const saintId = fd.get("saint_id") as string;
+    const type = fd.get("type") as string;
+    const country = fd.get("country") as string;
+    const yearFrom = fd.get("year_from") as string;
+    const yearTo = fd.get("year_to") as string;
+    const beat = fd.get("beatification") as string;
+    const canon = fd.get("canonization") as string;
+    if (saintId) p.set("saint_id", saintId);
+    if (type) p.set("type", type);
+    if (country) p.set("country", country);
+    if (yearFrom) p.set("year_from", yearFrom);
+    if (yearTo) p.set("year_to", yearTo);
+    if (beat) p.set("used_for_beatification", "1");
+    if (canon) p.set("used_for_canonization", "1");
+    p.set("page", String(page));
+    p.set("limit", "20");
+    return `/api/v1/miracles?${p.toString()}`;
+  }
+
+  function buildPageUrl(fd: FormData, page: number): string {
+    const p = new URLSearchParams();
+    const saintId = fd.get("saint_id") as string;
+    const type = fd.get("type") as string;
+    const country = fd.get("country") as string;
+    const yearFrom = fd.get("year_from") as string;
+    const yearTo = fd.get("year_to") as string;
+    const beat = fd.get("beatification") as string;
+    const canon = fd.get("canonization") as string;
+    if (saintId) p.set("saint_id", saintId);
+    if (type) p.set("type", type);
+    if (country) p.set("country", country);
+    if (yearFrom) p.set("year_from", yearFrom);
+    if (yearTo) p.set("year_to", yearTo);
+    if (beat) p.set("beatification", "1");
+    if (canon) p.set("canonization", "1");
+    if (page > 1) p.set("page", String(page));
+    const qs = p.toString();
+    return qs ? `/miracles?${qs}` : "/miracles";
+  }
+
+  function renderCard(m: any): string {
+    const saintNames = (m.saints as any[]).map((s) => esc(s.name)).join(", ");
+    const typeLabel = esc(m.type?.replace(/_/g, " "));
+    const meta = [
+      saintNames ? `<span style="font-family:var(--font-sans);font-size:0.68rem;font-weight:600;color:var(--color-accent)">${saintNames}</span>` : "",
+      `<span style="color:var(--rule-mid)">·</span><span style="font-family:var(--font-sans);font-size:0.68rem;color:var(--text-4)">${typeLabel}</span>`,
+      m.date_of_event ? `<span style="color:var(--rule-mid)">·</span><span style="font-family:var(--font-sans);font-size:0.68rem;color:var(--text-4)">${esc(m.date_of_event)}</span>` : "",
+      m.country ? `<span style="color:var(--rule-mid)">·</span><span style="font-family:var(--font-sans);font-size:0.68rem;color:var(--text-4)">${esc(m.country)}</span>` : "",
+    ].filter(Boolean).join("");
+
+    const excerpt = m.cure_details
+      ? `<p style="font-family:var(--font-sans);font-size:0.78rem;color:var(--text-3);line-height:1.65;margin-bottom:0.5rem">${esc(m.cure_details.length > 140 ? m.cure_details.slice(0, 140) + "…" : m.cure_details)}</p>`
+      : "";
+
+    const topics = (m.topics ?? []) as string[];
+    const topicHtml = topics.length > 0
+      ? `<div class="flex flex-wrap gap-1">${topics.slice(0, 5).map((t) => `<span class="tag">${esc(t)}</span>`).join("")}${topics.length > 5 ? `<span class="tag">+${topics.length - 5}</span>` : ""}</div>`
+      : "";
+
+    const badges = [
+      m.used_for_beatification ? `<span class="used-badge">Beatification</span>` : "",
+      m.used_for_canonization ? `<span class="used-badge">Canonization</span>` : "",
+    ].filter(Boolean).join("");
+
+    return `<a href="/miracles/${esc(m.slug)}" class="block no-underline group">
+      <div class="card px-6 py-5">
+        <div class="flex items-start justify-between gap-6">
+          <div class="flex-1 min-w-0">
+            <div class="flex flex-wrap items-center gap-x-3 gap-y-1 mb-2">${meta}</div>
+            <h2 style="font-family:var(--font-display);font-size:1.25rem;font-weight:400;color:var(--text-1);line-height:1.3;margin-bottom:0.5rem;transition:color 0.2s" class="group-hover:text-[--color-accent]">${esc(m.title)}</h2>
+            ${excerpt}${topicHtml}
+          </div>
+          ${badges ? `<div class="shrink-0 flex flex-col gap-1 items-end">${badges}</div>` : ""}
+        </div>
+      </div>
+    </a>`;
+  }
+
+  function renderPagination(meta: any, fd: FormData): string {
+    const { page, limit, total } = meta;
+    const totalPages = Math.max(1, Math.ceil(total / limit));
+    if (totalPages <= 1) return "";
+    const hasPrev = page > 1;
+    const hasNext = page < totalPages;
+    return `
+      ${hasPrev ? `<a href="${buildPageUrl(fd, page - 1)}" class="pagination-btn js-page" data-page="${page - 1}">← Previous</a>` : `<span class="pagination-btn disabled">← Previous</span>`}
+      <span class="pagination-info">Page ${page} of ${totalPages}</span>
+      ${hasNext ? `<a href="${buildPageUrl(fd, page + 1)}" class="pagination-btn js-page" data-page="${page + 1}">Next →</a>` : `<span class="pagination-btn disabled">Next →</span>`}
+    `;
+  }
+
+  async function applyFilters(page: number = 1) {
+    const fd = new FormData(form!);
+    currentPage = page;
+    try {
+      const res = await fetch(buildApiUrl(fd, page));
+      if (!res.ok) return;
+      const json = await res.json() as any;
+      const { data, meta } = json;
+
+      countEl!.textContent = `${meta.total} miracle${meta.total !== 1 ? "s" : ""} recorded`;
+
+      listEl!.innerHTML = data.length === 0
+        ? `<p class="empty-state">No miracles match the selected filters.</p>`
+        : (data as any[]).map(renderCard).join("");
+
+      paginationEl!.innerHTML = renderPagination(meta, fd);
+
+      history.pushState(null, "", buildPageUrl(fd, page));
+    } catch {
+      // silently fall back — user still has the server-rendered state
+    }
+  }
+
+  form.addEventListener("change", (e) => {
+    const target = e.target as HTMLInputElement;
+    if (target.type === "number") return;
+    applyFilters();
+  });
+
+  form.addEventListener("input", (e) => {
+    const target = e.target as HTMLInputElement;
+    if (target.type !== "number") return;
+    clearTimeout(debounceTimer);
+    debounceTimer = window.setTimeout(() => applyFilters(), 400);
+  });
+
+  form.addEventListener("submit", (e) => {
+    e.preventDefault();
+    applyFilters();
+  });
+
+  paginationEl.addEventListener("click", (e) => {
+    const target = (e.target as HTMLElement).closest(".js-page") as HTMLAnchorElement | null;
+    if (!target) return;
+    e.preventDefault();
+    const p = parseInt(target.dataset.page ?? "1");
+    applyFilters(p);
+    window.scrollTo({ top: 0, behavior: "smooth" });
+  });
+})();
+</script>
+
 <style>
+  .filter-bar {
+    background: var(--bg-elevated);
+    border: 1px solid var(--rule-light);
+    border-radius: 6px;
+    padding: 1rem 1.25rem;
+  }
+
+  .filter-controls {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 1rem 1.5rem;
+    align-items: flex-end;
+  }
+
+  .filter-group {
+    display: flex;
+    flex-direction: column;
+    gap: 0.3rem;
+    min-width: 0;
+  }
+
+  .filter-label {
+    font-family: var(--font-sans);
+    font-size: 0.63rem;
+    font-weight: 600;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--text-4);
+  }
+
+  .filter-select,
+  .filter-input {
+    font-family: var(--font-sans);
+    font-size: 0.8rem;
+    color: var(--text-2);
+    background: var(--bg-base);
+    border: 1px solid var(--rule-mid);
+    border-radius: 4px;
+    padding: 0.35rem 0.6rem;
+    appearance: none;
+    height: 2rem;
+  }
+
+  .filter-select {
+    padding-right: 1.8rem;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='10' height='6'%3E%3Cpath d='M0 0l5 6 5-6z' fill='%23666'/%3E%3C/svg%3E");
+    background-repeat: no-repeat;
+    background-position: right 0.55rem center;
+  }
+
+  .filter-select:focus,
+  .filter-input:focus {
+    outline: none;
+    border-color: var(--color-accent);
+  }
+
+  .filter-group--year .year-range {
+    display: flex;
+    align-items: center;
+    gap: 0.4rem;
+  }
+
+  .filter-input--year {
+    width: 5.5rem;
+  }
+
+  .year-sep {
+    font-family: var(--font-sans);
+    font-size: 0.8rem;
+    color: var(--text-4);
+  }
+
+  .filter-group--checks .check-row {
+    display: flex;
+    gap: 1rem;
+    align-items: center;
+    height: 2rem;
+  }
+
+  .check-label {
+    font-family: var(--font-sans);
+    font-size: 0.78rem;
+    color: var(--text-3);
+    display: flex;
+    align-items: center;
+    gap: 0.35rem;
+    cursor: pointer;
+  }
+
+  .filter-check {
+    accent-color: var(--color-accent);
+    width: 0.85rem;
+    height: 0.85rem;
+  }
+
+  .filter-actions {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    margin-top: 0.85rem;
+    padding-top: 0.75rem;
+    border-top: 1px solid var(--rule-light);
+  }
+
+  .filter-apply {
+    font-family: var(--font-sans);
+    font-size: 0.75rem;
+    font-weight: 600;
+    letter-spacing: 0.04em;
+    color: var(--bg-base);
+    background: var(--color-accent);
+    border: none;
+    border-radius: 4px;
+    padding: 0.35rem 0.9rem;
+    cursor: pointer;
+  }
+
+  .filter-apply:hover { opacity: 0.85; }
+
+  .filter-clear {
+    font-family: var(--font-sans);
+    font-size: 0.75rem;
+    color: var(--text-4);
+    text-decoration: none;
+  }
+
+  .filter-clear:hover { color: var(--text-2); }
+
+  .empty-state {
+    font-family: var(--font-sans);
+    font-size: 0.85rem;
+    color: var(--text-4);
+    padding: 2rem 0;
+    text-align: center;
+  }
+
   .pagination {
     display: flex;
     align-items: center;
@@ -143,6 +552,7 @@ const hasNext = page < totalPages;
     padding-top: 2rem;
     border-top: 1px solid var(--rule-light);
   }
+
   .pagination-btn {
     font-family: var(--font-sans);
     font-size: 0.8rem;
@@ -151,11 +561,14 @@ const hasNext = page < totalPages;
     text-decoration: none;
     letter-spacing: 0.03em;
   }
+
   .pagination-btn:hover { text-decoration: underline; }
+
   .pagination-btn.disabled {
     color: var(--text-4);
     cursor: default;
   }
+
   .pagination-info {
     font-family: var(--font-sans);
     font-size: 0.78rem;

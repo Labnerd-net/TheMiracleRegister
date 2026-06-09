@@ -59,6 +59,9 @@ export const MiracleListItemSchema = z
     recipient_name: z.string().nullable(),
     was_medically_verified: z.boolean(),
     vatican_recognized: z.boolean(),
+    cure_details: z.string().nullable(),
+    used_for_beatification: z.boolean(),
+    used_for_canonization: z.boolean(),
     saints: z.array(z.object({ id: z.number().int(), slug: z.string(), name: z.string() })),
   })
   .openapi("MiracleListItem");
@@ -189,6 +192,8 @@ export const MiraclesQuerySchema = z.object({
   country: z.string().optional(),
   year_from: z.coerce.number().int().optional(),
   year_to: z.coerce.number().int().optional(),
+  used_for_beatification: z.string().optional(),
+  used_for_canonization: z.string().optional(),
   page: z.coerce.number().int().positive().default(1),
   limit: z.coerce.number().int().positive().max(100).default(20),
 });

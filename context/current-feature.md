@@ -2,11 +2,30 @@
 
 ## Current Feature Spec File
 
-_None_
+### Miracle Filter UI (#26)
+
+Filter controls on `/miracles` enabling users to narrow the list by saint, type, country, and year range.
+
+**Filters:**
+- Saint — dropdown of all published saints
+- Type — dropdown of miracle type enum values
+- Country — dropdown of distinct countries present in the DB
+- Year from / Year to — number inputs
+- Canonization use — checkboxes: "Used for beatification", "Used for canonization"
+
+**Mechanics:**
+- SSR on first load (SEO-friendly, works without JS)
+- Filter form has `method="get"` fallback
+- With JS enabled: filter changes fetch `/api/v1/miracles` and swap the list in-place; URL updated via `history.pushState` (shareable links, working back button)
+- Pagination carries active filters forward
 
 ## Current Feature Plan File
 
-_None_
+1. Add saint + country data fetching to `/miracles` index page (for populating dropdowns)
+2. Read active filters from `Astro.url.searchParams` and apply them to the Drizzle query
+3. Add filter bar HTML above the miracle list
+4. Add client-side JS: intercept form changes → fetch API → re-render list + update URL
+5. Ensure pagination links carry filter params
 
 ## History
 
