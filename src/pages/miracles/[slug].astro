@@ -35,8 +35,9 @@ const [miracle] = await db.select({
   intercessory_medium: miracles.intercessory_medium,
   was_medically_verified: miracles.was_medically_verified,
   medical_verification_date: miracles.medical_verification_date,
-  vatican_recognized: miracles.vatican_recognized,
+  approval_authority: miracles.approval_authority,
   vatican_decree_date: miracles.vatican_decree_date,
+  witness_count: miracles.witness_count,
 }).from(miracles).where(and(eq(miracles.slug, slug!), eq(miracles.published, true)));
 if (!miracle) return Astro.redirect("/404");
 
@@ -208,7 +209,12 @@ const fmt = (s: string) => s.replace(/_/g, " ");
           {miracle.medical_verification_date && (
             <><dt>Verified On</dt><dd>{miracle.medical_verification_date}</dd></>
           )}
-          <dt>Vatican</dt><dd>{miracle.vatican_recognized ? "Recognised" : "Not recognised"}</dd>
+          {miracle.approval_authority !== "none" && (
+            <><dt>Approved by</dt><dd>{fmt(miracle.approval_authority)}</dd></>
+          )}
+          {miracle.witness_count && (
+            <><dt>Witnesses</dt><dd>{miracle.witness_count.toLocaleString()}</dd></>
+          )}
           {miracle.vatican_decree_date && (
             <><dt>Decree</dt><dd>{miracle.vatican_decree_date}</dd></>
           )}

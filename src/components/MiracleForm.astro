@@ -2,7 +2,7 @@
 import { MIRACLE_TOPICS } from "../db/topics";
 import {
   miracleCategory, miracleType, datePrecision, timingRelativeToSaintDeath,
-  recipientPrivacy, recipientGender, cureCharacteristics, intercessoryMedium,
+  recipientPrivacy, recipientGender, cureCharacteristics, intercessoryMedium, approvalAuthority,
 } from "../db/schema/enums";
 import type { miracles, saints } from "../db/schema";
 
@@ -229,14 +229,19 @@ const currentSaintIds = new Set(selectedSaintIds);
   </fieldset>
 
   <fieldset>
-    <legend>Vatican</legend>
+    <legend>Approval</legend>
     <div class="two-col">
       <div class="field">
-        <label>
-          <input type="hidden" name="vatican_recognized" value="false" />
-          <input type="checkbox" name="vatican_recognized" value="true" checked={v?.vatican_recognized} />
-          Vatican Recognized
-        </label>
+        <label for="approval_authority">Approval Authority</label>
+        <select id="approval_authority" name="approval_authority">
+          {approvalAuthority.enumValues.map((val) => (
+            <option value={val} selected={v?.approval_authority === val}>{val.replace(/_/g, " ")}</option>
+          ))}
+        </select>
+      </div>
+      <div class="field">
+        <label for="witness_count">Witness Count</label>
+        <input type="number" id="witness_count" name="witness_count" min="0" value={v?.witness_count ?? ""} />
       </div>
       <div class="field">
         <label for="vatican_decree_date">Decree Date</label>

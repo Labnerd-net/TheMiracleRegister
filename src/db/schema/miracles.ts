@@ -1,5 +1,6 @@
 import { boolean, date, index, integer, numeric, pgTable, serial, text, timestamp } from "drizzle-orm/pg-core";
 import {
+  approvalAuthority,
   contentTier,
   cureCharacteristics,
   datePrecision,
@@ -41,9 +42,10 @@ export const miracles = pgTable(
     was_medically_verified: boolean("was_medically_verified").notNull(),
     medical_verification_date: date("medical_verification_date"),
     intercessory_medium: intercessoryMedium("intercessory_medium").notNull(),
-    vatican_recognized: boolean("vatican_recognized").notNull(),
+    approval_authority: approvalAuthority("approval_authority").notNull().default("none"),
     vatican_decree_date: date("vatican_decree_date"),
     vatican_medical_board_verdict: text("vatican_medical_board_verdict"),
+    witness_count: integer("witness_count"),
     used_for_beatification: boolean("used_for_beatification").notNull(),
     used_for_canonization: boolean("used_for_canonization").notNull(),
     synopsis: text("synopsis"),

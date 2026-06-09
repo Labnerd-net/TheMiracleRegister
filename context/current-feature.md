@@ -2,30 +2,11 @@
 
 ## Current Feature Spec File
 
-### Miracle Filter UI (#26)
-
-Filter controls on `/miracles` enabling users to narrow the list by saint, type, country, and year range.
-
-**Filters:**
-- Saint — dropdown of all published saints
-- Type — dropdown of miracle type enum values
-- Country — dropdown of distinct countries present in the DB
-- Year from / Year to — number inputs
-- Canonization use — checkboxes: "Used for beatification", "Used for canonization"
-
-**Mechanics:**
-- SSR on first load (SEO-friendly, works without JS)
-- Filter form has `method="get"` fallback
-- With JS enabled: filter changes fetch `/api/v1/miracles` and swap the list in-place; URL updated via `history.pushState` (shareable links, working back button)
-- Pagination carries active filters forward
+_None_
 
 ## Current Feature Plan File
 
-1. Add saint + country data fetching to `/miracles` index page (for populating dropdowns)
-2. Read active filters from `Astro.url.searchParams` and apply them to the Drizzle query
-3. Add filter bar HTML above the miracle list
-4. Add client-side JS: intercept form changes → fetch API → re-render list + update URL
-5. Ensure pagination links carry filter params
+_None_
 
 ## History
 
@@ -110,3 +91,12 @@ Added three nullable fields to the `saints` table: `beatification_miracle_dispen
 
 ### Explicit Field Selects on Detail Pages (#15)
 Replaced four `db.select()` (SELECT *) calls with explicit field lists across three files. `src/api/routes/miracles.ts` now selects exactly the 31 fields in `MiracleDetailSchema`. `src/pages/miracles/[slug].astro` selects 29 fields for the miracle query (excluding slug, published, and unused columns) and 4 fields for the miracle sources query. `src/pages/saints/[slug].astro` selects 4 fields for the saint sources query. Excluded in all cases: `published`, `content_tier`, `created_at`, `updated_at`, and any column used only in a WHERE clause. Build clean, no behavior change.
+
+### Miracle Filter UI (#26)
+Added filter bar to `/miracles` with saint, type, country, year range, and canonization-use controls. SSR on first load with no-JS fallback; with JS, filter changes fetch `/api/v1/miracles` and swap the list in-place via `history.pushState`. Pagination carries active filters forward. API list response extended with `cure_details`, `used_for_beatification`, `used_for_canonization`. Removed broken Lisieux sanctuary source from Louis and Zélie Martin.
+
+### Full-Text Search (#36)
+Public `/search` page with results grouped by Saints and Miracles, using `ilike` queries against saint name/biography and miracle title/synopsis/diagnosis/cure details. Desktop nav gets an inline search input that expands on focus; mobile gets a magnifying glass icon linking to `/search`. Minimum 2-char query guard. No schema changes needed.
+
+### Approval Authority Schema
+Replaced `vatican_recognized` (boolean) with `approval_authority` enum (`vatican_dicastery`, `lourdes_bureau`, `local_bishop`, `none`). Added `apparition` as a third `miracle_category` value alongside `intercessory` and `associated`. Added nullable `witness_count` integer for events with documented audience sizes (e.g. Miracle of the Sun). Migration 0019 applied. All 26 existing production miracles backfilled to `vatican_dicastery`. Build clean.

@@ -6,7 +6,7 @@ import { asc } from "drizzle-orm";
 import { slugify } from "../../../lib/slugify";
 import {
   miracleCategory, miracleType, datePrecision, timingRelativeToSaintDeath,
-  recipientPrivacy, cureCharacteristics, intercessoryMedium,
+  recipientPrivacy, cureCharacteristics, intercessoryMedium, approvalAuthority,
 } from "../../../db/schema/enums";
 import { parseEnum, formHelpers } from "../../../lib/form-utils";
 import { MiracleFormSchema, formatZodErrors } from "../../../lib/form-schemas";
@@ -55,7 +55,8 @@ if (Astro.request.method === "POST") {
       was_medically_verified: getBool("was_medically_verified"),
       medical_verification_date: get("medical_verification_date") || null,
       intercessory_medium: parseEnum(get("intercessory_medium"), intercessoryMedium.enumValues, "prayer_only")!,
-      vatican_recognized: getBool("vatican_recognized"),
+      approval_authority: parseEnum(get("approval_authority"), approvalAuthority.enumValues, "none")!,
+      witness_count: get("witness_count") ? parseInt(get("witness_count")) : null,
       vatican_decree_date: get("vatican_decree_date") || null,
       vatican_medical_board_verdict: get("vatican_medical_board_verdict") || null,
       used_for_beatification: getBool("used_for_beatification"),

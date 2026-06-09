@@ -93,7 +93,7 @@ saintsRoute.openapi(
           date_precision: miracles.date_precision,
           recipient_name: miracles.recipient_name,
           was_medically_verified: miracles.was_medically_verified,
-          vatican_recognized: miracles.vatican_recognized,
+          approval_authority: miracles.approval_authority,
         })
         .from(miracles)
         .innerJoin(miracleSaints, eq(miracles.id, miracleSaints.miracle_id))

@@ -23,6 +23,7 @@ export const relationTypeEnum = pgEnum("relation_type", [
 export const miracleCategory = pgEnum("miracle_category", [
   "intercessory",
   "associated",
+  "apparition",
 ]);
 
 export const miracleType = pgEnum("miracle_type", [
@@ -120,4 +121,11 @@ export const dispensationReason = pgEnum("dispensation_reason", [
   "martyr",
   "equipollent",
   "papal_exception",
+]);
+
+export const approvalAuthority = pgEnum("approval_authority", [
+  "vatican_dicastery",
+  "lourdes_bureau",
+  "local_bishop",
+  "none",
 ]);
