@@ -94,7 +94,7 @@ Saint pages show related saints as links. API response includes a `related_saint
 | id | integer PK | |
 | slug | text | |
 | title | text | |
-| miracle_category | enum | intercessory, associated |
+| miracle_category | enum | intercessory, associated, apparition |
 | type | enum | healing, nature, eucharistic, stigmata, incorruptibility, apparition, miraculous_image, prophecy, bilocation, other |
 | topics | text[] | GIN indexed — life circumstance/role tags for the miracle recipient or context. Canonical list in `src/db/topics.ts` (`MIRACLE_TOPICS`). |
 | date_of_event | date | nullable |
@@ -116,12 +116,14 @@ Saint pages show related saints as links. API response includes a `related_saint
 | was_medically_verified | boolean | |
 | medical_verification_date | date | optional |
 | intercessory_medium | enum | prayer_only, relic, blessed_oil, medallion, visitation, tomb_prayer, saint_image, not_applicable, other |
-| vatican_recognized | boolean | |
+| approval_authority | enum | vatican_dicastery, lourdes_bureau, local_bishop, none — replaces vatican_recognized boolean |
 | vatican_decree_date | date | optional |
 | vatican_medical_board_verdict | text | optional |
+| witness_count | integer | nullable — for apparitions with a known number of witnesses |
 | used_for_beatification | boolean | |
 | used_for_canonization | boolean | |
 | synopsis | text | 300–500 words narrative; longer only if the case warrants it |
+| image_url | text | nullable — Wikimedia Commons public domain image |
 | has_primary_sources | boolean | |
 | content_tier | enum | `core` (full narrative), `catalog` (short synopsis + external links), `stub` — default core |
 | published | boolean | default false — controls public visibility |
