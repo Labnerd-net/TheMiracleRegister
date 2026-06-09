@@ -38,6 +38,7 @@ const [miracle] = await db.select({
   approval_authority: miracles.approval_authority,
   vatican_decree_date: miracles.vatican_decree_date,
   witness_count: miracles.witness_count,
+  image_url: miracles.image_url,
 }).from(miracles).where(and(eq(miracles.slug, slug!), eq(miracles.published, true)));
 if (!miracle) return Astro.redirect("/404");
 
@@ -126,14 +127,21 @@ const fmt = (s: string) => s.replace(/_/g, " ");
         </div>
       </div>
 
-      {miracle.topics && miracle.topics.length > 0 && (
-        <div class="mt-8 lg:mt-8">
-          <p class="eyebrow mb-4">Topics</p>
-          <div class="flex flex-wrap gap-1.5">
-            {miracle.topics.map((t) => <span class="tag">{t}</span>)}
+      <div class="mt-8 lg:mt-0">
+        {miracle.image_url && (
+          <div class="mb-6 rounded overflow-hidden" style="background:var(--bg-elevated)">
+            <img src={miracle.image_url} alt={miracle.title} class="w-full object-cover" style="max-height:220px;object-position:center top" />
           </div>
-        </div>
-      )}
+        )}
+        {miracle.topics && miracle.topics.length > 0 && (
+          <>
+            <p class="eyebrow mb-4">Topics</p>
+            <div class="flex flex-wrap gap-1.5">
+              {miracle.topics.map((t) => <span class="tag">{t}</span>)}
+            </div>
+          </>
+        )}
+      </div>
     </div>
   </div>
 

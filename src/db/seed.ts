@@ -1397,6 +1397,7 @@ Carmen Perez Pons was present at the canonization ceremony in Rome.`,
         used_for_beatification: false,
         used_for_canonization: false,
         content_tier: "core",
+        image_url: "https://upload.wikimedia.org/wikipedia/commons/2/2c/Virgen_de_guadalupe1.jpg",
         synopsis: `The apparitions of Our Lady of Guadalupe to Juan Diego Cuauhtlatoatzin took place over four days in December 1531, a decade after the Spanish conquest of Mexico and in a region where Christian missionary efforts had made little headway among the indigenous population. Juan Diego was a recently baptized man of the Chichimec-Nahuatl people, living near Cuauhtitlán, north of the capital.
 
 On the morning of December 9, he was crossing Tepeyac Hill on his way to Mass when he heard music and a voice calling him by name. A luminous young woman appeared, dressed in turquoise and roses, and spoke to him in Nahuatl. She identified herself as the Virgin Mary, the Mother of the True God, and asked that he go to the Bishop of Mexico City, Fray Juan de Zumárraga, and request that a chapel be built at Tepeyac. Juan Diego went to the bishop, who received him kindly but asked for a sign.
@@ -1435,6 +1436,7 @@ The apparition series is inseparable from the image it produced — the tilma, w
         used_for_beatification: false,
         used_for_canonization: false,
         content_tier: "core",
+        image_url: "https://upload.wikimedia.org/wikipedia/commons/8/8a/Chapelle_Notre-Dame_de_la_M%C3%A9daille_Miraculeuse1.JPG",
         synopsis: `In the summer of 1830, a twenty-four-year-old novice of the Daughters of Charity in Paris received the first of several visions that would eventually result in one of the most widely distributed religious objects in Catholic history. Catherine Labouré had entered the congregation at Rue du Bac only months earlier. She was quiet, unassuming, and uninterested in attracting attention — qualities that allowed her to keep her identity as the visionary secret for forty-six years.
 
 The first vision occurred on the night of July 18–19, 1830. Catherine was awakened by what she described as her guardian angel and led to the chapel, where she spent approximately two hours speaking with the Virgin Mary. Mary warned that difficult times were coming to France and that Catherine had been chosen for a particular mission.
@@ -1472,6 +1474,7 @@ Catherine Labouré spent the rest of her life in obscure charitable work at Engh
         used_for_beatification: false,
         used_for_canonization: false,
         content_tier: "catalog",
+        image_url: "https://upload.wikimedia.org/wikipedia/commons/5/5b/Notre-Dame_du_Laus_%28Pindreau_-_1%29.JPG",
         synopsis: `Between 1664 and 1718, Benoîte Rencurel, a young shepherdess in the Hautes-Alpes of southern France, reported numerous apparitions of the Virgin Mary in the valley of Laus near the village of Saint-Étienne-le-Laus. Unlike most Marian apparitions, which involve a brief series of appearances, the visions at Laus continued for more than fifty years and were accompanied by reports of the fragrance of roses and other phenomena. Mary identified herself as Our Lady of Pity and asked that an oratory be built at the site, which later became a chapel and eventually a basilica. Laus became known as a place of conversion and healing, particularly among penitents brought by their confessors. The apparitions were investigated and approved by the Diocese of Gap in 2008 under Bishop Jean-Michel di Falco Léandri, with Vatican recognition confirmed by Pope Benedict XVI — making Laus the first newly recognized Marian apparition site of the 21st century.`,
         has_primary_sources: true,
         published: false,
@@ -1502,6 +1505,7 @@ Catherine Labouré spent the rest of her life in obscure charitable work at Engh
         used_for_beatification: false,
         used_for_canonization: false,
         content_tier: "catalog",
+        image_url: "https://upload.wikimedia.org/wikipedia/commons/0/02/Notre-Dame_de_la_salette.JPG",
         synopsis: `On September 19, 1846, two shepherd children — Mélanie Calvat, aged fourteen, and Maximin Giraud, aged eleven — reported seeing a weeping woman on the slopes of a mountain above La Salette in the French Alps. The woman spoke to them in French and in their local dialect, warning of crop failures and calling for a return to Sunday observance and an end to blasphemy. She gave each child a personal secret intended for the Pope. Their accounts were internally consistent across repeated and independent questioning, and a spring appeared at the site. Bishop Philibert de Bruillard of Grenoble conducted a five-year investigation and approved the apparition in 1851, stating it "bears in itself all the marks of truth." The event had a significant impact on French Catholicism and led to the founding of the Missionaries of Our Lady of La Salette.`,
         has_primary_sources: true,
         published: false,
@@ -1532,6 +1536,7 @@ Catherine Labouré spent the rest of her life in obscure charitable work at Engh
         used_for_beatification: false,
         used_for_canonization: false,
         content_tier: "catalog",
+        image_url: "https://upload.wikimedia.org/wikipedia/commons/2/20/Conversion_de_Mr_Alphonse_Ratisbonne._La_Vision._N%C2%BA_2.jpg",
         synopsis: `On January 20, 1842, Alphonse Ratisbonne, a young Jewish banker from Strasbourg who was openly anti-Catholic, entered the Church of Sant'Andrea delle Fratte in Rome on a brief errand. He had reluctantly agreed, days earlier, to wear a Miraculous Medal and recite the Memorare prayer — a social wager proposed by a Catholic acquaintance. While waiting alone in the church, he reported a sudden vision of the Virgin Mary — the same image as on the Miraculous Medal — who said nothing but whose presence precipitated an instantaneous and total conversion. Witnesses found him shortly after, weeping and begging to be received into the Church. He was baptized on February 3, ordained a priest in 1848, and founded a religious congregation dedicated to Jewish-Christian reconciliation. Pope Gregory XVI formally approved the apparition, and the event is closely associated with the broader recognition of the Miraculous Medal apparitions.`,
         has_primary_sources: true,
         published: false,
@@ -1561,6 +1566,7 @@ Catherine Labouré spent the rest of her life in obscure charitable work at Engh
         used_for_beatification: false,
         used_for_canonization: false,
         content_tier: "catalog",
+        image_url: "https://upload.wikimedia.org/wikipedia/commons/3/36/Filipovsk%C3%A1_kaple.jpg",
         synopsis: `On January 13, 1866, Magdalena Kade, a chronically ill woman in the village of Philippsdorf (now Filipov) in northern Bohemia, reported being cured and seeing the Virgin Mary, who said: "Place here a picture of Mary, and this church will be honored." Magdalena had been bedridden for years with debilitating pain that had left her unable to walk. Following the vision she rose, dressed herself, and walked to the parish church — a recovery her physician documented as medically inexplicable. The Diocese of Leitmeritz (Litoměřice) conducted an investigation and approved both the cure and the apparition as supernatural in character. A pilgrimage church was built at the site. The Vatican's grant of a canonical coronation of the shrine image — a formal honor reserved for recognized Marian sites — constitutes implicit Vatican confirmation of the apparition.`,
         has_primary_sources: true,
         published: false,
@@ -1591,6 +1597,7 @@ Catherine Labouré spent the rest of her life in obscure charitable work at Engh
         used_for_beatification: false,
         used_for_canonization: false,
         content_tier: "catalog",
+        image_url: "https://upload.wikimedia.org/wikipedia/commons/b/b5/Pontmain_%2853%29_Basilique_Vitrail_02.jpg",
         synopsis: `On the evening of January 17, 1871, near the end of the Franco-Prussian War, two brothers — Eugène Barbedette, aged twelve, and Joseph, aged ten — reported seeing a silent, smiling woman in the night sky above their farmhouse in the village of Pontmain in Normandy. Other children brought to the scene also reported seeing her; adult witnesses saw only stars. Over approximately three hours, a message appeared letter by letter beneath the figure: *But pray, my children. God will hear you in a little while. My Son allows himself to be moved.* As those gathered prayed the rosary, Prussian troops advancing toward the region halted inexplicably at a town twenty miles away. The armistice was signed ten days later. Bishop Wicart of Laval approved the apparition in 1872 and assigned the title Our Lady of Hope.`,
         has_primary_sources: true,
         published: false,
@@ -1621,6 +1628,7 @@ Catherine Labouré spent the rest of her life in obscure charitable work at Engh
         used_for_beatification: false,
         used_for_canonization: false,
         content_tier: "catalog",
+        image_url: "https://upload.wikimedia.org/wikipedia/commons/e/ec/Poland._Gietrzwa%C5%82d_001.JPG",
         synopsis: `During the summer of 1877, two thirteen-year-old girls — Justyna Szafrańska and Barbara Samulowska — reported a series of apparitions of the Virgin Mary in Gietrzwald, in the Warmia region of Poland, then under Prussian administration. The apparitions began on June 27 and continued through September, with the Virgin consistently asking the children to pray the rosary. Her speaking in Polish carried particular significance: Prussian authorities had been suppressing the Polish language in schools and public life. Multiple healings were reported at the spring that appeared at the site. Bishop Filip Krementz of Warmia conducted an investigation and approved the apparitions in 1877 — the same year they began — making it one of the most rapidly approved cases in Church history. Gietrzwald remains the only Vatican-recognized Marian apparition site on Polish territory.`,
         has_primary_sources: true,
         published: false,
@@ -1650,6 +1658,7 @@ Catherine Labouré spent the rest of her life in obscure charitable work at Engh
         used_for_beatification: false,
         used_for_canonization: false,
         content_tier: "catalog",
+        image_url: "https://upload.wikimedia.org/wikipedia/commons/c/c8/Knock_Shrine.jpg",
         synopsis: `On the evening of August 21, 1879, fifteen parishioners of the village of Knock in County Mayo, Ireland, reported seeing a luminous apparition on the gable wall of the parish church. The vision showed the Virgin Mary, Saint Joseph, and Saint John the Evangelist before an altar bearing a lamb and a cross. No words were spoken and no individual was specifically addressed — it was a silent, collective vision witnessed by parishioners ranging in age from six to seventy-five, who stood in the rain for approximately two hours while the ground beneath the figures remained dry. A Church commission of inquiry examined fifteen witnesses that year and declared their testimony "trustworthy and satisfactory." A second commission in 1936 confirmed the findings. Pope John Paul II visited Knock in 1979 on the centenary of the apparition, and the site has become Ireland's national Marian shrine.`,
         has_primary_sources: true,
         published: false,
@@ -1680,6 +1689,7 @@ Catherine Labouré spent the rest of her life in obscure charitable work at Engh
         used_for_beatification: false,
         used_for_canonization: false,
         content_tier: "core",
+        image_url: "https://upload.wikimedia.org/wikipedia/commons/f/f8/Bernadette_soubirous_1_publicdomain.jpg",
         synopsis: `Between February 11 and July 16, 1858, Bernadette Soubirous, the fourteen-year-old daughter of a destitute miller's family in Lourdes, France, reported eighteen apparitions of a luminous young woman in a grotto along the Gave de Pau river. Bernadette was malnourished, suffered from severe asthma, and had not yet received her First Communion. She described the woman simply as *Aquèro* — "that one" in the local Gascon dialect — because she did not know what she was.
 
 The first apparition came on February 11, when Bernadette and two companions went to gather firewood near the Grotto of Massabielle. Bernadette heard a sound like rushing wind, saw a golden cloud, and then a young woman in white with a blue sash and a rosary. The woman made the sign of the cross and invited Bernadette to pray with her. Over the following weeks, despite her mother's prohibition and growing scrutiny from neighbors and authorities, Bernadette returned again and again. Large crowds began accompanying her to the grotto.
@@ -1718,6 +1728,7 @@ Bernadette entered the Sisters of Notre Dame of Nevers in 1866. She spent the re
         used_for_beatification: false,
         used_for_canonization: false,
         content_tier: "core",
+        image_url: "https://upload.wikimedia.org/wikipedia/commons/2/2b/Children_of_Fatima_%281917%29.jpg",
         synopsis: `From May to October 1917, three shepherd children in a village near Fátima, Portugal, reported six apparitions of a luminous woman who identified herself as Our Lady of the Rosary. Lúcia dos Santos was ten years old; her cousins Francisco Marto was nine and Jacinta Marto was seven. The apparitions would become among the most scrutinized Marian events in Church history, and two of the three children would eventually be canonized.
 
 The first apparition came on May 13, 1917, at a field called the Cova da Iria. The children had been tending sheep when a flash of light led them to a small holm oak tree, where a woman brighter than the sun stood holding a rosary. She asked them to return on the thirteenth of each month for six months, to pray the rosary daily for peace, and to make sacrifices for sinners. She told them they would face suffering but promised all three would go to heaven. The First World War was then at its height.
@@ -1756,6 +1767,7 @@ Bishop José Correia da Silva of Leiria issued his formal recognition of the app
         used_for_beatification: false,
         used_for_canonization: false,
         content_tier: "catalog",
+        image_url: "https://upload.wikimedia.org/wikipedia/commons/2/29/Our_Lady_of_Beauraing_04.jpg",
         synopsis: `Between November 29, 1932, and January 3, 1933, five children from two families in Beauraing, Belgium — the Voisin and Degeimbre children, aged nine to fifteen — reported thirty-three apparitions of the Virgin Mary in the garden of the local convent school. The woman identified herself as the Immaculate Virgin and the Queen of Heaven and displayed a golden heart, calling the children to pray always, make sacrifices, and convert sinners. Crowds of up to thirty thousand gathered at the site during the apparitions. Bishop Thomas-Louis Heylen of Namur opened an investigation; in 1943 the Holy Office affirmed there was no obstacle to permitting public devotion, and in 1949 Bishop André-Marie Charue formally approved the apparitions as worthy of belief. Healings reported at the site were among the evidence considered in the approval process.`,
         has_primary_sources: true,
         published: false,
@@ -1787,6 +1799,7 @@ Bishop José Correia da Silva of Leiria issued his formal recognition of the app
         used_for_beatification: false,
         used_for_canonization: false,
         content_tier: "catalog",
+        image_url: "https://upload.wikimedia.org/wikipedia/commons/5/59/Banneux_Maagd_der_armen.jpg",
         synopsis: `Between January 15 and March 2, 1933, Mariette Beco, an eleven-year-old girl in the rural Belgian village of Banneux, reported eight brief apparitions of a woman she called the Beautiful Lady near a spring in her family's garden. The woman identified herself as the Virgin of the Poor and asked Mariette to dip her hands in the spring, which she said was "reserved for all nations — to relieve the sick." The apparitions were brief and Mariette's subsequent life was unremarkable. Bishop Louis-Joseph Kerkhofs of Liège conducted a careful twelve-year investigation before approving the apparitions in 1949 — the same year as the formal approval of Beauraing. The spring at Banneux has since become a major international pilgrimage destination, and the Virgin of the Poor is invoked particularly for the sick and displaced.`,
         has_primary_sources: true,
         published: false,
@@ -1815,6 +1828,7 @@ Bishop José Correia da Silva of Leiria issued his formal recognition of the app
         used_for_beatification: false,
         used_for_canonization: false,
         content_tier: "catalog",
+        image_url: "https://upload.wikimedia.org/wikipedia/commons/2/28/Siluva_Basilika_Mari%C3%A4_Geburt_1.JPG",
         synopsis: `In 1608, in the village of Siluva in central Lithuania, a group of children reported seeing a young woman weeping and holding an infant on a large rock in a meadow. The apparition recurred and drew adult witnesses. The woman wept because the place where she had once been honored was now used for entertainment — the local Catholic church had been seized during the Reformation. The rock was found to mark the location of a buried chest containing a painting of the Virgin, a chalice, and liturgical items hidden by Catholics during the takeover. The chest was unearthed in the presence of a Calvinist minister, who subsequently converted. A Catholic church was rebuilt at the site, and the image from the chest became the focal point of renewed devotion. Our Lady of Siluva is the patronal image of Lithuania and among the earliest Marian apparitions in modern Church history to receive formal recognition.`,
         has_primary_sources: true,
         published: false,
@@ -1844,6 +1858,7 @@ Bishop José Correia da Silva of Leiria issued his formal recognition of the app
         used_for_beatification: false,
         used_for_canonization: false,
         content_tier: "catalog",
+        image_url: "https://upload.wikimedia.org/wikipedia/commons/d/db/Ishusho_ya_Bikira_Mariya_Nyina_wa_Jambo.jpg",
         synopsis: `Beginning on November 28, 1981, three young women at the Kibeho secondary school in southern Rwanda reported apparitions of the Virgin Mary, who identified herself as *Umubyeyi w'Ijambo* — Mother of the Word. Alphonsine Mumureke was the first seer; Nathalie Mukamazimpaka and Marie-Claire Mukangango followed with independent visions confirmed by investigators as independently consistent. The Virgin called for prayer, penance, and conversion, and showed the seers visions of rivers of blood and mass death. These images, met with skepticism in 1981, were seen in a different light after the 1994 Rwandan genocide, in which an estimated 800,000 people were killed. Marie-Claire was among those who died. Bishop Augustin Misago of Gikongoro approved the apparitions on June 29, 2001 — the first Vatican-recognized Marian apparitions on African soil. Marie-Claire's cause for beatification has been opened.`,
         has_primary_sources: true,
         published: false,

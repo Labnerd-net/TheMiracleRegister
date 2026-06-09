@@ -49,6 +49,7 @@ export const miracles = pgTable(
     used_for_beatification: boolean("used_for_beatification").notNull(),
     used_for_canonization: boolean("used_for_canonization").notNull(),
     synopsis: text("synopsis"),
+    image_url: text("image_url"),
     has_primary_sources: boolean("has_primary_sources").notNull(),
     content_tier: contentTier("content_tier").notNull().default("core"),
     published: boolean("published").notNull().default(false),

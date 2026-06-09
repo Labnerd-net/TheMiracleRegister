@@ -141,6 +141,13 @@
       "when": 1780971796846,
       "tag": "0019_right_mesmero",
       "breakpoints": true
+    },
+    {
+      "idx": 20,
+      "version": "7",
+      "when": 1780975322915,
+      "tag": "0020_easy_nightshade",
+      "breakpoints": true
     }
   ]
 }

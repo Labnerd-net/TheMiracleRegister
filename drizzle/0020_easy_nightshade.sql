@@ -1,0 +1,1 @@
+ALTER TABLE "miracles" ADD COLUMN "image_url" text;
