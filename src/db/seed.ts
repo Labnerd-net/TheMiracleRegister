@@ -1864,6 +1864,48 @@ Bishop José Correia da Silva of Leiria issued his formal recognition of the app
         published: false,
       },
 
+      // === MIRACLES OF NATURE ===
+
+      // 1. Miracle of the Sun (core)
+      {
+        slug: "miracle-of-the-sun-fatima",
+        title: "The Miracle of the Sun",
+        miracle_category: "associated",
+        type: "nature",
+        date_of_event: "1917-10-13",
+        date_precision: "exact_day",
+        timing_relative_to_saint_death: "not_applicable",
+        location_name: "Cova da Iria",
+        location_lat: "39.633400",
+        location_lng: "-8.671000",
+        country: "Portugal",
+        region: "Santarém",
+        recipient_privacy: "not_applicable",
+        recipient_gender: "not_applicable",
+        witness_count: 70000,
+        cure_characteristics: "not_applicable",
+        was_medically_verified: false,
+        intercessory_medium: "not_applicable",
+        approval_authority: "vatican_dicastery",
+        used_for_beatification: false,
+        used_for_canonization: false,
+        content_tier: "core",
+        image_url: "https://upload.wikimedia.org/wikipedia/commons/7/75/Foule_compacte_Miracle_du_soleil.jpg",
+        synopsis: `On October 13, 1917, at the Cova da Iria near Fátima, Portugal, an estimated 70,000 people gathered in the rain to witness a promised sign. For months, ten-year-old Lúcia dos Santos had told investigators and pilgrims that a miracle would occur on that date. Among those present were secular journalists from Lisbon newspapers, government officials, and known skeptics who had come to observe — or debunk — the phenomenon.
+
+After the final apparition to the three shepherd children, the rain stopped. Witnesses then reported that the sun began to behave in ways contrary to all natural expectation: it appeared to spin, change colors — cycling through red, orange, yellow, green, blue, and violet — and cast multicolored light across the crowd, the land, and the sky. It then appeared to plunge in a zigzag path toward the earth, producing what many described as a sensation of intense heat and an overwhelming sense that the world was ending. After several minutes it returned to its place. The whole sequence lasted approximately ten minutes.
+
+Among the most significant testimonies was that of Avelino de Almeida, editor of *O Século*, one of Portugal's most prominent secular newspapers and a publication hostile to Catholic devotion. He had traveled to the Cova da Iria expecting nothing, and his account was published on October 17, 1917. He described the crowd's reaction in unambiguous terms and affirmed that he had witnessed the phenomenon himself. Similar accounts appeared independently in *Ordem*, *Dia*, and other publications.
+
+Witnesses across a wide area — some accounts place observers up to thirty miles from the Cova da Iria — reported the same solar phenomena simultaneously. Their testimonies are internally consistent and geographically distributed in ways that preclude a simple explanation of mass suggestion or localized atmospheric effect.
+
+No astronomical observatory recorded any anomaly in the sun's behavior that day. Scientists have proposed hypotheses including an optical illusion caused by staring at the sun through dispersed cloud cover, a nacreous cloud phenomenon, or a meteor entering the atmosphere. None of these accounts for the simultaneous drying of rain-soaked clothing reported by witnesses across the field, the geographic distribution of observations, or the reported change in the sun's apparent position.
+
+Bishop José Alves Correia da Silva of Leiria included the solar phenomenon in his 1930 declaration approving the Fátima apparitions as worthy of belief.`,
+        has_primary_sources: true,
+        published: false,
+      },
+
       // 16. Our Lady of Medjugorje (catalog) — nihil obstat for early apparitions only
       {
         slug: "our-lady-of-medjugorje",
