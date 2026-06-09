@@ -2,14 +2,14 @@
 import Base from "../layouts/Base.astro";
 import { createDb } from "../db";
 import { saints, miracles } from "../db/schema";
-import { sql, asc, eq } from "drizzle-orm";
+import { sql, asc, eq, ne, and } from "drizzle-orm";
 import { env } from "cloudflare:workers";
 
 const db = createDb(env.DATABASE_URL);
-const [[{ saintCount }], [{ miracleCount }], [{ countryCount }], featuredSaints] = await Promise.all([
+const [[{ saintCount }], [{ miracleCount }], [{ apparitionCount }], featuredSaints] = await Promise.all([
   db.select({ saintCount: sql<number>`count(*)::int` }).from(saints).where(eq(saints.published, true)),
-  db.select({ miracleCount: sql<number>`count(*)::int` }).from(miracles).where(eq(miracles.published, true)),
-  db.select({ countryCount: sql<number>`count(distinct country)::int` }).from(miracles).where(eq(miracles.published, true)),
+  db.select({ miracleCount: sql<number>`count(*)::int` }).from(miracles).where(and(eq(miracles.published, true), ne(miracles.miracle_category, "apparition"))),
+  db.select({ apparitionCount: sql<number>`count(*)::int` }).from(miracles).where(and(eq(miracles.published, true), eq(miracles.miracle_category, "apparition"))),
   db.select({
     slug: saints.slug,
     name: saints.name,
@@ -54,8 +54,8 @@ const [[{ saintCount }], [{ miracleCount }], [{ countryCount }], featuredSaints]
         <span style="font-family:var(--font-sans);font-size:0.65rem;font-weight:600;letter-spacing:0.12em;text-transform:uppercase;color:var(--text-4);margin-top:0.4rem;display:block">Miracles Recorded</span>
       </div>
       <div class="stat-item stat-item--last">
-        <span style="font-family:var(--font-display);font-size:3rem;font-weight:300;color:var(--text-1);display:block;line-height:1;letter-spacing:-0.02em">{countryCount}</span>
-        <span style="font-family:var(--font-sans);font-size:0.65rem;font-weight:600;letter-spacing:0.12em;text-transform:uppercase;color:var(--text-4);margin-top:0.4rem;display:block">Countries</span>
+        <span style="font-family:var(--font-display);font-size:3rem;font-weight:300;color:var(--text-1);display:block;line-height:1;letter-spacing:-0.02em">{apparitionCount}</span>
+        <span style="font-family:var(--font-sans);font-size:0.65rem;font-weight:600;letter-spacing:0.12em;text-transform:uppercase;color:var(--text-4);margin-top:0.4rem;display:block">Apparitions Documented</span>
       </div>
     </div>
   </section>
