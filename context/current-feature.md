@@ -98,5 +98,8 @@ Added filter bar to `/miracles` with saint, type, country, year range, and canon
 ### Full-Text Search (#36)
 Public `/search` page with results grouped by Saints and Miracles, using `ilike` queries against saint name/biography and miracle title/synopsis/diagnosis/cure details. Desktop nav gets an inline search input that expands on focus; mobile gets a magnifying glass icon linking to `/search`. Minimum 2-char query guard. No schema changes needed.
 
+### Marian Apparitions — Vatican Approved (15)
+Added all 15 Vatican-approved Marian apparitions as miracle records with `miracle_category: "apparition"`. Core tier (full narrative ~380 words): Guadalupe, Miraculous Medal, Lourdes, Fatima. Catalog tier (short synopsis ~130–150 words): La Salette, Knock, Kibeho, Siluva, Laus, Ratisbonne, Philippsdorf, Pontmain, Gietrzwald, Beauraing, Banneux. Guadalupe apparitions linked to Juan Diego via `miracle_saints`. Sources added for the 4 core apparitions. All 15 seeded as `published: false` for review before publishing. Total miracles in seed: 41.
+
 ### Approval Authority Schema
 Replaced `vatican_recognized` (boolean) with `approval_authority` enum (`vatican_dicastery`, `lourdes_bureau`, `local_bishop`, `none`). Added `apparition` as a third `miracle_category` value alongside `intercessory` and `associated`. Added nullable `witness_count` integer for events with documented audience sizes (e.g. Miracle of the Sun). Migration 0019 applied. All 26 existing production miracles backfilled to `vatican_dicastery`. Build clean.
