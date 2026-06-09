@@ -35,9 +35,23 @@ const fullTitle = title === "Home"
     <header class="site-header sticky top-0 z-10">
       <div class="max-w-6xl mx-auto px-4 sm:px-8 h-16 sm:h-20 flex items-center justify-between">
         <a href="/" class="site-logo">The Miracle Register</a>
-        <nav class="flex items-center gap-5 sm:gap-10">
+        <nav class="flex items-center gap-5 sm:gap-8">
           <a href="/saints" class="nav-link">Saints</a>
           <a href="/miracles" class="nav-link">Miracles</a>
+
+          <!-- Desktop search input -->
+          <form action="/search" method="get" class="search-form hidden sm:flex" role="search">
+            <input type="search" name="q" placeholder="Search…" aria-label="Search saints and miracles" class="search-nav-input" />
+          </form>
+
+          <!-- Mobile search icon -->
+          <a href="/search" aria-label="Search" class="search-icon-link sm:hidden">
+            <svg width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round">
+              <circle cx="6.5" cy="6.5" r="4.5"/>
+              <line x1="10.5" y1="10.5" x2="14" y2="14"/>
+            </svg>
+          </a>
+
           <button id="theme-toggle" aria-label="Toggle dark mode" class="theme-toggle">
             <span class="theme-icon-light">☀</span>
             <span class="theme-icon-dark">☽</span>
@@ -121,6 +135,34 @@ const fullTitle = title === "Home"
     transition: color 0.2s;
   }
   .nav-link:hover { color: var(--text-1); }
+
+  .search-form { align-items: center; }
+
+  .search-nav-input {
+    font-family: var(--font-sans);
+    font-size: 0.75rem;
+    color: var(--text-2);
+    background: var(--bg-elevated);
+    border: 1px solid var(--rule-mid);
+    border-radius: 4px;
+    padding: 0.3rem 0.65rem;
+    width: 10rem;
+    transition: width 0.2s, border-color 0.2s;
+    outline: none;
+  }
+  .search-nav-input::placeholder { color: var(--text-4); }
+  .search-nav-input:focus {
+    width: 14rem;
+    border-color: var(--color-accent);
+  }
+
+  .search-icon-link {
+    color: var(--text-3);
+    display: flex;
+    align-items: center;
+    transition: color 0.2s;
+  }
+  .search-icon-link:hover { color: var(--text-1); }
 
   .rule-dot { color: var(--rule-mid); }
 
