@@ -1,0 +1,1 @@
+ALTER TYPE "public"."approval_authority" ADD VALUE 'nihil_obstat' BEFORE 'none';

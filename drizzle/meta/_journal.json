@@ -148,6 +148,13 @@
       "when": 1780975322915,
       "tag": "0020_easy_nightshade",
       "breakpoints": true
+    },
+    {
+      "idx": 21,
+      "version": "7",
+      "when": 1780978819417,
+      "tag": "0021_bored_mentallo",
+      "breakpoints": true
     }
   ]
 }

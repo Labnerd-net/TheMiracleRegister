@@ -127,5 +127,6 @@ export const approvalAuthority = pgEnum("approval_authority", [
   "vatican_dicastery",
   "lourdes_bureau",
   "local_bishop",
+  "nihil_obstat",
   "none",
 ]);

@@ -116,7 +116,7 @@ Saint pages show related saints as links. API response includes a `related_saint
 | was_medically_verified | boolean | |
 | medical_verification_date | date | optional |
 | intercessory_medium | enum | prayer_only, relic, blessed_oil, medallion, visitation, tomb_prayer, saint_image, not_applicable, other |
-| approval_authority | enum | vatican_dicastery, lourdes_bureau, local_bishop, none — replaces vatican_recognized boolean |
+| approval_authority | enum | vatican_dicastery, lourdes_bureau, local_bishop, nihil_obstat, none — replaces vatican_recognized boolean |
 | vatican_decree_date | date | optional |
 | vatican_medical_board_verdict | text | optional |
 | witness_count | integer | nullable — for apparitions with a known number of witnesses |

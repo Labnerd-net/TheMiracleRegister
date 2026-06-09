@@ -1863,6 +1863,43 @@ Bishop José Correia da Silva of Leiria issued his formal recognition of the app
         has_primary_sources: true,
         published: false,
       },
+
+      // 16. Our Lady of Medjugorje (catalog) — nihil obstat for early apparitions only
+      {
+        slug: "our-lady-of-medjugorje",
+        title: "Our Lady of Medjugorje",
+        miracle_category: "apparition",
+        type: "apparition",
+        topics: ["children", "youth"],
+        date_of_event: "1981-06-24",
+        date_precision: "exact_day",
+        timing_relative_to_saint_death: "not_applicable",
+        location_name: "Podbrdo Hill, Medjugorje",
+        location_lat: "43.197200",
+        location_lng: "17.676900",
+        country: "Bosnia and Herzegovina",
+        region: "Herzegovina-Neretva",
+        recipient_name: "Ivanka Ivanković, Mirjana Dragičević, Vicka Ivanković, Ivan Dragičević, Marija Pavlović, Jakov Čolo",
+        recipient_gender: "not_applicable",
+        recipient_privacy: "public",
+        cure_characteristics: "not_applicable",
+        was_medically_verified: false,
+        intercessory_medium: "not_applicable",
+        approval_authority: "nihil_obstat",
+        used_for_beatification: false,
+        used_for_canonization: false,
+        content_tier: "catalog",
+        image_url: "https://upload.wikimedia.org/wikipedia/commons/a/a2/St._Jacob%27s_Church%2C_Medjugorje%2C_Herzegovina.JPG",
+        synopsis: `On June 24, 1981, six young people from the village of Medjugorje in what was then Yugoslavia (now Bosnia and Herzegovina) reported seeing a luminous young woman on Podbrdo Hill. The seers — Ivanka Ivanković, Mirjana Dragičević, Vicka Ivanković, Ivan Dragičević, Marija Pavlović, and Jakov Čolo, ranging in age from ten to seventeen — said the woman identified herself as the Queen of Peace and asked for prayer, fasting, conversion, and peace. Apparitions continued daily for several of the seers, and some claim ongoing daily visions to the present.
+
+The apparitions quickly drew millions of pilgrims and became one of the largest Marian pilgrimage sites in the world, despite decades of unresolved ecclesiastical status. The local ordinary, Bishop Pavao Žanić of Mostar, and later his successor Bishop Ratko Perić, expressed skepticism and at times active opposition. The Yugoslav Bishops' Conference, and subsequently the Holy See, took responsibility for the investigation away from the local diocese.
+
+In September 2024, the Dicastery for the Doctrine of the Faith issued a *nihil obstat* — a declaration of no obstacle — specifically for the initial apparitions of June 24 to July 3, 1981, finding that these early events bore positive spiritual fruits. The decree explicitly did not declare the apparitions to be of supernatural origin, nor did it extend approval to the ongoing apparitions some seers continue to report. It permitted public devotion and pilgrimage while leaving the broader question open.
+
+Medjugorje therefore occupies a distinct category from fully approved apparition sites such as Lourdes or Fátima: the Church has removed its objection to devotion connected with the early events, but has not made a positive declaration of supernatural character.`,
+        has_primary_sources: true,
+        published: false,
+      },
     ])
     .returning({ id: schema.miracles.id, slug: schema.miracles.slug });
 
