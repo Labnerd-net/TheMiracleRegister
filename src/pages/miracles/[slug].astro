@@ -208,8 +208,12 @@ const fmt = (s: string) => s.replace(/_/g, " ");
         <dl class="meta-grid">
           <dt>Category</dt><dd>{fmt(miracle.miracle_category)}</dd>
           <dt>Type</dt><dd>{fmt(miracle.type)}</dd>
-          <dt>Timing</dt><dd>{fmt(miracle.timing_relative_to_saint_death)}</dd>
-          <dt>Cure</dt><dd>{fmt(miracle.cure_characteristics)}</dd>
+          {miracle.timing_relative_to_saint_death !== "not_applicable" && (
+            <><dt>Timing</dt><dd>{fmt(miracle.timing_relative_to_saint_death)}</dd></>
+          )}
+          {miracle.cure_characteristics !== "not_applicable" && (
+            <><dt>Cure</dt><dd>{fmt(miracle.cure_characteristics)}</dd></>
+          )}
           {miracle.intercessory_medium !== "not_applicable" && (
             <><dt>Medium</dt><dd>{fmt(miracle.intercessory_medium)}</dd></>
           )}
