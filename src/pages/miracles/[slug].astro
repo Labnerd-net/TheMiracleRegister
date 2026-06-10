@@ -111,7 +111,7 @@ function approvalBadge(authority: string | null): { cls: string; label: string }
           {miracle.country && (
             <div>
               <p style="font-family:var(--font-sans);font-size:0.6rem;font-weight:600;letter-spacing:0.1em;text-transform:uppercase;color:var(--text-4);margin-bottom:0.3rem">Location</p>
-              <p style="font-family:var(--font-sans);font-size:0.82rem;color:var(--text-2)">{[miracle.location_name, miracle.country].filter(Boolean).join(", ")}</p>
+              <p style="font-family:var(--font-sans);font-size:0.82rem;color:var(--text-2)">{miracle.location_name ?? miracle.country}</p>
             </div>
           )}
           {miracle.recipient_privacy !== "not_applicable" && (
