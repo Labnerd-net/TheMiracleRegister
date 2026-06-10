@@ -48,7 +48,7 @@ miraclesRoute.openapi(
     },
   }),
   async (c) => {
-    const { saint_id, type, country, year_from, year_to, used_for_beatification, used_for_canonization, page, limit } = c.req.valid("query");
+    const { saint_id, type, country, year_from, year_to, used_for_beatification, used_for_canonization, approval_authority, page, limit } = c.req.valid("query");
     const offset = (page - 1) * limit;
     const db = createDb(c.env.DATABASE_URL);
 
@@ -69,6 +69,7 @@ miraclesRoute.openapi(
       conditions.push(lte(sql`EXTRACT(YEAR FROM ${miracles.date_of_event})::int`, year_to));
     if (used_for_beatification === "1") conditions.push(eq(miracles.used_for_beatification, true));
     if (used_for_canonization === "1") conditions.push(eq(miracles.used_for_canonization, true));
+    if (approval_authority !== undefined) conditions.push(eq(miracles.approval_authority, approval_authority));
 
     const where = conditions.length > 0 ? and(...conditions) : undefined;
 

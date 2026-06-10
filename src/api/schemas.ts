@@ -195,6 +195,7 @@ export const MiraclesQuerySchema = z.object({
   year_to: z.coerce.number().int().optional(),
   used_for_beatification: z.string().optional(),
   used_for_canonization: z.string().optional(),
+  approval_authority: z.enum(["vatican_dicastery", "lourdes_bureau", "local_bishop", "nihil_obstat"]).optional(),
   page: z.coerce.number().int().positive().default(1),
   limit: z.coerce.number().int().positive().max(100).default(20),
 });
