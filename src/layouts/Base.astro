@@ -36,10 +36,11 @@ const fullTitle = title === "Home"
       <div class="max-w-6xl mx-auto px-4 sm:px-8 h-16 sm:h-20 flex items-center justify-between">
         <a href="/" class="site-logo">The Miracle Register</a>
         <nav class="flex items-center gap-5 sm:gap-8">
-          <a href="/saints" class="nav-link">Saints</a>
-          <a href="/miracles" class="nav-link">Miracles</a>
-          <a href="/map" class="nav-link">Map</a>
-          <a href="/miracles/timeline" class="nav-link">Timeline</a>
+          <!-- Desktop nav links -->
+          <a href="/saints" class="nav-link hidden sm:inline">Saints</a>
+          <a href="/miracles" class="nav-link hidden sm:inline">Miracles</a>
+          <a href="/map" class="nav-link hidden sm:inline">Map</a>
+          <a href="/miracles/timeline" class="nav-link hidden sm:inline">Timeline</a>
 
           <!-- Desktop search input -->
           <form action="/search" method="get" class="search-form hidden sm:flex" role="search">
@@ -58,7 +59,30 @@ const fullTitle = title === "Home"
             <span class="theme-icon-light">☀</span>
             <span class="theme-icon-dark">☽</span>
           </button>
+
+          <!-- Mobile hamburger -->
+          <button id="mobile-menu-toggle" aria-label="Open menu" aria-expanded="false" class="mobile-menu-btn sm:hidden">
+            <svg id="icon-menu" width="18" height="18" viewBox="0 0 18 18" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round">
+              <line x1="2" y1="5" x2="16" y2="5"/>
+              <line x1="2" y1="9" x2="16" y2="9"/>
+              <line x1="2" y1="13" x2="16" y2="13"/>
+            </svg>
+            <svg id="icon-close" width="18" height="18" viewBox="0 0 18 18" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" style="display:none">
+              <line x1="3" y1="3" x2="15" y2="15"/>
+              <line x1="15" y1="3" x2="3" y2="15"/>
+            </svg>
+          </button>
         </nav>
+      </div>
+
+      <!-- Mobile dropdown menu -->
+      <div id="mobile-menu" class="mobile-menu" hidden>
+        <div class="max-w-6xl mx-auto px-4 py-4 flex flex-col gap-4">
+          <a href="/saints" class="nav-link">Saints</a>
+          <a href="/miracles" class="nav-link">Miracles</a>
+          <a href="/map" class="nav-link">Map</a>
+          <a href="/miracles/timeline" class="nav-link">Timeline</a>
+        </div>
       </div>
     </header>
 
@@ -67,16 +91,17 @@ const fullTitle = title === "Home"
     </main>
 
     <footer class="site-footer mt-24">
-      <div class="max-w-6xl mx-auto px-4 sm:px-8 py-8 sm:py-12 flex flex-col sm:flex-row items-center justify-between gap-6">
+      <div class="max-w-6xl mx-auto px-4 sm:px-8 py-8 sm:py-12 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-6">
         <span class="site-logo">The Miracle Register</span>
-        <div class="flex flex-col sm:flex-row items-center gap-6">
-          <a href="/saints" class="nav-link">Saints</a>
-          <a href="/miracles" class="nav-link">Miracles</a>
-          <a href="/map" class="nav-link">Map</a>
-          <a href="/miracles/timeline" class="nav-link">Timeline</a>
-          <a href="/contact" class="nav-link">Contact</a>
-          <a href="/api/v1/doc" class="nav-link">API</a>
-          <span class="rule-dot">·</span>
+        <div class="flex flex-col sm:flex-row sm:items-center gap-4 sm:gap-6 w-full sm:w-auto">
+          <div class="footer-nav-links">
+            <a href="/saints" class="nav-link">Saints</a>
+            <a href="/miracles" class="nav-link">Miracles</a>
+            <a href="/map" class="nav-link">Map</a>
+            <a href="/miracles/timeline" class="nav-link">Timeline</a>
+            <a href="/contact" class="nav-link">Contact</a>
+            <a href="/api/v1/doc" class="nav-link">API</a>
+          </div>
           <p style="font-family:var(--font-sans);font-size:0.72rem;letter-spacing:0.04em;color:var(--text-4)">
             A structured database of miracles and venerated traditions of the saints
           </p>
@@ -86,6 +111,18 @@ const fullTitle = title === "Home"
 
   </body>
 <script>
+  const mobileToggle = document.getElementById('mobile-menu-toggle');
+  const mobileMenu = document.getElementById('mobile-menu');
+  const iconMenu = document.getElementById('icon-menu');
+  const iconClose = document.getElementById('icon-close');
+  mobileToggle?.addEventListener('click', () => {
+    const isOpen = !mobileMenu?.hidden;
+    if (mobileMenu) mobileMenu.hidden = isOpen;
+    if (mobileToggle) mobileToggle.setAttribute('aria-expanded', String(!isOpen));
+    if (iconMenu) iconMenu.style.display = isOpen ? 'block' : 'none';
+    if (iconClose) iconClose.style.display = isOpen ? 'none' : 'block';
+  });
+
   document.getElementById('theme-toggle')?.addEventListener('click', () => {
     const html = document.documentElement;
     const isDark = html.getAttribute('data-theme') === 'dark';
@@ -332,5 +369,40 @@ const fullTitle = title === "Home"
 
   .section-rule {
     border-bottom: 1px solid var(--rule);
+  }
+
+  .mobile-menu-btn {
+    background: none;
+    border: 1px solid var(--rule-mid);
+    color: var(--text-3);
+    cursor: pointer;
+    width: 2rem;
+    height: 2rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: border-color 0.2s, color 0.2s;
+    flex-shrink: 0;
+  }
+  .mobile-menu-btn:hover { border-color: var(--text-3); color: var(--text-1); }
+
+  .mobile-menu {
+    background: var(--bg-surface);
+    border-top: 1px solid var(--rule);
+    border-bottom: 1px solid var(--rule);
+  }
+
+  .footer-nav-links {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 0.75rem 2rem;
+  }
+  @media (min-width: 640px) {
+    .footer-nav-links {
+      display: flex;
+      flex-direction: row;
+      align-items: center;
+      gap: 1.5rem;
+    }
   }
 </style>
