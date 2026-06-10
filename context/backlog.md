@@ -41,6 +41,8 @@ These are standalone miracle records (no associated saint). Each needs research 
 - **#32 [src/pages/admin/miracles/[slug]/edit.astro]** Batch source import for admin — CSV/JSON paste to bulk-create `miracle_sources` records. Currently one-by-one only.
 - **#33 [src/pages/admin/index.astro]** Admin analytics dashboard — extend beyond total counts with aggregations by country, type, topic, canonization stage.
 - **#34 [src/pages/]** Custom 404 page. Astro falls back to a generic page; create one matching the site design.
+- **#40 [src/layouts/Base.astro]** Mobile nav and footer are getting cramped as links have been added (Saints, Miracles, Map, Timeline). Consider a hamburger menu or collapsed nav for small screens. Footer may also need a stacked layout at narrow widths.
+
 ---
 
 ## Summary
@@ -51,5 +53,5 @@ These are standalone miracle records (no associated saint). Each needs research 
 | Bugs | 0 | 0 | 1 | 1 |
 | Performance | 0 | 0 | 0 | 0 |
 | Improvements & Refactors | 0 | 0 | 0 | 0 |
-| Feature Ideas | 0 | 0 | 3 | 3 |
-| **Total** | **0** | **0** | **4** | **4** |
+| Feature Ideas | 0 | 0 | 4 | 4 |
+| **Total** | **0** | **0** | **5** | **5** |
