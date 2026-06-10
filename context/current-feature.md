@@ -122,18 +122,6 @@ Replaced `birth_lat`, `birth_lng`, `death_lat`, `death_lng` columns on saints wi
 ### Saint Header Image Anchor Fix
 Fixed portrait images on saint detail pages cropping faces. Changed `object-position` from `center` to `top` so the top of the image (typically the head) is anchored regardless of the container height.
 
-### Marian Apparitions Seed
-Added 15 Vatican-approved Marian apparitions as `miracle_category: apparition` records — including Guadalupe, Lourdes, Fatima, Knock, Miraculous Medal, and others. Each linked to the relevant saint via `miracle_saints` where applicable. Approval authority backfilled from `local_bishop` to `vatican_dicastery` for fully approved apparitions, `nihil_obstat` for Medjugorje.
-
-### Miracle of the Sun
-Added the Miracle of the Sun (Fátima, October 13, 1917) as a `miracle_category: associated, type: nature` record with `witness_count: 70000`. Linked to Our Lady of Fátima apparition via `miracle_saints`. First nature-type record in the database.
-
-### Eucharistic Miracles Category
-Added Eucharistic Miracles as a new data category under `miracle_category: associated, type: eucharistic`. Research notes organized under `context/Notes/Research/Eucharistic Miracles/`. Synopses include honest acknowledgment of methodological critiques (Kearse/Ligaj 2024 forensic review).
-
-### Research Notes — Category Folder Organization
-Moved associated miracle research notes out of saint folders into category-specific folders: `Stigmata/` (Padre Pio stigmata), `Miraculous and Saintly Phenomena/` (Padre Pio bilocation), `Incorruptibles/` (Bernadette, Catherine Labouré), `Miraculous Images/` (Tilma of Guadalupe). Original files in saint folders replaced with one-line pointers. Matches the existing Marian Apparitions and Eucharistic Miracles folder pattern.
-
 ### Miracle Detail Mobile Sidebar (#39)
 Full Record sidebar now appears above the synopsis on mobile, matching the saints detail page behavior. Implemented by moving `<aside>` before the main content div in the DOM, with explicit `lg:col-start-2 lg:row-start-1` / `lg:col-start-1 lg:row-start-1` grid placement to maintain the two-column desktop layout.
 
