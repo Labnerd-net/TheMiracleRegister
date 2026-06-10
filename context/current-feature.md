@@ -152,6 +152,9 @@ Added a Related Miracles section to the miracle detail page showing up to 5 mira
 ### Miracle Topics Expansion
 Queried DB to find topic coverage gaps (29/58 miracles had topics). Expanded `MIRACLE_TOPICS` with `clergy`, `veterans`, `conversion`. Bulk-tagged 17 miracles via DB transaction. Coverage reached 46/58 — remaining 12 intentionally empty (phenomena, Eucharistic miracles, unknown recipients).
 
+### Miracle Topics Cleanup
+Removed ambiguous or unused topics (`fathers`, `financial-hardship`, `workplace`, `pro-life`). Renamed `clergy` → `religious-life` to accurately cover nuns, brothers, and priests. Updated 9 DB records via transaction. Tagged incorruptibility miracles (Bernadette, Catherine Labouré) with `religious-life` and Miracle of the Sun with `children`. CLAUDE.md updated.
+
 ### API Metadata Endpoint (#28)
 Added `GET /api/v1/metadata` returning canonical filter options in a single call: miracle types, miracle categories, approval authorities, `MIRACLE_TOPICS`, and `SAINT_THEMES`. Static response (no DB query) cached at 24h via Cache-Control middleware. Wired into the Hono app alongside the existing routes and documented in CLAUDE.md.
 
@@ -166,6 +169,3 @@ Added `src/pages/404.astro` matching the site design — logo, nav, footer, and 
 
 ### Mobile Nav and Footer (#40)
 Header nav links (Saints, Miracles, Map, Timeline) are now hidden on mobile behind a hamburger button. Clicking the hamburger reveals a dropdown panel; the icon switches to an X and toggles back. Search icon and theme toggle remain always visible. Footer links changed from a single-column stack to a 2-column grid on mobile, matching the desktop row layout more compactly.
-
-### Miracle Topics Cleanup
-Removed ambiguous or unused topics (`fathers`, `financial-hardship`, `workplace`, `pro-life`). Renamed `clergy` → `religious-life` to accurately cover nuns, brothers, and priests. Updated 9 DB records via transaction. Tagged incorruptibility miracles (Bernadette, Catherine Labouré) with `religious-life` and Miracle of the Sun with `children`. CLAUDE.md updated.
