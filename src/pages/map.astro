@@ -1,0 +1,272 @@
+---
+import Base from "../layouts/Base.astro";
+import { createDb } from "../db";
+import { miracles, saints, saintLocations } from "../db/schema";
+import { and, eq, isNotNull } from "drizzle-orm";
+import { env } from "cloudflare:workers";
+
+const db = createDb(env.DATABASE_URL);
+
+const [miracleRows, locationRows] = await Promise.all([
+  db.select({
+    slug: miracles.slug,
+    title: miracles.title,
+    miracle_category: miracles.miracle_category,
+    type: miracles.type,
+    location_lat: miracles.location_lat,
+    location_lng: miracles.location_lng,
+    location_name: miracles.location_name,
+    country: miracles.country,
+  }).from(miracles).where(
+    and(
+      eq(miracles.published, true),
+      isNotNull(miracles.location_lat),
+      isNotNull(miracles.location_lng),
+    )
+  ),
+  db.select({
+    location_name: saintLocations.location_name,
+    lat: saintLocations.lat,
+    lng: saintLocations.lng,
+    location_type: saintLocations.location_type,
+    saint_name: saints.name,
+    saint_slug: saints.slug,
+  }).from(saintLocations)
+    .innerJoin(saints, eq(saintLocations.saint_id, saints.id))
+    .where(
+      and(
+        eq(saints.published, true),
+        isNotNull(saintLocations.lat),
+        isNotNull(saintLocations.lng),
+      )
+    ),
+]);
+
+const miracleData = miracleRows.map(m => ({
+  slug: m.slug,
+  title: m.title,
+  category: m.miracle_category,
+  type: m.type,
+  lat: Number(m.location_lat),
+  lng: Number(m.location_lng),
+  label: m.location_name ?? m.country ?? "",
+}));
+
+const locationData = locationRows.map(l => ({
+  location_name: l.location_name,
+  lat: Number(l.lat),
+  lng: Number(l.lng),
+  location_type: l.location_type,
+  saint_name: l.saint_name,
+  saint_slug: l.saint_slug,
+}));
+---
+
+<Base title="Map — The Miracle Register">
+  <link slot="head" rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+
+  <div class="page-header">
+    <div class="max-w-6xl mx-auto px-4 sm:px-8 py-8 sm:py-10">
+      <h1 style="font-family:var(--font-display);font-size:clamp(1.8rem,4vw,2.8rem);font-weight:300;color:var(--text-1);letter-spacing:-0.01em;margin-bottom:0.4rem">Map</h1>
+      <p style="font-family:var(--font-sans);font-size:0.82rem;color:var(--text-4)">{miracleData.length} miracle locations · {locationData.length} saint locations</p>
+    </div>
+  </div>
+
+  <div class="max-w-6xl mx-auto px-4 sm:px-8 pb-14">
+    <div class="map-controls">
+      <label class="map-toggle">
+        <input type="checkbox" id="toggle-saints" checked />
+        <span class="map-toggle-dot" style="background:#c9a84c"></span>
+        Saint Locations
+      </label>
+      <label class="map-toggle">
+        <input type="checkbox" id="toggle-miracles" checked />
+        <span class="map-toggle-dot" style="background:var(--color-accent)"></span>
+        Miracles
+      </label>
+      <label class="map-toggle map-toggle-sub">
+        <input type="checkbox" id="toggle-apparitions" checked />
+        <span class="map-toggle-dot" style="background:#c9a84c"></span>
+        Apparitions
+      </label>
+    </div>
+
+    <div class="map-legend">
+      <span class="legend-label">Saint locations:</span>
+      <span class="legend-item"><span class="legend-dot" style="background:#c9a84c"></span>Tomb</span>
+      <span class="legend-item"><span class="legend-dot" style="background:#4a90d9"></span>Birthplace</span>
+      <span class="legend-item"><span class="legend-dot" style="background:#7c5cbf"></span>Shrine</span>
+      <span class="legend-item"><span class="legend-dot" style="background:#888"></span>Death place</span>
+      <span class="legend-item"><span class="legend-dot" style="background:#c0392b"></span>Relic</span>
+    </div>
+
+    <div id="world-map" style="height:68vh;min-height:420px;width:100%;background:var(--bg-elevated);border:1px solid var(--rule)"></div>
+  </div>
+
+  <script is:inline src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+  <script is:inline define:vars={{ miracleData, locationData }}>
+    const typeColors = {
+      tomb: "#c9a84c",
+      birthplace: "#4a90d9",
+      death_place: "#888888",
+      shrine: "#7c5cbf",
+      relic: "#c0392b",
+      major_devotional_center: "#27ae60",
+      other: "#5ba8a0",
+    };
+
+    const map = L.map('world-map').setView([30, 10], 2);
+    L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
+      attribution: '© <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors',
+      maxZoom: 19,
+    }).addTo(map);
+
+    const saintMarkers = [];
+    locationData.forEach(loc => {
+      const color = typeColors[loc.location_type] || typeColors.other;
+      const marker = L.circleMarker([loc.lat, loc.lng], {
+        radius: 7,
+        fillColor: color,
+        color: "#fff",
+        weight: 2,
+        opacity: 1,
+        fillOpacity: 0.9,
+      });
+      const typeLabel = loc.location_type.replace(/_/g, " ");
+      marker.bindPopup(
+        `<strong><a href="/saints/${loc.saint_slug}" style="color:inherit">${loc.saint_name}</a></strong><br>` +
+        `<span style="font-size:0.75rem;color:#666">${loc.location_name} · ${typeLabel}</span>`
+      );
+      marker.addTo(map);
+      saintMarkers.push(marker);
+    });
+
+    const miracleMarkers = [];
+    const apparitionMarkers = [];
+    miracleData.forEach(m => {
+      const isApparition = m.category === "apparition";
+      const color = isApparition ? "#c9a84c" : "var(--color-accent, #8b4513)";
+      const accentColor = isApparition ? "#c9a84c" : "#8b4513";
+      const marker = L.circleMarker([m.lat, m.lng], {
+        radius: isApparition ? 8 : 6,
+        fillColor: accentColor,
+        color: "#fff",
+        weight: 2,
+        opacity: 1,
+        fillOpacity: 0.85,
+      });
+      const typeLabel = m.type.replace(/_/g, " ");
+      marker.bindPopup(
+        `<strong><a href="/miracles/${m.slug}" style="color:inherit">${m.title}</a></strong><br>` +
+        `<span style="font-size:0.75rem;color:#666">${typeLabel}${m.label ? " · " + m.label : ""}</span>`
+      );
+      marker.addTo(map);
+      if (isApparition) {
+        apparitionMarkers.push(marker);
+      } else {
+        miracleMarkers.push(marker);
+      }
+    });
+
+    function setVisible(markers, visible) {
+      markers.forEach(m => visible ? m.addTo(map) : m.removeFrom(map));
+    }
+
+    const toggleSaints = document.getElementById('toggle-saints');
+    const toggleMiracles = document.getElementById('toggle-miracles');
+    const toggleApparitions = document.getElementById('toggle-apparitions');
+
+    toggleSaints.addEventListener('change', () => {
+      setVisible(saintMarkers, toggleSaints.checked);
+    });
+
+    toggleMiracles.addEventListener('change', () => {
+      setVisible(miracleMarkers, toggleMiracles.checked);
+      toggleApparitions.disabled = !toggleMiracles.checked;
+      if (toggleMiracles.checked) {
+        setVisible(apparitionMarkers, toggleApparitions.checked);
+      } else {
+        setVisible(apparitionMarkers, false);
+      }
+    });
+
+    toggleApparitions.addEventListener('change', () => {
+      setVisible(apparitionMarkers, toggleApparitions.checked);
+    });
+  </script>
+</Base>
+
+<style>
+  .map-controls {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 0.5rem 1.5rem;
+    margin-bottom: 0.75rem;
+  }
+
+  .map-toggle {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    font-family: var(--font-sans);
+    font-size: 0.78rem;
+    font-weight: 500;
+    color: var(--text-2);
+    cursor: pointer;
+    user-select: none;
+  }
+
+  .map-toggle input[type="checkbox"] {
+    width: 14px;
+    height: 14px;
+    accent-color: var(--color-accent);
+    cursor: pointer;
+  }
+
+  .map-toggle-sub {
+    margin-left: 1.5rem;
+    color: var(--text-3);
+    font-weight: 400;
+  }
+
+  .map-toggle-dot {
+    display: inline-block;
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    flex-shrink: 0;
+  }
+
+  .map-legend {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 0.4rem 1rem;
+    margin-bottom: 0.75rem;
+    font-family: var(--font-sans);
+    font-size: 0.7rem;
+    color: var(--text-4);
+  }
+
+  .legend-label {
+    font-weight: 600;
+    letter-spacing: 0.05em;
+    text-transform: uppercase;
+    font-size: 0.6rem;
+  }
+
+  .legend-item {
+    display: flex;
+    align-items: center;
+    gap: 0.35rem;
+  }
+
+  .legend-dot {
+    display: inline-block;
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    flex-shrink: 0;
+  }
+</style>
