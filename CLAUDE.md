@@ -208,6 +208,7 @@ All routes under `/api/v1/`. Hono + `@hono/zod-openapi` — OpenAPI spec generat
 | GET | `/api/v1/miracles` | Search/filter (params: saint_id, type, country, year_from, year_to, page, limit) |
 | GET | `/api/v1/miracles/:slug` | Single miracle with full details and sources |
 | GET | `/api/v1/types` | List miracle types |
+| GET | `/api/v1/metadata` | Canonical filter options: types, categories, approval authorities, topics, themes |
 | GET | `/api/v1/search` | Full-text search |
 
 **Response envelope:** `{ data, meta (pagination), error }`

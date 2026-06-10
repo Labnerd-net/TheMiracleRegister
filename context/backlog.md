@@ -1,6 +1,6 @@
 # Project Backlog
 
-> Generated: 2026-06-04 — Last updated: 2026-06-10
+> Generated: 2026-06-04 — Last updated: 2026-06-10 (evening)
 > Focus: Full audit
 
 ---
@@ -38,7 +38,6 @@ These are standalone miracle records (no associated saint). Each needs research 
 ## Feature Ideas
 
 ### Medium
-- **#28 [src/api/routes/]** API metadata endpoint at `/api/v1/metadata` returning canonical filter options: types, countries, `MIRACLE_TOPICS`, `SAINT_THEMES`.
 
 ### Low
 - **#32 [src/pages/admin/miracles/[slug]/edit.astro]** Batch source import for admin — CSV/JSON paste to bulk-create `miracle_sources` records. Currently one-by-one only.
@@ -56,5 +55,5 @@ These are standalone miracle records (no associated saint). Each needs research 
 | Bugs | 0 | 0 | 1 | 1 |
 | Performance | 0 | 0 | 0 | 0 |
 | Improvements & Refactors | 0 | 0 | 0 | 0 |
-| Feature Ideas | 0 | 1 | 4 | 5 |
-| **Total** | **0** | **1** | **5** | **6** |
+| Feature Ideas | 0 | 0 | 4 | 4 |
+| **Total** | **0** | **0** | **5** | **5** |
