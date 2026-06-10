@@ -20,7 +20,8 @@ const filterYearFrom  = parseInt(sp.get("year_from") ?? "") || undefined;
 const filterYearTo    = parseInt(sp.get("year_to") ?? "") || undefined;
 const filterBeat      = sp.get("beatification") === "1";
 const filterCanon     = sp.get("canonization") === "1";
-const hasActiveFilters = !!(filterSaintId || filterType || filterCountry || filterYearFrom || filterYearTo || filterBeat || filterCanon);
+const filterApproval  = sp.get("approval_authority") || undefined;
+const hasActiveFilters = !!(filterSaintId || filterType || filterCountry || filterYearFrom || filterYearTo || filterBeat || filterCanon || filterApproval);
 
 const db = createDb(env.DATABASE_URL);
 
@@ -37,6 +38,7 @@ if (filterYearFrom) conditions.push(gte(sql`EXTRACT(YEAR FROM ${miracles.date_of
 if (filterYearTo) conditions.push(lte(sql`EXTRACT(YEAR FROM ${miracles.date_of_event})::int`, filterYearTo));
 if (filterBeat) conditions.push(eq(miracles.used_for_beatification, true));
 if (filterCanon) conditions.push(eq(miracles.used_for_canonization, true));
+if (filterApproval) conditions.push(eq(miracles.approval_authority, filterApproval as "vatican_dicastery"));
 const where = and(...conditions);
 
 const [[{ total }], pageMiracles, allSaints, countryRows] = await Promise.all([
@@ -104,6 +106,7 @@ function buildUrl(p: number) {
   if (filterYearTo) params.set("year_to", String(filterYearTo));
   if (filterBeat) params.set("beatification", "1");
   if (filterCanon) params.set("canonization", "1");
+  if (filterApproval) params.set("approval_authority", filterApproval);
   params.set("page", String(p));
   return `/miracles?${params.toString()}`;
 }
@@ -167,6 +170,17 @@ const MIRACLE_TYPES = [
             <span class="year-sep">–</span>
             <input type="number" name="year_to" value={filterYearTo ?? ""} placeholder="To" min="1000" max="2100" class="filter-input filter-input--year" />
           </div>
+        </div>
+
+        <div class="filter-group">
+          <label class="filter-label">Approval</label>
+          <select name="approval_authority" class="filter-select">
+            <option value="">All Approvals</option>
+            <option value="vatican_dicastery" selected={filterApproval === "vatican_dicastery"}>Vatican Approved</option>
+            <option value="lourdes_bureau" selected={filterApproval === "lourdes_bureau"}>Lourdes Bureau</option>
+            <option value="local_bishop" selected={filterApproval === "local_bishop"}>Bishop Approved</option>
+            <option value="nihil_obstat" selected={filterApproval === "nihil_obstat"}>Nihil Obstat</option>
+          </select>
         </div>
 
         <div class="filter-group filter-group--checks">
@@ -280,6 +294,7 @@ const MIRACLE_TYPES = [
     const yearTo = fd.get("year_to") as string;
     const beat = fd.get("beatification") as string;
     const canon = fd.get("canonization") as string;
+    const approval = fd.get("approval_authority") as string;
     if (saintId) p.set("saint_id", saintId);
     if (type) p.set("type", type);
     if (country) p.set("country", country);
@@ -287,6 +302,7 @@ const MIRACLE_TYPES = [
     if (yearTo) p.set("year_to", yearTo);
     if (beat) p.set("used_for_beatification", "1");
     if (canon) p.set("used_for_canonization", "1");
+    if (approval) p.set("approval_authority", approval);
     p.set("page", String(page));
     p.set("limit", "20");
     return `/api/v1/miracles?${p.toString()}`;
@@ -301,6 +317,7 @@ const MIRACLE_TYPES = [
     const yearTo = fd.get("year_to") as string;
     const beat = fd.get("beatification") as string;
     const canon = fd.get("canonization") as string;
+    const approval = fd.get("approval_authority") as string;
     if (saintId) p.set("saint_id", saintId);
     if (type) p.set("type", type);
     if (country) p.set("country", country);
@@ -308,6 +325,7 @@ const MIRACLE_TYPES = [
     if (yearTo) p.set("year_to", yearTo);
     if (beat) p.set("beatification", "1");
     if (canon) p.set("canonization", "1");
+    if (approval) p.set("approval_authority", approval);
     if (page > 1) p.set("page", String(page));
     const qs = p.toString();
     return qs ? `/miracles?${qs}` : "/miracles";
