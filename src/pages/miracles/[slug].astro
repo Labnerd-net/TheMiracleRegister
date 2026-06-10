@@ -81,8 +81,8 @@ function approvalBadge(authority: string | null): { cls: string; label: string }
         <div class="flex flex-wrap items-center gap-3 mb-5">
           <span style="font-family:var(--font-sans);font-size:0.65rem;font-weight:600;letter-spacing:0.1em;text-transform:uppercase;color:var(--text-4)">{fmt(miracle.miracle_category)} miracle</span>
           <span style="color:var(--rule-mid)">·</span>
-          <span style="font-family:var(--font-sans);font-size:0.65rem;font-weight:600;letter-spacing:0.1em;text-transform:uppercase;color:var(--text-4)">{fmt(miracle.type)}</span>
-          {(() => { const b = approvalBadge(miracle.approval_authority); return b ? <span class={`approval-badge ${b.cls}`}>{b.label}</span> : null; })()}
+          <a href={`/miracles?type=${miracle.type}`} style="font-family:var(--font-sans);font-size:0.65rem;font-weight:600;letter-spacing:0.1em;text-transform:uppercase;color:var(--text-4);text-decoration:none;border-bottom:1px solid var(--rule)">{fmt(miracle.type)}</a>
+          {(() => { const b = approvalBadge(miracle.approval_authority); return b ? <a href={`/miracles?approval_authority=${miracle.approval_authority}`} class={`approval-badge ${b.cls}`} style="text-decoration:none">{b.label}</a> : null; })()}
         </div>
         <h1 style="font-family:var(--font-display);font-size:clamp(2rem,5vw,3.5rem);font-weight:300;color:var(--text-1);line-height:1.1;margin-bottom:1.5rem;letter-spacing:-0.01em">{miracle.title}</h1>
 
