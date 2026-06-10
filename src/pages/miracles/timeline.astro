@@ -1,0 +1,163 @@
+---
+import Base from "../../layouts/Base.astro";
+import { createDb } from "../../db";
+import { miracles } from "../../db/schema";
+import { and, eq, isNotNull, inArray, asc } from "drizzle-orm";
+import { env } from "cloudflare:workers";
+
+const db = createDb(env.DATABASE_URL);
+
+const rows = await db.select({
+  slug: miracles.slug,
+  title: miracles.title,
+  miracle_category: miracles.miracle_category,
+  type: miracles.type,
+  date_of_event: miracles.date_of_event,
+  date_precision: miracles.date_precision,
+  country: miracles.country,
+  location_name: miracles.location_name,
+  approval_authority: miracles.approval_authority,
+}).from(miracles).where(
+  and(
+    eq(miracles.published, true),
+    isNotNull(miracles.date_of_event),
+    inArray(miracles.date_precision, ["exact_day", "month", "year"]),
+  )
+).orderBy(asc(miracles.date_of_event));
+
+type Row = typeof rows[number];
+
+const byDecade = new Map<number, Row[]>();
+for (const row of rows) {
+  const year = new Date(row.date_of_event!).getFullYear();
+  const decade = Math.floor(year / 10) * 10;
+  if (!byDecade.has(decade)) byDecade.set(decade, []);
+  byDecade.get(decade)!.push(row);
+}
+const decades = [...byDecade.entries()].sort(([a], [b]) => a - b);
+
+const fmt = (s: string) => s.replace(/_/g, " ");
+
+function formatDate(dateStr: string, precision: string): string {
+  const d = new Date(dateStr + "T00:00:00Z");
+  if (precision === "exact_day") return d.toLocaleDateString("en-US", { year: "numeric", month: "long", day: "numeric", timeZone: "UTC" });
+  if (precision === "month") return d.toLocaleDateString("en-US", { year: "numeric", month: "long", timeZone: "UTC" });
+  return d.getUTCFullYear().toString();
+}
+
+function categoryDot(category: string): string {
+  if (category === "apparition") return "#c9a84c";
+  if (category === "intercessory") return "var(--color-accent)";
+  return "var(--text-4)";
+}
+---
+
+<Base title="Timeline — The Miracle Register">
+  <div class="page-header">
+    <div class="max-w-4xl mx-auto px-4 sm:px-8 py-8 sm:py-10">
+      <a href="/miracles" style="font-family:var(--font-sans);font-size:0.68rem;font-weight:500;letter-spacing:0.08em;text-transform:uppercase;color:var(--text-4);text-decoration:none">← Miracles</a>
+      <h1 style="font-family:var(--font-display);font-size:clamp(1.8rem,4vw,2.8rem);font-weight:300;color:var(--text-1);letter-spacing:-0.01em;margin-top:1.2rem;margin-bottom:0.4rem">Timeline</h1>
+      <p style="font-family:var(--font-sans);font-size:0.82rem;color:var(--text-4)">{rows.length} miracles across {decades.length} decades</p>
+    </div>
+  </div>
+
+  <div class="max-w-4xl mx-auto px-4 sm:px-8 py-10 sm:py-14">
+    <div class="timeline">
+      {decades.map(([decade, items]) => (
+        <div class="decade-block">
+          <div class="decade-marker">
+            <span class="decade-label">{decade}s</span>
+            <div class="decade-line"></div>
+          </div>
+          <div class="decade-items">
+            {items.map((m) => (
+              <a href={`/miracles/${m.slug}`} class="timeline-card no-underline group">
+                <div class="timeline-card-meta">
+                  <span style={`display:inline-block;width:7px;height:7px;border-radius:50%;background:${categoryDot(m.miracle_category)};flex-shrink:0;margin-top:0.22rem`}></span>
+                  <span style="font-family:var(--font-sans);font-size:0.68rem;color:var(--text-4)">{formatDate(m.date_of_event!, m.date_precision!)}</span>
+                  {m.country && <span style="font-family:var(--font-sans);font-size:0.68rem;color:var(--text-5)">{m.country}</span>}
+                </div>
+                <h3 class="timeline-card-title group-hover:text-[--color-accent]">{m.title}</h3>
+                <p style="font-family:var(--font-sans);font-size:0.72rem;color:var(--text-4);margin-top:0.2rem">{fmt(m.type)}</p>
+              </a>
+            ))}
+          </div>
+        </div>
+      ))}
+    </div>
+  </div>
+</Base>
+
+<style>
+  .timeline {
+    display: flex;
+    flex-direction: column;
+    gap: 2.5rem;
+  }
+
+  .decade-block {
+    display: grid;
+    grid-template-columns: 72px 1fr;
+    gap: 0 2rem;
+    align-items: start;
+  }
+
+  .decade-marker {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding-top: 0.15rem;
+  }
+
+  .decade-label {
+    font-family: var(--font-sans);
+    font-size: 0.7rem;
+    font-weight: 700;
+    letter-spacing: 0.06em;
+    color: var(--text-3);
+    text-transform: uppercase;
+    white-space: nowrap;
+  }
+
+  .decade-line {
+    width: 1px;
+    flex: 1;
+    min-height: 1.5rem;
+    background: var(--rule);
+    margin-top: 0.5rem;
+  }
+
+  .decade-items {
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+  }
+
+  .timeline-card {
+    display: block;
+    padding: 0.85rem 1rem;
+    background: var(--bg-elevated);
+    border: 1px solid var(--rule);
+    transition: border-color 0.15s;
+  }
+
+  .timeline-card:hover {
+    border-color: var(--color-accent);
+  }
+
+  .timeline-card-meta {
+    display: flex;
+    align-items: flex-start;
+    gap: 0.5rem;
+    margin-bottom: 0.35rem;
+  }
+
+  .timeline-card-title {
+    font-family: var(--font-display);
+    font-size: 1rem;
+    font-weight: 400;
+    color: var(--text-1);
+    line-height: 1.3;
+    transition: color 0.15s;
+  }
+</style>
