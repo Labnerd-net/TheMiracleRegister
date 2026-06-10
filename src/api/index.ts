@@ -1,6 +1,7 @@
 import { OpenAPIHono } from "@hono/zod-openapi";
 import { cors } from "hono/cors";
 import miracles from "./routes/miracles";
+import metadata from "./routes/metadata";
 import saints from "./routes/saints";
 import search from "./routes/search";
 import types from "./routes/types";
@@ -18,6 +19,7 @@ const cache = (maxAge: number) => async (c: any, next: () => Promise<void>) => {
 app.use("/saints/*", cache(3600));
 app.use("/miracles/*", cache(1800));
 app.use("/types/*", cache(86400));
+app.use("/metadata/*", cache(86400));
 app.use("/search/*", async (c: any, next: () => Promise<void>) => {
   await next();
   c.header("Cache-Control", "no-store");
@@ -26,6 +28,7 @@ app.use("/search/*", async (c: any, next: () => Promise<void>) => {
 app.route("/saints", saints);
 app.route("/miracles", miracles);
 app.route("/types", types);
+app.route("/metadata", metadata);
 app.route("/search", search);
 
 app.doc("/doc", {
