@@ -2,7 +2,7 @@
 import Base from "../../layouts/Base.astro";
 import { createDb } from "../../db";
 import { miracles, saints, miracleSaints, miracleSources } from "../../db/schema";
-import { and, eq } from "drizzle-orm";
+import { and, eq, ne, sql } from "drizzle-orm";
 import { env } from "cloudflare:workers";
 import { renderMarkdown } from "../../lib/markdown";
 
@@ -43,7 +43,9 @@ const [miracle] = await db.select({
 }).from(miracles).where(and(eq(miracles.slug, slug!), eq(miracles.published, true)));
 if (!miracle) return Astro.redirect("/404");
 
-const [miracleSaintRows, sources] = await Promise.all([
+const hasTopics = miracle.topics && miracle.topics.length > 0;
+
+const [miracleSaintRows, sources, relatedMiracles] = await Promise.all([
   db.select({ slug: saints.slug, name: saints.name, canonization_stage: saints.canonization_stage, image_url: saints.image_url })
     .from(miracleSaints)
     .innerJoin(saints, eq(miracleSaints.saint_id, saints.id))
@@ -54,6 +56,20 @@ const [miracleSaintRows, sources] = await Promise.all([
     source_type: miracleSources.source_type,
     accessed_date: miracleSources.accessed_date,
   }).from(miracleSources).where(eq(miracleSources.miracle_id, miracle.id)),
+  hasTopics
+    ? db.select({
+        slug: miracles.slug,
+        title: miracles.title,
+        type: miracles.type,
+        topics: miracles.topics,
+      }).from(miracles).where(
+        and(
+          eq(miracles.published, true),
+          ne(miracles.id, miracle.id),
+          sql`${miracles.topics} && ARRAY[${sql.join(miracle.topics!.map(t => sql`${t}`), sql`, `)}]::text[]`,
+        )
+      ).limit(5)
+    : Promise.resolve([]),
 ]);
 
 const fmt = (s: string) => s.replace(/_/g, " ");
@@ -225,6 +241,20 @@ function approvalBadge(authority: string | null): { cls: string; label: string }
         <section class="mb-9 pb-9 section-rule">
           <p class="eyebrow mb-4">Location</p>
           <div id="miracle-map" style="height:320px;width:100%;background:var(--bg-elevated)"></div>
+        </section>
+      )}
+
+      {relatedMiracles.length > 0 && (
+        <section class="mb-9 pb-9 section-rule">
+          <p class="eyebrow mb-5">Related Miracles</p>
+          <ul class="space-y-2">
+            {relatedMiracles.map((r) => (
+              <li>
+                <a href={`/miracles/${r.slug}`} style="font-family:var(--font-sans);font-size:0.875rem;color:var(--color-accent)">{r.title}</a>
+                <span style="font-family:var(--font-sans);font-size:0.7rem;color:var(--text-4);margin-left:0.6rem">{fmt(r.type)}</span>
+              </li>
+            ))}
+          </ul>
         </section>
       )}
 
