@@ -156,9 +156,6 @@ const sourceTypeLabel: Record<string, string> = {
             {saint.canonization_date && (
               <><dt>Canonized</dt><dd>{saint.canonization_date}{saint.canonized_by ? <><br/><span style="color:var(--text-4)">{saint.canonized_by}</span></> : ""}</dd></>
             )}
-            {saint.wikipedia_url && (
-              <><dt>External</dt><dd><a href={saint.wikipedia_url} target="_blank" rel="noopener" style="font-size:0.8rem">Wikipedia ↗</a></dd></>
-            )}
           </dl>
         </div>
       </div>
@@ -249,10 +246,16 @@ const sourceTypeLabel: Record<string, string> = {
         </div>
       )}
 
-      {sources.length > 0 && (
+      {(sources.length > 0 || saint.wikipedia_url) && (
         <div class="mt-9 pt-9 section-rule">
           <p class="eyebrow mb-4">Sources</p>
           <ul style="list-style:none;padding:0;margin:0;display:flex;flex-direction:column;gap:0.6rem">
+            {saint.wikipedia_url && (
+              <li style="display:flex;align-items:baseline;gap:0.6rem">
+                <span style="font-family:var(--font-sans);font-size:0.6rem;font-weight:600;letter-spacing:0.08em;text-transform:uppercase;color:var(--text-5);white-space:nowrap;flex-shrink:0;padding-top:0.1rem">Reference</span>
+                <a href={saint.wikipedia_url} target="_blank" rel="noopener" style="font-family:var(--font-sans);font-size:0.82rem;color:var(--color-accent);text-decoration:none;line-height:1.4" class="hover:underline">Wikipedia ↗</a>
+              </li>
+            )}
             {sources.map((s) => (
               <li style="display:flex;align-items:baseline;gap:0.6rem">
                 <span style="font-family:var(--font-sans);font-size:0.6rem;font-weight:600;letter-spacing:0.08em;text-transform:uppercase;color:var(--text-5);white-space:nowrap;flex-shrink:0;padding-top:0.1rem">
@@ -286,9 +289,6 @@ const sourceTypeLabel: Record<string, string> = {
           )}
           {saint.total_attributed_miracles != null && (
             <><dt>Miracles</dt><dd>{saint.total_attributed_miracles}</dd></>
-          )}
-          {saint.wikipedia_url && (
-            <><dt>External</dt><dd><a href={saint.wikipedia_url} target="_blank" rel="noopener" style="font-size:0.8rem">Wikipedia ↗</a></dd></>
           )}
         </dl>
       </div>
