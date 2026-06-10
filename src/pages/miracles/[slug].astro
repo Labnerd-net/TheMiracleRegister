@@ -23,6 +23,7 @@ const [miracle] = await db.select({
   recipient_privacy: miracles.recipient_privacy,
   recipient_name: miracles.recipient_name,
   recipient_age_at_event: miracles.recipient_age_at_event,
+  recipient_country: miracles.recipient_country,
   used_for_beatification: miracles.used_for_beatification,
   used_for_canonization: miracles.used_for_canonization,
   topics: miracles.topics,
@@ -121,6 +122,9 @@ function approvalBadge(authority: string | null): { cls: string; label: string }
                 <p style="font-family:var(--font-sans);font-size:0.82rem;color:var(--text-4);font-style:italic">Name withheld</p>
               ) : (
                 <p style="font-family:var(--font-sans);font-size:0.82rem;color:var(--text-2)">{miracle.recipient_name}{miracle.recipient_age_at_event != null ? ` (age ${miracle.recipient_age_at_event})` : ""}</p>
+              )}
+              {miracle.recipient_country && miracle.recipient_country !== miracle.country && (
+                <p style="font-family:var(--font-sans);font-size:0.72rem;color:var(--text-4);margin-top:0.2rem">from {miracle.recipient_country}</p>
               )}
             </div>
           )}

@@ -11,9 +11,7 @@
 
 These are standalone miracle records (no associated saint). Each needs research notes and a DB seed. Priority order based on documentation strength and historical significance.
 
-1. ~~**Lanciano** (Italy, ~700s)~~ — **Done.** Seeded as miracle 705.
-2. **Buenos Aires** (Argentina, 1992–1996) — Three events at Buenos Aires Cathedral. Cardinal Bergoglio approved investigation. Dr. Frederick Zugibe: live left-ventricular cardiac tissue, AB blood — identical findings to Lanciano. Vatican confirmed 1999.
-3. **Sokolka** (Poland, 2008) — Host placed in water; reddish tissue appeared. Medical University of Białystok: myocardial tissue in agony, AB blood. Archbishop of Białystok approved 2012.
+3. ~~**Sokolka** (Poland, 2008) — Host placed in water; reddish tissue appeared. Medical University of Białystok: myocardial tissue in agony, AB blood. Archbishop of Białystok approved 2012.~~ **Done.** Seeded as miracle 707. Formal approval: Curia communiqué October 14, 2009 (not 2012).
 4. **Legnica** (Poland, 2013) — Same tissue/blood findings as Sokolka. Bishop of Legnica approved 2016.
 5. **Tixtla** (Mexico, 2006) — Substance emerged from within the host during a retreat. Bishop of Chilpancingo-Chilapa formally recognized. AB blood, cardiac tissue.
 6. **Bolsena / Orvieto** (Italy, 1263) — Doubting priest; host bled on the corporal. Pope Urban IV approved — directly prompted institution of Corpus Christi. Corporal of Bolsena still preserved in Orvieto cathedral.
@@ -41,7 +39,6 @@ These are standalone miracle records (no associated saint). Each needs research 
 ## Feature Ideas
 
 ### Medium
-- ~~**#39 [src/pages/miracles/[slug].astro]** On mobile, the Full Record sidebar stacks below the synopsis. It should appear above the synopsis on small screens, matching the saints detail page layout where the metadata sidebar precedes the biography.~~ **Done 2026-06-09.**
 - **#37 [src/pages/map.astro]** World map page at `/map` showing all geolocated saints and miracles as pins, with toggleable layer groups (e.g. apparitions, eucharistic miracles, saint tombs/shrines, intercessory healings). Uses `saint_locations` and miracle `location_lat/lng`. Groups should map to existing `type` enum values and `location_type` enum values so no schema changes are needed.
 - **#27 [src/pages/miracles/[slug].astro]** Related miracles by topic on the miracle detail page. GIN index on `topics` already exists. Show 3–5 miracles with overlapping topics (excluding self).
 - **#28 [src/api/routes/]** API metadata endpoint at `/api/v1/metadata` returning canonical filter options: types, countries, `MIRACLE_TOPICS`, `SAINT_THEMES`.
