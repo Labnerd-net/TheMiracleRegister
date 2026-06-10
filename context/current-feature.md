@@ -146,5 +146,11 @@ Added an Approval dropdown to the miracles list filter bar (Vatican Approved, Lo
 ### Wikipedia Link — Sidebar to Sources
 Moved the Wikipedia external link from the Record metadata sidebar on saint detail pages to the Sources section at the bottom of the page. Sources section now renders when either DB sources or a Wikipedia URL exist, with Wikipedia injected as the first entry under a "Reference" type label.
 
+### World Map Page (#37)
+Added `/map` with a full Leaflet world map showing two coarse toggle layers — Saint Locations (colored by location type: tomb, birthplace, shrine, death place, relic) and Miracles — with an Apparitions sub-toggle under Miracles. Popups link to the relevant saint or miracle page. Map link added to main nav and footer. 48 miracle pins and 64 saint location pins at launch.
+
+### Miracles Timeline Page (#30)
+Added `/miracles/timeline` showing all miracles with usable dates (exact_day, month, or year precision) grouped by decade. 50 miracles across 21 decades from the 1530s to 2020s. Decade markers on the left, miracle cards on the right with colored category dots, formatted date, country, and type. Linked from the miracles list page header. No schema changes.
+
 ### Recipient Country Display (#38)
 Shows recipient's country of origin on the miracle detail page when it differs from the miracle location country (e.g. "from Italy" beneath the recipient name for Lourdes pilgrims). No display for records where they match, keeping domestic miracles uncluttered.

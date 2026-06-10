@@ -39,11 +39,9 @@ These are standalone miracle records (no associated saint). Each needs research 
 ## Feature Ideas
 
 ### Medium
-- **#37 [src/pages/map.astro]** World map page at `/map` showing all geolocated saints and miracles as pins, with toggleable layer groups (e.g. apparitions, eucharistic miracles, saint tombs/shrines, intercessory healings). Uses `saint_locations` and miracle `location_lat/lng`. Groups should map to existing `type` enum values and `location_type` enum values so no schema changes are needed.
 - **#27 [src/pages/miracles/[slug].astro]** Related miracles by topic on the miracle detail page. GIN index on `topics` already exists. Show 3–5 miracles with overlapping topics (excluding self).
 - **#28 [src/api/routes/]** API metadata endpoint at `/api/v1/metadata` returning canonical filter options: types, countries, `MIRACLE_TOPICS`, `SAINT_THEMES`.
-- **#30 [src/db/schema/miracles.ts]** Timeline/chronological browse at `/miracles/timeline` grouping by decade using `date_of_event`.
-- ~~**#38 [src/pages/miracles/[slug].astro]** Show recipient country on miracle detail page when it differs from the miracle location country.~~ **Done.**
+- ~~**#30 [src/db/schema/miracles.ts]** Timeline/chronological browse at `/miracles/timeline` grouping by decade using `date_of_event`.~~ **Done.**
 
 ### Low
 - **#32 [src/pages/admin/miracles/[slug]/edit.astro]** Batch source import for admin — CSV/JSON paste to bulk-create `miracle_sources` records. Currently one-by-one only.
@@ -61,5 +59,5 @@ These are standalone miracle records (no associated saint). Each needs research 
 | Bugs | 0 | 0 | 1 | 1 |
 | Performance | 0 | 0 | 0 | 0 |
 | Improvements & Refactors | 0 | 0 | 0 | 0 |
-| Feature Ideas | 0 | 5 | 4 | 9 |
-| **Total** | **0** | **5** | **5** | **10** |
+| Feature Ideas | 0 | 3 | 4 | 7 |
+| **Total** | **0** | **3** | **5** | **8** |
