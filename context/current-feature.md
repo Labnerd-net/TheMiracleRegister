@@ -74,14 +74,14 @@ Added `marked` for markdown rendering of narrative fields. `biography_short`, `c
 ### Miracle Source Management
 Added inline source management to the miracle edit page. A Sources section below the main form lists all existing sources (title linked to URL, type, accessed date) with a per-row Remove button. An Add Source form handles url, title, type (enum dropdown), and optional accessed date. Both add and delete use a `_action` hidden field to coexist with the main miracle save form on the same page.
 
-### Content Tier
-Added a `content_tier` enum (`core`, `catalog`, `stub`) to the miracles table to support the two-tier data model discussed with Carlo (research AI). Core entries get full narrative and medical documentation (canonization miracles); catalog entries get short synopses and links to authoritative external sources (all other approved miracle types). Defaults to `core` so existing data is unaffected. Migration 0008 applied to Neon dev branch. CLAUDE.md updated.
-
 ### Published Flag
 Added `published boolean NOT NULL DEFAULT false` to both `saints` and `miracles` tables (migration 0007, applied to Neon dev). Admin forms for both entities now include a "Published (visible on public site)" checkbox. All public-facing queries — homepage stats, list pages, detail pages, and all API endpoints including search — filter to `published = true` only, so unpublished records are invisible to visitors and API consumers until explicitly published.
 
-### Inline Citations (#31)
-Added `saint_sources` table (mirrors `miracle_sources`) for storing biography sources. `[^N]` markers in `biography_short`, `synopsis`, and `cure_details` render as superscript citation links on public pages via `renderMarkdownWithCitations()`. A numbered footnote list with back-links (↩) renders below the narrative. Saint edit page gains a full Sources section (add/delete) matching the miracle edit page. Both source editors display the `[^N]` marker per row so editors know which number to use inline. Migration 0009 applied to Neon dev.
+### Content Tier
+Added a `content_tier` enum (`core`, `catalog`, `stub`) to the miracles table to support the two-tier data model. Core entries get full narrative and medical documentation; catalog entries get short synopses and links to authoritative external sources. Defaults to `core` so existing data is unaffected. Migration 0008 applied. CLAUDE.md updated.
+
+### saint_sources Table
+Added `saint_sources` table (mirrors `miracle_sources`) for storing biography citation sources. Saint edit page gains a full Sources section (add/delete) matching the miracle edit page. Migration 0009 applied.
 
 ### Miracle Saints Junction Table
 Replaced `miracles.saint_id` (single FK) with a `miracle_saints` many-to-many junction table. A miracle can now be attributed to one or more saints. Louis and Zélie Martin's two miracles (Pietro Schiliro, Carmen of Valencia) are linked to both saints in the seed. API responses expose `saints: [{id, slug, name}]` instead of `saint_id`. The public miracle detail page shows all linked saints as links. Admin miracle form uses a checkbox list for saint selection; edit page pre-checks existing links and does delete+reinsert on save. Saint delete confirmation updated to reflect that deletion removes junction rows, not the miracles themselves. Migration 0016 applied; data migration step preserved existing associations before dropping the column. Build clean, 11/11 tests pass.
@@ -98,8 +98,20 @@ Added filter bar to `/miracles` with saint, type, country, year range, and canon
 ### Full-Text Search (#36)
 Public `/search` page with results grouped by Saints and Miracles, using `ilike` queries against saint name/biography and miracle title/synopsis/diagnosis/cure details. Desktop nav gets an inline search input that expands on focus; mobile gets a magnifying glass icon linking to `/search`. Minimum 2-char query guard. No schema changes needed.
 
-### Marian Apparitions — Vatican Approved (15)
-Added all 15 Vatican-approved Marian apparitions as miracle records with `miracle_category: "apparition"`. Core tier (full narrative ~380 words): Guadalupe, Miraculous Medal, Lourdes, Fatima. Catalog tier (short synopsis ~130–150 words): La Salette, Knock, Kibeho, Siluva, Laus, Ratisbonne, Philippsdorf, Pontmain, Gietrzwald, Beauraing, Banneux. Guadalupe apparitions linked to Juan Diego via `miracle_saints`. Sources added for the 4 core apparitions. All 15 seeded as `published: false` for review before publishing. Total miracles in seed: 41.
-
 ### Approval Authority Schema
 Replaced `vatican_recognized` (boolean) with `approval_authority` enum (`vatican_dicastery`, `lourdes_bureau`, `local_bishop`, `none`). Added `apparition` as a third `miracle_category` value alongside `intercessory` and `associated`. Added nullable `witness_count` integer for events with documented audience sizes (e.g. Miracle of the Sun). Migration 0019 applied. All 26 existing production miracles backfilled to `vatican_dicastery`. Build clean.
+
+### Miracle image_url
+Added `image_url text` column to the miracles table (migration 0020). Miracle detail page displays the image in the header sidebar when present.
+
+### Homepage Stats — Apparitions Replace Countries
+Replaced the Countries stat with Apparitions Documented. `miracleCount` now excludes apparitions (`miracle_category != 'apparition'`); a new `apparitionCount` query counts only apparition-category records. Three stats: Saints Documented, Miracles Recorded, Apparitions Documented.
+
+### Miracle Detail Page — Hide Not-Applicable Fields
+Timing and Cure rows in the Full Record sidebar now only render when their value is not `"not_applicable"`, matching the existing behaviour of the Medium row. Prevents "Timing: not applicable / Cure: not applicable" from cluttering apparition and associated miracle pages.
+
+### nihil_obstat Approval Authority
+Added `nihil_obstat` as a fourth value to the `approval_authority` enum (migration 0021) for apparitions with Vatican no-objection status but no declaration of supernatural origin.
+
+### Homepage and About Copy Updates
+Updated eyebrow ("Miracles of the Saints" → "Catholic Miracles & Apparitions"), hero description, meta description, and About section body copy to reflect the expanded scope of the register — now covering intercessory miracles, Marian apparitions, nature miracles, and associated miracles rather than canonization miracles only.

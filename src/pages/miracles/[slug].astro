@@ -147,7 +147,39 @@ const fmt = (s: string) => s.replace(/_/g, " ");
 
   <div class="max-w-6xl mx-auto px-4 sm:px-8 py-10 sm:py-14 lg:grid lg:grid-cols-[1fr_240px] lg:gap-12">
 
-    <div>
+    <aside class="mb-8 lg:mb-0 lg:col-start-2 lg:row-start-1">
+      <div class="card p-5 lg:sticky lg:top-24">
+        <p class="eyebrow mb-5">Full Record</p>
+        <dl class="meta-grid">
+          <dt>Category</dt><dd>{fmt(miracle.miracle_category)}</dd>
+          <dt>Type</dt><dd>{fmt(miracle.type)}</dd>
+          {miracle.timing_relative_to_saint_death !== "not_applicable" && (
+            <><dt>Timing</dt><dd>{fmt(miracle.timing_relative_to_saint_death)}</dd></>
+          )}
+          {miracle.cure_characteristics !== "not_applicable" && (
+            <><dt>Cure</dt><dd>{fmt(miracle.cure_characteristics)}</dd></>
+          )}
+          {miracle.intercessory_medium !== "not_applicable" && (
+            <><dt>Medium</dt><dd>{fmt(miracle.intercessory_medium)}</dd></>
+          )}
+          <dt>Verified</dt><dd>{miracle.was_medically_verified ? "Yes" : "No"}</dd>
+          {miracle.medical_verification_date && (
+            <><dt>Verified On</dt><dd>{miracle.medical_verification_date}</dd></>
+          )}
+          {miracle.approval_authority !== "none" && (
+            <><dt>Approved by</dt><dd>{fmt(miracle.approval_authority)}</dd></>
+          )}
+          {miracle.witness_count && (
+            <><dt>Witnesses</dt><dd>{miracle.witness_count.toLocaleString()}</dd></>
+          )}
+          {miracle.vatican_decree_date && (
+            <><dt>Decree</dt><dd>{miracle.vatican_decree_date}</dd></>
+          )}
+        </dl>
+      </div>
+    </aside>
+
+    <div class="lg:col-start-1 lg:row-start-1">
       {miracle.vatican_medical_board_verdict && (
         <blockquote class="pl-6 mb-11" style="border-left:2px solid var(--color-gold)">
           <p style="font-family:var(--font-display);font-size:1.35rem;font-weight:300;font-style:italic;color:var(--text-2);line-height:1.55;margin-bottom:0.6rem">{miracle.vatican_medical_board_verdict}</p>
@@ -202,37 +234,7 @@ const fmt = (s: string) => s.replace(/_/g, " ");
       )}
     </div>
 
-    <aside>
-      <div class="card p-5 lg:sticky lg:top-24">
-        <p class="eyebrow mb-5">Full Record</p>
-        <dl class="meta-grid">
-          <dt>Category</dt><dd>{fmt(miracle.miracle_category)}</dd>
-          <dt>Type</dt><dd>{fmt(miracle.type)}</dd>
-          {miracle.timing_relative_to_saint_death !== "not_applicable" && (
-            <><dt>Timing</dt><dd>{fmt(miracle.timing_relative_to_saint_death)}</dd></>
-          )}
-          {miracle.cure_characteristics !== "not_applicable" && (
-            <><dt>Cure</dt><dd>{fmt(miracle.cure_characteristics)}</dd></>
-          )}
-          {miracle.intercessory_medium !== "not_applicable" && (
-            <><dt>Medium</dt><dd>{fmt(miracle.intercessory_medium)}</dd></>
-          )}
-          <dt>Verified</dt><dd>{miracle.was_medically_verified ? "Yes" : "No"}</dd>
-          {miracle.medical_verification_date && (
-            <><dt>Verified On</dt><dd>{miracle.medical_verification_date}</dd></>
-          )}
-          {miracle.approval_authority !== "none" && (
-            <><dt>Approved by</dt><dd>{fmt(miracle.approval_authority)}</dd></>
-          )}
-          {miracle.witness_count && (
-            <><dt>Witnesses</dt><dd>{miracle.witness_count.toLocaleString()}</dd></>
-          )}
-          {miracle.vatican_decree_date && (
-            <><dt>Decree</dt><dd>{miracle.vatican_decree_date}</dd></>
-          )}
-        </dl>
-      </div>
-    </aside>
+    </div>
 
   </div>
 
