@@ -215,17 +215,11 @@ All routes under `/api/v1/`. Hono + `@hono/zod-openapi` — OpenAPI spec generat
 
 ---
 
-## Seeding
+## Database
 
-- Seed script: `npm run db:seed` (`src/db/seed.ts`)
-- The seed **truncates all tables** before inserting, so it is safe to re-run
-- All seeded records default to `published = false` — they will not appear on the public site until published
-- After seeding, publish everything with:
-  ```sql
-  UPDATE saints SET published = true;
-  UPDATE miracles SET published = true;
-  ```
-- The single Neon branch is **production** (`br-proud-block-aptdevzb`). `DATABASE_URL` in `.env` points to it directly — running the seed locally hits production.
+- The single Neon branch is **production** (`br-proud-block-aptdevzb`). `DATABASE_URL` in `.env` points to it directly.
+- Data is managed via the admin panel. There is no seed script — all records are entered and published through the UI.
+- Schema changes: `npm run db:generate` → `npm run db:migrate`
 
 ---
 
@@ -244,23 +238,10 @@ All routes under `/api/v1/`. Hono + `@hono/zod-openapi` — OpenAPI spec generat
 
 ---
 
-## Starter Saints
+## Research Notes
 
-| # | Saint | Miracles | Notes |
-|---|---|---|---|
-| 1 | John Paul II | 2 | Parkinson's, brain aneurysm |
-| 2 | Mother Teresa | 2 | Abdominal tumor, brain abscesses |
-| 3 | Padre Pio | 2 + lifetime | Peritonitis, meningitis/coma |
-| 4 | Faustina Kowalska | 2 | Lymphedema, heart condition |
-| 5 | Gianna Beretta Molla | 2 | Breast tumor, placental abruption |
-| 6 | Kateri Tekakwitha | 2 | Flesh-eating bacteria, older healing |
-| 7 | Andre Bessette | 2 + thousands | Tuberculosis, foot fracture |
-| 8 | Maximilian Kolbe | 2 | Intestinal TB, peritoneal calcification — martyr |
-| 9 | Louis & Zelie Martin | 2 | Respiratory, respiratory — married couple, linked via saint_relations |
-| 10 | Carlo Acutis | 2 | Pancreatic, head trauma — canonized September 7, 2025 |
-| 11 | Juan Diego | 1 + Tilma | Fall/coma, equipollent beatification |
-
-Research notes in Nextcloud: `MiraclesProject/Research/`
+Research notes and AI handoffs in Nextcloud: `MiraclesProject/Research/`
+Also check `context/Notes/` for in-progress research before starting data work.
 
 ---
 
