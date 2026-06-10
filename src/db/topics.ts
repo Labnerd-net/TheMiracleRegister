@@ -15,6 +15,9 @@ export const MIRACLE_TOPICS = [
   "workplace",
   "native-and-indigenous",
   "pro-life",
+  "clergy",
+  "veterans",
+  "conversion",
 ] as const;
 
 export type MiracleTopic = (typeof MIRACLE_TOPICS)[number];
