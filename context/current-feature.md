@@ -152,8 +152,8 @@ Shows recipient's country of origin on the miracle detail page when it differs f
 ### World Map Page (#37)
 Added `/map` with a full Leaflet world map. Controls panel overlaid on the top-right of the map with two parent toggles — Saint Locations and Miracles — each with granular sub-toggles. Saint location sub-types: tomb, birthplace, shrine, death place, relic (color-coded). Miracle sub-categories: apparitions, intercessory, associated. Parent checkboxes show indeterminate state when children are mixed. Popups link to the relevant saint or miracle page. Map and Timeline links added to main nav and footer. 48 miracle pins and 64 saint location pins at launch.
 
-### Miracle Detail Filter Links
-Made the type label and approval badge in the miracle detail page eyebrow clickable links to the filtered miracles list (`/miracles?type=X`, `/miracles?approval_authority=X`). The miracle category label stays plain text since no category filter exists on the list page.
-
 ### Miracles Timeline Page (#30)
 Added `/miracles/timeline` showing all miracles with usable dates (exact_day, month, or year precision) grouped by decade. 50 miracles across 21 decades from the 1530s to 2020s. Decade markers on the left, miracle cards on the right with colored category dots, formatted date, country, and type. Timeline link added to main nav alongside Map. No schema changes.
+
+### Miracle Detail Filter Links
+Made the type label and approval badge in the miracle detail page eyebrow clickable links to the filtered miracles list (`/miracles?type=X`, `/miracles?approval_authority=X`). The miracle category label stays plain text since no category filter exists on the list page.
