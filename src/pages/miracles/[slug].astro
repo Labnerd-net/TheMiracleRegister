@@ -55,7 +55,8 @@ const [miracleSaintRows, sources, relatedMiracles] = await Promise.all([
     title: miracleSources.title,
     source_type: miracleSources.source_type,
     accessed_date: miracleSources.accessed_date,
-  }).from(miracleSources).where(eq(miracleSources.miracle_id, miracle.id)),
+  }).from(miracleSources).where(eq(miracleSources.miracle_id, miracle.id))
+    .then(rows => [...rows].sort((a, b) => (a.source_type === "vatican_decree" ? -1 : b.source_type === "vatican_decree" ? 1 : 0))),
   hasTopics
     ? db.select({
         slug: miracles.slug,
@@ -264,7 +265,11 @@ function approvalBadge(authority: string | null): { cls: string; label: string }
           <ul class="space-y-3" style="margin-bottom:1.5rem">
             {sources.map((s) => (
               <li class="flex flex-col sm:flex-row sm:items-baseline gap-1 sm:gap-4">
-                <span style="font-family:var(--font-sans);font-size:0.6rem;font-weight:600;letter-spacing:0.1em;text-transform:uppercase;color:var(--text-4);white-space:nowrap">{fmt(s.source_type)}</span>
+                {s.source_type === 'vatican_decree' ? (
+                  <span class="approval-badge vatican" style="font-size:0.58rem">{fmt(s.source_type)}</span>
+                ) : (
+                  <span style="font-family:var(--font-sans);font-size:0.6rem;font-weight:600;letter-spacing:0.1em;text-transform:uppercase;white-space:nowrap;color:var(--text-4)">{fmt(s.source_type)}</span>
+                )}
                 {s.url ? (
                   <a href={s.url} target="_blank" rel="noopener" style="font-family:var(--font-sans);font-size:0.85rem">{s.title ?? s.url} ↗</a>
                 ) : (
