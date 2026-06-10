@@ -166,7 +166,7 @@ function approvalBadge(authority: string | null): { cls: string; label: string }
           <>
             <p class="eyebrow mb-4">Topics</p>
             <div class="flex flex-wrap gap-1.5">
-              {miracle.topics.map((t) => <span class="tag">{t}</span>)}
+              {miracle.topics.map((t) => <a href={`/search?q=${encodeURIComponent(t)}`} class="tag" style="text-decoration:none">{t}</a>)}
             </div>
           </>
         )}
