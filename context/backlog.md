@@ -1,6 +1,6 @@
 # Project Backlog
 
-> Generated: 2026-06-04 — Last updated: 2026-06-10 (evening)
+> Generated: 2026-06-04 — Last updated: 2026-06-10
 > Focus: Full audit
 
 ---
@@ -37,14 +37,10 @@ These are standalone miracle records (no associated saint). Each needs research 
 
 ## Feature Ideas
 
-### Medium
-
 ### Low
 - **#32 [src/pages/admin/miracles/[slug]/edit.astro]** Batch source import for admin — CSV/JSON paste to bulk-create `miracle_sources` records. Currently one-by-one only.
 - **#33 [src/pages/admin/index.astro]** Admin analytics dashboard — extend beyond total counts with aggregations by country, type, topic, canonization stage.
 - **#34 [src/pages/]** Custom 404 page. Astro falls back to a generic page; create one matching the site design.
-- **#35 [src/pages/miracles/[slug].astro:129–145]** Highlight Vatican decree sources distinctly on miracle detail pages instead of rendering them identically to news articles.
-
 ---
 
 ## Summary
@@ -55,5 +51,5 @@ These are standalone miracle records (no associated saint). Each needs research 
 | Bugs | 0 | 0 | 1 | 1 |
 | Performance | 0 | 0 | 0 | 0 |
 | Improvements & Refactors | 0 | 0 | 0 | 0 |
-| Feature Ideas | 0 | 0 | 4 | 4 |
-| **Total** | **0** | **0** | **5** | **5** |
+| Feature Ideas | 0 | 0 | 3 | 3 |
+| **Total** | **0** | **0** | **4** | **4** |

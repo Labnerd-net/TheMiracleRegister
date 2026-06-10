@@ -155,5 +155,11 @@ Queried DB to find topic coverage gaps (29/58 miracles had topics). Expanded `MI
 ### API Metadata Endpoint (#28)
 Added `GET /api/v1/metadata` returning canonical filter options in a single call: miracle types, miracle categories, approval authorities, `MIRACLE_TOPICS`, and `SAINT_THEMES`. Static response (no DB query) cached at 24h via Cache-Control middleware. Wired into the Hono app alongside the existing routes and documented in CLAUDE.md.
 
+### Vatican Decree Source Highlight (#35)
+Vatican decree sources on miracle detail pages are now sorted to the top of the sources list and rendered as a pill badge (accent background, accent text) matching the Vatican Approved approval badge. All other source types remain as plain uppercase labels.
+
+### Related Miracles — Saint-Linked Priority
+Extended the related miracles query to run two queries in parallel: saint-linked miracles (via shared `miracle_saints` entries) and topic-linked miracles. Results are merged with saint-linked first, deduplicated, and capped at 5. This ensures canonically related records (e.g. Miracle of the Sun on the Our Lady of Fatima page) always surface regardless of topic overlap count.
+
 ### Miracle Topics Cleanup
 Removed ambiguous or unused topics (`fathers`, `financial-hardship`, `workplace`, `pro-life`). Renamed `clergy` → `religious-life` to accurately cover nuns, brothers, and priests. Updated 9 DB records via transaction. Tagged incorruptibility miracles (Bernadette, Catherine Labouré) with `religious-life` and Miracle of the Sun with `children`. CLAUDE.md updated.
