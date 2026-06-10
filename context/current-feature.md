@@ -145,3 +145,6 @@ Added an Approval dropdown to the miracles list filter bar (Vatican Approved, Lo
 
 ### Wikipedia Link — Sidebar to Sources
 Moved the Wikipedia external link from the Record metadata sidebar on saint detail pages to the Sources section at the bottom of the page. Sources section now renders when either DB sources or a Wikipedia URL exist, with Wikipedia injected as the first entry under a "Reference" type label.
+
+### Recipient Country Display (#38)
+Shows recipient's country of origin on the miracle detail page when it differs from the miracle location country (e.g. "from Italy" beneath the recipient name for Lourdes pilgrims). No display for records where they match, keeping domestic miracles uncluttered.

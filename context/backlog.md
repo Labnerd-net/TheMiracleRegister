@@ -1,6 +1,6 @@
 # Project Backlog
 
-> Generated: 2026-06-04 — Last updated: 2026-06-09 (Eucharistic miracles added)
+> Generated: 2026-06-04 — Last updated: 2026-06-09
 > Focus: Full audit
 
 ---
@@ -43,7 +43,7 @@ These are standalone miracle records (no associated saint). Each needs research 
 - **#27 [src/pages/miracles/[slug].astro]** Related miracles by topic on the miracle detail page. GIN index on `topics` already exists. Show 3–5 miracles with overlapping topics (excluding self).
 - **#28 [src/api/routes/]** API metadata endpoint at `/api/v1/metadata` returning canonical filter options: types, countries, `MIRACLE_TOPICS`, `SAINT_THEMES`.
 - **#30 [src/db/schema/miracles.ts]** Timeline/chronological browse at `/miracles/timeline` grouping by decade using `date_of_event`.
-- **#38 [src/pages/miracles/[slug].astro]** Show recipient country on miracle detail page when it differs from the miracle location country (e.g. "Recipient from Costa Rica" for a miracle that occurred in Florence). Adds context for pilgrimage/travel cases without cluttering records where they match.
+- ~~**#38 [src/pages/miracles/[slug].astro]** Show recipient country on miracle detail page when it differs from the miracle location country.~~ **Done.**
 
 ### Low
 - **#32 [src/pages/admin/miracles/[slug]/edit.astro]** Batch source import for admin — CSV/JSON paste to bulk-create `miracle_sources` records. Currently one-by-one only.
@@ -61,5 +61,5 @@ These are standalone miracle records (no associated saint). Each needs research 
 | Bugs | 0 | 0 | 1 | 1 |
 | Performance | 0 | 0 | 0 | 0 |
 | Improvements & Refactors | 0 | 0 | 0 | 0 |
-| Feature Ideas | 0 | 6 | 4 | 10 |
-| **Total** | **0** | **6** | **5** | **11** |
+| Feature Ideas | 0 | 5 | 4 | 9 |
+| **Total** | **0** | **5** | **5** | **10** |
