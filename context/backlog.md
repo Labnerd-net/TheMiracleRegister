@@ -1,6 +1,6 @@
 # Project Backlog
 
-> Generated: 2026-06-04 — Last updated: 2026-06-09
+> Generated: 2026-06-04 — Last updated: 2026-06-10
 > Focus: Full audit
 
 ---
@@ -38,7 +38,6 @@ These are standalone miracle records (no associated saint). Each needs research 
 ## Feature Ideas
 
 ### Medium
-- **#27 [src/pages/miracles/[slug].astro]** Related miracles by topic on the miracle detail page. GIN index on `topics` already exists. Show 3–5 miracles with overlapping topics (excluding self).
 - **#28 [src/api/routes/]** API metadata endpoint at `/api/v1/metadata` returning canonical filter options: types, countries, `MIRACLE_TOPICS`, `SAINT_THEMES`.
 
 ### Low
@@ -57,5 +56,5 @@ These are standalone miracle records (no associated saint). Each needs research 
 | Bugs | 0 | 0 | 1 | 1 |
 | Performance | 0 | 0 | 0 | 0 |
 | Improvements & Refactors | 0 | 0 | 0 | 0 |
-| Feature Ideas | 0 | 3 | 4 | 7 |
-| **Total** | **0** | **3** | **5** | **8** |
+| Feature Ideas | 0 | 1 | 4 | 5 |
+| **Total** | **0** | **1** | **5** | **6** |

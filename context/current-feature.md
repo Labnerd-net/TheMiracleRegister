@@ -157,3 +157,12 @@ Added `/miracles/timeline` showing all miracles with usable dates (exact_day, mo
 
 ### Miracle Detail Filter Links
 Made the type label and approval badge in the miracle detail page eyebrow clickable links to the filtered miracles list (`/miracles?type=X`, `/miracles?approval_authority=X`). The miracle category label stays plain text since no category filter exists on the list page.
+
+### Related Miracles by Topic (#27)
+Added a Related Miracles section to the miracle detail page showing up to 5 miracles with overlapping topics (excluding self). Uses a PostgreSQL array overlap query with explicit `ARRAY[...]::text[]` syntax via Drizzle's `sql` template tag. Only renders when the current miracle has topics. Topic tags on the detail page now link to `/search?q=<topic>` for discovery.
+
+### Miracle Topics Expansion
+Queried DB to find topic coverage gaps (29/58 miracles had topics). Expanded `MIRACLE_TOPICS` with `clergy`, `veterans`, `conversion`. Bulk-tagged 17 miracles via DB transaction. Coverage reached 46/58 — remaining 12 intentionally empty (phenomena, Eucharistic miracles, unknown recipients).
+
+### Miracle Topics Cleanup
+Removed ambiguous or unused topics (`fathers`, `financial-hardship`, `workplace`, `pro-life`). Renamed `clergy` → `religious-life` to accurately cover nuns, brothers, and priests. Updated 9 DB records via transaction. Tagged incorruptibility miracles (Bernadette, Catherine Labouré) with `religious-life` and Miracle of the Sun with `children`. CLAUDE.md updated.
