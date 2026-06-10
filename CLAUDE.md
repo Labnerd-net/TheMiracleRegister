@@ -96,7 +96,7 @@ Saint pages show related saints as links. API response includes a `related_saint
 | title | text | |
 | miracle_category | enum | intercessory, associated, apparition |
 | type | enum | healing, nature, eucharistic, stigmata, incorruptibility, apparition, miraculous_image, prophecy, bilocation, other |
-| topics | text[] | GIN indexed — life circumstance/role tags for the miracle recipient or context. Canonical list in `src/db/topics.ts` (`MIRACLE_TOPICS`). |
+| topics | text[] | GIN indexed — descriptive tags for the miracle event, recipient, or context. Used for discovery ("show miracles involving veterans", "show miracles for mothers"). Canonical list in `src/db/topics.ts` (`MIRACLE_TOPICS`). |
 | date_of_event | date | nullable |
 | date_precision | enum | exact_day, month, year, decade, century, unknown |
 | timing_relative_to_saint_death | enum | during_lifetime, posthumous, not_applicable |
@@ -133,7 +133,7 @@ Saint pages show related saints as links. API response includes a `related_saint
 
 Both lists are defined in `src/db/topics.ts` as `text[]` (not enums) so values can be added without a schema migration — update the const and redeploy.
 
-**`MIRACLE_TOPICS`** — tags on miracle records describing the recipient or context. Used for filtering ("show miracles for mothers", "show miracles involving youth").
+**`MIRACLE_TOPICS`** — descriptive tags on miracle records covering the event, recipient, and context. Used for discovery by any dimension: life stage, vocation, circumstance, or outcome type ("show miracles involving veterans", "show miracles for mothers", "show conversion miracles").
 
 | Category | Topics |
 |---|---|
@@ -281,6 +281,6 @@ Research notes in Nextcloud: `MiraclesProject/Research/`
 - **`saint_relations` join table over self-FK:** Handles pairs and groups, extensible
 - **Zod as single source of truth:** Drives runtime validation, TypeScript types, and OpenAPI spec
 - **Neon dev branch:** Separate dev and prod database branches to avoid schema accidents
-- **`MIRACLE_TOPICS` vs `SAINT_THEMES`:** Topics tag miracle records with life circumstances/roles (who the recipient was, what their situation was). Themes tag saint records with spiritual/devotional character. Medical conditions belong in `medical_diagnosis`; phenomena belong in the `type` enum — neither should appear as topics.
+- **`MIRACLE_TOPICS` vs `SAINT_THEMES`:** Topics tag miracle records with any descriptive dimension of the event — recipient role, vocation, life circumstance, or context (e.g. `clergy`, `veterans`, `mothers`, `conversion`). Themes tag saint records with spiritual/devotional character. Medical conditions belong in `medical_diagnosis`; miracle phenomena belong in the `type` enum.
 - **`noted_for` removed:** Was redundant with `themes` (structured) and `biography_short` (narrative). Saints have two tag fields: `patronage` (formal Catholic designation) and `themes` (standardized spiritual tags).
 - **Carlo Acutis' Eucharistic miracle site** (miracolieucaristici.org) is out of scope — different focus entirely
