@@ -137,8 +137,8 @@ Both lists are defined in `src/db/topics.ts` as `text[]` (not enums) so values c
 
 | Category | Topics |
 |---|---|
-| Life stages & roles | `children`, `mothers`, `fathers`, `pregnancy-and-childbirth`, `marriage`, `youth`, `elderly` |
-| Life circumstances | `addiction`, `prisoners`, `loss-grief`, `financial-hardship`, `workplace`, `native-and-indigenous`, `pro-life` |
+| Life stages & roles | `children`, `mothers`, `pregnancy-and-childbirth`, `marriage`, `youth`, `elderly` |
+| Life circumstances & vocation | `addiction`, `prisoners`, `loss-grief`, `native-and-indigenous`, `veterans`, `religious-life`, `conversion` |
 
 Medical conditions are **not** topics — use `medical_diagnosis` (free text). Phenomena (stigmata, bilocation, etc.) are **not** topics — use the `type` enum.
 
@@ -281,6 +281,6 @@ Research notes in Nextcloud: `MiraclesProject/Research/`
 - **`saint_relations` join table over self-FK:** Handles pairs and groups, extensible
 - **Zod as single source of truth:** Drives runtime validation, TypeScript types, and OpenAPI spec
 - **Neon dev branch:** Separate dev and prod database branches to avoid schema accidents
-- **`MIRACLE_TOPICS` vs `SAINT_THEMES`:** Topics tag miracle records with any descriptive dimension of the event — recipient role, vocation, life circumstance, or context (e.g. `clergy`, `veterans`, `mothers`, `conversion`). Themes tag saint records with spiritual/devotional character. Medical conditions belong in `medical_diagnosis`; miracle phenomena belong in the `type` enum.
+- **`MIRACLE_TOPICS` vs `SAINT_THEMES`:** Topics tag miracle records with any descriptive dimension of the event — recipient role, vocation, life circumstance, or context (e.g. `religious-life`, `veterans`, `mothers`, `conversion`). Themes tag saint records with spiritual/devotional character. Medical conditions belong in `medical_diagnosis`; miracle phenomena belong in the `type` enum.
 - **`noted_for` removed:** Was redundant with `themes` (structured) and `biography_short` (narrative). Saints have two tag fields: `patronage` (formal Catholic designation) and `themes` (standardized spiritual tags).
 - **Carlo Acutis' Eucharistic miracle site** (miracolieucaristici.org) is out of scope — different focus entirely

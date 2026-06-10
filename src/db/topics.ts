@@ -2,21 +2,17 @@ export const MIRACLE_TOPICS = [
   // Life stages and roles
   "children",
   "mothers",
-  "fathers",
   "pregnancy-and-childbirth",
   "marriage",
   "youth",
   "elderly",
-  // Life circumstances
+  // Life circumstances and vocation
   "addiction",
   "prisoners",
   "loss-grief",
-  "financial-hardship",
-  "workplace",
   "native-and-indigenous",
-  "pro-life",
-  "clergy",
   "veterans",
+  "religious-life",
   "conversion",
 ] as const;
 

@@ -11,7 +11,6 @@
 
 These are standalone miracle records (no associated saint). Each needs research notes and a DB seed. Priority order based on documentation strength and historical significance.
 
-3. ~~**Sokolka** (Poland, 2008) — Host placed in water; reddish tissue appeared. Medical University of Białystok: myocardial tissue in agony, AB blood. Archbishop of Białystok approved 2012.~~ **Done.** Seeded as miracle 707. Formal approval: Curia communiqué October 14, 2009 (not 2012).
 4. **Legnica** (Poland, 2013) — Same tissue/blood findings as Sokolka. Bishop of Legnica approved 2016.
 5. **Tixtla** (Mexico, 2006) — Substance emerged from within the host during a retreat. Bishop of Chilpancingo-Chilapa formally recognized. AB blood, cardiac tissue.
 6. **Bolsena / Orvieto** (Italy, 1263) — Doubting priest; host bled on the corporal. Pope Urban IV approved — directly prompted institution of Corpus Christi. Corporal of Bolsena still preserved in Orvieto cathedral.
@@ -41,7 +40,6 @@ These are standalone miracle records (no associated saint). Each needs research 
 ### Medium
 - **#27 [src/pages/miracles/[slug].astro]** Related miracles by topic on the miracle detail page. GIN index on `topics` already exists. Show 3–5 miracles with overlapping topics (excluding self).
 - **#28 [src/api/routes/]** API metadata endpoint at `/api/v1/metadata` returning canonical filter options: types, countries, `MIRACLE_TOPICS`, `SAINT_THEMES`.
-- ~~**#30 [src/db/schema/miracles.ts]** Timeline/chronological browse at `/miracles/timeline` grouping by decade using `date_of_event`.~~ **Done.**
 
 ### Low
 - **#32 [src/pages/admin/miracles/[slug]/edit.astro]** Batch source import for admin — CSV/JSON paste to bulk-create `miracle_sources` records. Currently one-by-one only.
