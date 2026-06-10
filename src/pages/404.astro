@@ -1,0 +1,18 @@
+---
+import Base from "../layouts/Base.astro";
+---
+
+<Base title="Page Not Found">
+  <div class="max-w-6xl mx-auto px-4 sm:px-8 py-24 sm:py-32 text-center">
+    <p style="font-family:var(--font-sans);font-size:0.7rem;font-weight:600;letter-spacing:0.12em;text-transform:uppercase;color:var(--text-4);margin-bottom:1.5rem">404</p>
+    <h1 style="font-family:var(--font-display);font-size:clamp(2rem,5vw,3.2rem);font-weight:300;color:var(--text-1);letter-spacing:-0.01em;margin-bottom:1rem">Page Not Found</h1>
+    <p style="font-family:var(--font-sans);font-size:0.95rem;color:var(--text-3);max-width:36ch;margin:0 auto 2.5rem">The page you're looking for doesn't exist or may have been moved.</p>
+    <div style="display:flex;gap:1rem;justify-content:center;flex-wrap:wrap">
+      <a href="/saints" style="font-family:var(--font-sans);font-size:0.8rem;font-weight:500;color:var(--color-accent);text-decoration:none;border-bottom:1px solid var(--color-accent);padding-bottom:1px">Browse Saints</a>
+      <span style="color:var(--rule-mid)">·</span>
+      <a href="/miracles" style="font-family:var(--font-sans);font-size:0.8rem;font-weight:500;color:var(--color-accent);text-decoration:none;border-bottom:1px solid var(--color-accent);padding-bottom:1px">Browse Miracles</a>
+      <span style="color:var(--rule-mid)">·</span>
+      <a href="/" style="font-family:var(--font-sans);font-size:0.8rem;font-weight:500;color:var(--color-accent);text-decoration:none;border-bottom:1px solid var(--color-accent);padding-bottom:1px">Home</a>
+    </div>
+  </div>
+</Base>
