@@ -53,6 +53,7 @@ const [[{ total }], pageMiracles, allSaints, countryRows] = await Promise.all([
       cure_details: miracles.cure_details,
       used_for_beatification: miracles.used_for_beatification,
       used_for_canonization: miracles.used_for_canonization,
+      approval_authority: miracles.approval_authority,
     })
     .from(miracles)
     .where(where)
@@ -85,6 +86,14 @@ if (page > totalPages) return Astro.redirect(buildUrl(totalPages));
 
 const hasPrev = page > 1;
 const hasNext = page < totalPages;
+
+function approvalBadge(authority: string | null): { cls: string; label: string } | null {
+  if (authority === "vatican_dicastery") return { cls: "vatican", label: "Vatican Approved" };
+  if (authority === "lourdes_bureau")    return { cls: "lourdes", label: "Lourdes Bureau" };
+  if (authority === "local_bishop")      return { cls: "bishop",  label: "Bishop Approved" };
+  if (authority === "nihil_obstat")      return { cls: "nihil",   label: "Nihil Obstat" };
+  return null;
+}
 
 function buildUrl(p: number) {
   const params = new URLSearchParams();
@@ -218,6 +227,7 @@ const MIRACLE_TYPES = [
               </div>
 
               <div class="shrink-0 flex flex-col gap-1 items-end">
+                {(() => { const b = approvalBadge(m.approval_authority); return b ? <span class={`approval-badge ${b.cls}`}>{b.label}</span> : null; })()}
                 {m.used_for_beatification && <span class="used-badge">Beatification</span>}
                 {m.used_for_canonization && <span class="used-badge">Canonization</span>}
               </div>
@@ -322,7 +332,15 @@ const MIRACLE_TYPES = [
       ? `<div class="flex flex-wrap gap-1">${topics.slice(0, 5).map((t) => `<span class="tag">${esc(t)}</span>`).join("")}${topics.length > 5 ? `<span class="tag">+${topics.length - 5}</span>` : ""}</div>`
       : "";
 
+    const approvalMap: Record<string, { cls: string; label: string }> = {
+      vatican_dicastery: { cls: "vatican", label: "Vatican Approved" },
+      lourdes_bureau:    { cls: "lourdes", label: "Lourdes Bureau" },
+      local_bishop:      { cls: "bishop",  label: "Bishop Approved" },
+      nihil_obstat:      { cls: "nihil",   label: "Nihil Obstat" },
+    };
+    const approval = m.approval_authority && approvalMap[m.approval_authority];
     const badges = [
+      approval ? `<span class="approval-badge ${approval.cls}">${approval.label}</span>` : "",
       m.used_for_beatification ? `<span class="used-badge">Beatification</span>` : "",
       m.used_for_canonization ? `<span class="used-badge">Canonization</span>` : "",
     ].filter(Boolean).join("");
