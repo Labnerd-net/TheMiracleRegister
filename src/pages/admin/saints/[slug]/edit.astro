@@ -117,12 +117,15 @@ if (Astro.request.method === "POST") {
   } // end main form action
 }
 
-const [[s], sources, locations] = await Promise.all([
-  db.select().from(saints).where(eq(saints.slug, slug!)),
+let v = saint;
+if (Astro.request.method === "POST") {
+  const [updated] = await db.select().from(saints).where(eq(saints.slug, slug!));
+  v = updated ?? saint;
+}
+const [sources, locations] = await Promise.all([
   db.select().from(saintSources).where(eq(saintSources.saint_id, saint.id)).orderBy(asc(saintSources.id)),
   db.select().from(saintLocations).where(eq(saintLocations.saint_id, saint.id)).orderBy(asc(saintLocations.id)),
 ]);
-const v = s ?? saint;
 ---
 
 <AdminBase title={`Edit: ${v.name}`}>
