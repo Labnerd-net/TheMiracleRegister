@@ -45,7 +45,15 @@ if (!miracle) return Astro.redirect("/404");
 
 const hasTopics = miracle.topics && miracle.topics.length > 0;
 
-const [miracleSaintRows, sources, relatedMiracles] = await Promise.all([
+const relatedMiracleFields = {
+  id: miracles.id,
+  slug: miracles.slug,
+  title: miracles.title,
+  type: miracles.type,
+  topics: miracles.topics,
+};
+
+const [miracleSaintRows, sources, saintLinked, topicLinked] = await Promise.all([
   db.select({ slug: saints.slug, name: saints.name, canonization_stage: saints.canonization_stage, image_url: saints.image_url })
     .from(miracleSaints)
     .innerJoin(saints, eq(miracleSaints.saint_id, saints.id))
@@ -57,21 +65,35 @@ const [miracleSaintRows, sources, relatedMiracles] = await Promise.all([
     accessed_date: miracleSources.accessed_date,
   }).from(miracleSources).where(eq(miracleSources.miracle_id, miracle.id))
     .then(rows => [...rows].sort((a, b) => (a.source_type === "vatican_decree" ? -1 : b.source_type === "vatican_decree" ? 1 : 0))),
+  db.selectDistinct(relatedMiracleFields)
+    .from(miracles)
+    .innerJoin(miracleSaints, eq(miracleSaints.miracle_id, miracles.id))
+    .where(and(
+      eq(miracles.published, true),
+      ne(miracles.id, miracle.id),
+      sql`${miracleSaints.saint_id} IN (SELECT saint_id FROM miracle_saints WHERE miracle_id = ${miracle.id})`,
+    )),
   hasTopics
-    ? db.select({
-        slug: miracles.slug,
-        title: miracles.title,
-        type: miracles.type,
-        topics: miracles.topics,
-      }).from(miracles).where(
-        and(
-          eq(miracles.published, true),
-          ne(miracles.id, miracle.id),
-          sql`${miracles.topics} && ARRAY[${sql.join(miracle.topics!.map(t => sql`${t}`), sql`, `)}]::text[]`,
-        )
-      ).limit(5)
+    ? db.select(relatedMiracleFields)
+        .from(miracles).where(
+          and(
+            eq(miracles.published, true),
+            ne(miracles.id, miracle.id),
+            sql`${miracles.topics} && ARRAY[${sql.join(miracle.topics!.map(t => sql`${t}`), sql`, `)}]::text[]`,
+          )
+        ).limit(10)
     : Promise.resolve([]),
 ]);
+
+// Saint-linked miracles first, then topic-linked; deduplicate; cap at 5
+const seen = new Set<number>([miracle.id]);
+const relatedMiracles: typeof saintLinked = [];
+for (const m of [...saintLinked, ...topicLinked]) {
+  if (!seen.has(m.id) && relatedMiracles.length < 5) {
+    seen.add(m.id);
+    relatedMiracles.push(m);
+  }
+}
 
 const fmt = (s: string) => s.replace(/_/g, " ");
 
