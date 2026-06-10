@@ -231,6 +231,34 @@ const fullTitle = title === "Home"
     display: inline-block;
   }
 
+  .approval-badge {
+    font-family: var(--font-sans);
+    font-size: 0.58rem;
+    font-weight: 600;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    border-radius: 0;
+    padding: 0.2rem 0.5rem;
+    display: inline-block;
+    white-space: nowrap;
+  }
+  .approval-badge.vatican {
+    background-color: var(--color-accent-light);
+    color: var(--color-accent);
+  }
+  .approval-badge.lourdes {
+    background-color: var(--bg-elevated);
+    color: var(--color-gold);
+  }
+  .approval-badge.bishop {
+    background-color: var(--bg-elevated);
+    color: var(--text-2);
+  }
+  .approval-badge.nihil {
+    background-color: var(--bg-elevated);
+    color: var(--text-3);
+  }
+
   .meta-grid {
     display: grid;
     grid-template-columns: max-content 1fr;
