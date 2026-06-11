@@ -4,11 +4,14 @@ import "../styles/global.css";
 interface Props {
   title: string;
   description?: string;
+  ogImage?: string;
+  ogType?: string;
 }
-const { title, description } = Astro.props;
+const { title, description, ogImage, ogType } = Astro.props;
 const fullTitle = title === "Home"
   ? "The Miracle Register"
   : `${title} — The Miracle Register`;
+const canonicalUrl = Astro.url.origin + Astro.url.pathname;
 ---
 
 <html lang="en">
@@ -19,6 +22,15 @@ const fullTitle = title === "Home"
     <script defer src="https://umami.labnerd.net/script.js" data-website-id="c0613999-ec84-4770-83ec-3c33c0e52a7b"></script>
     <title>{fullTitle}</title>
     {description && <meta name="description" content={description} />}
+    <meta property="og:title" content={fullTitle} />
+    <meta property="og:type" content={ogType ?? "website"} />
+    <meta property="og:url" content={canonicalUrl} />
+    {description && <meta property="og:description" content={description} />}
+    {ogImage && <meta property="og:image" content={ogImage} />}
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content={fullTitle} />
+    {description && <meta name="twitter:description" content={description} />}
+    {ogImage && <meta name="twitter:image" content={ogImage} />}
     <script is:inline>
       (function() {
         const stored = localStorage.getItem('theme');

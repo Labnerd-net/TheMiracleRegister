@@ -13,7 +13,7 @@
 _None identified._
 
 ### Medium
-- **#23 [src/layouts/Base.astro]** No Open Graph or Twitter Card meta tags on any page. Saint and miracle detail pages shared on social media show no image or description preview. Fix: add `og:title`, `og:description`, `og:image`, `og:type` props to the Base layout and pass them from detail pages.
+_None identified._
 
 ### Low
 _None identified._
@@ -44,6 +44,6 @@ _None identified._
 | Security | 0 | 0 | 0 | 0 |
 | Bugs | 0 | 0 | 0 | 0 |
 | Performance | 0 | 0 | 0 | 0 |
-| Improvements & Refactors | 0 | 1 | 0 | 1 |
+| Improvements & Refactors | 0 | 0 | 0 | 0 |
 | Feature Ideas | 0 | 1 | 5 | 6 |
-| **Total** | **0** | **2** | **5** | **7** |
+| **Total** | **0** | **1** | **5** | **6** |

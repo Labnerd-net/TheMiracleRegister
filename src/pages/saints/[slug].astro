@@ -5,7 +5,7 @@ import { saints, miracles, miracleSaints, saintRelations, saintSources, saintLoc
 import { asc, and, eq } from "drizzle-orm";
 import { env } from "cloudflare:workers";
 import { renderMarkdown } from "../../lib/markdown";
-import { humanizeSnakeCase } from "../../lib/format";
+import { humanizeSnakeCase, ogDescription } from "../../lib/format";
 
 const { slug } = Astro.params;
 const db = createDb(env.DATABASE_URL);
@@ -66,9 +66,11 @@ const sourceTypeLabel: Record<string, string> = {
   academic: "Reference",
   other: "Official Site",
 };
+
+const ogDesc = ogDescription(saint.biography_short) || undefined;
 ---
 
-<Base title={saint.name}>
+<Base title={saint.name} description={ogDesc} ogImage={saint.image_url ?? undefined} ogType="profile">
   {mappableLocations.length > 0 && (
     <link slot="head" rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
   )}

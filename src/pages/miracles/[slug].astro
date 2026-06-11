@@ -5,7 +5,7 @@ import { miracles, saints, miracleSaints, miracleSources } from "../../db/schema
 import { and, eq, inArray, ne, sql } from "drizzle-orm";
 import { env } from "cloudflare:workers";
 import { renderMarkdown } from "../../lib/markdown";
-import { humanizeSnakeCase } from "../../lib/format";
+import { humanizeSnakeCase, ogDescription } from "../../lib/format";
 
 const { slug } = Astro.params;
 const db = createDb(env.DATABASE_URL);
@@ -105,9 +105,11 @@ function approvalBadge(authority: string | null): { cls: string; label: string }
   if (authority === "nihil_obstat")      return { cls: "nihil",   label: "Nihil Obstat" };
   return null;
 }
+
+const ogDesc = ogDescription(miracle.synopsis) || undefined;
 ---
 
-<Base title={miracle.title}>
+<Base title={miracle.title} description={ogDesc} ogImage={miracle.image_url ?? undefined} ogType="article">
   {miracle.location_lat && miracle.location_lng && (
     <link slot="head" rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
   )}
