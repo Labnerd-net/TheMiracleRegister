@@ -5,20 +5,6 @@
 
 ---
 
-## Security
-
-### High
-_None remaining._
-
-### Medium
-- **#6 [src/pages/admin/login.astro:23]** The failed-login delay is 300ms per response in a stateless Worker. An attacker can fire hundreds of concurrent requests; the delay does not throttle globally. Fix: add a Cloudflare WAF rate-limiting rule on `/admin/login` — more reliable than application-level delay in a Worker environment.
-- **#7 [src/lib/auth.ts:53]** Session cookie is missing the `Secure` flag. Cloudflare Workers always serve HTTPS in production, but the flag should be explicit. Fix: append `; Secure` to the cookie string in `sessionCookieHeader()`.
-- **#8 [src/pages/admin/login.astro:7]** Open redirect guard checks `startsWith("/")` but not `startsWith("//")` or `/\`. A path like `/\evil.com` is interpreted as `//evil.com` by some browsers. Fix: tighten to require the second character is not `/` or `\`: `/^\/[^/\\]/`.
-- **#9 [src/pages/miracles/index.astro:35,41]** Filter params `filterType` and `filterApproval` from URL query strings are cast directly to enum types (`as "healing"`, `as "vatican_dicastery"`) and passed to Drizzle without validation. An arbitrary string from a crafted URL bypasses TypeScript's enum check. Fix: validate against the allowed enum values before the Drizzle call, similar to `parseEnum` in form handlers.
-
-### Low
-- **#10 [src/api/index.ts:12]** `cors()` defaults to `Access-Control-Allow-Origin: *`. Acceptable for a read-only public API, but any future admin endpoints added under `/api/v1/` would be implicitly CORS-open. Fix: explicitly configure `origin` in `cors()` config, or document that admin endpoints must never be added under this path.
-
 ---
 
 ## Bugs
@@ -89,9 +75,9 @@ _None identified._
 
 | Category | High | Medium | Low | Total |
 |----------|------|--------|-----|-------|
-| Security | 0 | 4 | 1 | 5 |
+| Security | 0 | 0 | 0 | 0 |
 | Bugs | 0 | 2 | 3 | 5 |
 | Performance | 1 | 1 | 1 | 3 |
 | Improvements & Refactors | 0 | 5 | 1 | 6 |
 | Feature Ideas | 0 | 2 | 5 | 7 |
-| **Total** | **1** | **14** | **11** | **26** |
+| **Total** | **1** | **10** | **10** | **21** |
