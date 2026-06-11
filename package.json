@@ -26,6 +26,7 @@
     "hono": "^4.12.23",
     "marked": "^18.0.5",
     "tailwindcss": "^4.3.0",
+    "xss": "^1.0.15",
     "zod": "^4.4.3"
   },
   "devDependencies": {

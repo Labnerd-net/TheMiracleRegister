@@ -2,9 +2,7 @@
 
 ## Current Feature Spec File
 
-Title: Session HMAC Auth Fix
-Spec file: context/specs/session-hmac-auth-fix.md
-Branch: claude/feature/session-hmac-auth-fix
+_None_
 
 ## Current Feature Plan File
 
@@ -171,3 +169,6 @@ Added `src/pages/404.astro` matching the site design — logo, nav, footer, and 
 
 ### Mobile Nav and Footer (#40)
 Header nav links (Saints, Miracles, Map, Timeline) are now hidden on mobile behind a hamburger button. Clicking the hamburger reveals a dropdown panel; the icon switches to an X and toggles back. Search icon and theme toggle remain always visible. Footer links changed from a single-column stack to a 2-column grid on mobile, matching the desktop row layout more compactly.
+
+### Markdown HTML Sanitization (#2)
+Added `xss` (pure JS, Workers-compatible) to sanitize `marked.parse()` output in `src/lib/markdown.ts` before it reaches `set:html={}`. Unknown tags stripped (`stripIgnoreTag: true`), script/style tag bodies fully removed (`stripIgnoreTagBody`), event attributes stripped, `javascript:` hrefs blocked. Allowlist covers all tags `marked` legitimately emits (p, strong, em, a, ul, ol, li, blockquote, code, pre, br, h1-h6). 9 tests added in `tests/markdown.test.ts`. All 3 callsites (`biography_short`, `cure_details`, `synopsis`) covered automatically via the shared helper.
