@@ -5,17 +5,6 @@
 
 ---
 
-## Performance
-
-### High
-- **#16 [src/api/routes/saints.ts:78]** The saint detail API endpoint performs `SELECT *` on the saints table (30+ columns including large text fields) then validates through Zod. The over-fetched columns are loaded into Worker memory unnecessarily. Fix: enumerate specific columns matching exactly what `SaintDetailSchema` exposes.
-
-### Medium
-- **#17 [src/api/routes/search.ts:96–101]** Search fetches all matching rows from the DB with no server-side LIMIT, then paginates in memory with `results.slice(offset, offset + limit)`. For a common search term matching many records, all rows are returned over the network before slicing. Fix: apply LIMIT/OFFSET at the query level.
-
-### Low
-- **#18 [src/pages/miracles/index.astro:65]** All published saints are fetched on every miracles index page load to populate the filter dropdown — unconditional full-table scan on every request. Acceptable at current scale but grows linearly. Fix: acceptable for now; consider caching if saint count exceeds ~200.
-
 ---
 
 ## Improvements & Refactors
@@ -59,7 +48,7 @@ _None identified._
 |----------|------|--------|-----|-------|
 | Security | 0 | 0 | 0 | 0 |
 | Bugs | 0 | 0 | 0 | 0 |
-| Performance | 1 | 1 | 1 | 3 |
+| Performance | 0 | 0 | 0 | 0 |
 | Improvements & Refactors | 0 | 5 | 1 | 6 |
 | Feature Ideas | 0 | 2 | 5 | 7 |
-| **Total** | **1** | **8** | **7** | **16** |
+| **Total** | **0** | **7** | **6** | **13** |
