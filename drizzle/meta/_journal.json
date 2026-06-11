@@ -155,6 +155,20 @@
       "when": 1780978819417,
       "tag": "0021_bored_mentallo",
       "breakpoints": true
+    },
+    {
+      "idx": 22,
+      "version": "7",
+      "when": 1781151382639,
+      "tag": "0022_flaky_bishop",
+      "breakpoints": true
+    },
+    {
+      "idx": 23,
+      "version": "7",
+      "when": 1781151853607,
+      "tag": "0023_orange_dreadnoughts",
+      "breakpoints": true
     }
   ]
 }
