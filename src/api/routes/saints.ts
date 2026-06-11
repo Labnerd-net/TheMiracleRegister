@@ -11,6 +11,7 @@ import {
   envelopeSchema,
 } from "../schemas";
 import type { ApiEnv } from "../env";
+import { notFound } from "../errors";
 
 const saintsRoute = new OpenAPIHono<ApiEnv>();
 
@@ -100,9 +101,7 @@ saintsRoute.openapi(
       image_url: saints.image_url,
       wikipedia_url: saints.wikipedia_url,
     }).from(saints).where(and(eq(saints.slug, slug), eq(saints.published, true)));
-    if (!saint) {
-      return c.json({ data: null, meta: null, error: "Not found" }, 404);
-    }
+    if (!saint) return notFound(c);
 
     const [saintMiracles, relatedRows] = await Promise.all([
       db

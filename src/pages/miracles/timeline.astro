@@ -1,5 +1,6 @@
 ---
 import Base from "../../layouts/Base.astro";
+import { humanizeSnakeCase } from "../../lib/format";
 import { createDb } from "../../db";
 import { miracles } from "../../db/schema";
 import { and, eq, isNotNull, inArray, asc } from "drizzle-orm";
@@ -36,7 +37,7 @@ for (const row of rows) {
 }
 const decades = [...byDecade.entries()].sort(([a], [b]) => a - b);
 
-const fmt = (s: string) => s.replace(/_/g, " ");
+const fmt = humanizeSnakeCase;
 
 function formatDate(dateStr: string, precision: string): string {
   const d = new Date(dateStr + "T00:00:00Z");

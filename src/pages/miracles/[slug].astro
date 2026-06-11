@@ -5,6 +5,7 @@ import { miracles, saints, miracleSaints, miracleSources } from "../../db/schema
 import { and, eq, inArray, ne, sql } from "drizzle-orm";
 import { env } from "cloudflare:workers";
 import { renderMarkdown } from "../../lib/markdown";
+import { humanizeSnakeCase } from "../../lib/format";
 
 const { slug } = Astro.params;
 const db = createDb(env.DATABASE_URL);
@@ -95,7 +96,7 @@ for (const m of [...saintLinked, ...topicLinked]) {
   }
 }
 
-const fmt = (s: string) => s.replace(/_/g, " ");
+const fmt = humanizeSnakeCase;
 
 function approvalBadge(authority: string | null): { cls: string; label: string } | null {
   if (authority === "vatican_dicastery") return { cls: "vatican", label: "Vatican Approved" };

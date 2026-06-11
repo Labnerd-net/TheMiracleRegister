@@ -13,14 +13,10 @@
 _None identified._
 
 ### Medium
-- **#19 [src/pages/saints/index.astro, src/pages/miracles/index.astro, src/pages/admin/saints/index.astro, src/pages/admin/miracles/index.astro]** Pagination logic is duplicated across four pages. Fix: extract to `src/components/Pagination.astro`.
-- **#20 [src/api/index.ts:14]** Cache middleware types `c` as `any`, losing all Hono context type safety. Fix: import `Context` from `hono` and type as `Context<ApiEnv>`.
-- **#21 [multiple pages]** `replace(/_/g, " ")` is scattered across timeline, map, search, and admin pages. Fix: extract to `src/lib/format.ts` as `humanizeSnakeCase()`.
-- **#22 [src/api/routes/*.ts]** Error responses are inconsistent across routes (sometimes `error: "Not found"`, sometimes null). Fix: create an error response factory in `src/api/errors.ts` with `notFound()`, `invalid()` helpers.
 - **#23 [src/layouts/Base.astro]** No Open Graph or Twitter Card meta tags on any page. Saint and miracle detail pages shared on social media show no image or description preview. Fix: add `og:title`, `og:description`, `og:image`, `og:type` props to the Base layout and pass them from detail pages.
 
 ### Low
-- **#24 [src/components/MiracleForm.astro, src/components/SaintForm.astro]** Form styles are defined with inline `<style>` blocks. Fix: extract shared `.field`, `.btn`, `.two-col` etc. to a global stylesheet.
+_None identified._
 
 ---
 
@@ -49,6 +45,6 @@ _None identified._
 | Security | 0 | 0 | 0 | 0 |
 | Bugs | 0 | 0 | 0 | 0 |
 | Performance | 0 | 0 | 0 | 0 |
-| Improvements & Refactors | 0 | 5 | 1 | 6 |
+| Improvements & Refactors | 0 | 1 | 0 | 1 |
 | Feature Ideas | 0 | 2 | 5 | 7 |
-| **Total** | **0** | **7** | **6** | **13** |
+| **Total** | **0** | **3** | **5** | **8** |

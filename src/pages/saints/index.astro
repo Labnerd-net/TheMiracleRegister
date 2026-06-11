@@ -1,5 +1,6 @@
 ---
 import Base from "../../layouts/Base.astro";
+import Pagination from "../../components/Pagination.astro";
 import { createDb } from "../../db";
 import { saints } from "../../db/schema";
 import { asc, count, eq } from "drizzle-orm";
@@ -36,8 +37,6 @@ const [[{ total }], pageSaints] = await Promise.all([
 const totalPages = Math.max(1, Math.ceil(total / PAGE_SIZE));
 if (page > totalPages) return Astro.redirect(`/saints?page=${totalPages}`);
 
-const hasPrev = page > 1;
-const hasNext = page < totalPages;
 ---
 
 <Base title="Saints">
@@ -84,19 +83,7 @@ const hasNext = page < totalPages;
       ))}
     </div>
 
-    {totalPages > 1 && (
-      <nav class="pagination" aria-label="Page navigation">
-        {hasPrev
-          ? <a href={`/saints?page=${page - 1}`} class="pagination-btn">← Previous</a>
-          : <span class="pagination-btn disabled">← Previous</span>
-        }
-        <span class="pagination-info">Page {page} of {totalPages}</span>
-        {hasNext
-          ? <a href={`/saints?page=${page + 1}`} class="pagination-btn">Next →</a>
-          : <span class="pagination-btn disabled">Next →</span>
-        }
-      </nav>
-    )}
+    <Pagination page={page} totalPages={totalPages} prevUrl={`/saints?page=${page - 1}`} nextUrl={`/saints?page=${page + 1}`} />
   </div>
 
 </Base>

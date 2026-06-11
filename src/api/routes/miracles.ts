@@ -9,6 +9,7 @@ import {
   envelopeSchema,
 } from "../schemas";
 import type { ApiEnv } from "../env";
+import { notFound } from "../errors";
 
 const miraclesRoute = new OpenAPIHono<ApiEnv>();
 
@@ -161,9 +162,7 @@ miraclesRoute.openapi(
       recipient_gender: miracles.recipient_gender,
       recipient_country: miracles.recipient_country,
     }).from(miracles).where(and(eq(miracles.slug, slug), eq(miracles.published, true)));
-    if (!miracle) {
-      return c.json({ data: null, meta: null, error: "Not found" }, 404);
-    }
+    if (!miracle) return notFound(c);
 
     const [sources, saintsByMiracleId] = await Promise.all([
       db

@@ -5,6 +5,7 @@ import { saints, saintSources, saintLocations } from "../../../../db/schema";
 import { asc, and, eq } from "drizzle-orm";
 import { canonizationType, canonizationStage, dispensationReason, gender, sourceType, locationType } from "../../../../db/schema/enums";
 import { parseEnum, formHelpers } from "../../../../lib/form-utils";
+import { humanizeSnakeCase } from "../../../../lib/format";
 import { SaintFormSchema, formatZodErrors } from "../../../../lib/form-schemas";
 import SaintForm from "../../../../components/SaintForm.astro";
 import { env } from "cloudflare:workers";
@@ -160,7 +161,7 @@ const [sources, locations] = await Promise.all([
             <a href={s.url} target="_blank" rel="noopener">{s.title}</a>
           </div>
           <div style="font-size:0.75rem;color:#888;margin-top:0.1rem">
-            {s.source_type.replace(/_/g, " ")}
+            {humanizeSnakeCase(s.source_type)}
             {s.accessed_date && <> · accessed {s.accessed_date}</>}
           </div>
         </div>
@@ -186,7 +187,7 @@ const [sources, locations] = await Promise.all([
             <label for="source_type">Type</label>
             <select id="source_type" name="source_type">
               {sourceType.enumValues.map((t) => (
-                <option value={t}>{t.replace(/_/g, " ")}</option>
+                <option value={t}>{humanizeSnakeCase(t)}</option>
               ))}
             </select>
           </div>
@@ -219,7 +220,7 @@ const [sources, locations] = await Promise.all([
         <div style="flex:1;min-width:0">
           <div style="font-size:0.875rem;font-weight:600">{loc.location_name}</div>
           <div style="font-size:0.75rem;color:#888;margin-top:0.1rem">
-            {loc.location_type.replace(/_/g, " ")}
+            {humanizeSnakeCase(loc.location_type)}
             {loc.lat && loc.lng && <> · {loc.lat}, {loc.lng}</>}
           </div>
         </div>
@@ -244,7 +245,7 @@ const [sources, locations] = await Promise.all([
             <label for="location_type">Type</label>
             <select id="location_type" name="location_type">
               {locationType.enumValues.map((t) => (
-                <option value={t}>{t.replace(/_/g, " ")}</option>
+                <option value={t}>{humanizeSnakeCase(t)}</option>
               ))}
             </select>
           </div>

@@ -1,5 +1,6 @@
 ---
 import AdminBase from "../../../layouts/AdminBase.astro";
+import Pagination from "../../../components/Pagination.astro";
 import { createDb } from "../../../db";
 import { saints } from "../../../db/schema";
 import { asc, count } from "drizzle-orm";
@@ -31,8 +32,6 @@ const [[{ total }], pageSaints] = await Promise.all([
 const totalPages = Math.max(1, Math.ceil(total / PAGE_SIZE));
 if (page > totalPages) return Astro.redirect(`/admin/saints?page=${totalPages}`);
 
-const hasPrev = page > 1;
-const hasNext = page < totalPages;
 ---
 
 <AdminBase title="Saints">
@@ -64,19 +63,7 @@ const hasNext = page < totalPages;
     </tbody>
   </table>
 
-  {totalPages > 1 && (
-    <nav class="pagination">
-      {hasPrev
-        ? <a href={`/admin/saints?page=${page - 1}`} class="pagination-btn">← Previous</a>
-        : <span class="pagination-btn disabled">← Previous</span>
-      }
-      <span class="pagination-info">Page {page} of {totalPages}</span>
-      {hasNext
-        ? <a href={`/admin/saints?page=${page + 1}`} class="pagination-btn">Next →</a>
-        : <span class="pagination-btn disabled">Next →</span>
-      }
-    </nav>
-  )}
+  <Pagination page={page} totalPages={totalPages} prevUrl={`/admin/saints?page=${page - 1}`} nextUrl={`/admin/saints?page=${page + 1}`} />
 </AdminBase>
 
 <style>

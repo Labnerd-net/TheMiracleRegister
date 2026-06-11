@@ -5,6 +5,7 @@ import { saints, miracles, miracleSaints, saintRelations, saintSources, saintLoc
 import { asc, and, eq } from "drizzle-orm";
 import { env } from "cloudflare:workers";
 import { renderMarkdown } from "../../lib/markdown";
+import { humanizeSnakeCase } from "../../lib/format";
 
 const { slug } = Astro.params;
 const db = createDb(env.DATABASE_URL);
@@ -84,7 +85,7 @@ const sourceTypeLabel: Record<string, string> = {
         <div class="flex items-center gap-3 mb-6">
           <span class={`stage-badge ${saint.canonization_stage}`}>{saint.canonization_stage}</span>
           {saint.canonization_type && (
-            <span style="font-family:var(--font-sans);font-size:0.65rem;color:var(--text-4);letter-spacing:0.04em">{saint.canonization_type.replace(/_/g," ")}</span>
+            <span style="font-family:var(--font-sans);font-size:0.65rem;color:var(--text-4);letter-spacing:0.04em">{humanizeSnakeCase(saint.canonization_type)}</span>
           )}
         </div>
         <h1 style="font-family:var(--font-display);font-size:clamp(2.5rem,6vw,4.5rem);font-weight:300;color:var(--text-1);line-height:1.05;margin-bottom:0.6rem;letter-spacing:-0.01em">

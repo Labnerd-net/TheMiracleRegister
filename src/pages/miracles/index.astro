@@ -1,5 +1,6 @@
 ---
 import Base from "../../layouts/Base.astro";
+import { humanizeSnakeCase } from "../../lib/format";
 import { createDb } from "../../db";
 import { miracles, miracleSaints, saints } from "../../db/schema";
 import { miracleType, approvalAuthority } from "../../db/schema/enums";
@@ -151,7 +152,7 @@ const MIRACLE_TYPES = [
           <select name="type" class="filter-select">
             <option value="">All Types</option>
             {MIRACLE_TYPES.map(t => (
-              <option value={t} selected={t === filterType}>{t.replace(/_/g, " ")}</option>
+              <option value={t} selected={t === filterType}>{humanizeSnakeCase(t)}</option>
             ))}
           </select>
         </div>
@@ -220,7 +221,7 @@ const MIRACLE_TYPES = [
                 <div class="flex flex-wrap items-center gap-x-3 gap-y-1 mb-2">
                   <span style="font-family:var(--font-sans);font-size:0.68rem;font-weight:600;color:var(--color-accent)">{(saintNamesByMiracle.get(m.id) ?? []).join(", ")}</span>
                   <span style="color:var(--rule-mid)">·</span>
-                  <span style="font-family:var(--font-sans);font-size:0.68rem;color:var(--text-4)">{m.type.replace(/_/g, " ")}</span>
+                  <span style="font-family:var(--font-sans);font-size:0.68rem;color:var(--text-4)">{humanizeSnakeCase(m.type)}</span>
                   {m.date_of_event && <><span style="color:var(--rule-mid)">·</span><span style="font-family:var(--font-sans);font-size:0.68rem;color:var(--text-4)">{m.date_of_event}</span></>}
                   {m.country && <><span style="color:var(--rule-mid)">·</span><span style="font-family:var(--font-sans);font-size:0.68rem;color:var(--text-4)">{m.country}</span></>}
                 </div>
