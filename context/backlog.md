@@ -27,7 +27,6 @@ _None identified._
 
 ### Medium
 - **#25 [src/pages/saints/index.astro, src/api/routes/saints.ts]** Saints list has no filter UI — only a search box. Miracles list has filters (type, country, approval, year). Saints could have the same for: canonization stage, themes, religious order, nationality. API would need query params added to the saints list endpoint.
-- **#26 [src/pages/index.astro or src/pages/saints/[slug].astro]** Sitemap at `/sitemap.xml` listing all published saints and miracles. Needed for SEO as content grows. Simple Astro endpoint, no schema changes.
 
 ### Low
 - **#42 [src/pages/index.astro]** Today's Feast — if today's date matches any saint's `feast_day`, surface that saint's card on the homepage with a "Feast Day Today" note. Hold off on a full calendar page until saint count reaches 40–50.
@@ -46,5 +45,5 @@ _None identified._
 | Bugs | 0 | 0 | 0 | 0 |
 | Performance | 0 | 0 | 0 | 0 |
 | Improvements & Refactors | 0 | 1 | 0 | 1 |
-| Feature Ideas | 0 | 2 | 5 | 7 |
-| **Total** | **0** | **3** | **5** | **8** |
+| Feature Ideas | 0 | 1 | 5 | 6 |
+| **Total** | **0** | **2** | **5** | **7** |
