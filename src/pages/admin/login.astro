@@ -4,7 +4,7 @@ import { SESSION_COOKIE, createSessionToken, sessionCookieHeader } from "../../l
 
 let error = "";
 const rawNext = Astro.url.searchParams.get("next") ?? "";
-const next = rawNext.startsWith("/") && !rawNext.startsWith("//") ? rawNext : "/admin";
+const next = /^\/[^/\\]/.test(rawNext) ? rawNext : "/admin";
 
 if (Astro.request.method === "POST") {
   const form = await Astro.request.formData();

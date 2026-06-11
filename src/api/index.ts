@@ -9,7 +9,8 @@ import type { ApiEnv } from "./env";
 
 const app = new OpenAPIHono<ApiEnv>().basePath("/api/v1");
 
-app.use("*", cors());
+// Public read-only API — open CORS is intentional. Admin endpoints must never be added under /api/v1/.
+app.use("*", cors({ origin: "*" }));
 
 const cache = (maxAge: number) => async (c: any, next: () => Promise<void>) => {
   await next();

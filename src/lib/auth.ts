@@ -46,7 +46,7 @@ export async function validateSessionToken(
 }
 
 export function sessionCookieHeader(token: string): string {
-  return `${SESSION_COOKIE}=${token}; HttpOnly; SameSite=Lax; Path=/; Max-Age=${SESSION_DURATION_MS / 1000}`;
+  return `${SESSION_COOKIE}=${token}; HttpOnly; Secure; SameSite=Lax; Path=/; Max-Age=${SESSION_DURATION_MS / 1000}`;
 }
 
 export function clearSessionCookieHeader(): string {

@@ -2,6 +2,7 @@
 import Base from "../../layouts/Base.astro";
 import { createDb } from "../../db";
 import { miracles, miracleSaints, saints } from "../../db/schema";
+import { miracleType, approvalAuthority } from "../../db/schema/enums";
 import { and, asc, count, eq, gte, ilike, inArray, isNotNull, lte, sql } from "drizzle-orm";
 import { env } from "cloudflare:workers";
 
@@ -14,13 +15,15 @@ const page = Math.max(1, isNaN(rawPage) ? 1 : rawPage);
 const offset = (page - 1) * PAGE_SIZE;
 
 const filterSaintId   = parseInt(sp.get("saint_id") ?? "") || undefined;
-const filterType      = sp.get("type") || undefined;
+const rawType = sp.get("type") ?? "";
+const filterType = (miracleType.enumValues as string[]).includes(rawType) ? rawType as typeof miracleType.enumValues[number] : undefined;
 const filterCountry   = sp.get("country") || undefined;
 const filterYearFrom  = parseInt(sp.get("year_from") ?? "") || undefined;
 const filterYearTo    = parseInt(sp.get("year_to") ?? "") || undefined;
 const filterBeat      = sp.get("beatification") === "1";
 const filterCanon     = sp.get("canonization") === "1";
-const filterApproval  = sp.get("approval_authority") || undefined;
+const rawApproval = sp.get("approval_authority") ?? "";
+const filterApproval = (approvalAuthority.enumValues as string[]).includes(rawApproval) ? rawApproval as typeof approvalAuthority.enumValues[number] : undefined;
 const hasActiveFilters = !!(filterSaintId || filterType || filterCountry || filterYearFrom || filterYearTo || filterBeat || filterCanon || filterApproval);
 
 const db = createDb(env.DATABASE_URL);
@@ -32,13 +35,13 @@ if (filterSaintId) {
     inArray(miracles.id, db.select({ id: miracleSaints.miracle_id }).from(miracleSaints).where(eq(miracleSaints.saint_id, filterSaintId)))
   );
 }
-if (filterType) conditions.push(eq(miracles.type, filterType as "healing"));
+if (filterType) conditions.push(eq(miracles.type, filterType));
 if (filterCountry) conditions.push(ilike(miracles.country, filterCountry));
 if (filterYearFrom) conditions.push(gte(sql`EXTRACT(YEAR FROM ${miracles.date_of_event})::int`, filterYearFrom));
 if (filterYearTo) conditions.push(lte(sql`EXTRACT(YEAR FROM ${miracles.date_of_event})::int`, filterYearTo));
 if (filterBeat) conditions.push(eq(miracles.used_for_beatification, true));
 if (filterCanon) conditions.push(eq(miracles.used_for_canonization, true));
-if (filterApproval) conditions.push(eq(miracles.approval_authority, filterApproval as "vatican_dicastery"));
+if (filterApproval) conditions.push(eq(miracles.approval_authority, filterApproval));
 const where = and(...conditions);
 
 const [[{ total }], pageMiracles, allSaints, countryRows] = await Promise.all([
