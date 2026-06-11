@@ -2,7 +2,9 @@
 
 ## Current Feature Spec File
 
-_None_
+Title: Session HMAC Auth Fix
+Spec file: context/specs/session-hmac-auth-fix.md
+Branch: claude/feature/session-hmac-auth-fix
 
 ## Current Feature Plan File
 

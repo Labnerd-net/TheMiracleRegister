@@ -10,11 +10,7 @@ export const onRequest = defineMiddleware(async (context, next) => {
 
   const cookie = context.cookies.get(SESSION_COOKIE);
   if (cookie) {
-    const valid = await validateSessionToken(
-      cookie.value,
-      env.ADMIN_PASSWORD,
-      env.SESSION_SECRET
-    );
+    const valid = await validateSessionToken(cookie.value, env.SESSION_SECRET);
     if (valid) return next();
   }
 

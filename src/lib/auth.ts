@@ -26,18 +26,14 @@ function safeEqual(a: string, b: string): boolean {
   return result === 0;
 }
 
-export async function createSessionToken(
-  adminPassword: string,
-  sessionSecret: string
-): Promise<string> {
+export async function createSessionToken(sessionSecret: string): Promise<string> {
   const expiresAt = Date.now() + SESSION_DURATION_MS;
-  const sig = await hmac(`${expiresAt}|${adminPassword}`, sessionSecret);
+  const sig = await hmac(`${expiresAt}`, sessionSecret);
   return `${expiresAt}.${sig}`;
 }
 
 export async function validateSessionToken(
   token: string,
-  adminPassword: string,
   sessionSecret: string
 ): Promise<boolean> {
   const dot = token.indexOf(".");
@@ -45,7 +41,7 @@ export async function validateSessionToken(
   const expiresAt = parseInt(token.slice(0, dot), 10);
   if (isNaN(expiresAt) || Date.now() > expiresAt) return false;
   const sig = token.slice(dot + 1);
-  const expected = await hmac(`${expiresAt}|${adminPassword}`, sessionSecret);
+  const expected = await hmac(`${expiresAt}`, sessionSecret);
   return safeEqual(sig, expected);
 }
 
