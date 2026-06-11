@@ -49,7 +49,8 @@ search.openapi(
             excerpt: sql<string | null>`LEFT(${saints.biography_short}, 200)`,
           })
           .from(saints)
-          .where(and(eq(saints.published, true), or(ilike(saints.name, pattern), ilike(saints.biography_short, pattern)))),
+          .where(and(eq(saints.published, true), or(ilike(saints.name, pattern), ilike(saints.biography_short, pattern))))
+          .limit(100),
         db
           .select({
             slug: miracles.slug,
@@ -67,7 +68,8 @@ search.openapi(
                 ilike(miracles.cure_details, pattern),
               )
             )
-          ),
+          )
+          .limit(100),
       ]);
 
       for (const s of matchingSaints) push({ type: "saint", slug: s.slug, title: s.name, excerpt: s.excerpt });
@@ -79,7 +81,8 @@ search.openapi(
         db
           .select({ slug: saints.slug, name: saints.name })
           .from(saints)
-          .where(and(eq(saints.published, true), or(sql`${topic} = ANY(${saints.patronage})`, sql`${topic} = ANY(${saints.themes})`))),
+          .where(and(eq(saints.published, true), or(sql`${topic} = ANY(${saints.patronage})`, sql`${topic} = ANY(${saints.themes})`)))
+          .limit(100),
         db
           .select({
             slug: miracles.slug,
@@ -87,7 +90,8 @@ search.openapi(
             excerpt: sql<string | null>`LEFT(${miracles.synopsis}, 200)`,
           })
           .from(miracles)
-          .where(and(eq(miracles.published, true), sql`${topic} = ANY(${miracles.topics})`)),
+          .where(and(eq(miracles.published, true), sql`${topic} = ANY(${miracles.topics})`))
+          .limit(100),
       ]);
 
       for (const s of matchingSaints) push({ type: "saint", slug: s.slug, title: s.name, excerpt: null });

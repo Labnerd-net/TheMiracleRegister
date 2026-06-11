@@ -75,7 +75,31 @@ saintsRoute.openapi(
     const { slug } = c.req.valid("param");
     const db = createDb(c.env.DATABASE_URL);
 
-    const [saint] = await db.select().from(saints).where(and(eq(saints.slug, slug), eq(saints.published, true)));
+    const [saint] = await db.select({
+      id: saints.id,
+      slug: saints.slug,
+      name: saints.name,
+      saint_name: saints.saint_name,
+      birth_name: saints.birth_name,
+      birth_date: saints.birth_date,
+      death_date: saints.death_date,
+      feast_day: saints.feast_day,
+      religious_order: saints.religious_order,
+      nationality: saints.nationality,
+      beatification_date: saints.beatification_date,
+      beatified_by: saints.beatified_by,
+      canonization_date: saints.canonization_date,
+      canonized_by: saints.canonized_by,
+      canonization_type: saints.canonization_type,
+      canonization_stage: saints.canonization_stage,
+      patronage: saints.patronage,
+      themes: saints.themes,
+      biography_short: saints.biography_short,
+      gender: saints.gender,
+      lay_person: saints.lay_person,
+      image_url: saints.image_url,
+      wikipedia_url: saints.wikipedia_url,
+    }).from(saints).where(and(eq(saints.slug, slug), eq(saints.published, true)));
     if (!saint) {
       return c.json({ data: null, meta: null, error: "Not found" }, 404);
     }
