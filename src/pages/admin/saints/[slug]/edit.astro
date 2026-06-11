@@ -2,7 +2,7 @@
 import AdminBase from "../../../../layouts/AdminBase.astro";
 import { createDb } from "../../../../db";
 import { saints, saintSources, saintLocations } from "../../../../db/schema";
-import { asc, eq } from "drizzle-orm";
+import { asc, and, eq } from "drizzle-orm";
 import { canonizationType, canonizationStage, dispensationReason, gender, sourceType, locationType } from "../../../../db/schema/enums";
 import { parseEnum, formHelpers } from "../../../../lib/form-utils";
 import { SaintFormSchema, formatZodErrors } from "../../../../lib/form-schemas";
@@ -49,7 +49,7 @@ if (Astro.request.method === "POST") {
   } else if (action === "delete_source") {
     const sourceId = parseInt(get("source_id"));
     if (sourceId) {
-      await db.delete(saintSources).where(eq(saintSources.id, sourceId));
+      await db.delete(saintSources).where(and(eq(saintSources.id, sourceId), eq(saintSources.saint_id, saint.id)));
       sourceSuccess = "Source removed.";
     }
   } else if (action === "add_location") {
@@ -74,7 +74,7 @@ if (Astro.request.method === "POST") {
   } else if (action === "delete_location") {
     const locationId = parseInt(get("location_id"));
     if (locationId) {
-      await db.delete(saintLocations).where(eq(saintLocations.id, locationId));
+      await db.delete(saintLocations).where(and(eq(saintLocations.id, locationId), eq(saintLocations.saint_id, saint.id)));
       locationSuccess = "Location removed.";
     }
   } else {

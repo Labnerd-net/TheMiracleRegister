@@ -2,7 +2,7 @@
 import AdminBase from "../../../../layouts/AdminBase.astro";
 import { createDb } from "../../../../db";
 import { miracles, miracleSaints, saints, miracleSources } from "../../../../db/schema";
-import { asc, eq } from "drizzle-orm";
+import { asc, and, eq } from "drizzle-orm";
 import {
   miracleCategory, miracleType, datePrecision, timingRelativeToSaintDeath,
   recipientPrivacy, recipientGender, cureCharacteristics, intercessoryMedium, approvalAuthority, sourceType,
@@ -57,7 +57,7 @@ if (Astro.request.method === "POST") {
     const sourceId = parseInt(get("source_id"));
     if (sourceId) {
       await db.delete(miracleSources)
-        .where(eq(miracleSources.id, sourceId));
+        .where(and(eq(miracleSources.id, sourceId), eq(miracleSources.miracle_id, miracle.id)));
       sourceSuccess = "Source removed.";
     }
   } else {
@@ -100,11 +100,13 @@ if (Astro.request.method === "POST") {
         published: getBool("published"),
       }).where(eq(miracles.slug, slug!));
 
-      // Replace saint links
-      await db.delete(miracleSaints).where(eq(miracleSaints.miracle_id, miracle.id));
-      await db.insert(miracleSaints).values(
-        saintIds.map((id) => ({ miracle_id: miracle.id, saint_id: parseInt(id) }))
-      );
+      // Replace saint links atomically
+      await db.transaction(async (tx) => {
+        await tx.delete(miracleSaints).where(eq(miracleSaints.miracle_id, miracle.id));
+        await tx.insert(miracleSaints).values(
+          saintIds.map((id) => ({ miracle_id: miracle.id, saint_id: parseInt(id) }))
+        );
+      });
 
       selectedSaintIds = saintIds.map(Number);
       success = true;

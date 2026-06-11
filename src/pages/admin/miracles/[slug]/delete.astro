@@ -1,7 +1,7 @@
 ---
 import AdminBase from "../../../../layouts/AdminBase.astro";
 import { createDb } from "../../../../db";
-import { miracles, miracleSources, saints } from "../../../../db/schema";
+import { miracles, miracleSources, miracleSaints, saints } from "../../../../db/schema";
 import { eq } from "drizzle-orm";
 import { env } from "cloudflare:workers";
 
@@ -9,15 +9,16 @@ const { slug } = Astro.params;
 const db = createDb(env.DATABASE_URL);
 
 const [miracle] = await db
-  .select({ id: miracles.id, title: miracles.title, slug: miracles.slug, saint_id: miracles.saint_id })
+  .select({ id: miracles.id, title: miracles.title, slug: miracles.slug })
   .from(miracles)
   .where(eq(miracles.slug, slug!));
 if (!miracle) return Astro.redirect("/admin/miracles");
 
-const [saint] = await db
+const linkedSaints = await db
   .select({ name: saints.name })
   .from(saints)
-  .where(eq(saints.id, miracle.saint_id));
+  .innerJoin(miracleSaints, eq(miracleSaints.saint_id, saints.id))
+  .where(eq(miracleSaints.miracle_id, miracle.id));
 
 if (Astro.request.method === "POST") {
   await db.delete(miracleSources).where(eq(miracleSources.miracle_id, miracle.id));
@@ -34,7 +35,7 @@ if (Astro.request.method === "POST") {
     <strong>This action is permanent and cannot be undone.</strong>
   </div>
 
-  <p>You are about to delete <strong>{miracle.title}</strong>{saint ? <> attributed to <strong>{saint.name}</strong></> : ""}.</p>
+  <p>You are about to delete <strong>{miracle.title}</strong>{linkedSaints.length > 0 ? <> attributed to <strong>{linkedSaints.map((s) => s.name).join(", ")}</strong></> : ""}.</p>
   <p>Any sources attached to this miracle will also be deleted.</p>
 
   <form method="post" style="margin-top:1.5rem;display:flex;gap:1rem;align-items:center">
