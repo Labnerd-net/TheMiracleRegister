@@ -8,11 +8,7 @@
 ## Security
 
 ### High
-- **#1 [src/lib/auth.ts:34,48]** Session HMAC signs `${expiresAt}|${adminPassword}`, embedding the password in the payload. If `SESSION_SECRET` is compromised, the admin password is derivable by brute-forcing the HMAC input. Also, rotating the admin password does not invalidate existing sessions — tokens signed with the old password remain valid for 7 days. Fix: sign only `${expiresAt}` with `SESSION_SECRET`; keep password check at login time only.
-- **#2 [src/pages/miracles/[slug].astro:252,259, src/pages/saints/[slug].astro:178]** `set:html={renderMarkdown(text)}` renders `marked`-parsed HTML directly. `marked` does not sanitize by default. Admin-entered `cure_details`, `synopsis`, and `biography_short` fields could contain injected `<script>` or `<iframe>` tags that would be cached by Cloudflare and served to all visitors if admin credentials were ever compromised. Fix: wrap `marked.parse()` output with a sanitizer that strips script/iframe/style tags and event attributes.
-- **#3 [src/pages/admin/miracles/[slug]/edit.astro:103–109]** The miracle-to-saint link replacement is non-atomic: `await db.delete(miracleSaints)` followed by `await db.insert(miracleSaints)` as separate operations with no transaction. If the Worker times out or the insert fails after the delete succeeds, the miracle is left with no saint links. Fix: wrap both in a Drizzle transaction.
-- **#4 [src/pages/admin/saints/[slug]/edit.astro, src/pages/admin/miracles/[slug]/edit.astro]** The `delete_source` and `delete_location` actions delete by `source_id`/`location_id` alone with no ownership check. A logged-in admin could delete any source or location row across any record by crafting a POST with an arbitrary ID. Fix: add `AND saint_id = $current` (or `miracle_id`) constraint to the DELETE WHERE clause.
-- **#5 [src/pages/admin/miracles/[slug]/delete.astro:20]** The delete confirmation page fetches a saint via `miracle.saint_id`, a column that no longer exists (replaced by the `miracle_saints` junction table). The query silently returns undefined and the saint name renders blank. Fix: replace with a join through `miracle_saints`, or remove the saint attribution from the confirmation page entirely.
+_None remaining._
 
 ### Medium
 - **#6 [src/pages/admin/login.astro:23]** The failed-login delay is 300ms per response in a stateless Worker. An attacker can fire hundreds of concurrent requests; the delay does not throttle globally. Fix: add a Cloudflare WAF rate-limiting rule on `/admin/login` — more reliable than application-level delay in a Worker environment.
@@ -93,9 +89,9 @@ _None identified._
 
 | Category | High | Medium | Low | Total |
 |----------|------|--------|-----|-------|
-| Security | 5 | 4 | 1 | 10 |
+| Security | 0 | 4 | 1 | 5 |
 | Bugs | 0 | 2 | 3 | 5 |
 | Performance | 1 | 1 | 1 | 3 |
 | Improvements & Refactors | 0 | 5 | 1 | 6 |
 | Feature Ideas | 0 | 2 | 5 | 7 |
-| **Total** | **6** | **14** | **11** | **31** |
+| **Total** | **1** | **14** | **11** | **26** |
