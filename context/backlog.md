@@ -5,24 +5,6 @@
 
 ---
 
----
-
-## Bugs
-
-### High
-_None identified._
-
-### Medium
-- **#11 [src/pages/admin/miracles/new.astro:50,59, src/pages/admin/miracles/[slug]/edit.astro:84,93]** `parseInt(get("recipient_age_at_event"))` and `parseInt(get("witness_count"))` have no `NaN` guard. Browser validation can be bypassed; `parseInt` on a non-numeric string returns `NaN`, which Drizzle passes to Postgres and causes a DB error — leaking the raw error message to the browser. Fix: `const age = parseInt(...); isNaN(age) ? null : age`.
-- **#12 [src/pages/admin/saints/[slug]/edit.astro, src/pages/admin/miracles/[slug]/edit.astro]** After source add/delete and location add/delete POSTs, the code unconditionally re-fetches the full saint/miracle record even though those actions don't change the main record. Fix: only re-fetch when the action is the main form save (the `else` branch).
-
-### Low
-- **#13 [src/pages/miracles/[slug].astro:74]** Related miracles query uses a raw SQL subquery with hardcoded table name `miracle_saints` as a string literal. Risk if table is ever renamed. Fix: use Drizzle's `inArray` with a subquery.
-- **#14 [src/pages/saints/[slug].astro]** `saint.total_attributed_miracles` is referenced in the template but this column does not exist in the saints schema. Silently renders nothing. Fix: remove the reference or add the column if intended.
-- **#15 [src/pages/admin/saints/new.astro, src/pages/admin/miracles/new.astro]** Raw DB error messages (e.g. unique constraint violations) are surfaced directly to the browser via `error = e?.message`. Fix: catch known constraint errors (duplicate slug) and return a friendly message.
-
----
-
 ## Performance
 
 ### High
@@ -76,8 +58,8 @@ _None identified._
 | Category | High | Medium | Low | Total |
 |----------|------|--------|-----|-------|
 | Security | 0 | 0 | 0 | 0 |
-| Bugs | 0 | 2 | 3 | 5 |
+| Bugs | 0 | 0 | 0 | 0 |
 | Performance | 1 | 1 | 1 | 3 |
 | Improvements & Refactors | 0 | 5 | 1 | 6 |
 | Feature Ideas | 0 | 2 | 5 | 7 |
-| **Total** | **1** | **10** | **10** | **21** |
+| **Total** | **1** | **8** | **7** | **16** |
