@@ -81,7 +81,7 @@ if (Astro.request.method === "POST") {
         recipient_gender: parseEnum(get("recipient_gender"), recipientGender.enumValues),
         recipient_country: get("recipient_country") || null,
         recipient_privacy: parseEnum(get("recipient_privacy"), recipientPrivacy.enumValues) ?? miracle.recipient_privacy,
-        recipient_age_at_event: get("recipient_age_at_event") ? parseInt(get("recipient_age_at_event")) : null,
+        recipient_age_at_event: (() => { const v = parseInt(get("recipient_age_at_event")); return isNaN(v) ? null : v; })(),
         recipient_age_approximate: getBool("recipient_age_approximate"),
         medical_diagnosis: get("medical_diagnosis") || null,
         cure_details: get("cure_details") || null,
@@ -90,7 +90,7 @@ if (Astro.request.method === "POST") {
         medical_verification_date: get("medical_verification_date") || null,
         intercessory_medium: parseEnum(get("intercessory_medium"), intercessoryMedium.enumValues) ?? miracle.intercessory_medium,
         approval_authority: parseEnum(get("approval_authority"), approvalAuthority.enumValues) ?? miracle.approval_authority,
-        witness_count: get("witness_count") ? parseInt(get("witness_count")) : null,
+        witness_count: (() => { const v = parseInt(get("witness_count")); return isNaN(v) ? null : v; })(),
         vatican_decree_date: get("vatican_decree_date") || null,
         vatican_medical_board_verdict: get("vatican_medical_board_verdict") || null,
         used_for_beatification: getBool("used_for_beatification"),
@@ -117,7 +117,7 @@ if (Astro.request.method === "POST") {
 }
 
 let v = miracle;
-if (Astro.request.method === "POST") {
+if (success) {
   const [updated] = await db.select().from(miracles).where(eq(miracles.slug, slug!));
   v = updated ?? miracle;
 }

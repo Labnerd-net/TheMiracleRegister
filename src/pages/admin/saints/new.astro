@@ -54,7 +54,7 @@ if (Astro.request.method === "POST") {
     });
     return Astro.redirect("/admin/saints");
   } catch (e: any) {
-    error = e?.message ?? "Failed to save saint.";
+    error = e?.message?.includes("unique") ? `A saint with slug "${slug}" already exists.` : "Failed to save saint.";
   }
 }
 ---

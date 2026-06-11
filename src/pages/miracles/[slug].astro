@@ -2,7 +2,7 @@
 import Base from "../../layouts/Base.astro";
 import { createDb } from "../../db";
 import { miracles, saints, miracleSaints, miracleSources } from "../../db/schema";
-import { and, eq, ne, sql } from "drizzle-orm";
+import { and, eq, inArray, ne, sql } from "drizzle-orm";
 import { env } from "cloudflare:workers";
 import { renderMarkdown } from "../../lib/markdown";
 
@@ -71,7 +71,7 @@ const [miracleSaintRows, sources, saintLinked, topicLinked] = await Promise.all(
     .where(and(
       eq(miracles.published, true),
       ne(miracles.id, miracle.id),
-      sql`${miracleSaints.saint_id} IN (SELECT saint_id FROM miracle_saints WHERE miracle_id = ${miracle.id})`,
+      inArray(miracleSaints.saint_id, db.select({ saint_id: miracleSaints.saint_id }).from(miracleSaints).where(eq(miracleSaints.miracle_id, miracle.id))),
     )),
   hasTopics
     ? db.select(relatedMiracleFields)

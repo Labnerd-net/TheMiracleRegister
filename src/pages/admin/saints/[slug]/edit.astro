@@ -118,7 +118,7 @@ if (Astro.request.method === "POST") {
 }
 
 let v = saint;
-if (Astro.request.method === "POST") {
+if (success) {
   const [updated] = await db.select().from(saints).where(eq(saints.slug, slug!));
   v = updated ?? saint;
 }
