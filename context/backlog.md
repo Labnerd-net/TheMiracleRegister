@@ -7,19 +7,6 @@
 
 ---
 
-## Improvements & Refactors
-
-### High
-_None identified._
-
-### Medium
-_None identified._
-
-### Low
-_None identified._
-
----
-
 ## Feature Ideas
 
 ### High
