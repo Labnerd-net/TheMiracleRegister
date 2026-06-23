@@ -4,6 +4,5 @@ node_modules/
 dist/
 .astro/
 .wrangler/
-context/Notes
 context/screenshots/
 .playwright-mcp/
