@@ -64,8 +64,8 @@ Content Tier:        core
 miracle_saints:      → Francisco (314) AND Jacinta (315)
 
 --- Miracle 2: Canonization Miracle (SHARED with Jacinta, id 701) ---
-Title:               Healing of Lucas Rodrigues Magalhães Mata
-Slug:                healing-of-lucas-rodrigues-magalhaes-mata
+Title:               Healing of Lucas Maeda de Oliveira
+Slug:                healing-of-lucas-maeda-de-oliveira
 Miracle Category:    intercessory
 Type:                healing
 Topics:              ['children']
@@ -77,7 +77,7 @@ Country:             Brazil
 Region:              Paraná
 Latitude:            -24.0456
 Longitude:           -52.3827
-Recipient Name:      Lucas Rodrigues Magalhães Mata
+Recipient Name:      Lucas Maeda de Oliveira
 Recipient Privacy:   public
 Recipient Age at Event: 5
 Recipient Age Approximate: false

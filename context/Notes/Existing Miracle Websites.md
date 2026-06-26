@@ -142,7 +142,34 @@ CONCLUSION: The project would fill a real niche with minimal duplication of exis
      - miraclesofthechurch/saints.com: Devotional hagiography blog, not organized by saint or canonization
      - TheMiraclesRegister.org: Structured, searchable database of Vatican-confirmed canonization miracles with medical documentation depth
 
-UPDATED CONCLUSION (after evaluating 9 sites):
+10. Saintapedia
+   URL: https://saintapedia.org/
+   Status: ACTIVE
+   Format: Wiki-style encyclopedia modeled after Wikipedia — user-editable saint profiles in a MediaWiki structure
+   Focus: Saint biographies, feast days, patronages, basic hagiography
+
+   WHAT IT COVERS:
+     - Saint biography pages with birth/death dates, feast days, patronage, religious order
+     - Canonization timeline (beatification date, canonization date, by whom)
+     - Brief narrative biographies
+     - Some mention of miracles within saint pages (e.g., Hozana-style "first miracle" references)
+
+   WHAT IT DOES NOT DO:
+     - No structured miracle records — miracles mentioned incidentally within saint bios, not as standalone entries
+     - No medical documentation, no diagnosis, no cure characteristics
+     - No beatification vs. canonization miracle distinction
+     - No API, no structured data, no filtering or search by miracle type
+     - No source trails — wiki-style content without consistent citation
+     - No geolocation
+     - User-generated content with uneven quality and verification
+
+   COMPARISON WITH OUR PROJECT:
+     Saintapedia is saint-centric (like Wikipedia for saints) rather than miracle-centric. Miracles appear as a paragraph or sentence within a biography, not as first-class data records. The data model is flat prose, not a normalized database. It is a useful reference for basic saint facts but has no overlap with the structured miracle database model of TheMiracleRegister.
+
+   GAP REINFORCED:
+     Saintapedia confirms the gap from the saint side: even a dedicated saint encyclopedia doesn't treat miracles as structured, filterable records. TheMiracleRegister is the only project where a miracle itself is the primary entity.
+
+UPDATED CONCLUSION (after evaluating 10 sites):
 No existing website provides a structured, searchable, medically-detailed database of saint canonization miracles that:
 - Links miracles to their specific use in beatification/canonization processes
 - Categorizes by saint, type, date, location, AND medical details

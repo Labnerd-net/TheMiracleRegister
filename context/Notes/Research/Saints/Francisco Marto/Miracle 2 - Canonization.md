@@ -1,15 +1,15 @@
-Synopsis: Healing of Lucas Rodrigues Magalhães Mata
+Synopsis: Healing of Lucas Maeda de Oliveira
 
 Saint:        Francisco Marto AND Jacinta Marto (shared record — miracle_saints links both)
 Miracle:      Canonization miracle
-Recipient:    Lucas Rodrigues Magalhães Mata
+Recipient:    Lucas Maeda de Oliveira
 Condition:    Severe traumatic brain injury from 6.5-meter fall; brain tissue loss; deep coma; two cardiac arrests
 Date:         March 3, 2013 (accident); March 9, 2013 (awakened)
 Location:     Juranda, Paraná, Brazil (accident); Hospital of Campo Mourão, Paraná (treatment)
 
 ---
 
-On March 3, 2013, at 8 p.m., five-year-old Lucas Rodrigues Magalhães Mata fell from a window of his home in Juranda, in the state of Paraná, Brazil, dropping approximately 6.5 meters to the ground. His head struck the earth directly. He was taken unconscious to the Hospital of Campo Mourão. Within hours he was in a deep coma. During the night his heart stopped twice. Emergency surgery was performed.
+On March 3, 2013, at 8 p.m., five-year-old Lucas Maeda de Oliveira fell from a window of his home in Juranda, in the state of Paraná, Brazil, dropping approximately 6.5 meters to the ground. His head struck the earth directly. He was taken unconscious to the Hospital of Campo Mourão. Within hours he was in a deep coma. During the night his heart stopped twice. Emergency surgery was performed.
 
 Over the following days, attending physicians — including some who were not religious — assessed his condition as nearly hopeless. On March 6, they told Lucas's parents, João Batista and Lucila Yurie, that his chances of survival were very low, and that if he survived he would almost certainly face severe cognitive disabilities or a permanent vegetative state. The cause of the bleak prognosis was the brain tissue loss sustained in the fall.
 
@@ -23,8 +23,8 @@ Pope Francis approved the miracle in January 2017. On May 13, 2017, the centenar
 ---
 
 Data:
-Title:                     Healing of Lucas Rodrigues Magalhães Mata
-Slug:                      healing-of-lucas-rodrigues-magalhaes-mata
+Title:                     Healing of Lucas Maeda de Oliveira
+Slug:                      healing-of-lucas-maeda-de-oliveira
 Miracle Category:          intercessory
 Type:                      healing
 Topics:                    children
@@ -36,7 +36,7 @@ Country:                   Brazil
 Region:                    Paraná
 Latitude:                  -24.0456
 Longitude:                 -52.3827
-Recipient Name:            Lucas Rodrigues Magalhães Mata
+Recipient Name:            Lucas Maeda de Oliveira
 Recipient Privacy:         public
 Recipient Age at Event:    5
 Recipient Age Approximate: false

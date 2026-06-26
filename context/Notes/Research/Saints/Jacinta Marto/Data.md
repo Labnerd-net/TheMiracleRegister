@@ -23,7 +23,7 @@ Canonization Date:   May 13, 2017
 Canonized By:        Pope Francis
 Canonization Type:   confessor
 Canonization Stage:  saint
-Patronage:           sick children, Fatima, victims of war
+Patronage:           sick children, Fatima
 Themes:              marian, perseverance, saints-of-everyday-life
 Biography Short:     See Biography.md
 Image URL:           https://upload.wikimedia.org/wikipedia/commons/1/19/Jacinta_Marto_%28ChildrensofFatima%29.jpg
@@ -35,7 +35,7 @@ Both miracles are shared records linked to both saints via miracle_saints.
 =======================================================================
 
 Miracle 1 (id 700): Healing of Maria Emilia Santos — beatification
-Miracle 2 (id 701): Healing of Lucas Rodrigues Magalhães Mata — canonization
+Miracle 2 (id 701): Healing of Lucas Maeda de Oliveira — canonization
 
 =======================================================================
 SAINT SOURCES (saint_sources table)

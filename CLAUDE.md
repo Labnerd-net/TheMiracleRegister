@@ -71,7 +71,7 @@ A data-driven website documenting miracles attributed to Catholic saints. Focuse
 | canonization_miracle_dispensed | boolean | nullable — true when canonization miracle requirement was waived |
 | dispensation_reason | enum | nullable — martyr, equipollent, papal_exception; only set when a dispensation boolean is true |
 | image_url | text | |
-| wikipedia_url | text | |
+| wikipedia_url | text | Rendered separately on the saint page as a hardcoded "Reference" label — never add Wikipedia as a `saint_sources` row or it will appear twice |
 | published | boolean | default false — controls public visibility |
 | created_at, updated_at | timestamptz | |
 

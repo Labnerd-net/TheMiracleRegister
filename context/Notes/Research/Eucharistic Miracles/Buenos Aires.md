@@ -74,7 +74,7 @@ The Catholic Church has not issued a formal decree recognizing this as an offici
 
 - Three separate events (1992, 1994, 1996) at the same parish. Only the 1996 event produced tissue that was scientifically analyzed — one DB record covering the primary event, with 1992/1994 mentioned in the synopsis as context.
 - The church is Parroquia Santa María, Av. La Plata 286, Caballito neighborhood. Not the Buenos Aires Metropolitan Cathedral. Some sources (including our backlog) mistakenly say "Buenos Aires Cathedral."
-- Blood type AB and left-ventricular myocardium: same findings as Lanciano. Worth cross-linking in the synopsis. The connection is theologically significant in Catholic apologetics but also worth noting as a possible confirmation bias / investigator continuity issue — Castañón was involved in both cases.
+- Blood type AB and left-ventricular myocardium: same findings as Lanciano. Worth cross-linking in the synopsis. The connection is theologically significant, though it is also worth noting a possible confirmation bias / investigator continuity issue — Castañón was involved in both cases.
 - Kearse criticism is legitimate: fungal/bacterial contamination is a plausible alternative explanation, and the DNA findings were inconclusive. Include in the synopsis — same approach as the Lanciano WHO-fraud note.
 - Church recognition status: Bergoglio approved investigation and quiet adoration but never formally declared it a miracle. This is weaker than Lanciano (repeated episcopal recognition across centuries). `approval_authority: local_bishop` is correct.
 - No public domain image found. Leave image_url null.
