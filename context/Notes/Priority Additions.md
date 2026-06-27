@@ -9,18 +9,18 @@ Research notes for InProgress saints in `context/Notes/Research/Saints/InProgres
 
 | Priority | Saint | Feast Day | Canonized | Notes | Research Notes |
 |---|---|---|---|---|---|
-| 1*  | Edith Stein (Teresa Benedicta) | Aug 9 | 1998 | Martyr; 2 miracles | Yes |
-| 2*  | John XXIII | Oct 11 | 2014 | Canonized same day as John Paul II; canonization miracle dispensed (papal_exception); one miracle (Capitani) used for beatification | Yes |
-| 3   | Josemaría Escrivá | Jun 26 | 2002 | Founder of Opus Dei; 2 miracles | Yes (stubs only) |
-| 4   | John Neumann | Nov 4 | 1977 | First American male saint; 3 miracles | Yes (stubs only) |
-| 5   | Marguerite d'Youville | Oct 16 | 1990 | Founder of Grey Nuns; 2 miracles | Yes (stubs only) |
-| 6*  | Elizabeth Ann Seton | Jan 4 | 1975 | First American-born saint; 3 miracles (2 beatification, 1 canonization) | Yes |
-| 7*  | Damien of Molokai | May 10 | 2009 | Apostle to lepers in Hawaii; 2 miracles | Yes |
-| 8   | Katharine Drexel | Mar 3 | 2000 | Founder of Sisters of the Blessed Sacrament; 2 miracles | No |
-| 9   | Oscar Romero | Oct 24 | 2018 | Martyr, El Salvador; 1 miracle (beatification) | No |
-| 10  | Frances Xavier Cabrini | Nov 13 | 1946 | First American citizen canonized; 2 miracles | No |
-| 11  | Justino Russolillo | — | 2011 | Founder of Vocationists; 1 miracle | Yes (stubs only) |
-| 12  | John of the Cross | Dec 14 | 1726 | Doctor of the Church; older canonization — documentation thinner | No |
+| 1* | Edith Stein (Teresa Benedicta) | Aug 9 | 1998 | Martyr; 2 miracles | Yes |
+| 2* | John XXIII | Oct 11 | 2014 | Canonized same day as John Paul II; canonization miracle dispensed (papal_exception); one miracle (Capitani) used for beatification | Yes |
+| 3  | Josemaría Escrivá | Jun 26 | 2002 | Founder of Opus Dei; 2 miracles | Yes (stubs only) |
+| 4  | John Neumann | Nov 4 | 1977 | First American male saint; 3 miracles | Yes (stubs only) |
+| 5  | Marguerite d'Youville | Oct 16 | 1990 | Founder of Grey Nuns; 2 miracles | Yes (stubs only) |
+| 6* | Elizabeth Ann Seton | Jan 4 | 1975 | First American-born saint; 3 miracles (2 beatification, 1 canonization) | Yes |
+| 7* | Damien of Molokai | May 10 | 2009 | Apostle to lepers in Hawaii; 2 miracles | Yes |
+| 8  | Katharine Drexel | Mar 3 | 2000 | Founder of Sisters of the Blessed Sacrament; 2 miracles | No |
+| 9  | Oscar Romero | Oct 24 | 2018 | Martyr, El Salvador; 1 miracle (beatification) | No |
+| 10 | Frances Xavier Cabrini | Nov 13 | 1946 | First American citizen canonized; 2 miracles | No |
+| 11 | Justino Russolillo | — | 2011 | Founder of Vocationists; 1 miracle | Yes (stubs only) |
+| 12 | John of the Cross | Dec 14 | 1726 | Doctor of the Church; older canonization — documentation thinner | No |
 
 ---
 
@@ -98,3 +98,26 @@ Historical miraculous events and Marian phenomena tied to a feast day. Use `mira
 
 Movable feast enum values:
   divine_mercy, corpus_christi, sacred_heart, ascension, pentecost, trinity_sunday,christ_the_king, holy_family, baptism_of_lord
+
+---
+
+## Miracle Images
+
+Visual evidence for miracles where the artifact, phenomenon, or physical result was itself documented. All images should be Wikimedia Commons public domain. Use the admin miracle edit page → Images section to add (url, caption, display_order, source_attribution).
+
+Only miracles where the visual IS the evidence or substantially supports it. Healing/intercessory miracles and most apparition shrines are intentionally excluded.
+
+| Priority | Miracle (slug) | What to add | Notes |
+|---|---|---|---|
+| 1 | `tilma-of-guadalupe` | Full tilma image; close-up of face; close-up of eyes (Aste Tonsmann digital analysis); UV light image showing no brushstrokes | The image itself is the miracle — multiple views essential |
+| 2 | `miracle-of-the-sun-fatima` | Crowd photos from Oct 13 1917 (multiple photographers); Avelino de Almeida photo; wide shot of the Cova da Iria crowd | All 1917 press photos are public domain |
+| 3 | `stigmata-of-padre-pio` | Photo of Padre Pio's stigmatized hands; gloved hands photo; medical examination photo (Bignami/Romanini 1919) | Several authenticated photos exist on Wikimedia |
+| 4 | `eucharistic-miracle-of-lanciano` | The reliquary (flesh + 5 blood globules in ostensorium); microscopy slide of cardiac muscle tissue; the church interior | 8th-century miracle with 1970s scientific analysis photos |
+| 5 | `eucharistic-miracle-of-buenos-aires` | The consecrated host tissue (1996); Dr. Ricardo Castañón microscopy image; the Buenos Aires analysis documentation | AB blood + stressed cardiac tissue; Wojtyla received the report |
+| 6 | `eucharistic-miracle-of-sokolka` | The host tissue fragment; Prof. Sulkowski/Sobaniec-Lotowska microscopy image | Cardiac muscle in agony; matches Lanciano tissue type |
+| 7 | `eucharistic-miracle-of-legnica` | The fragment of host with reddish tissue; microscopy image | 2013; cardiac muscle findings match other AB miracles |
+| 8 | `eucharistic-miracle-of-tixtla` | The host with reddish substance (2006); investigation photos | Bishop Zavala commission; matches Buenos Aires tissue |
+| 9 | `incorruptibility-of-bernadette-soubirous` | Body in glass reliquary at Chapel of Saint Bernadette, Nevers; close-up of face | Most-visited incorrupt body; wax face covers slight discoloration — note this in caption |
+| 10 | `incorruptibility-of-catherine-laboure` | Body in Chapel of Our Lady of the Miraculous Medal, Paris | Hands and face incorrupt; body on display since 1933 |
+| 11 | `incorruptibility-of-pier-giorgio-frassati` | Photos from 1981 exhumation (25 years after death); current reliquary | Exhumation found body partially incorrupt with fresh appearance |
+| 12 | `divine-mercy-revelations` | Original Eugeniusz Kazimirowski painting (1934, Vilnius); the Hyla copy (Kraków, more widely reproduced) | Faustina directed the painting; two canonical versions |
