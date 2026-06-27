@@ -75,16 +75,12 @@ Research notes in `context/Notes/Research/Verified Healing Miracles/Lourdes/`.
 
 Church-approved or formally acknowledged apparitions. Use `miracle_category: apparition`.
 
-**Note:** Our Lady of Guadalupe and Our Lady of Fatima are partially covered — the Tilma and the Miracle of the Sun are already in the DB. The apparitions themselves could be added as companion records linked to Juan Diego and the Fatima visionaries respectively.
+**Already in DB:** Our Lady of Guadalupe, Our Lady of Lourdes, Our Lady of Fatima, Our Lady of Knock, Our Lady of the Miraculous Medal, Our Lady of La Salette, Our Lady of Laus, Our Lady of Pontmain, Our Lady of Gietrzwald, Our Lady of Philippsdorf, Our Lady of Beauraing, Our Lady of Banneux, Our Lady of Siluva, Our Lady of Kibeho, Our Lady of Medjugorje, Our Lady of the Rosary (Ratisbonne)
 
 | Priority | Apparition | Feast | Location | Notes | Research Notes |
 |---|---|---|---|---|---|
-| 1 | Our Lady of Lourdes | Feb 11 | Lourdes, France | 18 apparitions to Bernadette Soubirous, 1858; add as apparition record once Bernadette is in DB | No |
-| 2 | Our Lady of Knock | Aug 17 | Knock, Ireland | Silent apparition of Mary, Joseph, John the Evangelist, and a Lamb witnessed by 15 people, 1879; Church recognized; John Paul II visited 1979 | No |
-| 3 | Our Lady of Champion | Aug 15 | Champion, Wisconsin, USA | Only Vatican-approved Marian apparition in the US; Adèle Brise, 1859; approved by Diocese of Green Bay 2010 | No |
-| 4 | Our Lady of Akita | Oct 13 | Akita, Japan | Apparitions and weeping statue, 1973; statue wept blood 101 times; Bishop Ito formal declaration 1984; Vatican acknowledged | No |
-| 5 | Our Lady of Guadalupe apparitions | Dec 12 | Tepeyac, Mexico | Apparitions to Juan Diego, 1531; Tilma already in DB — add apparition record linked to Juan Diego | No |
-| 6 | Our Lady of Fatima apparitions | May 13 | Fátima, Portugal | Apparitions to three shepherd children, 1917; Miracle of the Sun already in DB — add apparition record linked to the visionaries | No |
+| 1 | Our Lady of Champion | Aug 15 | Champion, Wisconsin, USA | Only Vatican-approved Marian apparition in the US; Adèle Brise, 1859; approved by Diocese of Green Bay 2010 | No |
+| 2 | Our Lady of Akita | Oct 13 | Akita, Japan | Apparitions and weeping statue, 1973; statue wept blood 101 times; Bishop Ito formal declaration 1984; Vatican acknowledged | No |
 
 ---
 
