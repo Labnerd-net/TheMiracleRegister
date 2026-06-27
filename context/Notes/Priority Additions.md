@@ -10,17 +10,18 @@ Research notes for InProgress saints in `context/Notes/Research/Saints/InProgres
 | Priority | Saint | Feast Day | Canonized | Notes | Research Notes |
 |---|---|---|---|---|---|
 | 1  | Edith Stein (Teresa Benedicta) | Aug 9 | 1998 | Martyr; 2 miracles | Yes |
-| 2  | John XXIII | Oct 11 | 2014 | Canonized same day as John Paul II; beatification miracle dispensed for canonization | Yes |
-| 3  | Josemaría Escrivá | Jun 26 | 2002 | Founder of Opus Dei; 2 miracles | Yes |
-| 4  | John Neumann | Nov 4 | 1977 | First American male saint; 3 miracles | Yes |
-| 5  | Marguerite d'Youville | Oct 16 | 1990 | Founder of Grey Nuns; 2 miracles | Yes |
-| 6  | Elizabeth Ann Seton | Jan 4 | 1975 | First American-born saint; 2 miracles | No |
-| 7  | Damien of Molokai | May 10 | 2009 | Apostle to lepers in Hawaii; 2 miracles | No |
-| 8  | Katharine Drexel | Mar 3 | 2000 | Founder of Sisters of the Blessed Sacrament; 2 miracles | No |
-| 9  | Oscar Romero | Oct 24 | 2018 | Martyr, El Salvador; 1 miracle (beatification) | No |
-| 10 | Frances Xavier Cabrini | Nov 13 | 1946 | First American citizen canonized; 2 miracles | No |
-| 11 | Justino Russolillo | — | 2011 | Founder of Vocationists; 1 miracle | Yes |
-| 12 | John of the Cross | Dec 14 | 1726 | Doctor of the Church; older canonization — documentation thinner | No |
+| 2  | Bernadette Soubirous | Apr 16 | 1933 | Recipient of Lourdes apparitions; body incorrupt at Nevers; anchors Lourdes healing section | No |
+| 3  | John XXIII | Oct 11 | 2014 | Canonized same day as John Paul II; beatification miracle dispensed for canonization | Yes |
+| 4  | Josemaría Escrivá | Jun 26 | 2002 | Founder of Opus Dei; 2 miracles | Yes |
+| 5  | John Neumann | Nov 4 | 1977 | First American male saint; 3 miracles | Yes |
+| 6  | Marguerite d'Youville | Oct 16 | 1990 | Founder of Grey Nuns; 2 miracles | Yes |
+| 7  | Elizabeth Ann Seton | Jan 4 | 1975 | First American-born saint; 2 miracles | No |
+| 8  | Damien of Molokai | May 10 | 2009 | Apostle to lepers in Hawaii; 2 miracles | No |
+| 9  | Katharine Drexel | Mar 3 | 2000 | Founder of Sisters of the Blessed Sacrament; 2 miracles | No |
+| 10 | Oscar Romero | Oct 24 | 2018 | Martyr, El Salvador; 1 miracle (beatification) | No |
+| 11 | Frances Xavier Cabrini | Nov 13 | 1946 | First American citizen canonized; 2 miracles | No |
+| 12 | Justino Russolillo | — | 2011 | Founder of Vocationists; 1 miracle | Yes |
+| 13 | John of the Cross | Dec 14 | 1726 | Doctor of the Church; older canonization — documentation thinner | No |
 
 ---
 
@@ -45,12 +46,13 @@ Use `miracle_category: associated`, `type: incorruptibility`.
 
 | Priority | Saint | Died | Location | Notes | Research Notes |
 |---|---|---|---|---|---|
-| 1 | John Vianney | 1859 | Ars, France | Curé d'Ars; among the most visited incorruptible bodies in the world | No |
-| 2 | Francis Xavier | 1552 | Goa, India | Major Jesuit missionary; body still on public display at Basilica of Bom Jesus | No | No |
-| 3 | Charbel Makhlouf | 1898 | Annaya, Lebanon | Body exuded blood and oil for decades after death — unusually well-documented post-death phenomena | No | No |
-| 4 | John Bosco | 1888 | Turin, Italy | Founder of Salesians; body in wax mask reliquary at Basilica of Mary Help of Christians | No | No |
-| 5 | Vincent de Paul | 1660 | Paris, France | Body exhibited every 100 years; venerated at Chapel of the Miraculous Medal (same site as Catherine Labouré) | No | No |
-| 6 | John XXIII | 1963 | Vatican | Already in priority saints list — incorruptibility would be a second miracle record linked to the same saint | No | No |
+| 1 | Bernadette Soubirous | 1879 | Nevers, France | Body on display at Chapel of St. Gildard; add alongside saint record | No |
+| 2 | John Vianney | 1859 | Ars, France | Curé d'Ars; among the most visited incorruptible bodies in the world | No |
+| 3 | Francis Xavier | 1552 | Goa, India | Major Jesuit missionary; body still on public display at Basilica of Bom Jesus | No |
+| 4 | Charbel Makhlouf | 1898 | Annaya, Lebanon | Body exuded blood and oil for decades after death — unusually well-documented post-death phenomena | No |
+| 5 | John Bosco | 1888 | Turin, Italy | Founder of Salesians; body in wax mask reliquary at Basilica of Mary Help of Christians | No |
+| 6 | Vincent de Paul | 1660 | Paris, France | Body exhibited every 100 years; venerated at Chapel of the Miraculous Medal (same site as Catherine Labouré) | No |
+| 7 | John XXIII | 1963 | Vatican | Already in priority saints list — incorruptibility would be a second miracle record linked to the same saint | No |
 
 ---
 
