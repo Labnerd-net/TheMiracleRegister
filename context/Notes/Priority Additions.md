@@ -7,23 +7,20 @@ Research notes for InProgress saints in `context/Notes/Research/Saints/InProgres
 
 ## Saints
 
-| Priority | Saint | Feast Day | Canonized | Notes | Research Notes | In DB |
-|---|---|---|---|---|---|---|
-| 1* | Thérèse of Lisieux | Oct 1 | 1925 | Daughter of Louis & Zélie (in DB); Doctor of the Church; 2 canonization miracles | No | No |
-| 2* | Pier Giorgio Frassati | Jul 4 | 2025 | Canonized June 1, 2025 by Pope Francis; 2 miracles documented | Yes | No |
-| 3  | Edith Stein (Teresa Benedicta) | Aug 9 | 1998 | Martyr; 2 miracles | Yes | No |
-| 4  | John XXIII | Oct 11 | 2014 | Canonized same day as John Paul II; beatification miracle dispensed for canonization | Yes | No |
-| 5  | Josemaría Escrivá | Jun 26 | 2002 | Founder of Opus Dei; 2 miracles | Yes | No |
-| 6  | John Neumann | Nov 4 | 1977 | First American male saint; 3 miracles | Yes | No |
-| 7  | Marguerite d'Youville | Oct 16 | 1990 | Founder of Grey Nuns; 2 miracles | Yes | No |
-| 8* | Fulton Sheen | — | Beatified 2019 | Not yet canonized; 1 miracle documented — add as `blessed` | Yes | No |
-| 9  | Elizabeth Ann Seton | Jan 4 | 1975 | First American-born saint; 2 miracles | No | No |
-| 10 | Damien of Molokai | May 10 | 2009 | Apostle to lepers in Hawaii; 2 miracles | No | No |
-| 11 | Katharine Drexel | Mar 3 | 2000 | Founder of Sisters of the Blessed Sacrament; 2 miracles | No | No |
-| 12 | Oscar Romero | Oct 24 | 2018 | Martyr, El Salvador; 1 miracle (beatification) | No | No |
-| 13 | Frances Xavier Cabrini | Nov 13 | 1946 | First American citizen canonized; 2 miracles | No | No |
-| 14 | Justino Russolillo | — | 2011 | Founder of Vocationists; 1 miracle | Yes | No |
-| 15 | John of the Cross | Dec 14 | 1726 | Doctor of the Church; older canonization — documentation thinner | No | No |
+| Priority | Saint | Feast Day | Canonized | Notes | Research Notes |
+|---|---|---|---|---|---|
+| 1  | Edith Stein (Teresa Benedicta) | Aug 9 | 1998 | Martyr; 2 miracles | Yes |
+| 2  | John XXIII | Oct 11 | 2014 | Canonized same day as John Paul II; beatification miracle dispensed for canonization | Yes |
+| 3  | Josemaría Escrivá | Jun 26 | 2002 | Founder of Opus Dei; 2 miracles | Yes |
+| 4  | John Neumann | Nov 4 | 1977 | First American male saint; 3 miracles | Yes |
+| 5  | Marguerite d'Youville | Oct 16 | 1990 | Founder of Grey Nuns; 2 miracles | Yes |
+| 6  | Elizabeth Ann Seton | Jan 4 | 1975 | First American-born saint; 2 miracles | No |
+| 7  | Damien of Molokai | May 10 | 2009 | Apostle to lepers in Hawaii; 2 miracles | No |
+| 8  | Katharine Drexel | Mar 3 | 2000 | Founder of Sisters of the Blessed Sacrament; 2 miracles | No |
+| 9  | Oscar Romero | Oct 24 | 2018 | Martyr, El Salvador; 1 miracle (beatification) | No |
+| 10 | Frances Xavier Cabrini | Nov 13 | 1946 | First American citizen canonized; 2 miracles | No |
+| 11 | Justino Russolillo | — | 2011 | Founder of Vocationists; 1 miracle | Yes |
+| 12 | John of the Cross | Dec 14 | 1726 | Doctor of the Church; older canonization — documentation thinner | No |
 
 ---
 
@@ -31,11 +28,10 @@ Research notes for InProgress saints in `context/Notes/Research/Saints/InProgres
 
 Standalone records (no associated saint). Research notes in `context/Notes/Research/Eucharistic Miracles/`.
 
-| Priority | Miracle | Location | Date | Approval | Research Notes | In DB |
-|---|---|---|---|---|---|---|
-| 1*| Tixtla | Mexico | 2006 | Local bishop | No | No |
-| 2 | Bolsena / Orvieto | Italy | 1263 | Vatican (Urban IV) | No | No |
-| 3 | Siena | Italy | 1730 | Vatican (Pius VI, Pius X) | No | No |
+| Priority | Miracle | Location | Date | Approval | Research Notes |
+|---|---|---|---|---|---|
+| 1 | Bolsena / Orvieto | Italy | 1263 | Vatican (Urban IV) | No |
+| 2 | Siena | Italy | 1730 | Vatican (Pius VI, Pius X) | No |
 
 **Note on AB blood cluster:** Buenos Aires, Sokolka, and Tixtla all independently found AB blood + stressed left-ventricular cardiac tissue matching Lanciano. Legnica (in DB) found cardiac muscle in agony but no blood type was determined — do not include in the AB cluster.
 
@@ -43,13 +39,13 @@ Standalone records (no associated saint). Research notes in `context/Notes/Resea
 
 ##  Incorruptibles
 
-Saints whose bodies have not naturally decayed. Already in DB: Bernadette Soubirous, Catherine Labouré.
+Saints whose bodies have not naturally decayed.
 Full list of ~100+ documented cases in `context/Notes/Research/Incorruptibles/Incorruptibles — Overview.md`.
 Use `miracle_category: associated`, `type: incorruptibility`.
 
-| Priority | Saint | Died | Location | Notes | Research Notes | In DB |
-|---|---|---|---|---|---|---|
-| 1 | John Vianney | 1859 | Ars, France | Curé d'Ars; among the most visited incorruptible bodies in the world | No | No |
+| Priority | Saint | Died | Location | Notes | Research Notes |
+|---|---|---|---|---|---|
+| 1 | John Vianney | 1859 | Ars, France | Curé d'Ars; among the most visited incorruptible bodies in the world | No |
 | 2 | Francis Xavier | 1552 | Goa, India | Major Jesuit missionary; body still on public display at Basilica of Bom Jesus | No | No |
 | 3 | Charbel Makhlouf | 1898 | Annaya, Lebanon | Body exuded blood and oil for decades after death — unusually well-documented post-death phenomena | No | No |
 | 4 | John Bosco | 1888 | Turin, Italy | Founder of Salesians; body in wax mask reliquary at Basilica of Mary Help of Christians | No | No |
@@ -63,10 +59,7 @@ Use `miracle_category: associated`, `type: incorruptibility`.
 Non-canonization healings recognized by the Lourdes Medical Bureau. Use `approval_authority: lourdes_bureau`. Not tied to a saint via `miracle_saints`.
 Research notes in `context/Notes/Research/Verified Healing Miracles/Lourdes/`.
 
-| Priority | Miracle | Year | Notes | Research Notes | In DB |
-|---|---|---|---|---|---|
-| 1*| John Traynor | 1923 | Multiple conditions including epilepsy and paralysis; dramatic public healing | Yes | No |
-| 2 | Antonietta Raco | — | Documented healing; Lourdes Bureau recognized | Yes | No |
+All current entries are in the DB. Add new Lourdes healings as research is completed.
 
 ---
 
