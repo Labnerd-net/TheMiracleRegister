@@ -14,8 +14,8 @@ Research notes for InProgress saints in `context/Notes/Research/Saints/InProgres
 | 3   | Josemaría Escrivá | Jun 26 | 2002 | Founder of Opus Dei; 2 miracles | Yes (stubs only) |
 | 4   | John Neumann | Nov 4 | 1977 | First American male saint; 3 miracles | Yes (stubs only) |
 | 5   | Marguerite d'Youville | Oct 16 | 1990 | Founder of Grey Nuns; 2 miracles | Yes (stubs only) |
-| 6   | Elizabeth Ann Seton | Jan 4 | 1975 | First American-born saint; 2 miracles | No |
-| 7   | Damien of Molokai | May 10 | 2009 | Apostle to lepers in Hawaii; 2 miracles | No |
+| 6*  | Elizabeth Ann Seton | Jan 4 | 1975 | First American-born saint; 3 miracles (2 beatification, 1 canonization) | Yes |
+| 7*  | Damien of Molokai | May 10 | 2009 | Apostle to lepers in Hawaii; 2 miracles | Yes |
 | 8   | Katharine Drexel | Mar 3 | 2000 | Founder of Sisters of the Blessed Sacrament; 2 miracles | No |
 | 9   | Oscar Romero | Oct 24 | 2018 | Martyr, El Salvador; 1 miracle (beatification) | No |
 | 10  | Frances Xavier Cabrini | Nov 13 | 1946 | First American citizen canonized; 2 miracles | No |
@@ -50,7 +50,7 @@ Use `miracle_category: associated`, `type: incorruptibility`.
 | 3 | Charbel Makhlouf | 1898 | Annaya, Lebanon | Body exuded blood and oil for decades after death — unusually well-documented post-death phenomena | No |
 | 4 | John Bosco | 1888 | Turin, Italy | Founder of Salesians; body in wax mask reliquary at Basilica of Mary Help of Christians | No |
 | 5 | Vincent de Paul | 1660 | Paris, France | Body exhibited every 100 years; venerated at Chapel of the Miraculous Medal (same site as Catherine Labouré) | No |
-| 6 | John XXIII | 1963 | Vatican | Already in priority saints list — incorruptibility would be a second miracle record linked to the same saint | No |
+| 6*| John XXIII | 1963 | Vatican | Already in priority saints list — incorruptibility would be a second miracle record linked to the same saint | No |
 
 ---
 
