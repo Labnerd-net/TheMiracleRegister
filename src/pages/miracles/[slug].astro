@@ -203,18 +203,6 @@ const ogDesc = ogDescription(miracle.synopsis) || undefined;
       </div>
 
       <div class="mt-8 lg:mt-0">
-        {images[0] && (
-          <div class="mb-6 rounded overflow-hidden" style="background:var(--bg-elevated)">
-            <img src={images[0].url} alt={images[0].caption ?? miracle.title} class="w-full object-cover" style="max-height:280px;object-position:center top" />
-            {(images[0].caption || images[0].source_attribution) && (
-              <div style="padding:0.5rem 0.75rem;font-size:0.75rem;color:var(--text-3)">
-                {images[0].caption && <span>{images[0].caption}</span>}
-                {images[0].caption && images[0].source_attribution && <span> · </span>}
-                {images[0].source_attribution && <span style="font-style:italic">{images[0].source_attribution}</span>}
-              </div>
-            )}
-          </div>
-        )}
         {miracle.topics && miracle.topics.length > 0 && (
           <>
             <p class="eyebrow mb-4">Topics</p>
@@ -226,6 +214,21 @@ const ogDesc = ogDescription(miracle.synopsis) || undefined;
       </div>
     </div>
   </div>
+
+  {images[0] && (
+    <div class="max-w-6xl mx-auto px-4 sm:px-8 pb-8">
+      <div class="rounded overflow-hidden" style="background:var(--bg-elevated)">
+        <img src={images[0].url} alt={images[0].caption ?? miracle.title} class="w-full object-cover" style="max-height:480px;object-position:center" />
+        {(images[0].caption || images[0].source_attribution) && (
+          <div style="padding:0.5rem 0.75rem;font-size:0.75rem;color:var(--text-3)">
+            {images[0].caption && <span>{images[0].caption}</span>}
+            {images[0].caption && images[0].source_attribution && <span> · </span>}
+            {images[0].source_attribution && <span style="font-style:italic">{images[0].source_attribution}</span>}
+          </div>
+        )}
+      </div>
+    </div>
+  )}
 
   <div class="max-w-6xl mx-auto px-4 sm:px-8 py-10 sm:py-14 lg:grid lg:grid-cols-[1fr_240px] lg:gap-12">
 
