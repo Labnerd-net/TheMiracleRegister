@@ -42,6 +42,8 @@ const [miracle] = await db.select({
   vatican_decree_date: miracles.vatican_decree_date,
   witness_count: miracles.witness_count,
   image_url: miracles.image_url,
+  feast_month: miracles.feast_month,
+  feast_day_of_month: miracles.feast_day_of_month,
 }).from(miracles).where(
   isPreview
     ? eq(miracles.slug, slug!)
@@ -110,6 +112,13 @@ function approvalBadge(authority: string | null): { cls: string; label: string }
   if (authority === "nihil_obstat")      return { cls: "nihil",   label: "Nihil Obstat" };
   return null;
 }
+
+const MONTHS = ["January","February","March","April","May","June","July","August","September","October","November","December"];
+function formatFeastDay(month: number | null, day: number | null): string | null {
+  if (!month || !day) return null;
+  return `${MONTHS[month - 1]} ${day}`;
+}
+const feastDay = formatFeastDay(miracle.feast_month, miracle.feast_day_of_month);
 
 const ogDesc = ogDescription(miracle.synopsis) || undefined;
 ---
@@ -213,6 +222,9 @@ const ogDesc = ogDescription(miracle.synopsis) || undefined;
         <dl class="meta-grid">
           <dt>Category</dt><dd>{fmt(miracle.miracle_category)}</dd>
           <dt>Type</dt><dd>{fmt(miracle.type)}</dd>
+          {feastDay && (
+            <><dt>Feast Day</dt><dd>{feastDay}</dd></>
+          )}
           {miracle.timing_relative_to_saint_death !== "not_applicable" && (
             <><dt>Timing</dt><dd>{fmt(miracle.timing_relative_to_saint_death)}</dd></>
           )}
