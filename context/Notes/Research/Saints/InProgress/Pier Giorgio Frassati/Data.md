@@ -7,14 +7,14 @@ Birth Name:        Pier Giorgio Frassati
 Birth Date:        April 6, 1901
 Death Date:        July 4, 1925
 Nationality:       Italian
-Ministry Country:   Italy
+Ministry Country:  Italy
 Religious Order:   Lay Dominican (Third Order)
-Gender:              male
+Gender:            male
 Saint Name:        Saint Pier Giorgio Frassati
 Beatification Miracle Dispensed: false
 Canonization Miracle Dispensed: false
 Dispensation Reason:
-Lay Person:          true
+Lay Person:        true
 Feast Day:         July 4
 Beatification Date: May 20, 1990
 Beatified By:      Pope John Paul II
@@ -22,10 +22,10 @@ Canonization Date: September 7, 2025
 Canonized By:      Pope Leo XIV
 Canonization Type: confessor
 Canonization Stage: saint
-Patronage:         Youth, university students, mountaineers, volunteers
-Themes:            youth, joy, service, mountains, eucharistic
-Biography Short:   See Biography note
-Image URL:         [TO BE ADDED]
+Patronage:         youth, university students, mountaineers, volunteers
+Themes:            saints-of-everyday-life, eucharistic, hope, perseverance
+Biography Short:   See Biography.md
+Image URL:         https://upload.wikimedia.org/wikipedia/commons/9/9b/PierGiorgioFrassati-Pr%C3%A9sentation.jpg
 Wikipedia URL:     https://en.wikipedia.org/wiki/Pier_Giorgio_Frassati
 
 =======================================================================
@@ -33,7 +33,9 @@ Wikipedia URL:     https://en.wikipedia.org/wiki/Pier_Giorgio_Frassati
 SAINT SOURCES (saint_sources table)
 =======================================================================
 
-[TO BE ADDED]
+1. URL: https://piergiorgiofrassati.net/en/ | Title: Pier Giorgio Frassati — Official Canonization Committee | Type: other
+2. URL: https://frassatiusa.org/ | Title: FrassatiUSA | Type: other
+3. URL: https://www.vaticannews.va/en/pope/news/2024-11/pope-decree-saints-blesseds-frassati-trocatti-vietnam-martyr.html | Title: Pope signs decree recognizing miracle for Pier Giorgio Frassati — Vatican News | Type: vatican_decree
 
 =======================================================================
 RELATIONS (saint_relations table)
