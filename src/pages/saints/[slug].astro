@@ -67,6 +67,12 @@ const sourceTypeLabel: Record<string, string> = {
   other: "Official Site",
 };
 
+const relationTypeLabel: Record<string, string> = {
+  canonized_together: "Canonized together",
+  same_order: "Same religious order",
+  family: "Family",
+};
+
 const ogDesc = ogDescription(saint.biography_short) || undefined;
 ---
 
@@ -126,7 +132,10 @@ const ogDesc = ogDescription(saint.biography_short) || undefined;
             <div>
               <p style="font-family:var(--font-sans);font-size:0.6rem;font-weight:600;letter-spacing:0.1em;text-transform:uppercase;color:var(--text-4);margin-bottom:0.3rem">Related</p>
               {relatedRows.map((r) => (
-                <a href={`/saints/${r.slug}`} style="font-family:var(--font-sans);font-size:0.82rem;display:block">{r.name}</a>
+                <div style="margin-bottom:0.25rem">
+                  <a href={`/saints/${r.slug}`} style="font-family:var(--font-sans);font-size:0.82rem;display:block">{r.name}</a>
+                  <span style="font-family:var(--font-sans);font-size:0.68rem;color:var(--text-4)">{relationTypeLabel[r.relation_type] ?? r.relation_type}</span>
+                </div>
               ))}
             </div>
           )}

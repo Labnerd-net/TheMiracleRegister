@@ -9,11 +9,11 @@ Location:     Santos, São Paulo, Brazil
 
 ---
 
-Marcilio Haddad Andrino was a Brazilian man from Santos, in the state of São Paulo. In December 2008 he was admitted to hospital in a critical condition. He had developed multiple brain abscesses and viral meningoencephalitis — a severe infection of the brain and its surrounding membranes — complicated by hydrocephalus, an abnormal accumulation of fluid in the brain. He was placed on life support, slipped into a coma, and his physicians told his family to prepare for his death.
+Marcilio Haddad Andrino, a Brazilian man from Santos in the state of São Paulo, had struggled with an undiagnosed illness for nearly two years before doctors finally identified the cause in October 2008: eight brain abscesses and hydrocephalus, an abnormal accumulation of fluid pressing on the brain. He was hospitalized and his condition worsened steadily. By December 2008, surgeons were preparing to operate.
 
-His wife, Fernanda, did not accept that prognosis. She obtained a relic of Mother Teresa and, on the night of December 9, 2008, gathered with family members to pray beside his bed, placing the relic against him and asking for Mother Teresa's intercession.
+On the night of December 9, 2008, his wife Fernanda turned to a relic of Mother Teresa that her parish priest had given her before the couple married. She placed the relic on Marcilio's head, directly over where the abscesses had formed, and prayed — reciting the beatification prayer and, she said, "what came from my heart."
 
-The following morning, December 10, Marcilio regained consciousness. His doctors, who had considered his death imminent, found him alert and responsive. Over the days that followed his condition improved rapidly and without medical explanation. He was eventually discharged from hospital with no lasting neurological damage — an outcome his physicians could not account for given the severity of his initial presentation.
+While being prepared for surgery the following day, Marcilio unexpectedly woke in the operating room. He felt a sudden sense of peace and relief. Physicians who examined him found his condition had changed dramatically. Within three days, scans showed the abscesses had been reduced by seventy percent and the hydrocephalus had disappeared entirely. He was discharged and home for Christmas, with no lasting neurological damage.
 
 The case was submitted to the Vatican's Consulta Medica. After extensive review of the medical record, the board concluded in 2015 that the healing was instantaneous, complete, and medically inexplicable. Pope Francis recognized the miracle, making it the basis for Mother Teresa's canonization on September 4, 2016.
 
@@ -44,7 +44,7 @@ Recipient Age Approximate:
 Recipient Gender:    male
 Recipient Country:   Brazil
 Medical Diagnosis:        Multiple brain abscesses / viral meningoencephalitis with hydrocephalus
-Cure Details:             In a coma on life support with multiple brain abscesses and viral meningoencephalitis complicated by hydrocephalus. Family told to prepare for death. His wife prayed with a relic of Mother Teresa on the night of December 9, 2008. The following morning he regained consciousness and was found alert and responsive by his doctors. Over the subsequent days his condition improved rapidly and completely without medical explanation, and he was discharged with no lasting neurological damage.
+Cure Details:             Had eight brain abscesses and hydrocephalus; hospitalized October 2008, condition worsened through December. Wife placed relic of Mother Teresa on his head and prayed on night of December 9. Woke unexpectedly in operating room during surgical prep the following day. Within three days, abscesses reduced 70% and hydrocephalus gone. Discharged with no lasting neurological damage.
 Cure Characteristics:     instant_complete
 Medically Verified:       true
 Medical Verification Date: 2015
@@ -65,4 +65,4 @@ Sources:
 Sources:
 - Vatican Dicastery for the Causes of Saints — internal Positio (not publicly available). Case summary reported in secondary sources below.
 - Pope Francis, Canonization Homily, September 4, 2016: https://www.vatican.va/content/francesco/en/homilies/2016/documents/papa-francesco_20160904_omelia-canonizzazione-madre-teresa.html
-- EWTN News: https://www.ewtnnews.com/faith/the-miracle-that-led-to-mother-teresa-s-canonization
+- I Was Sure That It Was Mother Teresa Who Healed Me — EWTN News: https://www.ewtnnews.com/world/europe/i-was-sure-that-it-was-mother-teresa-who-healed-me

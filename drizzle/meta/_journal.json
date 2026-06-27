@@ -169,6 +169,13 @@
       "when": 1781151853607,
       "tag": "0023_orange_dreadnoughts",
       "breakpoints": true
+    },
+    {
+      "idx": 24,
+      "version": "7",
+      "when": 1782533453648,
+      "tag": "0024_normal_wendell_vaughn",
+      "breakpoints": true
     }
   ]
 }

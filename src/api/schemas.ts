@@ -39,7 +39,7 @@ export const RelatedSaintSchema = z
     id: z.number().int(),
     slug: z.string(),
     name: z.string(),
-    relation_type: z.enum(["canonized_together", "same_order"]),
+    relation_type: z.enum(["canonized_together", "same_order", "family"]),
   })
   .openapi("RelatedSaint");
 

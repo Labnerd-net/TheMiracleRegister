@@ -1,0 +1,1 @@
+ALTER TYPE "public"."relation_type" ADD VALUE 'family';

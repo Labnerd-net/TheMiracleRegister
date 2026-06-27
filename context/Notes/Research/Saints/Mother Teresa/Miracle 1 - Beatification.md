@@ -59,10 +59,10 @@ Used for Canonization:    false
 Has Primary Sources:      true
 
 Sources:
-1. URL: https://www.vatican.va/content/john-paul-ii/en/homilies/2003/documents/hf_jp-ii_hom_20031019_beatificazione-madre-teresa.html | Title: Holy Mass and Beatification of Mother Teresa - Homily of Pope John Paul II, October 19, 2003 | Type: vatican_decree
-2. URL: https://www.ewtnnews.com/world/europe/i-was-sure-that-it-was-mother-teresa-who-healed-me | Title: 'I was sure that it was Mother Teresa who healed me' - EWTN News | Type: news_article
+1. URL: https://www.vatican.va/content/john-paul-ii/en/homilies/2003/documents/hf_jp-ii_hom_20031019_mother-theresa.html | Title: Beatification of Mother Teresa of Calcutta — Homily of John Paul II, October 19, 2003 | Type: vatican_decree
+2. URL: https://www.catholic.org/clife/teresa/beatification.php | Title: Mother Teresa's Beatification — Catholic.org | Type: other
 
 Sources:
 - Vatican Dicastery for the Causes of Saints — internal Positio (not publicly available). Case summary reported in secondary sources below.
-- Pope John Paul II, Beatification Homily, October 19, 2003: https://www.vatican.va/content/john-paul-ii/en/homilies/2003/documents/hf_jp-ii_hom_20031019_beatificazione-madre-teresa.html
-- EWTN News: https://www.ewtnnews.com/world/europe/i-was-sure-that-it-was-mother-teresa-who-healed-me
+- Pope John Paul II, Beatification Homily, October 19, 2003: https://www.vatican.va/content/john-paul-ii/en/homilies/2003/documents/hf_jp-ii_hom_20031019_mother-theresa.html
+- Catholic.org: https://www.catholic.org/clife/teresa/beatification.php

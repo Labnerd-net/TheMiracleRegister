@@ -18,6 +18,7 @@ export const canonizationStage = pgEnum("canonization_stage", [
 export const relationTypeEnum = pgEnum("relation_type", [
   "canonized_together",
   "same_order",
+  "family",
 ]);
 
 export const miracleCategory = pgEnum("miracle_category", [

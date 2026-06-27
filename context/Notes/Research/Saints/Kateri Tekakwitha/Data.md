@@ -34,7 +34,7 @@ SAINT SOURCES (saint_sources table)
 =======================================================================
 
 1. URL: https://www.vatican.va/content/benedict-xvi/en/homilies/2012/documents/hf_ben-xvi_hom_20121021_canonizzazioni.html | Title: Canonization of Kateri Tekakwitha and others - Homily of Pope Benedict XVI | Type: vatican_decree
-2. URL: https://www.katerishrine.com/ | Title: National Shrine of St. Kateri Tekakwitha, Fonda, NY | Type: other
+2. URL: https://www.katerishrine.org/ | Title: National Shrine of St. Kateri Tekakwitha, Fonda, NY | Type: other
 
 =======================================================================
 RELATIONS (saint_relations table)
