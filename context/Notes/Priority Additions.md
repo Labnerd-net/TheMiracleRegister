@@ -9,15 +9,15 @@ Research notes for InProgress saints in `context/Notes/Research/Saints/InProgres
 
 | Priority | Saint | Feast Day | Canonized | Notes | Research Notes | In DB |
 |---|---|---|---|---|---|---|
-| 1 | Thérèse of Lisieux | Oct 1 | 1925 | Daughter of Louis & Zélie (in DB); Doctor of the Church; 2 canonization miracles | No | No |
-| 2 | Pier Giorgio Frassati | Jul 4 | 2025 | Canonized June 1, 2025 by Pope Francis; 2 miracles documented | Yes | No |
-| 3 | Edith Stein (Teresa Benedicta) | Aug 9 | 1998 | Martyr; 2 miracles | Yes | No |
-| 4 | John XXIII | Oct 11 | 2014 | Canonized same day as John Paul II; beatification miracle dispensed for canonization | Yes | No |
-| 5 | Josemaría Escrivá | Jun 26 | 2002 | Founder of Opus Dei; 2 miracles | Yes | No |
-| 6 | John Neumann | Nov 4 | 1977 | First American male saint; 3 miracles | Yes | No |
-| 7 | Marguerite d'Youville | Oct 16 | 1990 | Founder of Grey Nuns; 2 miracles | Yes | No |
-| 8 | Fulton Sheen | — | Beatified 2019 | Not yet canonized; 1 miracle documented — add as `blessed` | Yes | No |
-| 9 | Elizabeth Ann Seton | Jan 4 | 1975 | First American-born saint; 2 miracles | No | No |
+| 1* | Thérèse of Lisieux | Oct 1 | 1925 | Daughter of Louis & Zélie (in DB); Doctor of the Church; 2 canonization miracles | No | No |
+| 2* | Pier Giorgio Frassati | Jul 4 | 2025 | Canonized June 1, 2025 by Pope Francis; 2 miracles documented | Yes | No |
+| 3  | Edith Stein (Teresa Benedicta) | Aug 9 | 1998 | Martyr; 2 miracles | Yes | No |
+| 4  | John XXIII | Oct 11 | 2014 | Canonized same day as John Paul II; beatification miracle dispensed for canonization | Yes | No |
+| 5  | Josemaría Escrivá | Jun 26 | 2002 | Founder of Opus Dei; 2 miracles | Yes | No |
+| 6  | John Neumann | Nov 4 | 1977 | First American male saint; 3 miracles | Yes | No |
+| 7  | Marguerite d'Youville | Oct 16 | 1990 | Founder of Grey Nuns; 2 miracles | Yes | No |
+| 8* | Fulton Sheen | — | Beatified 2019 | Not yet canonized; 1 miracle documented — add as `blessed` | Yes | No |
+| 9  | Elizabeth Ann Seton | Jan 4 | 1975 | First American-born saint; 2 miracles | No | No |
 | 10 | Damien of Molokai | May 10 | 2009 | Apostle to lepers in Hawaii; 2 miracles | No | No |
 | 11 | Katharine Drexel | Mar 3 | 2000 | Founder of Sisters of the Blessed Sacrament; 2 miracles | No | No |
 | 12 | Oscar Romero | Oct 24 | 2018 | Martyr, El Salvador; 1 miracle (beatification) | No | No |
@@ -33,7 +33,7 @@ Standalone records (no associated saint). Research notes in `context/Notes/Resea
 
 | Priority | Miracle | Location | Date | Approval | Research Notes | In DB |
 |---|---|---|---|---|---|---|
-| 1 | Tixtla | Mexico | 2006 | Local bishop | No | No |
+| 1*| Tixtla | Mexico | 2006 | Local bishop | No | No |
 | 2 | Bolsena / Orvieto | Italy | 1263 | Vatican (Urban IV) | No | No |
 | 3 | Siena | Italy | 1730 | Vatican (Pius VI, Pius X) | No | No |
 
@@ -41,7 +41,7 @@ Standalone records (no associated saint). Research notes in `context/Notes/Resea
 
 ---
 
-## Incorruptibles
+##  Incorruptibles
 
 Saints whose bodies have not naturally decayed. Already in DB: Bernadette Soubirous, Catherine Labouré.
 Full list of ~100+ documented cases in `context/Notes/Research/Incorruptibles/Incorruptibles — Overview.md`.
@@ -65,7 +65,7 @@ Research notes in `context/Notes/Research/Verified Healing Miracles/Lourdes/`.
 
 | Priority | Miracle | Year | Notes | Research Notes | In DB |
 |---|---|---|---|---|---|
-| 1 | John Traynor | 1923 | Multiple conditions including epilepsy and paralysis; dramatic public healing | Yes | No |
+| 1*| John Traynor | 1923 | Multiple conditions including epilepsy and paralysis; dramatic public healing | Yes | No |
 | 2 | Antonietta Raco | — | Documented healing; Lourdes Bureau recognized | Yes | No |
 
 ---
