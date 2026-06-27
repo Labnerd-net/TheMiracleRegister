@@ -112,6 +112,16 @@ export const SourceSchema = z
   })
   .openapi("Source");
 
+export const MiracleImageSchema = z
+  .object({
+    id: z.number().int(),
+    url: z.string(),
+    caption: z.string().nullable(),
+    display_order: z.number().int(),
+    source_attribution: z.string().nullable(),
+  })
+  .openapi("MiracleImage");
+
 export const MiracleDetailSchema = z
   .object({
     id: z.number().int(),
@@ -157,6 +167,7 @@ export const MiracleDetailSchema = z
     has_primary_sources: z.boolean(),
     saints: z.array(z.object({ id: z.number().int(), slug: z.string(), name: z.string() })),
     sources: z.array(SourceSchema),
+    images: z.array(MiracleImageSchema),
   })
   .openapi("MiracleDetail");
 

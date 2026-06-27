@@ -4,5 +4,6 @@ export * from "./saint-relations";
 export * from "./miracles";
 export * from "./miracle-saints";
 export * from "./miracle-sources";
+export * from "./miracle-images";
 export * from "./saint-sources";
 export * from "./saint-locations";

@@ -1,7 +1,7 @@
 import { OpenAPIHono, createRoute, z } from "@hono/zod-openapi";
 import { and, asc, eq, gte, ilike, inArray, lte, sql } from "drizzle-orm";
 import { createDb } from "../../db";
-import { miracleSaints, miracleSources, miracles, saints } from "../../db/schema";
+import { miracleImages, miracleSaints, miracleSources, miracles, saints } from "../../db/schema";
 import {
   MiracleDetailSchema,
   MiracleListItemSchema,
@@ -164,7 +164,7 @@ miraclesRoute.openapi(
     }).from(miracles).where(and(eq(miracles.slug, slug), eq(miracles.published, true)));
     if (!miracle) return notFound(c);
 
-    const [sources, saintsByMiracleId] = await Promise.all([
+    const [sources, saintsByMiracleId, images] = await Promise.all([
       db
         .select({
           id: miracleSources.id,
@@ -176,9 +176,20 @@ miraclesRoute.openapi(
         .from(miracleSources)
         .where(eq(miracleSources.miracle_id, miracle.id)),
       fetchSaintsForMiracles(db, [miracle.id]),
+      db
+        .select({
+          id: miracleImages.id,
+          url: miracleImages.url,
+          caption: miracleImages.caption,
+          display_order: miracleImages.display_order,
+          source_attribution: miracleImages.source_attribution,
+        })
+        .from(miracleImages)
+        .where(eq(miracleImages.miracle_id, miracle.id))
+        .orderBy(asc(miracleImages.display_order)),
     ]);
 
-    const data = { ...miracle, saints: saintsByMiracleId.get(miracle.id) ?? [], sources };
+    const data = { ...miracle, saints: saintsByMiracleId.get(miracle.id) ?? [], sources, images };
 
     // cast needed: Hono can't reconcile 200/404 response union types at compile time
     return c.json({ data: data as z.infer<typeof MiracleDetailSchema>, meta: null, error: null }, 200);

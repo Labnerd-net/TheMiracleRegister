@@ -1,7 +1,7 @@
 ---
 import AdminBase from "../../../../layouts/AdminBase.astro";
 import { createDb } from "../../../../db";
-import { miracles, miracleSaints, saints, miracleSources } from "../../../../db/schema";
+import { miracles, miracleSaints, saints, miracleSources, miracleImages } from "../../../../db/schema";
 import { asc, and, eq } from "drizzle-orm";
 import {
   miracleCategory, miracleType, datePrecision, timingRelativeToSaintDeath,
@@ -29,13 +29,41 @@ let error = "";
 let success = false;
 let sourceError = "";
 let sourceSuccess = "";
+let imageError = "";
+let imageSuccess = "";
 
 if (Astro.request.method === "POST") {
   const form = await Astro.request.formData();
   const { get, getBool, getMulti } = formHelpers(form);
   const action = get("_action");
 
-  if (action === "add_source") {
+  if (action === "add_image") {
+    const url = get("image_url");
+    const caption = get("image_caption");
+    const attribution = get("image_source_attribution");
+    const order = (() => { const v = parseInt(get("image_display_order")); return isNaN(v) ? 0 : v; })();
+    if (!url) {
+      imageError = "URL is required.";
+    } else try {
+      await db.insert(miracleImages).values({
+        miracle_id: miracle.id,
+        url,
+        caption: caption || null,
+        display_order: order,
+        source_attribution: attribution || null,
+      });
+      imageSuccess = "Image added.";
+    } catch (e: any) {
+      imageError = e?.message ?? "Failed to add image.";
+    }
+  } else if (action === "delete_image") {
+    const imageId = parseInt(get("image_id"));
+    if (imageId) {
+      await db.delete(miracleImages)
+        .where(and(eq(miracleImages.id, imageId), eq(miracleImages.miracle_id, miracle.id)));
+      imageSuccess = "Image removed.";
+    }
+  } else if (action === "add_source") {
     const url = get("source_url");
     const title = get("source_title");
     const type = parseEnum(get("source_type"), sourceType.enumValues, "other");
@@ -122,7 +150,10 @@ if (success) {
   const [updated] = await db.select().from(miracles).where(eq(miracles.slug, slug!));
   v = updated ?? miracle;
 }
-const sources = await db.select().from(miracleSources).where(eq(miracleSources.miracle_id, miracle.id));
+const [sources, images] = await Promise.all([
+  db.select().from(miracleSources).where(eq(miracleSources.miracle_id, miracle.id)),
+  db.select().from(miracleImages).where(eq(miracleImages.miracle_id, miracle.id)).orderBy(asc(miracleImages.display_order)),
+]);
 ---
 
 <AdminBase title={`Edit: ${v.title}`}>
@@ -197,6 +228,62 @@ const sources = await db.select().from(miracleSources).where(eq(miracleSources.m
           <input type="date" id="source_accessed_date" name="source_accessed_date" style="max-width:200px" />
         </div>
         <button type="submit" class="btn btn-primary">Add Source</button>
+      </form>
+    </div>
+  </fieldset>
+
+  <fieldset style="margin-top:2rem">
+    <legend>Images</legend>
+
+    {imageError && <div class="error" style="margin-bottom:1rem">{imageError}</div>}
+    {imageSuccess && <div class="success" style="margin-bottom:1rem">{imageSuccess}</div>}
+
+    {images.length === 0 && (
+      <p style="font-size:0.85rem;color:#888;margin-bottom:1rem">No images added yet.</p>
+    )}
+
+    {images.map((img) => (
+      <div style="display:flex;align-items:flex-start;gap:0.75rem;padding:0.75rem 0;border-bottom:1px solid #eee">
+        <img src={img.url} alt={img.caption ?? ""} style="width:80px;height:60px;object-fit:cover;flex-shrink:0;border-radius:3px" />
+        <div style="flex:1;min-width:0">
+          <div style="font-size:0.875rem;font-weight:600;word-break:break-all">
+            <a href={img.url} target="_blank" rel="noopener">{img.url}</a>
+          </div>
+          {img.caption && <div style="font-size:0.8rem;color:#555;margin-top:0.2rem">{img.caption}</div>}
+          {img.source_attribution && <div style="font-size:0.75rem;color:#888;margin-top:0.1rem">Credit: {img.source_attribution}</div>}
+          <div style="font-size:0.75rem;color:#888;margin-top:0.1rem">Order: {img.display_order}</div>
+        </div>
+        <form method="post" style="flex-shrink:0">
+          <input type="hidden" name="_action" value="delete_image" />
+          <input type="hidden" name="image_id" value={img.id} />
+          <button type="submit" style="background:none;border:none;color:#dc2626;font-size:0.8rem;cursor:pointer;padding:0">Remove</button>
+        </form>
+      </div>
+    ))}
+
+    <div style="margin-top:1.25rem">
+      <p style="font-size:0.8rem;font-weight:600;color:#444;margin-bottom:0.75rem">Add Image</p>
+      <form method="post">
+        <input type="hidden" name="_action" value="add_image" />
+        <div class="field" style="margin-bottom:0.75rem">
+          <label for="image_url">URL *</label>
+          <input type="url" id="image_url" name="image_url" />
+        </div>
+        <div class="field" style="margin-bottom:0.75rem">
+          <label for="image_caption">Caption</label>
+          <textarea id="image_caption" name="image_caption" rows="2"></textarea>
+        </div>
+        <div class="two-col" style="margin-bottom:0.75rem">
+          <div class="field">
+            <label for="image_source_attribution">Credit / Attribution</label>
+            <input type="text" id="image_source_attribution" name="image_source_attribution" />
+          </div>
+          <div class="field">
+            <label for="image_display_order">Display Order</label>
+            <input type="number" id="image_display_order" name="image_display_order" value="0" min="0" style="max-width:100px" />
+          </div>
+        </div>
+        <button type="submit" class="btn btn-primary">Add Image</button>
       </form>
     </div>
   </fieldset>

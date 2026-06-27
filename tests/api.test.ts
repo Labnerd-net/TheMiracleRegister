@@ -68,4 +68,16 @@ describe("GET /api/v1/doc", () => {
     expect(body.openapi).toBe("3.0.0");
     expect(body.paths).toBeDefined();
   });
+
+  it("includes MiracleImage schema", async () => {
+    const res = await req("/api/v1/doc");
+    const body = await res.json() as { components?: { schemas?: Record<string, unknown> } };
+    expect(body.components?.schemas?.MiracleImage).toBeDefined();
+  });
+
+  it("MiracleDetail schema includes images array", async () => {
+    const res = await req("/api/v1/doc");
+    const body = await res.json() as { components?: { schemas?: { MiracleDetail?: { properties?: Record<string, unknown> } } } };
+    expect(body.components?.schemas?.MiracleDetail?.properties?.images).toBeDefined();
+  });
 });

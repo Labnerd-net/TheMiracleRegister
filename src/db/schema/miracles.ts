@@ -52,7 +52,6 @@ export const miracles = pgTable(
     feast_day_of_month: integer("feast_day_of_month"),
     feast_easter_offset: integer("feast_easter_offset"),
     synopsis: text("synopsis"),
-    image_url: text("image_url"),
     has_primary_sources: boolean("has_primary_sources").notNull(),
     content_tier: contentTier("content_tier").notNull().default("core"),
     published: boolean("published").notNull().default(false),

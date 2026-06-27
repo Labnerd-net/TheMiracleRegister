@@ -1,5 +1,6 @@
 import { describe, expect, it } from "vitest";
 import {
+  miracleImages,
   miracleSources,
   miracles,
   saintRelations,
@@ -21,5 +22,9 @@ describe("schema exports", () => {
 
   it("exports miracleSources table", () => {
     expect(miracleSources).toBeDefined();
+  });
+
+  it("exports miracleImages table", () => {
+    expect(miracleImages).toBeDefined();
   });
 });

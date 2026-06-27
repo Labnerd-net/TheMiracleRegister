@@ -2,7 +2,9 @@
 
 ## Current Feature Spec File
 
-_None_
+Title: Miracle Images Table
+Spec file: context/specs/miracle-images-table.md
+Branch: claude/feature/miracle-images-table
 
 ## Current Feature Plan File
 

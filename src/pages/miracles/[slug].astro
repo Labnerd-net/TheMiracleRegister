@@ -1,8 +1,8 @@
 ---
 import Base from "../../layouts/Base.astro";
 import { createDb } from "../../db";
-import { miracles, saints, miracleSaints, miracleSources } from "../../db/schema";
-import { and, eq, inArray, ne, sql } from "drizzle-orm";
+import { miracles, saints, miracleSaints, miracleSources, miracleImages } from "../../db/schema";
+import { and, asc, eq, inArray, ne, sql } from "drizzle-orm";
 import { env } from "cloudflare:workers";
 import { renderMarkdown } from "../../lib/markdown";
 import { humanizeSnakeCase, ogDescription } from "../../lib/format";
@@ -41,7 +41,6 @@ const [miracle] = await db.select({
   approval_authority: miracles.approval_authority,
   vatican_decree_date: miracles.vatican_decree_date,
   witness_count: miracles.witness_count,
-  image_url: miracles.image_url,
   feast_month: miracles.feast_month,
   feast_day_of_month: miracles.feast_day_of_month,
 }).from(miracles).where(
@@ -61,7 +60,7 @@ const relatedMiracleFields = {
   topics: miracles.topics,
 };
 
-const [miracleSaintRows, sources, saintLinked, topicLinked] = await Promise.all([
+const [miracleSaintRows, sources, images, saintLinked, topicLinked] = await Promise.all([
   db.select({ slug: saints.slug, name: saints.name, canonization_stage: saints.canonization_stage, image_url: saints.image_url })
     .from(miracleSaints)
     .innerJoin(saints, eq(miracleSaints.saint_id, saints.id))
@@ -73,6 +72,13 @@ const [miracleSaintRows, sources, saintLinked, topicLinked] = await Promise.all(
     accessed_date: miracleSources.accessed_date,
   }).from(miracleSources).where(eq(miracleSources.miracle_id, miracle.id))
     .then(rows => [...rows].sort((a, b) => (a.source_type === "vatican_decree" ? -1 : b.source_type === "vatican_decree" ? 1 : 0))),
+  db.select({
+    id: miracleImages.id,
+    url: miracleImages.url,
+    caption: miracleImages.caption,
+    source_attribution: miracleImages.source_attribution,
+  }).from(miracleImages).where(eq(miracleImages.miracle_id, miracle.id))
+    .orderBy(asc(miracleImages.display_order)),
   db.selectDistinct(relatedMiracleFields)
     .from(miracles)
     .innerJoin(miracleSaints, eq(miracleSaints.miracle_id, miracles.id))
@@ -123,7 +129,7 @@ const feastDay = formatFeastDay(miracle.feast_month, miracle.feast_day_of_month)
 const ogDesc = ogDescription(miracle.synopsis) || undefined;
 ---
 
-<Base title={miracle.title} description={ogDesc} ogImage={miracle.image_url ?? undefined} ogType="article">
+<Base title={miracle.title} description={ogDesc} ogImage={images[0]?.url ?? undefined} ogType="article">
   {miracle.location_lat && miracle.location_lng && (
     <link slot="head" rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
   )}
@@ -197,9 +203,20 @@ const ogDesc = ogDescription(miracle.synopsis) || undefined;
       </div>
 
       <div class="mt-8 lg:mt-0">
-        {miracle.image_url && (
-          <div class="mb-6 rounded overflow-hidden" style="background:var(--bg-elevated)">
-            <img src={miracle.image_url} alt={miracle.title} class="w-full object-cover" style="max-height:220px;object-position:center top" />
+        {images.length > 0 && (
+          <div class="mb-6">
+            {images.map((img) => (
+              <div class="mb-4 rounded overflow-hidden" style="background:var(--bg-elevated)">
+                <img src={img.url} alt={img.caption ?? miracle.title} class="w-full object-cover" style="max-height:280px;object-position:center top" />
+                {(img.caption || img.source_attribution) && (
+                  <div style="padding:0.5rem 0.75rem;font-size:0.75rem;color:var(--text-3)">
+                    {img.caption && <span>{img.caption}</span>}
+                    {img.caption && img.source_attribution && <span> · </span>}
+                    {img.source_attribution && <span style="font-style:italic">{img.source_attribution}</span>}
+                  </div>
+                )}
+              </div>
+            ))}
           </div>
         )}
         {miracle.topics && miracle.topics.length > 0 && (
