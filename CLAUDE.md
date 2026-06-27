@@ -53,6 +53,9 @@ A data-driven website documenting miracles attributed to Catholic saints. Focuse
 | saint_name | text | Formal Vatican/devotional title — e.g. "Saint Teresa of Calcutta", "Saint André of Montreal". Nullable. Shown where the formal title is appropriate. |
 | birth_date, death_date | date | |
 | feast_day | text | |
+| feast_month | integer | nullable — numeric month (1–12) for structured feast day queries |
+| feast_day_of_month | integer | nullable — day of month; null for movable feasts |
+| feast_easter_offset | integer | nullable — days from Easter Sunday for movable feasts (e.g. Divine Mercy = 7, Corpus Christi = 60) |
 | religious_order | text | e.g. "Franciscan" |
 | nationality | text | |
 | ministry_country | text | country where the saint primarily served — may differ from nationality |
@@ -83,7 +86,7 @@ Many-to-many join table. Handles pairs, groups, and future edge cases.
 |---|---|---|
 | saint_id | FK → saints | |
 | related_saint_id | FK → saints | |
-| relation_type | enum | canonized_together, same_order, etc. |
+| relation_type | enum | canonized_together, same_order, family, etc. |
 
 Saint pages show related saints as links. API response includes a `related_saints` array when relations exist.
 
@@ -126,6 +129,9 @@ Saint pages show related saints as links. API response includes a `related_saint
 | image_url | text | nullable — Wikimedia Commons public domain image |
 | has_primary_sources | boolean | |
 | content_tier | enum | `core` (full narrative), `catalog` (short synopsis + external links), `stub` — default core |
+| feast_month | integer | nullable — numeric month (1–12); set for miracles tied to a feast day |
+| feast_day_of_month | integer | nullable — day of month; null for movable feasts |
+| feast_easter_offset | integer | nullable — days from Easter Sunday for movable feasts |
 | published | boolean | default false — controls public visibility |
 | created_at, updated_at | timestamptz | |
 

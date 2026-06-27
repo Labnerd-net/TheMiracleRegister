@@ -96,3 +96,7 @@ Historical miraculous events and Marian phenomena tied to a feast day. Use `mira
 | 4 | Our Lady of Prompt Succor | Jan 8 | Marian devotion specific to New Orleans; statue credited with saving Ursuline convent from 1812 fire and Andrew Jackson's victory at Battle of New Orleans 1815; patroness of Louisiana. | No |
 | 5 | Miracle of the Holy Fire | Holy Saturday | Annual phenomenon at the Church of the Holy Sepulchre, Jerusalem; Orthodox tradition; witnessed and documented for centuries. Historically significant but contested. | No |
 | 6 | Holy House of Loreto | Dec 10 | Holy House of Nazareth reportedly transported to Loreto, Italy 1294; recognized by numerous popes; 1999 archaeological study found stone matched Nazareth quarries. Weakest evidentiary standard — lower priority. | No |
+
+
+Movable feast enum values:
+  divine_mercy, corpus_christi, sacred_heart, ascension, pentecost, trinity_sunday,christ_the_king, holy_family, baptism_of_lord
