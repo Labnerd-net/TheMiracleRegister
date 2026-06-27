@@ -61,7 +61,13 @@ Use `miracle_category: associated`, `type: incorruptibility`.
 Non-canonization healings recognized by the Lourdes Medical Bureau. Use `approval_authority: lourdes_bureau`. Not tied to a saint via `miracle_saints`.
 Research notes in `context/Notes/Research/Verified Healing Miracles/Lourdes/`.
 
-All current entries are in the DB. Add new Lourdes healings as research is completed.
+| Priority | Recipient | Year | Country | Condition | Research Notes |
+|---|---|---|---|---|---|
+| 1 | Vittorio Micheli | 1963 | Italy | Malignant hip sarcoma with destruction of hip socket; bone structurally regenerated on X-ray after Lourdes | No |
+| 2 | Jean-Pierre Bély | 1987 | France | Advanced multiple sclerosis with complete paralysis; recognized 1999 | No |
+| 3 | Marie Biré | 1908 | France | Complete blindness from optic atrophy; sight restored instantly during pilgrimage | No |
+| 4 | Serge Perrin | 1970 | France | Bilateral carotid artery occlusion with right-side paralysis and partial blindness | No |
+| 5 | Pierre de Rudder | 1875 | Belgium | Open infected leg fracture unhealed for 8 years; bone found fused on immediate examination | No |
 
 ---
 
