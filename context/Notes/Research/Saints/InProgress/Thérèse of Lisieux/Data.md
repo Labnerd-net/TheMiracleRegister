@@ -29,8 +29,11 @@ Image URL:         [TO BE ADDED — check Wikimedia Commons]
 Wikipedia URL:     https://en.wikipedia.org/wiki/Th%C3%A9r%C3%A8se_of_Lisieux
 
 NOTE: Parents are Louis Martin and Zélie Guérin, both canonized 2015 and already in DB.
-No current relation_type exists for parent/child — do not add a saint_relations row.
-Note the connection in the biography_short and saint page copy instead.
+Add saint_relations rows (both directions) after DB entry:
+  Thérèse → Louis Martin   (family)
+  Thérèse → Zélie Martin   (family)
+  Louis Martin → Thérèse   (family)
+  Zélie Martin → Thérèse   (family)
 
 =======================================================================
 
@@ -44,7 +47,11 @@ SAINT SOURCES (saint_sources table)
 =======================================================================
 RELATIONS (saint_relations table)
 =======================================================================
-Related Saint: (none — parent/child relation type not currently in schema)
+Related Saint:     Louis Martin
+Relation Type:     family
+
+Related Saint:     Zélie Martin (Azelie-Marie Guerin Martin)
+Relation Type:     family
 
 =======================================================================
 SAINT LOCATIONS (saint_locations table)

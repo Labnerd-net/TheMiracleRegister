@@ -111,6 +111,9 @@ Note: Louis and Zelie are canonized together as a married couple.
 Related Saint:     Louis Martin
 Relation Type:     canonized_together
 
+Related Saint:     Thérèse of Lisieux
+Relation Type:     family
+
 =======================================================================
 SAINT LOCATIONS (saint_locations table)
 =======================================================================
