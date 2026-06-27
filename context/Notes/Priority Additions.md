@@ -71,23 +71,32 @@ Research notes in `context/Notes/Research/Verified Healing Miracles/Lourdes/`.
 
 ---
 
+## Marian Apparitions
+
+Church-approved or formally acknowledged apparitions. Use `miracle_category: apparition`.
+
+**Note:** Our Lady of Guadalupe and Our Lady of Fatima are partially covered — the Tilma and the Miracle of the Sun are already in the DB. The apparitions themselves could be added as companion records linked to Juan Diego and the Fatima visionaries respectively.
+
+| Priority | Apparition | Feast | Location | Notes | Research Notes |
+|---|---|---|---|---|---|
+| 1 | Our Lady of Lourdes | Feb 11 | Lourdes, France | 18 apparitions to Bernadette Soubirous, 1858; add as apparition record once Bernadette is in DB | No |
+| 2 | Our Lady of Knock | Aug 17 | Knock, Ireland | Silent apparition of Mary, Joseph, John the Evangelist, and a Lamb witnessed by 15 people, 1879; Church recognized; John Paul II visited 1979 | No |
+| 3 | Our Lady of Champion | Aug 15 | Champion, Wisconsin, USA | Only Vatican-approved Marian apparition in the US; Adèle Brise, 1859; approved by Diocese of Green Bay 2010 | No |
+| 4 | Our Lady of Akita | Oct 13 | Akita, Japan | Apparitions and weeping statue, 1973; statue wept blood 101 times; Bishop Ito formal declaration 1984; Vatican acknowledged | No |
+| 5 | Our Lady of Guadalupe apparitions | Dec 12 | Tepeyac, Mexico | Apparitions to Juan Diego, 1531; Tilma already in DB — add apparition record linked to Juan Diego | No |
+| 6 | Our Lady of Fatima apparitions | May 13 | Fátima, Portugal | Apparitions to three shepherd children, 1917; Miracle of the Sun already in DB — add apparition record linked to the visionaries | No |
+
+---
+
 ## Feast Day / Historical Miracles
 
-Events tied to liturgical feast days or historically significant. Not intercessory miracles — use `miracle_category: associated`.
+Historical miraculous events and Marian phenomena tied to a feast day. Use `miracle_category: associated`.
 
-**Note:** Our Lady of Guadalupe (Dec 12) and Our Lady of Fatima (May 13) are partially covered — the Tilma and the Miracle of the Sun are already in the DB. The apparitions themselves could be added as companion records linked to Juan Diego and the Fatima visionaries respectively.
-
-### Not Yet in DB
-
-| Priority | Miracle | Feast | Notes | Research Notes | In DB |
-|---|---|---|---|---|---|
-| 1 | Bolsena / Orvieto | Corpus Christi (moveable) | Host bled onto corporal 1263; directly prompted Urban IV to institute Corpus Christi; Thomas Aquinas wrote the liturgy; corporal still in Orvieto Cathedral. Also listed under Eucharistic Miracles — one DB record covers both. | No | No |
-| 2 | Our Lady of Czestochowa | Aug 26 | Miraculous image (Black Madonna) at Jasna Góra, Poland; venerated since 14th century; credited with repelling Swedish invasion 1655. Similar category to the Tilma. | No | No |
-| 3 | Our Lady of Lourdes apparitions | Feb 11 | 18 apparitions to Bernadette Soubirous in 1858; distinct from the Lourdes healings in DB — add as apparition record once Bernadette is in DB. | No | No |
-| 4 | Battle of Lepanto / Our Lady of the Rosary | Oct 7 | Pius V credited Christian naval victory (1571) to the Rosary; established the feast. Nature miracle / providential intervention category. Less rigorous documentation than apparition entries. | No | No |
-| 5 | Our Lady of Knock | Aug 17 | Silent apparition of Mary, Joseph, John the Evangelist, and a Lamb witnessed by 15 people in Knock, Ireland, 1879. No words spoken. Church recognized; John Paul II visited 1979. | No | No |
-| 6 | Our Lady of Akita | Oct 13 | Approved apparition in Japan (1973); statue wept blood 101 times; Bishop Ito issued formal declaration 1984; Vatican acknowledged. Unusually well documented for a modern apparition. | No | No |
-| 7 | Our Lady of Champion | Aug 15 | Only Vatican-approved Marian apparition in the US; Adèle Brise, near Green Bay, Wisconsin, 1859; approved by Diocese of Green Bay 2010. | No | No |
-| 8 | Our Lady of Prompt Succor | Jan 8 | Marian devotion specific to New Orleans; statue credited with saving Ursuline convent from 1812 fire and Andrew Jackson's victory at Battle of New Orleans 1815; patroness of Louisiana. | No | No |
-| 9 | Miracle of the Holy Fire | Holy Saturday | Annual phenomenon at the Church of the Holy Sepulchre, Jerusalem; Orthodox tradition; witnessed and documented for centuries. Historically significant but contested. | No | No |
-| 10 | Holy House of Loreto | Dec 10 | Holy House of Nazareth reportedly transported to Loreto, Italy 1294; recognized by numerous popes; 1999 archaeological study found stone matched Nazareth quarries. Weakest evidentiary standard — lower priority. | No | No |
+| Priority | Miracle | Feast | Notes | Research Notes |
+|---|---|---|---|---|
+| 1 | Bolsena / Orvieto | Corpus Christi (moveable) | Host bled onto corporal 1263; directly prompted Urban IV to institute Corpus Christi; Thomas Aquinas wrote the liturgy; corporal still in Orvieto Cathedral. Also listed under Eucharistic Miracles — one DB record covers both. | No |
+| 2 | Our Lady of Czestochowa | Aug 26 | Miraculous image (Black Madonna) at Jasna Góra, Poland; venerated since 14th century; credited with repelling Swedish invasion 1655. Similar category to the Tilma. | No |
+| 3 | Battle of Lepanto / Our Lady of the Rosary | Oct 7 | Pius V credited Christian naval victory (1571) to the Rosary; established the feast. Nature miracle / providential intervention category. | No |
+| 4 | Our Lady of Prompt Succor | Jan 8 | Marian devotion specific to New Orleans; statue credited with saving Ursuline convent from 1812 fire and Andrew Jackson's victory at Battle of New Orleans 1815; patroness of Louisiana. | No |
+| 5 | Miracle of the Holy Fire | Holy Saturday | Annual phenomenon at the Church of the Holy Sepulchre, Jerusalem; Orthodox tradition; witnessed and documented for centuries. Historically significant but contested. | No |
+| 6 | Holy House of Loreto | Dec 10 | Holy House of Nazareth reportedly transported to Loreto, Italy 1294; recognized by numerous popes; 1999 archaeological study found stone matched Nazareth quarries. Weakest evidentiary standard — lower priority. | No |
