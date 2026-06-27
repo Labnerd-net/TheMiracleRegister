@@ -1,8 +1,9 @@
-Biography: Fulton Sheen
+Fulton John Sheen was born on May 8, 1895, in El Paso, Illinois, the eldest of four sons of Newton and Delia Sheen. Ordained a priest for the Diocese of Peoria in 1919, he pursued graduate studies in philosophy at the Catholic University of Louvain in Belgium, where he won the Prix d'Excellence — an award given to the top graduate student across all faculties. He later taught philosophy at Catholic University of America in Washington for two decades.
 
-[TO BE WRITTEN — ~300 words]
+He became nationally known through The Catholic Hour, a radio program that began in 1930 and eventually reached four million listeners weekly. In 1952 he launched the television series Life Is Worth Living, which ran until 1957 and attracted an estimated 30 million viewers at its peak — making him the first major Catholic figure to use commercial television as a vehicle for evangelization. He won an Emmy Award for Most Outstanding Television Personality in 1952.
 
-Born in El Paso, Illinois. Ordained a priest in 1919. Renowned preacher and televangelist — his show 'Life is Worth Living' reached 30 million viewers weekly in the 1950s, winning an Emmy. Bishop of Rochester from 1966-1969. Declared venerable in 2012. His body was stolen from its crypt in 1979 but later recovered.
+From 1950 to 1966 Sheen served as national director of the Society for the Propagation of the Faith, personally raising more than $200 million for the missions. He was appointed Auxiliary Bishop of New York in 1951 and Bishop of Rochester in 1966, before returning to New York, where he died in his private chapel on December 9, 1979.
 
-Sources:
-- [TO BE ADDED]
+Throughout his life Sheen maintained a daily holy hour before the Blessed Sacrament — a practice he credited with sustaining his priesthood and his public ministry. His Marian devotion was equally central; he attributed all of his work to the intercession of Our Lady. He is widely regarded as one of the most influential American Catholics of the twentieth century, with a body of writing and broadcast work that continues to be studied and republished.
+
+His cause for canonization was opened by the Diocese of Peoria. Pope Benedict XVI declared him Venerable on June 28, 2012, recognizing his heroic virtue. His beatification is scheduled for September 24, 2026, in St. Louis.
