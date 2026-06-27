@@ -9,6 +9,7 @@ import { humanizeSnakeCase, ogDescription } from "../../lib/format";
 
 const { slug } = Astro.params;
 const db = createDb(env.DATABASE_URL);
+const isPreview = Astro.url.searchParams.get("preview") === env.PREVIEW_TOKEN;
 
 const [miracle] = await db.select({
   id: miracles.id,
@@ -41,7 +42,11 @@ const [miracle] = await db.select({
   vatican_decree_date: miracles.vatican_decree_date,
   witness_count: miracles.witness_count,
   image_url: miracles.image_url,
-}).from(miracles).where(and(eq(miracles.slug, slug!), eq(miracles.published, true)));
+}).from(miracles).where(
+  isPreview
+    ? eq(miracles.slug, slug!)
+    : and(eq(miracles.slug, slug!), eq(miracles.published, true))
+);
 if (!miracle) return Astro.redirect("/404");
 
 const hasTopics = miracle.topics && miracle.topics.length > 0;

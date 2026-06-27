@@ -9,8 +9,13 @@ import { humanizeSnakeCase, ogDescription } from "../../lib/format";
 
 const { slug } = Astro.params;
 const db = createDb(env.DATABASE_URL);
+const isPreview = Astro.url.searchParams.get("preview") === env.PREVIEW_TOKEN;
 
-const [saint] = await db.select().from(saints).where(and(eq(saints.slug, slug!), eq(saints.published, true)));
+const [saint] = await db.select().from(saints).where(
+  isPreview
+    ? eq(saints.slug, slug!)
+    : and(eq(saints.slug, slug!), eq(saints.published, true))
+);
 if (!saint) return Astro.redirect("/404");
 
 const [saintMiracles, relatedRows, sources, locations] = await Promise.all([
@@ -32,7 +37,9 @@ const [saintMiracles, relatedRows, sources, locations] = await Promise.all([
     cure_details: miracles.cure_details,
   }).from(miracles)
     .innerJoin(miracleSaints, eq(miracles.id, miracleSaints.miracle_id))
-    .where(and(eq(miracleSaints.saint_id, saint.id), eq(miracles.published, true))),
+    .where(isPreview
+      ? eq(miracleSaints.saint_id, saint.id)
+      : and(eq(miracleSaints.saint_id, saint.id), eq(miracles.published, true))),
   db.select({
     id: saints.id, slug: saints.slug, name: saints.name,
     relation_type: saintRelations.relation_type,
