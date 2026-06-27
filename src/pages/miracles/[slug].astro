@@ -293,11 +293,11 @@ const ogDesc = ogDescription(miracle.synopsis) || undefined;
         </section>
       )}
 
-      {images.length > 1 && (
+      {images.length > 0 && (
         <section class="mb-9 pb-9 section-rule">
           <p class="eyebrow mb-5">Images</p>
           <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
-            {images.slice(1).map((img) => (
+            {images.map((img) => (
               <div class="rounded overflow-hidden" style="background:var(--bg-elevated)">
                 <img src={img.url} alt={img.caption ?? miracle.title} class="w-full object-cover" style="max-height:220px;object-position:center top" />
                 {(img.caption || img.source_attribution) && (
