@@ -64,7 +64,7 @@ const locationData = locationRows.map(l => ({
 ---
 
 <Base title="Map — The Miracle Register">
-  <link slot="head" rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY=" crossorigin="" />
+  <link slot="head" rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
 
   <div class="page-header">
     <div class="max-w-6xl mx-auto px-4 sm:px-8 py-8 sm:py-10">
@@ -107,7 +107,7 @@ const locationData = locationRows.map(l => ({
     </div>
   </div>
 
-  <script is:inline src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV/XN2GqaY=" crossorigin=""></script>
+  <script is:inline src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
   <script is:inline define:vars={{ miracleData, locationData, typeColors: LOCATION_TYPE_COLORS }}>
     function escHtml(s) {
       return String(s ?? "").replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;").replace(/"/g,"&quot;");
