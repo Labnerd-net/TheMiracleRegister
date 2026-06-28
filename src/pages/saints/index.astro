@@ -3,18 +3,37 @@ import Base from "../../layouts/Base.astro";
 import Pagination from "../../components/Pagination.astro";
 import { createDb } from "../../db";
 import { saints } from "../../db/schema";
-import { asc, count, eq } from "drizzle-orm";
+import { canonizationStage } from "../../db/schema/enums";
+import { SAINT_THEMES } from "../../db/topics";
+import { humanizeSnakeCase } from "../../lib/format";
+import { asc, count, eq, and, ilike, sql } from "drizzle-orm";
 import { env } from "cloudflare:workers";
 
 const PAGE_SIZE = 20;
-const rawPage = parseInt(Astro.url.searchParams.get("page") ?? "1");
+const sp = Astro.url.searchParams;
+const rawPage = parseInt(sp.get("page") ?? "1");
 const page = Math.max(1, isNaN(rawPage) ? 1 : rawPage);
 const offset = (page - 1) * PAGE_SIZE;
 
+const rawStage = sp.get("canonization_stage") ?? "";
+const filterStage = (canonizationStage.enumValues as string[]).includes(rawStage)
+  ? rawStage as typeof canonizationStage.enumValues[number]
+  : undefined;
+const rawTheme = sp.get("theme") ?? "";
+const filterTheme = (SAINT_THEMES as readonly string[]).includes(rawTheme) ? rawTheme : undefined;
+const filterOrder = sp.get("religious_order") || undefined;
+const hasActiveFilters = !!(filterStage || filterTheme || filterOrder);
+
 const db = createDb(env.DATABASE_URL);
 
+const conditions = [eq(saints.published, true)];
+if (filterStage) conditions.push(eq(saints.canonization_stage, filterStage));
+if (filterTheme) conditions.push(sql`${saints.themes} @> ARRAY[${filterTheme}]::text[]`);
+if (filterOrder) conditions.push(ilike(saints.religious_order, `%${filterOrder}%`));
+const where = and(...conditions);
+
 const [[{ total }], pageSaints] = await Promise.all([
-  db.select({ total: count() }).from(saints).where(eq(saints.published, true)),
+  db.select({ total: count() }).from(saints).where(where),
   db
     .select({
       slug: saints.slug,
@@ -28,15 +47,23 @@ const [[{ total }], pageSaints] = await Promise.all([
       canonization_date: saints.canonization_date,
     })
     .from(saints)
-    .where(eq(saints.published, true))
+    .where(where)
     .orderBy(asc(saints.name))
     .limit(PAGE_SIZE)
     .offset(offset),
 ]);
 
 const totalPages = Math.max(1, Math.ceil(total / PAGE_SIZE));
-if (page > totalPages) return Astro.redirect(`/saints?page=${totalPages}`);
+if (page > totalPages) return Astro.redirect(buildUrl(totalPages));
 
+function buildUrl(p: number) {
+  const params = new URLSearchParams();
+  if (filterStage) params.set("canonization_stage", filterStage);
+  if (filterTheme) params.set("theme", filterTheme);
+  if (filterOrder) params.set("religious_order", filterOrder);
+  params.set("page", String(p));
+  return `/saints?${params.toString()}`;
+}
 ---
 
 <Base title="Saints">
@@ -45,13 +72,55 @@ if (page > totalPages) return Astro.redirect(`/saints?page=${totalPages}`);
     <div class="max-w-6xl mx-auto px-4 sm:px-8 py-10 sm:py-16">
       <p class="eyebrow mb-4">The Register</p>
       <h1 style="font-family:var(--font-display);font-size:clamp(2.5rem,5vw,4rem);font-weight:300;color:var(--text-1);line-height:1.05;letter-spacing:-0.01em">Saints</h1>
-      <p style="font-family:var(--font-sans);font-size:0.8rem;color:var(--text-4);margin-top:0.6rem;letter-spacing:0.02em">{total} saints documented</p>
+      <p id="saints-count" style="font-family:var(--font-sans);font-size:0.8rem;color:var(--text-4);margin-top:0.6rem;letter-spacing:0.02em">{total} saints documented</p>
     </div>
   </div>
 
-  <div class="max-w-6xl mx-auto px-4 sm:px-8 py-10 sm:py-14">
-    <div class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-x-6 gap-y-10">
-      {pageSaints.map((s) => (
+  <div class="max-w-6xl mx-auto px-4 sm:px-8 py-8 sm:py-12">
+
+    <!-- Filter bar -->
+    <form id="filter-form" method="get" action="/saints" class="filter-bar">
+      <div class="filter-controls">
+
+        <div class="filter-group">
+          <label class="filter-label">Stage</label>
+          <select name="canonization_stage" class="filter-select">
+            <option value="">All Stages</option>
+            <option value="saint" selected={filterStage === "saint"}>Saint</option>
+            <option value="blessed" selected={filterStage === "blessed"}>Blessed</option>
+            <option value="venerable" selected={filterStage === "venerable"}>Venerable</option>
+            <option value="servant_of_god" selected={filterStage === "servant_of_god"}>Servant of God</option>
+          </select>
+        </div>
+
+        <div class="filter-group">
+          <label class="filter-label">Theme</label>
+          <select name="theme" class="filter-select">
+            <option value="">All Themes</option>
+            {SAINT_THEMES.map(t => (
+              <option value={t} selected={t === filterTheme}>{humanizeSnakeCase(t)}</option>
+            ))}
+          </select>
+        </div>
+
+        <div class="filter-group">
+          <label class="filter-label">Religious Order</label>
+          <input type="text" name="religious_order" value={filterOrder ?? ""} placeholder="e.g. Franciscan" class="filter-input filter-input--text" />
+        </div>
+
+      </div>
+
+      <div class="filter-actions">
+        <button type="submit" class="filter-apply">Apply</button>
+        {hasActiveFilters && <a href="/saints" class="filter-clear">Clear filters</a>}
+      </div>
+    </form>
+
+    <!-- Grid -->
+    <div id="saints-grid" class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-x-6 gap-y-10 mt-8">
+      {pageSaints.length === 0 ? (
+        <p class="empty-state col-span-full">No saints match the selected filters.</p>
+      ) : pageSaints.map((s) => (
         <a href={`/saints/${s.slug}`} class="saint-card-link group no-underline">
           <div class="aspect-[3/4] overflow-hidden mb-4" style="background:var(--bg-elevated)">
             {s.image_url ? (
@@ -83,12 +152,239 @@ if (page > totalPages) return Astro.redirect(`/saints?page=${totalPages}`);
       ))}
     </div>
 
-    <Pagination page={page} totalPages={totalPages} prevUrl={`/saints?page=${page - 1}`} nextUrl={`/saints?page=${page + 1}`} />
+    <nav id="saints-pagination" aria-label="Page navigation">
+      <Pagination page={page} totalPages={totalPages} prevUrl={buildUrl(page - 1)} nextUrl={buildUrl(page + 1)} />
+    </nav>
   </div>
 
 </Base>
 
+<script>
+(function () {
+  const form = document.getElementById("filter-form") as HTMLFormElement | null;
+  const gridEl = document.getElementById("saints-grid");
+  const paginationEl = document.getElementById("saints-pagination");
+  const countEl = document.getElementById("saints-count");
+  if (!form || !gridEl || !paginationEl || !countEl) return;
+
+  let debounceTimer = 0;
+
+  function esc(str: string | null | undefined): string {
+    return String(str ?? "").replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;").replace(/"/g, "&quot;");
+  }
+
+  function buildApiUrl(fd: FormData, page: number): string {
+    const p = new URLSearchParams();
+    const stage = fd.get("canonization_stage") as string;
+    const theme = fd.get("theme") as string;
+    const order = fd.get("religious_order") as string;
+    if (stage) p.set("canonization_stage", stage);
+    if (theme) p.set("theme", theme);
+    if (order) p.set("religious_order", order);
+    p.set("page", String(page));
+    p.set("limit", "20");
+    return `/api/v1/saints?${p.toString()}`;
+  }
+
+  function buildPageUrl(fd: FormData, page: number): string {
+    const p = new URLSearchParams();
+    const stage = fd.get("canonization_stage") as string;
+    const theme = fd.get("theme") as string;
+    const order = fd.get("religious_order") as string;
+    if (stage) p.set("canonization_stage", stage);
+    if (theme) p.set("theme", theme);
+    if (order) p.set("religious_order", order);
+    if (page > 1) p.set("page", String(page));
+    const qs = p.toString();
+    return qs ? `/saints?${qs}` : "/saints";
+  }
+
+  function renderCard(s: any): string {
+    const placeholder = `<div style="width:100%;height:100%;display:flex;align-items:center;justify-content:center;font-family:var(--font-display);font-size:3rem;font-weight:300;color:var(--text-4);background:var(--bg-elevated)">${esc(s.name?.charAt(0))}</div>`;
+    const img = s.image_url
+      ? `<img src="${esc(s.image_url)}" alt="${esc(s.name)}" style="width:100%;height:100%;object-fit:cover;object-position:top" />`
+      : placeholder;
+    const stage = s.canonization_stage ?? "";
+    const feastDay = s.feast_day ? `<span style="display:block">${esc(s.feast_day)}</span>` : "";
+    const nationality = s.nationality ? `<span style="display:block">${esc(s.nationality)}</span>` : "";
+    return `<a href="/saints/${esc(s.slug)}" class="saint-card-link group no-underline">
+      <div class="aspect-[3/4] overflow-hidden mb-4" style="background:var(--bg-elevated)">${img}</div>
+      <div>
+        <h2 style="font-family:var(--font-display);font-size:1.2rem;font-weight:400;color:var(--text-1);line-height:1.25;margin-bottom:0.35rem;transition:color 0.2s" class="group-hover:text-[--color-accent]">${esc(s.name)}</h2>
+        <div style="display:flex;align-items:center;gap:0.5rem;flex-wrap:wrap;margin-bottom:0.375rem">
+          <span class="stage-badge ${esc(stage)}">${esc(stage)}</span>
+        </div>
+        <div style="font-family:var(--font-sans);font-size:0.7rem;color:var(--text-4);line-height:1.6">${feastDay}${nationality}</div>
+      </div>
+    </a>`;
+  }
+
+  function renderPagination(meta: any, fd: FormData): string {
+    const { page, limit, total } = meta;
+    const totalPages = Math.max(1, Math.ceil(total / limit));
+    if (totalPages <= 1) return "";
+    const hasPrev = page > 1;
+    const hasNext = page < totalPages;
+    return `<div style="display:flex;align-items:center;justify-content:center;gap:1.5rem;margin-top:3rem;padding-top:2rem;border-top:1px solid var(--rule-light)">
+      ${hasPrev ? `<a href="${buildPageUrl(fd, page - 1)}" class="pagination-btn js-page" data-page="${page - 1}">← Previous</a>` : `<span class="pagination-btn disabled">← Previous</span>`}
+      <span class="pagination-info">Page ${page} of ${totalPages}</span>
+      ${hasNext ? `<a href="${buildPageUrl(fd, page + 1)}" class="pagination-btn js-page" data-page="${page + 1}">Next →</a>` : `<span class="pagination-btn disabled">Next →</span>`}
+    </div>`;
+  }
+
+  async function applyFilters(page: number = 1) {
+    const fd = new FormData(form!);
+    try {
+      const res = await fetch(buildApiUrl(fd, page));
+      if (!res.ok) return;
+      const json = await res.json() as any;
+      const { data, meta } = json;
+
+      countEl!.textContent = `${meta.total} saint${meta.total !== 1 ? "s" : ""} documented`;
+
+      gridEl!.innerHTML = data.length === 0
+        ? `<p class="empty-state col-span-full">No saints match the selected filters.</p>`
+        : (data as any[]).map(renderCard).join("");
+
+      paginationEl!.innerHTML = renderPagination(meta, fd);
+
+      history.pushState(null, "", buildPageUrl(fd, page));
+    } catch {
+      // silently fall back to server-rendered state
+    }
+  }
+
+  form.addEventListener("change", (e) => {
+    const target = e.target as HTMLInputElement;
+    if (target.type === "text") return;
+    applyFilters();
+  });
+
+  form.addEventListener("input", (e) => {
+    const target = e.target as HTMLInputElement;
+    if (target.type !== "text") return;
+    clearTimeout(debounceTimer);
+    debounceTimer = window.setTimeout(() => applyFilters(), 400);
+  });
+
+  form.addEventListener("submit", (e) => {
+    e.preventDefault();
+    applyFilters();
+  });
+
+  paginationEl.addEventListener("click", (e) => {
+    const target = (e.target as HTMLElement).closest(".js-page") as HTMLAnchorElement | null;
+    if (!target) return;
+    e.preventDefault();
+    const p = parseInt(target.dataset.page ?? "1");
+    applyFilters(p);
+    window.scrollTo({ top: 0, behavior: "smooth" });
+  });
+})();
+</script>
+
 <style>
+  .filter-bar {
+    background: var(--bg-elevated);
+    border: 1px solid var(--rule-light);
+    border-radius: 6px;
+    padding: 1rem 1.25rem;
+  }
+
+  .filter-controls {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 1rem 1.5rem;
+    align-items: flex-end;
+  }
+
+  .filter-group {
+    display: flex;
+    flex-direction: column;
+    gap: 0.3rem;
+    min-width: 0;
+  }
+
+  .filter-label {
+    font-family: var(--font-sans);
+    font-size: 0.63rem;
+    font-weight: 600;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--text-4);
+  }
+
+  .filter-select,
+  .filter-input {
+    font-family: var(--font-sans);
+    font-size: 0.8rem;
+    color: var(--text-2);
+    background: var(--bg-base);
+    border: 1px solid var(--rule-mid);
+    border-radius: 4px;
+    padding: 0.35rem 0.6rem;
+    height: 2rem;
+  }
+
+  .filter-select {
+    appearance: none;
+    padding-right: 1.8rem;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='10' height='6'%3E%3Cpath d='M0 0l5 6 5-6z' fill='%23666'/%3E%3C/svg%3E");
+    background-repeat: no-repeat;
+    background-position: right 0.55rem center;
+  }
+
+  .filter-input--text {
+    min-width: 12rem;
+  }
+
+  .filter-select:focus,
+  .filter-input:focus {
+    outline: none;
+    border-color: var(--color-accent);
+  }
+
+  .filter-actions {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    margin-top: 0.85rem;
+    padding-top: 0.75rem;
+    border-top: 1px solid var(--rule-light);
+  }
+
+  .filter-apply {
+    font-family: var(--font-sans);
+    font-size: 0.75rem;
+    font-weight: 600;
+    letter-spacing: 0.04em;
+    color: var(--bg-base);
+    background: var(--color-accent);
+    border: none;
+    border-radius: 4px;
+    padding: 0.35rem 0.9rem;
+    cursor: pointer;
+  }
+
+  .filter-apply:hover { opacity: 0.85; }
+
+  .filter-clear {
+    font-family: var(--font-sans);
+    font-size: 0.75rem;
+    color: var(--text-4);
+    text-decoration: none;
+  }
+
+  .filter-clear:hover { color: var(--text-2); }
+
+  .empty-state {
+    font-family: var(--font-sans);
+    font-size: 0.85rem;
+    color: var(--text-4);
+    padding: 2rem 0;
+    text-align: center;
+  }
+
   .pagination {
     display: flex;
     align-items: center;

@@ -1,10 +1,11 @@
 import { OpenAPIHono, createRoute, z } from "@hono/zod-openapi";
-import { asc, eq, sql, and, inArray } from "drizzle-orm";
+import { asc, eq, sql, and, inArray, ilike } from "drizzle-orm";
 import { createDb } from "../../db";
 import { miracleSaints, miracles, saintRelations, saints } from "../../db/schema";
+import { canonizationStage } from "../../db/schema/enums";
+import { SAINT_THEMES } from "../../db/topics";
 import {
   MiracleListItemSchema,
-  PaginationQuerySchema,
   RelatedSaintSchema,
   SaintDetailSchema,
   SaintListItemSchema,
@@ -13,13 +14,21 @@ import {
 import type { ApiEnv } from "../env";
 import { notFound } from "../errors";
 
+const SaintsQuerySchema = z.object({
+  page: z.coerce.number().int().positive().default(1),
+  limit: z.coerce.number().int().positive().max(100).default(20),
+  canonization_stage: z.enum(canonizationStage.enumValues).optional(),
+  theme: z.enum(SAINT_THEMES).optional(),
+  religious_order: z.string().max(100).optional(),
+});
+
 const saintsRoute = new OpenAPIHono<ApiEnv>();
 
 saintsRoute.openapi(
   createRoute({
     method: "get",
     path: "/",
-    request: { query: PaginationQuerySchema },
+    request: { query: SaintsQuerySchema },
     responses: {
       200: {
         content: { "application/json": { schema: envelopeSchema(z.array(SaintListItemSchema)) } },
@@ -28,9 +37,15 @@ saintsRoute.openapi(
     },
   }),
   async (c) => {
-    const { page, limit } = c.req.valid("query");
+    const { page, limit, canonization_stage, theme, religious_order } = c.req.valid("query");
     const offset = (page - 1) * limit;
     const db = createDb(c.env.DATABASE_URL);
+
+    const conditions = [eq(saints.published, true)];
+    if (canonization_stage) conditions.push(eq(saints.canonization_stage, canonization_stage));
+    if (theme) conditions.push(sql`${saints.themes} @> ARRAY[${theme}]::text[]`);
+    if (religious_order) conditions.push(ilike(saints.religious_order, `%${religious_order}%`));
+    const where = and(...conditions);
 
     const [rows, [{ total }]] = await Promise.all([
       db
@@ -45,11 +60,11 @@ saintsRoute.openapi(
           image_url: saints.image_url,
         })
         .from(saints)
-        .where(eq(saints.published, true))
+        .where(where)
         .orderBy(asc(saints.name))
         .offset(offset)
         .limit(limit),
-      db.select({ total: sql<number>`count(*)::int` }).from(saints).where(eq(saints.published, true)),
+      db.select({ total: sql<number>`count(*)::int` }).from(saints).where(where),
     ]);
 
     return c.json({ data: rows, meta: { page, limit, total }, error: null }, 200);
