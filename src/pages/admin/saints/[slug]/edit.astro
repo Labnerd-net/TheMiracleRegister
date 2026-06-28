@@ -1,9 +1,9 @@
 ---
 import AdminBase from "../../../../layouts/AdminBase.astro";
 import { createDb } from "../../../../db";
-import { saints, saintSources, saintLocations } from "../../../../db/schema";
-import { asc, and, eq } from "drizzle-orm";
-import { canonizationType, canonizationStage, dispensationReason, gender, sourceType, locationType } from "../../../../db/schema/enums";
+import { saints, saintSources, saintLocations, saintRelations } from "../../../../db/schema";
+import { asc, and, eq, ne } from "drizzle-orm";
+import { canonizationType, canonizationStage, dispensationReason, gender, sourceType, locationType, relationTypeEnum } from "../../../../db/schema/enums";
 import { parseEnum, formHelpers } from "../../../../lib/form-utils";
 import { humanizeSnakeCase } from "../../../../lib/format";
 import { SaintFormSchema, formatZodErrors } from "../../../../lib/form-schemas";
@@ -22,6 +22,8 @@ let sourceError = "";
 let sourceSuccess = "";
 let locationError = "";
 let locationSuccess = "";
+let relationError = "";
+let relationSuccess = "";
 
 if (Astro.request.method === "POST") {
   const form = await Astro.request.formData();
@@ -78,6 +80,26 @@ if (Astro.request.method === "POST") {
       await db.delete(saintLocations).where(and(eq(saintLocations.id, locationId), eq(saintLocations.saint_id, saint.id)));
       locationSuccess = "Location removed.";
     }
+  } else if (action === "add_relation") {
+    const relatedId = parseInt(get("related_saint_id"));
+    const relType = parseEnum(get("relation_type"), relationTypeEnum.enumValues, "canonized_together");
+    if (!relatedId || relatedId === saint.id) {
+      relationError = "Select a valid saint to relate.";
+    } else try {
+      await db.insert(saintRelations).values({ saint_id: saint.id, related_saint_id: relatedId, relation_type: relType! });
+      await db.insert(saintRelations).values({ saint_id: relatedId, related_saint_id: saint.id, relation_type: relType! });
+      relationSuccess = "Relation added.";
+    } catch (e: any) {
+      relationError = e?.message ?? "Failed to add relation.";
+    }
+  } else if (action === "delete_relation") {
+    const relatedId = parseInt(get("related_saint_id"));
+    const relType = get("relation_type");
+    if (relatedId && relType) {
+      await db.delete(saintRelations).where(and(eq(saintRelations.saint_id, saint.id), eq(saintRelations.related_saint_id, relatedId)));
+      await db.delete(saintRelations).where(and(eq(saintRelations.saint_id, relatedId), eq(saintRelations.related_saint_id, saint.id)));
+      relationSuccess = "Relation removed.";
+    }
   } else {
   const validation = SaintFormSchema.safeParse({ name: get("name"), canonization_stage: get("canonization_stage") });
   if (!validation.success) {
@@ -129,9 +151,15 @@ if (success) {
   const [updated] = await db.select().from(saints).where(eq(saints.slug, slug!));
   v = updated ?? saint;
 }
-const [sources, locations] = await Promise.all([
+const [sources, locations, relations, allSaints] = await Promise.all([
   db.select().from(saintSources).where(eq(saintSources.saint_id, saint.id)).orderBy(asc(saintSources.id)),
   db.select().from(saintLocations).where(eq(saintLocations.saint_id, saint.id)).orderBy(asc(saintLocations.id)),
+  db.select({ related_saint_id: saintRelations.related_saint_id, relation_type: saintRelations.relation_type, name: saints.name })
+    .from(saintRelations)
+    .innerJoin(saints, eq(saints.id, saintRelations.related_saint_id))
+    .where(eq(saintRelations.saint_id, saint.id))
+    .orderBy(asc(saints.name)),
+  db.select({ id: saints.id, name: saints.name }).from(saints).where(ne(saints.id, saint.id)).orderBy(asc(saints.name)),
 ]);
 ---
 
@@ -267,6 +295,59 @@ const [sources, locations] = await Promise.all([
           </div>
         </div>
         <button type="submit" class="btn btn-primary">Add Location</button>
+      </form>
+    </div>
+  </fieldset>
+
+  <fieldset style="margin-top:2rem">
+    <legend>Relations</legend>
+
+    {relationError && <div class="error" style="margin-bottom:1rem">{relationError}</div>}
+    {relationSuccess && <div class="success" style="margin-bottom:1rem">{relationSuccess}</div>}
+
+    {relations.length === 0 && (
+      <p style="font-size:0.85rem;color:#888;margin-bottom:1rem">No relations added yet.</p>
+    )}
+
+    {relations.map((r) => (
+      <div style="display:flex;align-items:baseline;gap:0.75rem;padding:0.5rem 0;border-bottom:1px solid #eee">
+        <div style="flex:1;min-width:0">
+          <div style="font-size:0.875rem;font-weight:600">{r.name}</div>
+          <div style="font-size:0.75rem;color:#888;margin-top:0.1rem">{humanizeSnakeCase(r.relation_type)}</div>
+        </div>
+        <form method="post" style="flex-shrink:0">
+          <input type="hidden" name="_action" value="delete_relation" />
+          <input type="hidden" name="related_saint_id" value={r.related_saint_id} />
+          <input type="hidden" name="relation_type" value={r.relation_type} />
+          <button type="submit" style="background:none;border:none;color:#dc2626;font-size:0.8rem;cursor:pointer;padding:0">Remove</button>
+        </form>
+      </div>
+    ))}
+
+    <div style="margin-top:1.25rem">
+      <p style="font-size:0.8rem;font-weight:600;color:#444;margin-bottom:0.75rem">Add Relation</p>
+      <form method="post">
+        <input type="hidden" name="_action" value="add_relation" />
+        <div class="two-col" style="margin-bottom:0.75rem">
+          <div class="field">
+            <label for="related_saint_id">Saint *</label>
+            <select id="related_saint_id" name="related_saint_id">
+              <option value="">— select —</option>
+              {allSaints.map((s) => (
+                <option value={s.id}>{s.name}</option>
+              ))}
+            </select>
+          </div>
+          <div class="field">
+            <label for="relation_type">Relation Type</label>
+            <select id="relation_type" name="relation_type">
+              {relationTypeEnum.enumValues.map((t) => (
+                <option value={t}>{humanizeSnakeCase(t)}</option>
+              ))}
+            </select>
+          </div>
+        </div>
+        <button type="submit" class="btn btn-primary">Add Relation</button>
       </form>
     </div>
   </fieldset>
