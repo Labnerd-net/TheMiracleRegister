@@ -1,7 +1,7 @@
 ---
 import AdminBase from "../../../../layouts/AdminBase.astro";
 import { createDb } from "../../../../db";
-import { miracles, miracleSources, miracleSaints, saints } from "../../../../db/schema";
+import { miracles, miracleSaints, saints } from "../../../../db/schema";
 import { eq } from "drizzle-orm";
 import { env } from "cloudflare:workers";
 
@@ -21,7 +21,6 @@ const linkedSaints = await db
   .where(eq(miracleSaints.miracle_id, miracle.id));
 
 if (Astro.request.method === "POST") {
-  await db.delete(miracleSources).where(eq(miracleSources.miracle_id, miracle.id));
   await db.delete(miracles).where(eq(miracles.id, miracle.id));
   return Astro.redirect("/admin/miracles");
 }

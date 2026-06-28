@@ -6,7 +6,7 @@ export const miracleSources = pgTable("miracle_sources", {
   id: serial("id").primaryKey(),
   miracle_id: integer("miracle_id")
     .notNull()
-    .references(() => miracles.id),
+    .references(() => miracles.id, { onDelete: "cascade" }),
   url: text("url").notNull(),
   title: text("title"),
   source_type: sourceType("source_type").notNull(),

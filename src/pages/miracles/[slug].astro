@@ -137,7 +137,7 @@ const ogDesc = ogDescription(miracle.synopsis) || undefined;
 
 <Base title={miracle.title} description={ogDesc} ogImage={images[0]?.url ?? undefined} ogType="article">
   {miracle.location_lat && miracle.location_lng && (
-    <link slot="head" rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+    <link slot="head" rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY=" crossorigin="" />
   )}
 
   <div class="page-header">
@@ -377,7 +377,7 @@ const ogDesc = ogDescription(miracle.synopsis) || undefined;
 
   {miracle.location_lat && miracle.location_lng && (
     <>
-      <script is:inline src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+      <script is:inline src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=" crossorigin=""></script>
       <script is:inline define:vars={{
         lat: miracle.location_lat,
         lng: miracle.location_lng,

@@ -11,9 +11,8 @@
 _None identified._
 
 ### Medium
-- **#3 [src/db/schema/miracle-sources.ts, src/db/schema/saint-sources.ts]** FK references on `miracle_id` and `saint_id` have no `{ onDelete: "cascade" }`, unlike `miracle-images.ts`. The admin delete flow for miracles manually deletes sources first then the miracle in sequential awaits with no transaction — if the miracle delete fails, sources are gone. Deleting a saint directly at the DB level will cause a FK violation on `saint_sources`. Fix: add `{ onDelete: "cascade" }` to both FKs, generate and apply a migration, then simplify the miracle delete to a single call.
+
 - **#4 [src/pages/admin/login.astro]** Admin login brute-force protection is a 300ms delay only, allowing ~200 guesses/minute. No lockout, no attempt counter, no IP throttling. Fix: add a Cloudflare Rate Limiting binding or a KV-backed counter keyed to `Astro.clientAddress` (e.g. 5 failures per 15 minutes).
-- **#5 [src/pages/map.astro, src/pages/saints/[slug].astro, src/pages/miracles/[slug].astro]** Leaflet loaded from `unpkg.com` CDN with no `integrity` attribute. Fix: switch to jsDelivr (which publishes SRI hashes in its docs) or compute hashes locally with `curl -s <url> | openssl dgst -sha256 -binary | base64`.
 
 ### Low
 _None identified._
@@ -86,9 +85,9 @@ _None identified._
 
 | Category | High | Medium | Low | Total |
 |----------|------|--------|-----|-------|
-| Security | 0 | 3 | 0 | 3 |
+| Security | 0 | 1 | 0 | 1 |
 | Bugs | 0 | 0 | 0 | 0 |
 | Performance | 0 | 0 | 1 | 1 |
 | Improvements & Refactors | 0 | 1 | 3 | 4 |
 | Feature Ideas | 0 | 1 | 9 | 10 |
-| **Total** | **0** | **5** | **13** | **18** |
+| **Total** | **0** | **3** | **13** | **16** |

@@ -183,6 +183,13 @@
       "when": 1782593018569,
       "tag": "0025_right_stardust",
       "breakpoints": true
+    },
+    {
+      "idx": 26,
+      "version": "7",
+      "when": 1782621742072,
+      "tag": "0026_tired_shockwave",
+      "breakpoints": true
     }
   ]
 }
