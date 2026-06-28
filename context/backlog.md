@@ -69,8 +69,6 @@ _None identified._
 _None identified._
 
 ### Medium
-- **#28 [src/pages/miracles/index.astro, src/api/routes/miracles.ts]** Topic filter missing from `/miracles` filter bar. Topics are the primary discovery dimension (`MIRACLE_TOPICS` has 13 values, GIN index exists), displayed on list cards, but there's no Topic dropdown. The API `MiraclesQuerySchema` also has no `topic` param. Fix: add `topic` to the API schema with `sql\`${miracles.topics} @> ARRAY[${topic}]::text[]\`` condition, and add the dropdown to the filter bar and JS `buildApiUrl`/`buildPageUrl` functions.
-- **#29 [src/pages/miracles/index.astro]** Miracle category filter (`intercessory`, `associated`, `apparition`) missing from filter bar. Users cannot browse only apparitions or only intercessory miracles. Fix: add a Category dropdown to the filter bar, wired through the API schema and JS swap logic.
 - **#28 [src/pages/]** The OpenAPI spec is generated and served at `/api/v1/doc` but nothing on the public site links to it or explains the API exists. Fix: add an API page or section in the footer/about area pointing to `/api/v1/doc` with a brief description of available endpoints.
 
 ### Low
@@ -96,5 +94,5 @@ _None identified._
 | Bugs | 0 | 1 | 0 | 1 |
 | Performance | 0 | 0 | 1 | 1 |
 | Improvements & Refactors | 0 | 3 | 5 | 8 |
-| Feature Ideas | 0 | 3 | 10 | 13 |
-| **Total** | **0** | **10** | **16** | **26** |
+| Feature Ideas | 0 | 1 | 10 | 11 |
+| **Total** | **0** | **8** | **16** | **24** |
