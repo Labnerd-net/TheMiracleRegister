@@ -3,6 +3,7 @@ import { MIRACLE_TOPICS } from "../db/topics";
 import {
   miracleCategory, miracleType, datePrecision, timingRelativeToSaintDeath,
   recipientPrivacy, recipientGender, cureCharacteristics, intercessoryMedium, approvalAuthority,
+  contentTier,
 } from "../db/schema/enums";
 import type { miracles, saints } from "../db/schema";
 
@@ -134,6 +135,26 @@ const currentSaintIds = new Set(selectedSaintIds);
       <div class="field">
         <label for="location_name">Location Name</label>
         <input type="text" id="location_name" name="location_name" value={v?.location_name ?? ""} />
+      </div>
+      <div class="field">
+        <label for="location_lat">Latitude</label>
+        <input type="text" id="location_lat" name="location_lat" value={v?.location_lat ?? ""} placeholder="e.g. 48.8566" />
+      </div>
+      <div class="field">
+        <label for="location_lng">Longitude</label>
+        <input type="text" id="location_lng" name="location_lng" value={v?.location_lng ?? ""} placeholder="e.g. 2.3522" />
+      </div>
+      <div class="field">
+        <label for="feast_month">Feast Month <span style="font-weight:400;color:#888">(1–12)</span></label>
+        <input type="number" id="feast_month" name="feast_month" min="1" max="12" value={v?.feast_month ?? ""} style="max-width:100px" />
+      </div>
+      <div class="field">
+        <label for="feast_day_of_month">Feast Day of Month</label>
+        <input type="number" id="feast_day_of_month" name="feast_day_of_month" min="1" max="31" value={v?.feast_day_of_month ?? ""} style="max-width:100px" />
+      </div>
+      <div class="field">
+        <label for="feast_easter_offset">Easter Offset <span style="font-weight:400;color:#888">(days from Easter, for movable feasts)</span></label>
+        <input type="number" id="feast_easter_offset" name="feast_easter_offset" value={v?.feast_easter_offset ?? ""} style="max-width:100px" />
       </div>
     </div>
   </fieldset>
@@ -283,6 +304,14 @@ const currentSaintIds = new Set(selectedSaintIds);
       </div>
       <textarea id="synopsis" name="synopsis" rows={v ? 20 : 16}>{v?.synopsis ?? ""}</textarea>
       <p class="hint" id="synopsis-count">500–1000 words narrative</p>
+    </div>
+    <div class="field">
+      <label for="content_tier">Content Tier</label>
+      <select id="content_tier" name="content_tier">
+        {contentTier.enumValues.map((t) => (
+          <option value={t} selected={v ? v.content_tier === t : t === "core"}>{t}</option>
+        ))}
+      </select>
     </div>
     <div class="field">
       <label>

@@ -52,10 +52,7 @@ _None identified._
 _None identified._
 
 ### Medium
-- **#13 [src/components/MiracleForm.astro, src/pages/admin/miracles/[slug]/edit.astro]** `content_tier` (core / catalog / stub) is defined in schema and defaults to `core` but is never exposed in `MiracleForm.astro`, never set by the edit handler, and never rendered on public pages. The field is completely inert — there's no way to mark a record as `catalog` or `stub` through the UI or to render it differently. Fix: add a `<select>` for `content_tier` in `MiracleForm.astro`, wire it into the edit handler, and conditionally render catalog/stub records with different layouts on the public detail page.
-- **#14 [src/components/MiracleForm.astro, src/pages/admin/miracles/[slug]/edit.astro]** Miracle location coordinates (`location_lat`, `location_lng`) are not in the admin form or edit handler. The public miracle detail page renders a Leaflet map if those coordinates are populated, but there's no way to set them through the UI — requires a direct DB edit. Fix: add `lat`/`lng` number inputs to `MiracleForm.astro` and wire them into the edit handler's `.set({})` call.
-- **#15 [src/components/MiracleForm.astro, src/components/SaintForm.astro]** `feast_month`, `feast_day_of_month`, and `feast_easter_offset` exist on both `miracles` and `saints` tables and are already displayed on public pages via `formatFeastDay()`. Neither admin form exposes these fields, so they can only be set via direct DB edit. Fix: add the three feast day inputs to both forms and wire them into both create and edit handlers.
-- **#16 [src/pages/admin/saints/[slug]/edit.astro]** The `saint_relations` join table is used by the public saint detail page and the API, but the admin saint edit page has no way to add or remove relations. There's no UI for the table at all. Fix: add an add/delete relations section to the saint edit page, matching the existing sources/locations pattern.
+- **#13 [src/pages/admin/saints/[slug]/edit.astro]** The `saint_relations` join table is used by the public saint detail page and the API, but the admin saint edit page has no way to add or remove relations. There's no UI for the table at all. Fix: add an add/delete relations section to the saint edit page, matching the existing sources/locations pattern.
 
 ### Low
 - **#22 [src/pages/saints/index.astro, src/pages/miracles/index.astro]** `buildApiUrl()`, `buildPageUrl()`, and `renderPagination()` are structurally identical across both list pages — only the field names differ. Fix: extract into a reusable client-side utility module.
@@ -98,6 +95,6 @@ _None identified._
 | Security | 0 | 3 | 0 | 3 |
 | Bugs | 0 | 1 | 0 | 1 |
 | Performance | 0 | 0 | 1 | 1 |
-| Improvements & Refactors | 0 | 6 | 5 | 11 |
+| Improvements & Refactors | 0 | 3 | 5 | 8 |
 | Feature Ideas | 0 | 3 | 10 | 13 |
-| **Total** | **0** | **13** | **16** | **29** |
+| **Total** | **0** | **10** | **16** | **26** |
