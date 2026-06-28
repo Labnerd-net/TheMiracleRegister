@@ -234,6 +234,7 @@ function buildUrl(p: number) {
 
   async function applyFilters(page: number = 1) {
     const fd = new FormData(form!);
+    gridEl!.classList.add("loading");
     try {
       const res = await fetch(buildApiUrl(fd, page));
       if (!res.ok) return;
@@ -251,6 +252,8 @@ function buildUrl(p: number) {
       history.pushState(null, "", buildPageUrl(fd, page));
     } catch {
       // silently fall back to server-rendered state
+    } finally {
+      gridEl!.classList.remove("loading");
     }
   }
 
@@ -376,6 +379,8 @@ function buildUrl(p: number) {
   }
 
   .filter-clear:hover { color: var(--text-2); }
+
+  #saints-grid.loading { opacity: 0.4; pointer-events: none; transition: opacity 0.15s; }
 
   .empty-state {
     font-family: var(--font-sans);

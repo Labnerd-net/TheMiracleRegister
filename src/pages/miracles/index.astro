@@ -260,7 +260,7 @@ const MIRACLE_TYPES = [
 
                 {m.topics && m.topics.length > 0 && (
                   <div class="flex flex-wrap gap-1">
-                    {m.topics.slice(0, 5).map((t) => <span class="tag">{t}</span>)}
+                    {m.topics.slice(0, 5).map((t) => <span class="tag tag--link" onclick={`event.stopPropagation();window.location='/miracles?topic=${encodeURIComponent(t)}'`}>{t}</span>)}
                     {m.topics.length > 5 && <span class="tag">+{m.topics.length - 5}</span>}
                   </div>
                 )}
@@ -381,7 +381,7 @@ const MIRACLE_TYPES = [
 
     const topics = (m.topics ?? []) as string[];
     const topicHtml = topics.length > 0
-      ? `<div class="flex flex-wrap gap-1">${topics.slice(0, 5).map((t) => `<span class="tag">${esc(t)}</span>`).join("")}${topics.length > 5 ? `<span class="tag">+${topics.length - 5}</span>` : ""}</div>`
+      ? `<div class="flex flex-wrap gap-1">${topics.slice(0, 5).map((t) => `<span class="tag tag--link" onclick="event.stopPropagation();window.location='/miracles?topic=${encodeURIComponent(t)}'">${esc(t)}</span>`).join("")}${topics.length > 5 ? `<span class="tag">+${topics.length - 5}</span>` : ""}</div>`
       : "";
 
     const approvalMap: Record<string, { cls: string; label: string }> = {
@@ -427,6 +427,7 @@ const MIRACLE_TYPES = [
   async function applyFilters(page: number = 1) {
     const fd = new FormData(form!);
     currentPage = page;
+    listEl!.classList.add("loading");
     try {
       const res = await fetch(buildApiUrl(fd, page));
       if (!res.ok) return;
@@ -444,6 +445,8 @@ const MIRACLE_TYPES = [
       history.pushState(null, "", buildPageUrl(fd, page));
     } catch {
       // silently fall back — user still has the server-rendered state
+    } finally {
+      listEl!.classList.remove("loading");
     }
   }
 
@@ -604,6 +607,11 @@ const MIRACLE_TYPES = [
   }
 
   .filter-clear:hover { color: var(--text-2); }
+
+  .tag--link { cursor: pointer; }
+  .tag--link:hover { opacity: 0.75; }
+
+  #miracles-list.loading { opacity: 0.4; pointer-events: none; transition: opacity 0.15s; }
 
   .empty-state {
     font-family: var(--font-sans);

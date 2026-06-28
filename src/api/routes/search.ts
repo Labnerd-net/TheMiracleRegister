@@ -39,6 +39,8 @@ search.openapi(
       if (!seen.has(key)) { seen.add(key); results.push(r); }
     };
 
+    let capped = false;
+
     if (q) {
       const pattern = `%${q}%`;
       const [matchingSaints, matchingMiracles] = await Promise.all([
@@ -72,6 +74,7 @@ search.openapi(
           .limit(100),
       ]);
 
+      if (matchingSaints.length >= 100 || matchingMiracles.length >= 100) capped = true;
       for (const s of matchingSaints) push({ type: "saint", slug: s.slug, title: s.name, excerpt: s.excerpt });
       for (const m of matchingMiracles) push({ type: "miracle", slug: m.slug, title: m.title, excerpt: m.excerpt });
     }
@@ -94,6 +97,7 @@ search.openapi(
           .limit(100),
       ]);
 
+      if (matchingSaints.length >= 100 || matchingMiracles.length >= 100) capped = true;
       for (const s of matchingSaints) push({ type: "saint", slug: s.slug, title: s.name, excerpt: null });
       for (const m of matchingMiracles) push({ type: "miracle", slug: m.slug, title: m.title, excerpt: m.excerpt });
     }
@@ -101,7 +105,7 @@ search.openapi(
     const offset = (page - 1) * limit;
     const paged = results.slice(offset, offset + limit);
 
-    return c.json({ data: paged, meta: { page, limit, total: results.length }, error: null });
+    return c.json({ data: paged, meta: { page, limit, total: results.length, ...(capped && { capped: true }) }, error: null });
   }
 );
 
