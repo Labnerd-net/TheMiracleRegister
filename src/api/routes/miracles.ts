@@ -49,7 +49,7 @@ miraclesRoute.openapi(
     },
   }),
   async (c) => {
-    const { saint_id, type, country, year_from, year_to, used_for_beatification, used_for_canonization, approval_authority, page, limit } = c.req.valid("query");
+    const { saint_id, type, topic, category, country, year_from, year_to, used_for_beatification, used_for_canonization, approval_authority, page, limit } = c.req.valid("query");
     const offset = (page - 1) * limit;
     const db = createDb(c.env.DATABASE_URL);
 
@@ -63,6 +63,8 @@ miraclesRoute.openapi(
       );
     }
     if (type !== undefined) conditions.push(eq(miracles.type, type));
+    if (topic !== undefined) conditions.push(sql`${miracles.topics} @> ARRAY[${topic}]::text[]`);
+    if (category !== undefined) conditions.push(eq(miracles.miracle_category, category));
     if (country !== undefined) conditions.push(ilike(miracles.country, `%${country}%`));
     if (year_from !== undefined)
       conditions.push(gte(sql`EXTRACT(YEAR FROM ${miracles.date_of_event})::int`, year_from));

@@ -3,7 +3,8 @@ import Base from "../../layouts/Base.astro";
 import { humanizeSnakeCase, approvalBadge } from "../../lib/format";
 import { createDb } from "../../db";
 import { miracles, miracleSaints, saints } from "../../db/schema";
-import { miracleType, approvalAuthority } from "../../db/schema/enums";
+import { miracleType, miracleCategory, approvalAuthority } from "../../db/schema/enums";
+import { MIRACLE_TOPICS } from "../../db/topics";
 import { and, asc, count, eq, gte, ilike, inArray, isNotNull, lte, sql } from "drizzle-orm";
 import { env } from "cloudflare:workers";
 
@@ -25,7 +26,11 @@ const filterBeat      = sp.get("beatification") === "1";
 const filterCanon     = sp.get("canonization") === "1";
 const rawApproval = sp.get("approval_authority") ?? "";
 const filterApproval = (approvalAuthority.enumValues as string[]).includes(rawApproval) ? rawApproval as typeof approvalAuthority.enumValues[number] : undefined;
-const hasActiveFilters = !!(filterSaintId || filterType || filterCountry || filterYearFrom || filterYearTo || filterBeat || filterCanon || filterApproval);
+const rawTopic = sp.get("topic") ?? "";
+const filterTopic = (MIRACLE_TOPICS as readonly string[]).includes(rawTopic) ? rawTopic : undefined;
+const rawCategory = sp.get("category") ?? "";
+const filterCategory = (miracleCategory.enumValues as string[]).includes(rawCategory) ? rawCategory as typeof miracleCategory.enumValues[number] : undefined;
+const hasActiveFilters = !!(filterSaintId || filterType || filterTopic || filterCategory || filterCountry || filterYearFrom || filterYearTo || filterBeat || filterCanon || filterApproval);
 
 const db = createDb(env.DATABASE_URL);
 
@@ -37,6 +42,8 @@ if (filterSaintId) {
   );
 }
 if (filterType) conditions.push(eq(miracles.type, filterType));
+if (filterTopic) conditions.push(sql`${miracles.topics} @> ARRAY[${filterTopic}]::text[]`);
+if (filterCategory) conditions.push(eq(miracles.miracle_category, filterCategory));
 if (filterCountry) conditions.push(ilike(miracles.country, filterCountry));
 if (filterYearFrom) conditions.push(gte(sql`EXTRACT(YEAR FROM ${miracles.date_of_event})::int`, filterYearFrom));
 if (filterYearTo) conditions.push(lte(sql`EXTRACT(YEAR FROM ${miracles.date_of_event})::int`, filterYearTo));
@@ -98,6 +105,8 @@ function buildUrl(p: number) {
   const params = new URLSearchParams();
   if (filterSaintId) params.set("saint_id", String(filterSaintId));
   if (filterType) params.set("type", filterType);
+  if (filterTopic) params.set("topic", filterTopic);
+  if (filterCategory) params.set("category", filterCategory);
   if (filterCountry) params.set("country", filterCountry);
   if (filterYearFrom) params.set("year_from", String(filterYearFrom));
   if (filterYearTo) params.set("year_to", String(filterYearTo));
@@ -146,6 +155,26 @@ const MIRACLE_TYPES = [
             <option value="">All Types</option>
             {MIRACLE_TYPES.map(t => (
               <option value={t} selected={t === filterType}>{humanizeSnakeCase(t)}</option>
+            ))}
+          </select>
+        </div>
+
+        <div class="filter-group">
+          <label class="filter-label">Topic</label>
+          <select name="topic" class="filter-select">
+            <option value="">All Topics</option>
+            {MIRACLE_TOPICS.map(t => (
+              <option value={t} selected={t === filterTopic}>{humanizeSnakeCase(t)}</option>
+            ))}
+          </select>
+        </div>
+
+        <div class="filter-group">
+          <label class="filter-label">Category</label>
+          <select name="category" class="filter-select">
+            <option value="">All Categories</option>
+            {miracleCategory.enumValues.map(c => (
+              <option value={c} selected={c === filterCategory}>{humanizeSnakeCase(c)}</option>
             ))}
           </select>
         </div>
@@ -286,6 +315,8 @@ const MIRACLE_TYPES = [
     const p = new URLSearchParams();
     const saintId = fd.get("saint_id") as string;
     const type = fd.get("type") as string;
+    const topic = fd.get("topic") as string;
+    const category = fd.get("category") as string;
     const country = fd.get("country") as string;
     const yearFrom = fd.get("year_from") as string;
     const yearTo = fd.get("year_to") as string;
@@ -294,6 +325,8 @@ const MIRACLE_TYPES = [
     const approval = fd.get("approval_authority") as string;
     if (saintId) p.set("saint_id", saintId);
     if (type) p.set("type", type);
+    if (topic) p.set("topic", topic);
+    if (category) p.set("category", category);
     if (country) p.set("country", country);
     if (yearFrom) p.set("year_from", yearFrom);
     if (yearTo) p.set("year_to", yearTo);
@@ -309,6 +342,8 @@ const MIRACLE_TYPES = [
     const p = new URLSearchParams();
     const saintId = fd.get("saint_id") as string;
     const type = fd.get("type") as string;
+    const topic = fd.get("topic") as string;
+    const category = fd.get("category") as string;
     const country = fd.get("country") as string;
     const yearFrom = fd.get("year_from") as string;
     const yearTo = fd.get("year_to") as string;
@@ -317,6 +352,8 @@ const MIRACLE_TYPES = [
     const approval = fd.get("approval_authority") as string;
     if (saintId) p.set("saint_id", saintId);
     if (type) p.set("type", type);
+    if (topic) p.set("topic", topic);
+    if (category) p.set("category", category);
     if (country) p.set("country", country);
     if (yearFrom) p.set("year_from", yearFrom);
     if (yearTo) p.set("year_to", yearTo);

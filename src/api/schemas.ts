@@ -200,6 +200,8 @@ export const SearchResultSchema = z
 export const MiraclesQuerySchema = z.object({
   saint_id: z.coerce.number().int().optional(),
   type: e(miracleType.enumValues).optional(),
+  topic: z.enum([...MIRACLE_TOPICS]).optional(),
+  category: e(miracleCategory.enumValues).optional(),
   country: z.string().optional(),
   year_from: z.coerce.number().int().optional(),
   year_to: z.coerce.number().int().optional(),
