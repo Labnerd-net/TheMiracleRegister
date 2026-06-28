@@ -394,36 +394,54 @@ const ogDesc = ogDescription(miracle.synopsis) || undefined;
       <p id="lb-caption"></p>
       <p id="lb-attr"></p>
     </div>
+    <div id="lb-nav">
+      <button id="lb-prev" aria-label="Previous image">&#8592;</button>
+      <span id="lb-counter"></span>
+      <button id="lb-next" aria-label="Next image">&#8594;</button>
+    </div>
   </dialog>
 
-  <script is:inline>
+  <script is:inline define:vars={{ lbImages: images }}>
     const lb = document.getElementById('lb');
     const lbImg = document.getElementById('lb-img');
     const lbCaption = document.getElementById('lb-caption');
     const lbAttr = document.getElementById('lb-attr');
+    const lbCounter = document.getElementById('lb-counter');
+    const lbNav = document.getElementById('lb-nav');
 
-    function openLightbox(url, caption, attr) {
-      lbImg.src = url;
-      lbImg.alt = caption || '';
-      lbCaption.textContent = caption || '';
-      lbAttr.textContent = attr || '';
-      lb.showModal();
+    let currentIndex = 0;
+
+    function showImage(index) {
+      const img = lbImages[index];
+      lbImg.src = img.url;
+      lbImg.alt = img.caption || '';
+      lbCaption.textContent = img.caption || '';
+      lbAttr.textContent = img.source_attribution || '';
+      lbCounter.textContent = `${index + 1} / ${lbImages.length}`;
+      currentIndex = index;
     }
 
-    document.querySelectorAll('.lb-trigger').forEach(btn => {
-      btn.addEventListener('click', () => {
-        openLightbox(
-          btn.dataset.lightboxUrl,
-          btn.dataset.lightboxCaption || '',
-          btn.dataset.lightboxAttr || ''
-        );
-      });
+    function openLightbox(index) {
+      showImage(index);
+      lbNav.style.display = lbImages.length > 1 ? 'flex' : 'none';
+      const scrollY = window.scrollY;
+      lb.showModal();
+      window.scrollTo(0, scrollY);
+    }
+
+    document.querySelectorAll('.lb-trigger').forEach((btn, i) => {
+      btn.addEventListener('click', () => openLightbox(i));
     });
 
     document.getElementById('lb-close').addEventListener('click', () => lb.close());
+    document.getElementById('lb-prev').addEventListener('click', () => showImage((currentIndex - 1 + lbImages.length) % lbImages.length));
+    document.getElementById('lb-next').addEventListener('click', () => showImage((currentIndex + 1) % lbImages.length));
 
-    lb.addEventListener('click', (e) => {
-      if (e.target === lb) lb.close();
+    lb.addEventListener('click', (e) => { if (e.target === lb) lb.close(); });
+
+    lb.addEventListener('keydown', (e) => {
+      if (e.key === 'ArrowRight') showImage((currentIndex + 1) % lbImages.length);
+      if (e.key === 'ArrowLeft') showImage((currentIndex - 1 + lbImages.length) % lbImages.length);
     });
   </script>
 
@@ -443,11 +461,11 @@ const ogDesc = ogDescription(miracle.synopsis) || undefined;
       padding: 1.5rem;
       max-width: min(90vw, 1100px);
       max-height: 90vh;
+      margin: auto;
       display: flex;
       flex-direction: column;
       align-items: center;
       gap: 0.75rem;
-      position: relative;
     }
     #lb::backdrop {
       background: rgba(0, 0, 0, 0.88);
@@ -480,6 +498,31 @@ const ogDesc = ogDescription(miracle.synopsis) || undefined;
     }
     #lb-meta p { margin: 0; }
     #lb-attr { font-style: italic; opacity: 0.7; }
+    #lb-nav {
+      display: flex;
+      align-items: center;
+      gap: 1.25rem;
+      margin-top: 0.25rem;
+    }
+    #lb-nav button {
+      background: rgba(255, 255, 255, 0.15);
+      color: #fff;
+      border: none;
+      border-radius: 50%;
+      width: 2.25rem;
+      height: 2.25rem;
+      cursor: pointer;
+      font-size: 1.1rem;
+      line-height: 2.25rem;
+    }
+    #lb-nav button:hover { background: rgba(255, 255, 255, 0.3); }
+    #lb-counter {
+      color: #ccc;
+      font-size: 0.8rem;
+      font-family: var(--font-sans);
+      min-width: 3rem;
+      text-align: center;
+    }
   </style>
 
 </Base>
