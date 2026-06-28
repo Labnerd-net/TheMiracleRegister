@@ -108,16 +108,9 @@ Visual evidence for miracles where the artifact, phenomenon, or physical result 
 Only miracles where the visual IS the evidence or substantially supports it. Healing/intercessory miracles and most apparition shrines are intentionally excluded.
 
 | Priority | Miracle (slug) | What to add | Notes |
-|---|---|---|---|
-| 1 | `tilma-of-guadalupe` | Full tilma image; close-up of face; close-up of eyes (Aste Tonsmann digital analysis); UV light image showing no brushstrokes | The image itself is the miracle — multiple views essential |
-| 2 | `miracle-of-the-sun-fatima` | Crowd photos from Oct 13 1917 (multiple photographers); Avelino de Almeida photo; wide shot of the Cova da Iria crowd | All 1917 press photos are public domain |
-| 3 | `stigmata-of-padre-pio` | Photo of Padre Pio's stigmatized hands; gloved hands photo; medical examination photo (Bignami/Romanini 1919) | Several authenticated photos exist on Wikimedia |
-| 4 | `eucharistic-miracle-of-lanciano` | The reliquary (flesh + 5 blood globules in ostensorium); microscopy slide of cardiac muscle tissue; the church interior | 8th-century miracle with 1970s scientific analysis photos |
-| 5 | `eucharistic-miracle-of-buenos-aires` | The consecrated host tissue (1996); Dr. Ricardo Castañón microscopy image; the Buenos Aires analysis documentation | AB blood + stressed cardiac tissue; Wojtyla received the report |
-| 6 | `eucharistic-miracle-of-sokolka` | The host tissue fragment; Prof. Sulkowski/Sobaniec-Lotowska microscopy image | Cardiac muscle in agony; matches Lanciano tissue type |
-| 7 | `eucharistic-miracle-of-legnica` | The fragment of host with reddish tissue; microscopy image | 2013; cardiac muscle findings match other AB miracles |
-| 8 | `eucharistic-miracle-of-tixtla` | The host with reddish substance (2006); investigation photos | Bishop Zavala commission; matches Buenos Aires tissue |
-| 9 | `incorruptibility-of-bernadette-soubirous` | Body in glass reliquary at Chapel of Saint Bernadette, Nevers; close-up of face | Most-visited incorrupt body; wax face covers slight discoloration — note this in caption |
-| 10 | `incorruptibility-of-catherine-laboure` | Body in Chapel of Our Lady of the Miraculous Medal, Paris | Hands and face incorrupt; body on display since 1933 |
-| 11 | `incorruptibility-of-pier-giorgio-frassati` | Photos from 1981 exhumation (25 years after death); current reliquary | Exhumation found body partially incorrupt with fresh appearance |
-| 12 | `divine-mercy-revelations` | Original Eugeniusz Kazimirowski painting (1934, Vilnius); the Hyla copy (Kraków, more widely reproduced) | Faustina directed the painting; two canonical versions |
+|----|---|---|---|
+| 1  | `eucharistic-miracle-of-buenos-aires` | The consecrated host tissue (1996); Dr. Ricardo Castañón microscopy image; the Buenos Aires analysis documentation | AB blood + stressed cardiac tissue; Wojtyla received the report |
+| 2  | `eucharistic-miracle-of-sokolka` | The host tissue fragment; Prof. Sulkowski/Sobaniec-Lotowska microscopy image | Cardiac muscle in agony; matches Lanciano tissue type |
+| 3  | `eucharistic-miracle-of-legnica` | The fragment of host with reddish tissue; microscopy image | 2013; cardiac muscle findings match other AB miracles |
+| 4  | `eucharistic-miracle-of-tixtla` | The host with reddish substance (2006); investigation photos | Bishop Zavala commission; matches Buenos Aires tissue |
+| 5  | `incorruptibility-of-pier-giorgio-frassati` | Photos from 1981 exhumation (25 years after death); current reliquary | Exhumation found body partially incorrupt with fresh appearance |
