@@ -2,15 +2,27 @@
 import { env } from "cloudflare:workers";
 import { SESSION_COOKIE, createSessionToken, sessionCookieHeader } from "../../lib/auth";
 
+const MAX_ATTEMPTS = 5;
+const WINDOW_SECONDS = 15 * 60;
+
 let error = "";
 const rawNext = Astro.url.searchParams.get("next") ?? "";
 const next = /^\/[^/\\]/.test(rawNext) ? rawNext : "/admin";
 
-if (Astro.request.method === "POST") {
+const ip = Astro.clientAddress ?? "unknown";
+const kvKey = `login:${ip}`;
+
+const attemptsRaw = await env.RATE_LIMIT.get(kvKey);
+const attempts = attemptsRaw ? parseInt(attemptsRaw) : 0;
+
+if (attempts >= MAX_ATTEMPTS) {
+  error = "Too many failed attempts. Try again in 15 minutes.";
+} else if (Astro.request.method === "POST") {
   const form = await Astro.request.formData();
   const password = form.get("password")?.toString() ?? "";
 
   if (password === env.ADMIN_PASSWORD) {
+    await env.RATE_LIMIT.delete(kvKey);
     const token = await createSessionToken(env.SESSION_SECRET);
     return new Response(null, {
       status: 302,
@@ -20,8 +32,10 @@ if (Astro.request.method === "POST") {
       },
     });
   } else {
-    await new Promise((r) => setTimeout(r, 300));
-    error = "Incorrect password.";
+    await env.RATE_LIMIT.put(kvKey, String(attempts + 1), { expirationTtl: WINDOW_SECONDS });
+    error = attempts + 1 >= MAX_ATTEMPTS
+      ? "Too many failed attempts. Try again in 15 minutes."
+      : "Incorrect password.";
   }
 }
 ---

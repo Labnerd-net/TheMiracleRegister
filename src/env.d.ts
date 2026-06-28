@@ -6,4 +6,5 @@ interface CloudflareEnv {
   ADMIN_PASSWORD: string;
   SESSION_SECRET: string;
   PREVIEW_TOKEN: string;
+  RATE_LIMIT: KVNamespace;
 }
