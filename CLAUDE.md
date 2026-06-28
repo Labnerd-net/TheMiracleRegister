@@ -34,7 +34,6 @@ A data-driven website documenting miracles attributed to Catholic saints. Focuse
 
 - **Primary:** Intercessory miracles — posthumous healings attributed to a saint's intercession
 - **Secondary:** Associated miracles for famous cases only (Tilma of Guadalupe, stigmata, incorrupt bodies)
-- **Starting set:** 11 saints (last 50 years + Juan Diego)
 - Public-facing website with REST API from day one
 - Admin panel for data entry (to be designed)
 

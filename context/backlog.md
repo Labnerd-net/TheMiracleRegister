@@ -11,8 +11,7 @@
 _None identified._
 
 ### Medium
-
-- **#4 [src/pages/admin/login.astro]** Admin login brute-force protection is a 300ms delay only, allowing ~200 guesses/minute. No lockout, no attempt counter, no IP throttling. Fix: add a Cloudflare Rate Limiting binding or a KV-backed counter keyed to `Astro.clientAddress` (e.g. 5 failures per 15 minutes).
+_None identified._
 
 ### Low
 _None identified._
@@ -51,7 +50,7 @@ _None identified._
 _None identified._
 
 ### Medium
-- **#13 [src/pages/admin/saints/[slug]/edit.astro]** The `saint_relations` join table is used by the public saint detail page and the API, but the admin saint edit page has no way to add or remove relations. There's no UI for the table at all. Fix: add an add/delete relations section to the saint edit page, matching the existing sources/locations pattern.
+_None identified._
 
 ### Low
 - **#22 [src/pages/saints/index.astro, src/pages/miracles/index.astro]** `buildApiUrl()`, `buildPageUrl()`, and `renderPagination()` are structurally identical across both list pages — only the field names differ. Fix: extract into a reusable client-side utility module.
@@ -66,7 +65,7 @@ _None identified._
 _None identified._
 
 ### Medium
-- **#28 [src/pages/]** The OpenAPI spec is generated and served at `/api/v1/doc` but nothing on the public site links to it or explains the API exists. Fix: add an API page or section in the footer/about area pointing to `/api/v1/doc` with a brief description of available endpoints.
+_None identified._
 
 ### Low
 - **#32 [src/pages/saints/index.astro, src/api/routes/saints.ts]** Nationality and patronage are prominent discovery axes (`saints_patronage_gin_idx` already exists) but neither is filterable. Low priority given the small current saint count, but worth adding when saints reach 30+.
@@ -76,6 +75,7 @@ _None identified._
 - **#39 [src/lib/easter.ts]** Easter calculation utility — compute Easter Sunday for a given year (Meeus/Jones/Butcher algorithm) and expose a `resolveMovableFeast(offset: number, year: number): Date` helper. Prerequisite for #38.
 - **#40 [src/pages/index.astro, src/pages/saints/index.astro]** Mobile LCP optimization — add explicit `width`/`height` to saint images, `fetchpriority="high"` on the first carousel image, and `loading="lazy"` on below-fold images. LCP is ~7.5s on mobile driven by external Wikimedia Commons images with no size hints.
 - **#41 [src/pages/admin/miracles/[slug]/edit.astro]** Batch source import — CSV/JSON paste to bulk-create `miracle_sources` records. Currently one-by-one only.
+- **#44 [src/db/schema/saints.ts, src/db/schema/miracles.ts, src/pages/admin/]** R2 image storage — replace external Wikimedia URLs with images uploaded to Cloudflare R2, served via the Cloudflare Images binding for WebP/AVIF conversion, resizing, and CDN caching. Fixes the 7.5s mobile LCP (#40). Requires image upload UI in admin saint/miracle edit forms and a migration of existing `image_url` values. Near-term alternative: proxy existing Wikimedia URLs through `/cdn-cgi/image/width=400,format=auto/` with no schema changes. Worth doing at 30+ saints or when hosting images without a clean Wikimedia URL.
 - **#42 [src/pages/admin/index.astro]** Admin analytics dashboard — extend beyond total counts with aggregations by country, type, topic, canonization stage.
 - **#43 [src/pages/miracles/index.astro, src/pages/saints/index.astro]** Random page — `/random` redirects to a random published saint or miracle via `ORDER BY RANDOM() LIMIT 1`. Low-effort discovery feature.
 
@@ -85,9 +85,9 @@ _None identified._
 
 | Category | High | Medium | Low | Total |
 |----------|------|--------|-----|-------|
-| Security | 0 | 1 | 0 | 1 |
+| Security | 0 | 0 | 0 | 0 |
 | Bugs | 0 | 0 | 0 | 0 |
 | Performance | 0 | 0 | 1 | 1 |
-| Improvements & Refactors | 0 | 1 | 3 | 4 |
-| Feature Ideas | 0 | 1 | 9 | 10 |
-| **Total** | **0** | **3** | **13** | **16** |
+| Improvements & Refactors | 0 | 0 | 3 | 3 |
+| Feature Ideas | 0 | 0 | 10 | 10 |
+| **Total** | **0** | **0** | **14** | **14** |

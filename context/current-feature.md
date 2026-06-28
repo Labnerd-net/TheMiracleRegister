@@ -202,3 +202,33 @@ Added a filter bar to `/saints` with three controls: Canonization Stage (dropdow
 
 ### Miracle Image Lightbox (#44)
 Added a lightbox to the miracle detail page gallery. Clicking any image in the Images section opens a full-size `<dialog>` overlay with caption and attribution. Dismissed via Escape key, backdrop click, or close button — all handled natively by `<dialog>` + `showModal()` with no dependencies. Hero image at the top of the page is intentionally excluded (it also appears in the gallery below). Fixed `display: block; width: 100%` on the trigger button for cross-browser click target reliability. Follow-up fixes: added prev/next navigation with arrow-key support and image counter; fixed dialog rendering in upper-left corner by removing `position: relative` override on the dialog element; fixed page scroll-to-top on open by saving and restoring `window.scrollY`; fixed lightbox image persisting on page after close by scoping `display: flex` to `#lb[open]` only.
+
+### Backlog Quick Fixes — Security, Bugs, Admin UX
+Worked through 10 backlog items in a single batch. Security: Leaflet popup strings escaped via `escHtml()` to prevent stored XSS; `published = true` filter added to `fetchSaintsForMiracles` and `relatedRows`; `Secure` flag added to `clearSessionCookieHeader()`. Bugs: phantom `birth_place`/`death_place` fields removed from `SaintDetailSchema`; `.limit(200)` added to SSR search queries. Code quality: `humanizeSnakeCase()` now capitalises each word; `approvalBadge()` extracted to `format.ts`; `escHtml()` added to `format.ts`. Admin: published status badge shown on saints and miracles list pages; `?preview=TOKEN` appended to "View public page" links on edit pages. Sitemap: `/map`, `/miracles/timeline`, and `/search` added as static entries.
+
+### Code Quality and Admin UX Cleanup
+Second cleanup batch. HMAC verification replaced `safeEqual()` with `crypto.subtle.verify()` for genuine constant-time comparison. Zod enum schemas in `schemas.ts` now derived directly from Drizzle enum values to eliminate duplication. `typeColors` map extracted to `src/lib/mapConstants.ts` and passed via `define:vars` to map and saint detail pages. Confirm dialogs added to Remove buttons on miracle source and image rows in admin edit page. Miracles admin list default sort changed from title to `date_of_event asc nulls last`.
+
+### Admin Form Missing Fields
+Added fields that existed in the schema but were absent from admin forms. `MiracleForm` gains: `content_tier` select (core/catalog/stub), `location_lat`/`location_lng` inputs, and feast day fields (`feast_month`, `feast_day_of_month`, `feast_easter_offset`). `SaintForm` gains feast day fields. All new fields wired into their respective edit page POST handlers.
+
+### Miracles Topic and Category Filters
+Added Topic and Category dropdowns to the miracles list filter bar. Topics use the canonical `MIRACLE_TOPICS` list; category covers intercessory, associated, and apparition. Both wired through the API query schema, route condition, SSR filter logic, and client-side `buildApiUrl`/`buildPageUrl` functions so filters carry through pagination.
+
+### Topic Tag Filter Links, Loading Indicators, Search Capped Flag
+Topic tags on the miracles list and miracle detail pages link directly to the filtered miracles list (`/miracles?topic=X`). Client-side filter fetches show a loading indicator while the API call is in flight. Search results page displays a "results capped" notice when the query hits the 200-record limit.
+
+### Editable Slugs, Saint Names on Related Miracles, Leaflet SRI
+Admin saint and miracle edit pages now allow editing the slug field (previously read-only). Related miracle cards on the saint detail page show the linked saint names alongside the miracle title. Leaflet CSS/JS SRI hashes updated and then reverted after unpkg served content that did not match the expected hashes — Leaflet loaded without integrity attributes.
+
+### Cascade FK Deletes on Sources Tables
+Added `onDelete: 'cascade'` to the `saint_id` FK on `saint_sources` and the `miracle_id` FK on `miracle_sources`. Migration 0026 applied. Deleting a saint or miracle now automatically removes their orphaned source rows.
+
+### Saint Relations Admin UI
+Added add/delete relations section to the saint edit page, matching the existing sources/locations pattern. Add form shows a dropdown of all other saints and a relation type selector. Both directions of the `saint_relations` join row are inserted/deleted together so the public detail page sees the link from either saint.
+
+### KV-Backed Login Rate Limiting
+Replaced the 300ms failed-login delay with a Cloudflare KV counter keyed to client IP. After 5 failures within 15 minutes the login form is locked out; the KV TTL handles expiry automatically. Counter cleared on successful login. `RATE_LIMIT` KV namespace created and added to `wrangler.jsonc`; `KVNamespace` type added to `env.d.ts`.
+
+### API Docs Link in Footer
+Added an "API" link to the public site footer pointing to `/api/v1/doc` (the Swagger UI), making the REST API discoverable to visitors.
