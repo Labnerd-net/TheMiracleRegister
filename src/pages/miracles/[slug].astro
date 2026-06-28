@@ -109,6 +109,19 @@ for (const m of [...saintLinked, ...topicLinked]) {
   }
 }
 
+const relatedSaintsMap = new Map<number, string[]>();
+if (relatedMiracles.length > 0) {
+  const links = await db
+    .select({ miracle_id: miracleSaints.miracle_id, name: saints.name })
+    .from(miracleSaints)
+    .innerJoin(saints, eq(miracleSaints.saint_id, saints.id))
+    .where(inArray(miracleSaints.miracle_id, relatedMiracles.map((r) => r.id)));
+  for (const link of links) {
+    if (!relatedSaintsMap.has(link.miracle_id)) relatedSaintsMap.set(link.miracle_id, []);
+    relatedSaintsMap.get(link.miracle_id)!.push(link.name);
+  }
+}
+
 const fmt = humanizeSnakeCase;
 
 
@@ -124,7 +137,7 @@ const ogDesc = ogDescription(miracle.synopsis) || undefined;
 
 <Base title={miracle.title} description={ogDesc} ogImage={images[0]?.url ?? undefined} ogType="article">
   {miracle.location_lat && miracle.location_lng && (
-    <link slot="head" rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+    <link slot="head" rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY=" crossorigin="" />
   )}
 
   <div class="page-header">
@@ -326,6 +339,9 @@ const ogDesc = ogDescription(miracle.synopsis) || undefined;
               <li>
                 <a href={`/miracles/${r.slug}`} style="font-family:var(--font-sans);font-size:0.875rem;color:var(--color-accent)">{r.title}</a>
                 <span style="font-family:var(--font-sans);font-size:0.7rem;color:var(--text-4);margin-left:0.6rem">{fmt(r.type)}</span>
+                {relatedSaintsMap.get(r.id)?.length && (
+                  <span style="font-family:var(--font-sans);font-size:0.7rem;color:var(--text-4);margin-left:0.4rem">· {relatedSaintsMap.get(r.id)!.join(", ")}</span>
+                )}
               </li>
             ))}
           </ul>
@@ -361,7 +377,7 @@ const ogDesc = ogDescription(miracle.synopsis) || undefined;
 
   {miracle.location_lat && miracle.location_lng && (
     <>
-      <script is:inline src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+      <script is:inline src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV/XN2GqaY=" crossorigin=""></script>
       <script is:inline define:vars={{
         lat: miracle.location_lat,
         lng: miracle.location_lng,

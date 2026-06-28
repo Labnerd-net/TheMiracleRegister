@@ -13,7 +13,6 @@ _None identified._
 ### Medium
 - **#3 [src/db/schema/miracle-sources.ts, src/db/schema/saint-sources.ts]** FK references on `miracle_id` and `saint_id` have no `{ onDelete: "cascade" }`, unlike `miracle-images.ts`. The admin delete flow for miracles manually deletes sources first then the miracle in sequential awaits with no transaction — if the miracle delete fails, sources are gone. Deleting a saint directly at the DB level will cause a FK violation on `saint_sources`. Fix: add `{ onDelete: "cascade" }` to both FKs, generate and apply a migration, then simplify the miracle delete to a single call.
 - **#4 [src/pages/admin/login.astro]** Admin login brute-force protection is a 300ms delay only, allowing ~200 guesses/minute. No lockout, no attempt counter, no IP throttling. Fix: add a Cloudflare Rate Limiting binding or a KV-backed counter keyed to `Astro.clientAddress` (e.g. 5 failures per 15 minutes).
-- **#5 [src/pages/map.astro, src/pages/saints/[slug].astro, src/pages/miracles/[slug].astro]** Leaflet loaded from `unpkg.com` CDN with no `integrity` attribute on any of the six `<link>` and `<script>` tags. A compromised CDN response would execute arbitrary JS with no detection. Fix: add SRI `integrity="sha256-..."` hashes to all Leaflet resource tags.
 
 ### Low
 _None identified._
@@ -58,7 +57,6 @@ _None identified._
 - **#22 [src/pages/saints/index.astro, src/pages/miracles/index.astro]** `buildApiUrl()`, `buildPageUrl()`, and `renderPagination()` are structurally identical across both list pages — only the field names differ. Fix: extract into a reusable client-side utility module.
 - **#23 [src/pages/saints/index.astro, src/pages/miracles/index.astro]** Each list page has an Astro server-rendered card template and a nearly identical hand-rolled string-concatenation version inside the client-side `renderCard()` JS. A card design change requires updating both. Fix: generate card HTML server-side and serve it via an SSR partial endpoint, or accept the duplication and keep both in sync.
 - **#24 [src/components/Pagination.astro]** The `Pagination` component is used in admin list pages but the public list pages build pagination HTML manually in both the Astro template and the client-side JS string. Fix: use the component on public pages or document why each path needs its own implementation.
-- **#27 [src/components/SaintForm.astro, src/components/MiracleForm.astro]** The slug input is shown only on create (guarded by `!v`), not on edit. A typo in the initial slug is permanently locked in without a direct DB edit. Fix: expose slug on the edit form with a warning about URL breakage, or add a redirect rule on slug change.
 
 ---
 
@@ -73,7 +71,6 @@ _None identified._
 ### Low
 - **#32 [src/pages/saints/index.astro, src/api/routes/saints.ts]** Nationality and patronage are prominent discovery axes (`saints_patronage_gin_idx` already exists) but neither is filterable. Low priority given the small current saint count, but worth adding when saints reach 30+.
 - **#34 [src/pages/]** No RSS/Atom feed. A `GET /feed.xml` returning recently published miracles and saints would serve devotional users and aggregators.
-- **#35 [src/pages/miracles/[slug].astro]** The Related Miracles section shows title and type but not which saint the miracle is attributed to. Since related miracles come from both saint-linked and topic-linked queries, saint attribution clarifies why each entry is related. Fix: include saint name(s) in the related miracles query and render them on each related card.
 - **#37 [src/api/routes/search.ts, src/pages/search.astro]** Full-text search upgrade — replace `ilike` with `pg_trgm` trigram indexes or `tsvector`/`tsquery` for better performance and stemming. Long-term consideration once the dataset justifies it.
 - **#38 [src/pages/index.astro]** Today's Feast — surface the matching saint on the homepage when today matches a feast day. DB columns (`feast_month`, `feast_day_of_month`, `feast_easter_offset`) already populated. Requires #39 first for movable feasts.
 - **#39 [src/lib/easter.ts]** Easter calculation utility — compute Easter Sunday for a given year (Meeus/Jones/Butcher algorithm) and expose a `resolveMovableFeast(offset: number, year: number): Date` helper. Prerequisite for #38.
@@ -88,9 +85,9 @@ _None identified._
 
 | Category | High | Medium | Low | Total |
 |----------|------|--------|-----|-------|
-| Security | 0 | 3 | 0 | 3 |
+| Security | 0 | 2 | 0 | 2 |
 | Bugs | 0 | 0 | 0 | 0 |
 | Performance | 0 | 0 | 1 | 1 |
-| Improvements & Refactors | 0 | 1 | 4 | 5 |
-| Feature Ideas | 0 | 1 | 10 | 11 |
-| **Total** | **0** | **5** | **15** | **20** |
+| Improvements & Refactors | 0 | 1 | 3 | 4 |
+| Feature Ideas | 0 | 1 | 9 | 10 |
+| **Total** | **0** | **4** | **13** | **17** |

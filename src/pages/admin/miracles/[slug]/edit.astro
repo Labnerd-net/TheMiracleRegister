@@ -97,6 +97,7 @@ if (Astro.request.method === "POST") {
       error = formatZodErrors(validation);
     } else try {
       await db.update(miracles).set({
+        slug: get("slug").trim() || miracle.slug,
         title: get("title") || miracle.title,
         miracle_category: parseEnum(get("miracle_category"), miracleCategory.enumValues) ?? miracle.miracle_category,
         type: parseEnum(get("type"), miracleType.enumValues) ?? miracle.type,
@@ -146,6 +147,8 @@ if (Astro.request.method === "POST") {
 
       selectedSaintIds = saintIds.map(Number);
       success = true;
+      const newSlug = get("slug").trim() || miracle.slug;
+      if (newSlug !== slug) return Astro.redirect(`/admin/miracles/${newSlug}/edit`);
     } catch (e: any) {
       error = e?.message ?? "Failed to save.";
     }

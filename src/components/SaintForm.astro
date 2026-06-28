@@ -41,12 +41,11 @@ const join = (arr: string[] | null | undefined) => arr?.join(", ") ?? "";
         <label for="name">Name *</label>
         <input type="text" id="name" name="name" value={v?.name ?? ""} required />
       </div>
-      {!v && (
-        <div class="field">
-          <label for="slug">Slug</label>
-          <input type="text" id="slug" name="slug" placeholder="auto-generated from name" />
-        </div>
-      )}
+      <div class="field">
+        <label for="slug">Slug</label>
+        <input type="text" id="slug" name="slug" value={v?.slug ?? ""} placeholder={v ? undefined : "auto-generated from name"} />
+        {v && <p class="hint" style="color:#b45309">Changing the slug breaks existing URLs and links.</p>}
+      </div>
     </div>
     <div class="field">
       <label for="saint_name">Saint Name</label>

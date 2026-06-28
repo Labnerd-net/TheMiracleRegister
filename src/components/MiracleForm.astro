@@ -53,12 +53,11 @@ const currentSaintIds = new Set(selectedSaintIds);
       <input type="text" id="title" name="title" value={v?.title ?? ""} required />
     </div>
     <div class="two-col">
-      {!v && (
-        <div class="field">
-          <label for="slug">Slug</label>
-          <input type="text" id="slug" name="slug" placeholder="auto-generated from title" />
-        </div>
-      )}
+      <div class="field">
+        <label for="slug">Slug</label>
+        <input type="text" id="slug" name="slug" value={v?.slug ?? ""} placeholder={v ? undefined : "auto-generated from title"} />
+        {v && <p class="hint" style="color:#b45309">Changing the slug breaks existing URLs and links.</p>}
+      </div>
       <div class="field" style="grid-column:1/-1">
         <label>Saint(s) * <span style="font-weight:400;color:#888">(check all that apply)</span></label>
         <div class="checkbox-group">

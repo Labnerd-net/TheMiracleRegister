@@ -83,7 +83,9 @@ if (Astro.request.method === "POST") {
   if (!validation.success) {
     error = formatZodErrors(validation);
   } else try {
+    const newSlug = get("slug").trim() || saint.slug;
     await db.update(saints).set({
+      slug: newSlug,
       name: get("name") || saint.name,
       saint_name: get("saint_name") || null,
       birth_name: get("birth_name") || null,
@@ -115,6 +117,7 @@ if (Astro.request.method === "POST") {
       published: getBool("published"),
     }).where(eq(saints.slug, slug!));
     success = true;
+    if (newSlug !== slug) return Astro.redirect(`/admin/saints/${newSlug}/edit`);
   } catch (e: any) {
     error = e?.message ?? "Failed to save.";
   }

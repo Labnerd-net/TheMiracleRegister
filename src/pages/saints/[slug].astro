@@ -86,7 +86,7 @@ const ogDesc = ogDescription(saint.biography_short) || undefined;
 
 <Base title={saint.name} description={ogDesc} ogImage={saint.image_url ?? undefined} ogType="profile">
   {mappableLocations.length > 0 && (
-    <link slot="head" rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+    <link slot="head" rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY=" crossorigin="" />
   )}
 
   <div class="page-header">
@@ -315,7 +315,7 @@ const ogDesc = ogDescription(saint.biography_short) || undefined;
 
   {mappableLocations.length > 0 && (
     <>
-      <script is:inline src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+      <script is:inline src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV/XN2GqaY=" crossorigin=""></script>
       <script is:inline define:vars={{ locations: mappableLocations, typeColors: LOCATION_TYPE_COLORS }}>
         function escHtml(s) {
           return String(s ?? "").replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;").replace(/"/g,"&quot;");
