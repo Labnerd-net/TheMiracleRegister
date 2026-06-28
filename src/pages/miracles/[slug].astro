@@ -301,16 +301,18 @@ const ogDesc = ogDescription(miracle.synopsis) || undefined;
           <p class="eyebrow mb-5">Images</p>
           <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
             {images.map((img) => (
-              <div class="rounded overflow-hidden" style="background:var(--bg-elevated)">
-                <img src={img.url} alt={img.caption ?? miracle.title} class="w-full object-cover" style="max-height:220px;object-position:center top" />
-                {(img.caption || img.source_attribution) && (
-                  <div style="padding:0.5rem 0.75rem;font-size:0.75rem;color:var(--text-3)">
-                    {img.caption && <span>{img.caption}</span>}
-                    {img.caption && img.source_attribution && <span> · </span>}
-                    {img.source_attribution && <span style="font-style:italic">{img.source_attribution}</span>}
-                  </div>
-                )}
-              </div>
+              <button type="button" class="lb-trigger" data-lightbox-url={img.url} data-lightbox-caption={img.caption ?? ""} data-lightbox-attr={img.source_attribution ?? ""}>
+                <div class="rounded overflow-hidden" style="background:var(--bg-elevated)">
+                  <img src={img.url} alt={img.caption ?? miracle.title} class="w-full object-cover" style="max-height:220px;object-position:center top" />
+                  {(img.caption || img.source_attribution) && (
+                    <div style="padding:0.5rem 0.75rem;font-size:0.75rem;color:var(--text-3)">
+                      {img.caption && <span>{img.caption}</span>}
+                      {img.caption && img.source_attribution && <span> · </span>}
+                      {img.source_attribution && <span style="font-style:italic">{img.source_attribution}</span>}
+                    </div>
+                  )}
+                </div>
+              </button>
             ))}
           </div>
         </section>
@@ -384,5 +386,100 @@ const ogDesc = ogDescription(miracle.synopsis) || undefined;
       </script>
     </>
   )}
+
+  <dialog id="lb">
+    <button id="lb-close" aria-label="Close">✕</button>
+    <img id="lb-img" src="" alt="" />
+    <div id="lb-meta">
+      <p id="lb-caption"></p>
+      <p id="lb-attr"></p>
+    </div>
+  </dialog>
+
+  <script is:inline>
+    const lb = document.getElementById('lb');
+    const lbImg = document.getElementById('lb-img');
+    const lbCaption = document.getElementById('lb-caption');
+    const lbAttr = document.getElementById('lb-attr');
+
+    function openLightbox(url, caption, attr) {
+      lbImg.src = url;
+      lbImg.alt = caption || '';
+      lbCaption.textContent = caption || '';
+      lbAttr.textContent = attr || '';
+      lb.showModal();
+    }
+
+    document.querySelectorAll('.lb-trigger').forEach(btn => {
+      btn.addEventListener('click', () => {
+        openLightbox(
+          btn.dataset.lightboxUrl,
+          btn.dataset.lightboxCaption || '',
+          btn.dataset.lightboxAttr || ''
+        );
+      });
+    });
+
+    document.getElementById('lb-close').addEventListener('click', () => lb.close());
+
+    lb.addEventListener('click', (e) => {
+      if (e.target === lb) lb.close();
+    });
+  </script>
+
+  <style>
+    .lb-trigger {
+      display: block;
+      width: 100%;
+      cursor: zoom-in;
+      border: none;
+      background: none;
+      padding: 0;
+      text-align: left;
+    }
+    #lb {
+      border: none;
+      background: transparent;
+      padding: 1.5rem;
+      max-width: min(90vw, 1100px);
+      max-height: 90vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 0.75rem;
+      position: relative;
+    }
+    #lb::backdrop {
+      background: rgba(0, 0, 0, 0.88);
+    }
+    #lb-img {
+      max-width: 100%;
+      max-height: calc(90vh - 6rem);
+      object-fit: contain;
+      display: block;
+    }
+    #lb-close {
+      position: absolute;
+      top: 0.75rem;
+      right: 0.75rem;
+      background: rgba(0, 0, 0, 0.6);
+      color: #fff;
+      border: none;
+      border-radius: 50%;
+      width: 2rem;
+      height: 2rem;
+      cursor: pointer;
+      font-size: 1rem;
+      line-height: 2rem;
+    }
+    #lb-meta {
+      text-align: center;
+      color: #ccc;
+      font-size: 0.8rem;
+      font-family: var(--font-sans);
+    }
+    #lb-meta p { margin: 0; }
+    #lb-attr { font-style: italic; opacity: 0.7; }
+  </style>
 
 </Base>

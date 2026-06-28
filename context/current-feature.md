@@ -2,9 +2,7 @@
 
 ## Current Feature Spec File
 
-Title: Miracle Images Table
-Spec file: context/specs/miracle-images-table.md
-Branch: claude/feature/miracle-images-table
+_None_
 
 ## Current Feature Plan File
 
@@ -190,5 +188,11 @@ Added `family` to the `relation_type` enum (migration 0024) to handle Thérèse'
 ### Preview Token for Unpublished Pages
 Added preview token support to `src/pages/saints/[slug].astro` and `src/pages/miracles/[slug].astro`. Pages with `published = false` are accessible via `?preview=<token>` matching the `PREVIEW_TOKEN` environment variable, allowing draft records to be reviewed in production without publishing them. Token validated against `env.PREVIEW_TOKEN`; missing or mismatched token falls through to the normal 404 path.
 
+### Miracle Images Table
+Replaced `miracles.image_url` (single text column) with a `miracle_images` join table supporting multiple ordered images per miracle with caption and attribution fields. Migration 0025 data-migrates any existing `image_url` values then drops the column. Admin miracle edit page gains add/delete image management (matching sources pattern, with thumbnail preview). Public miracle detail page renders all images in `display_order` sequence with caption and attribution below each. OG image uses `images[0]`. API detail response includes an `images` array (`MiracleImageSchema`). 23 tests pass, build clean.
+
 ### Feast Day Backfill and Miracle Page Display
 Backfilled `feast_month`, `feast_day_of_month`, and `feast_easter_offset` on both saints and miracles tables (columns already existed from a prior migration). Added feast day display to the Full Record sidebar on `src/pages/miracles/[slug].astro` — renders only when `feast_month` is set, keeping healing and intercessory miracles uncluttered. A `formatFeastDay()` helper converts month/day integers to a display string. Added backlog items #42 (Today's Feast homepage widget) and #43 (Easter calculation utility prerequisite). Branch `claude/feature/feast-day-miracle-page` merged to main and deleted.
+
+### Miracle Image Lightbox (#44)
+Added a lightbox to the miracle detail page gallery. Clicking any image in the Images section opens a full-size `<dialog>` overlay with caption and attribution. Dismissed via Escape key, backdrop click, or close button — all handled natively by `<dialog>` + `showModal()` with no dependencies. Hero image at the top of the page is intentionally excluded (it also appears in the gallery below). Fixed `display: block; width: 100%` on the trigger button for cross-browser click target reliability.
