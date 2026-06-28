@@ -1,5 +1,21 @@
 export function humanizeSnakeCase(s: string): string {
-  return s.replace(/_/g, " ");
+  return s.replace(/_/g, " ").replace(/\b\w/g, c => c.toUpperCase());
+}
+
+export function escHtml(s: string | null | undefined): string {
+  return String(s ?? "")
+    .replace(/&/g, "&amp;")
+    .replace(/</g, "&lt;")
+    .replace(/>/g, "&gt;")
+    .replace(/"/g, "&quot;");
+}
+
+export function approvalBadge(authority: string | null): { cls: string; label: string } | null {
+  if (authority === "vatican_dicastery") return { cls: "vatican", label: "Vatican Approved" };
+  if (authority === "lourdes_bureau")    return { cls: "lourdes", label: "Lourdes Bureau" };
+  if (authority === "local_bishop")      return { cls: "bishop",  label: "Bishop Approved" };
+  if (authority === "nihil_obstat")      return { cls: "nihil",   label: "Nihil Obstat" };
+  return null;
 }
 
 export function stripMarkdown(text: string | null | undefined): string {

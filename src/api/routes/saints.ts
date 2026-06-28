@@ -145,7 +145,7 @@ saintsRoute.openapi(
         })
         .from(saintRelations)
         .innerJoin(saints, eq(saintRelations.related_saint_id, saints.id))
-        .where(eq(saintRelations.saint_id, saint.id)),
+        .where(and(eq(saintRelations.saint_id, saint.id), eq(saints.published, true))),
     ]);
 
     // Fetch all linked saints for these miracles (needed for MiracleListItemSchema.saints)

@@ -24,6 +24,7 @@ const [[{ total }], pageMiracles] = await Promise.all([
       date_of_event: miracles.date_of_event,
       used_for_beatification: miracles.used_for_beatification,
       used_for_canonization: miracles.used_for_canonization,
+      published: miracles.published,
     })
     .from(miracles)
     .orderBy(asc(miracles.title))
@@ -70,6 +71,7 @@ if (page > totalPages) return Astro.redirect(`/admin/miracles?page=${totalPages}
         <th>Type</th>
         <th>Date</th>
         <th>Used For</th>
+        <th>Status</th>
         <th></th>
       </tr>
     </thead>
@@ -96,6 +98,7 @@ if (page > totalPages) return Astro.redirect(`/admin/miracles?page=${totalPages}
               {m.used_for_beatification && <span class="badge">beatification</span>}
               {m.used_for_canonization && <span class="badge badge-green">canonization</span>}
             </td>
+            <td>{m.published ? <span class="badge badge-green">Live</span> : <span class="badge">Draft</span>}</td>
             <td><a href={`/admin/miracles/${m.slug}/edit`}>Edit</a></td>
           </tr>
         );

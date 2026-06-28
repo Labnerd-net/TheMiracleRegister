@@ -78,8 +78,6 @@ export const SaintDetailSchema = z
     feast_day: z.string().nullable(),
     religious_order: z.string().nullable(),
     nationality: z.string().nullable(),
-    birth_place: z.string().nullable(),
-    death_place: z.string().nullable(),
     beatification_date: z.string().nullable(),
     beatified_by: z.string().nullable(),
     canonization_date: z.string().nullable(),

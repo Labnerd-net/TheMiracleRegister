@@ -28,7 +28,7 @@ async function fetchSaintsForMiracles(
     })
     .from(miracleSaints)
     .innerJoin(saints, eq(miracleSaints.saint_id, saints.id))
-    .where(inArray(miracleSaints.miracle_id, miracleIds));
+    .where(and(inArray(miracleSaints.miracle_id, miracleIds), eq(saints.published, true)));
   for (const link of links) {
     if (!map.has(link.miracle_id)) map.set(link.miracle_id, []);
     map.get(link.miracle_id)!.push({ id: link.id, slug: link.slug, name: link.name });

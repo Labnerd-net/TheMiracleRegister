@@ -163,7 +163,7 @@ const [sources, images] = await Promise.all([
   </div>
   <h1 style="font-size:1.2rem">Edit: {v.title}</h1>
   <p style="font-size:0.85rem;color:#666;margin-bottom:1.5rem">
-    Slug: <code>{slug}</code> · <a href={`/miracles/${slug}`} target="_blank">View public page ↗</a>
+    Slug: <code>{slug}</code> · <a href={`/miracles/${slug}?preview=${env.PREVIEW_TOKEN}`} target="_blank">View public page ↗</a>
   </p>
 
   {error && <div class="error">{error}</div>}

@@ -22,6 +22,7 @@ const [[{ total }], pageSaints] = await Promise.all([
       canonization_stage: saints.canonization_stage,
       feast_day: saints.feast_day,
       nationality: saints.nationality,
+      published: saints.published,
     })
     .from(saints)
     .orderBy(asc(saints.name))
@@ -47,6 +48,7 @@ if (page > totalPages) return Astro.redirect(`/admin/saints?page=${totalPages}`)
         <th>Stage</th>
         <th>Feast Day</th>
         <th>Nationality</th>
+        <th>Status</th>
         <th></th>
       </tr>
     </thead>
@@ -57,6 +59,7 @@ if (page > totalPages) return Astro.redirect(`/admin/saints?page=${totalPages}`)
           <td><span class="badge">{s.canonization_stage}</span></td>
           <td>{s.feast_day ?? "—"}</td>
           <td>{s.nationality ?? "—"}</td>
+          <td>{s.published ? <span class="badge badge-green">Live</span> : <span class="badge">Draft</span>}</td>
           <td><a href={`/admin/saints/${s.slug}/edit`}>Edit</a></td>
         </tr>
       ))}

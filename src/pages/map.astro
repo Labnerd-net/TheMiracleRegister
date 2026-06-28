@@ -108,6 +108,10 @@ const locationData = locationRows.map(l => ({
 
   <script is:inline src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
   <script is:inline define:vars={{ miracleData, locationData }}>
+    function escHtml(s) {
+      return String(s ?? "").replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;").replace(/"/g,"&quot;");
+    }
+
     const typeColors = {
       tomb: "#c9a84c",
       birthplace: "#4a90d9",
@@ -144,8 +148,8 @@ const locationData = locationRows.map(l => ({
       });
       const typeLabel = loc.location_type.replace(/_/g, " ");
       marker.bindPopup(
-        `<strong><a href="/saints/${loc.saint_slug}" style="color:inherit">${loc.saint_name}</a></strong><br>` +
-        `<span style="font-size:0.75rem;color:#666">${loc.location_name} · ${typeLabel}</span>`
+        `<strong><a href="/saints/${escHtml(loc.saint_slug)}" style="color:inherit">${escHtml(loc.saint_name)}</a></strong><br>` +
+        `<span style="font-size:0.75rem;color:#666">${escHtml(loc.location_name)} · ${escHtml(typeLabel)}</span>`
       );
       marker.addTo(map);
       if (!saintMarkersByType[loc.location_type]) saintMarkersByType[loc.location_type] = [];
@@ -167,8 +171,8 @@ const locationData = locationRows.map(l => ({
       });
       const typeLabel = m.type.replace(/_/g, " ");
       marker.bindPopup(
-        `<strong><a href="/miracles/${m.slug}" style="color:inherit">${m.title}</a></strong><br>` +
-        `<span style="font-size:0.75rem;color:#666">${typeLabel}${m.label ? " · " + m.label : ""}</span>`
+        `<strong><a href="/miracles/${escHtml(m.slug)}" style="color:inherit">${escHtml(m.title)}</a></strong><br>` +
+        `<span style="font-size:0.75rem;color:#666">${escHtml(typeLabel)}${m.label ? " · " + escHtml(m.label) : ""}</span>`
       );
       marker.addTo(map);
       if (!miracleMarkersByCategory[m.category]) miracleMarkersByCategory[m.category] = [];

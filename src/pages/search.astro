@@ -28,7 +28,8 @@ if (q.length >= 2) {
       .where(and(
         eq(saints.published, true),
         or(ilike(saints.name, pattern), ilike(saints.biography_short, pattern))
-      )),
+      ))
+      .limit(200),
     db
       .select({
         slug: miracles.slug,
@@ -44,7 +45,8 @@ if (q.length >= 2) {
           ilike(miracles.medical_diagnosis, pattern),
           ilike(miracles.cure_details, pattern),
         )
-      )),
+      ))
+      .limit(200),
   ]);
 }
 

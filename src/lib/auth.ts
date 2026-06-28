@@ -50,5 +50,5 @@ export function sessionCookieHeader(token: string): string {
 }
 
 export function clearSessionCookieHeader(): string {
-  return `${SESSION_COOKIE}=; HttpOnly; SameSite=Lax; Path=/; Max-Age=0`;
+  return `${SESSION_COOKIE}=; HttpOnly; Secure; SameSite=Lax; Path=/; Max-Age=0`;
 }

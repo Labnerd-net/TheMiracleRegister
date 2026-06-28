@@ -33,6 +33,9 @@ export const GET: APIRoute = async () => {
     url("/"),
     url("/saints"),
     url("/miracles"),
+    url("/map"),
+    url("/miracles/timeline"),
+    url("/search"),
     ...saintRows.map((s) => url(`/saints/${s.slug}`, s.updated_at)),
     ...miracleRows.map((m) => url(`/miracles/${m.slug}`, m.updated_at)),
   ].join("\n");

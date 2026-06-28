@@ -5,7 +5,7 @@ import { miracles, saints, miracleSaints, miracleSources, miracleImages } from "
 import { and, asc, eq, inArray, ne, sql } from "drizzle-orm";
 import { env } from "cloudflare:workers";
 import { renderMarkdown } from "../../lib/markdown";
-import { humanizeSnakeCase, ogDescription } from "../../lib/format";
+import { humanizeSnakeCase, ogDescription, approvalBadge } from "../../lib/format";
 
 const { slug } = Astro.params;
 const db = createDb(env.DATABASE_URL);
@@ -111,13 +111,6 @@ for (const m of [...saintLinked, ...topicLinked]) {
 
 const fmt = humanizeSnakeCase;
 
-function approvalBadge(authority: string | null): { cls: string; label: string } | null {
-  if (authority === "vatican_dicastery") return { cls: "vatican", label: "Vatican Approved" };
-  if (authority === "lourdes_bureau")    return { cls: "lourdes", label: "Lourdes Bureau" };
-  if (authority === "local_bishop")      return { cls: "bishop",  label: "Bishop Approved" };
-  if (authority === "nihil_obstat")      return { cls: "nihil",   label: "Nihil Obstat" };
-  return null;
-}
 
 const MONTHS = ["January","February","March","April","May","June","July","August","September","October","November","December"];
 function formatFeastDay(month: number | null, day: number | null): string | null {
@@ -375,12 +368,15 @@ const ogDesc = ogDescription(miracle.synopsis) || undefined;
         locationName: miracle.location_name,
         country: miracle.country,
       }}>
+        function escHtml(s) {
+          return String(s ?? "").replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;").replace(/"/g,"&quot;");
+        }
         const map = L.map('miracle-map').setView([Number(lat), Number(lng)], 7);
         L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
           attribution: '© <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors',
           maxZoom: 19,
         }).addTo(map);
-        const label = [locationName, country].filter(Boolean).join(', ');
+        const label = [locationName, country].filter(Boolean).map(escHtml).join(', ');
         const marker = L.marker([Number(lat), Number(lng)]).addTo(map);
         if (label) marker.bindPopup(label).openPopup();
       </script>

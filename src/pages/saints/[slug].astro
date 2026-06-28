@@ -316,6 +316,10 @@ const ogDesc = ogDescription(saint.biography_short) || undefined;
     <>
       <script is:inline src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
       <script is:inline define:vars={{ locations: mappableLocations }}>
+        function escHtml(s) {
+          return String(s ?? "").replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;").replace(/"/g,"&quot;");
+        }
+
         const typeColors = {
           tomb: "#c9a84c",
           birthplace: "#4a90d9",
@@ -346,7 +350,7 @@ const ogDesc = ogDescription(saint.biography_short) || undefined;
             fillOpacity: 0.9,
           }).addTo(map);
           const label = loc.location_type.replace(/_/g, " ");
-          marker.bindPopup(`<strong>${loc.location_name}</strong><br><span style="font-size:0.75rem;color:#666">${label}</span>`);
+          marker.bindPopup(`<strong>${escHtml(loc.location_name)}</strong><br><span style="font-size:0.75rem;color:#666">${escHtml(label)}</span>`);
           bounds.push([lat, lng]);
         });
 
