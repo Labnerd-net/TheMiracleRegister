@@ -6,6 +6,7 @@ import { asc, and, eq } from "drizzle-orm";
 import { env } from "cloudflare:workers";
 import { renderMarkdown } from "../../lib/markdown";
 import { humanizeSnakeCase, ogDescription } from "../../lib/format";
+import { LOCATION_TYPE_COLORS } from "../../lib/mapConstants";
 
 const { slug } = Astro.params;
 const db = createDb(env.DATABASE_URL);
@@ -315,20 +316,10 @@ const ogDesc = ogDescription(saint.biography_short) || undefined;
   {mappableLocations.length > 0 && (
     <>
       <script is:inline src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
-      <script is:inline define:vars={{ locations: mappableLocations }}>
+      <script is:inline define:vars={{ locations: mappableLocations, typeColors: LOCATION_TYPE_COLORS }}>
         function escHtml(s) {
           return String(s ?? "").replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;").replace(/"/g,"&quot;");
         }
-
-        const typeColors = {
-          tomb: "#c9a84c",
-          birthplace: "#4a90d9",
-          death_place: "#888888",
-          shrine: "#7c5cbf",
-          relic: "#c0392b",
-          major_devotional_center: "#27ae60",
-          other: "#5ba8a0",
-        };
 
         const map = L.map('saint-map');
         L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {

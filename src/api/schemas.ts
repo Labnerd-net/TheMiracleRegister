@@ -1,5 +1,24 @@
 import { z } from "@hono/zod-openapi";
 import { MIRACLE_TOPICS, SAINT_THEMES } from "../db/topics";
+import {
+  approvalAuthority,
+  canonizationStage,
+  canonizationType,
+  cureCharacteristics,
+  datePrecision,
+  gender,
+  intercessoryMedium,
+  miracleCategory,
+  miracleType,
+  recipientGender,
+  recipientPrivacy,
+  relationTypeEnum,
+  sourceType,
+  timingRelativeToSaintDeath,
+} from "../db/schema/enums";
+
+const e = <T extends string>(vals: readonly T[]): z.ZodEnum<[T, ...T[]]> =>
+  z.enum(vals as [T, ...T[]]);
 
 // --- Shared ---
 
@@ -27,7 +46,7 @@ export const SaintListItemSchema = z
     slug: z.string(),
     name: z.string(),
     saint_name: z.string().nullable(),
-    canonization_stage: z.enum(["saint", "blessed", "venerable", "servant_of_god"]),
+    canonization_stage: e(canonizationStage.enumValues),
     feast_day: z.string().nullable(),
     nationality: z.string().nullable(),
     image_url: z.string().nullable(),
@@ -39,7 +58,7 @@ export const RelatedSaintSchema = z
     id: z.number().int(),
     slug: z.string(),
     name: z.string(),
-    relation_type: z.enum(["canonized_together", "same_order", "family"]),
+    relation_type: e(relationTypeEnum.enumValues),
   })
   .openapi("RelatedSaint");
 
@@ -48,17 +67,14 @@ export const MiracleListItemSchema = z
     id: z.number().int(),
     slug: z.string(),
     title: z.string(),
-    type: z.enum([
-      "healing", "nature", "eucharistic", "stigmata", "incorruptibility",
-      "apparition", "miraculous_image", "prophecy", "bilocation", "other",
-    ]),
+    type: e(miracleType.enumValues),
     topics: z.array(z.string()).nullable(),
     country: z.string().nullable(),
     date_of_event: z.string().nullable(),
-    date_precision: z.enum(["exact_day", "month", "year", "decade", "century", "unknown"]),
+    date_precision: e(datePrecision.enumValues),
     recipient_name: z.string().nullable(),
     was_medically_verified: z.boolean(),
-    approval_authority: z.enum(["vatican_dicastery", "lourdes_bureau", "local_bishop", "nihil_obstat", "none"]),
+    approval_authority: e(approvalAuthority.enumValues),
     cure_details: z.string().nullable(),
     used_for_beatification: z.boolean(),
     used_for_canonization: z.boolean(),
@@ -82,14 +98,12 @@ export const SaintDetailSchema = z
     beatified_by: z.string().nullable(),
     canonization_date: z.string().nullable(),
     canonized_by: z.string().nullable(),
-    canonization_type: z
-      .enum(["confessor", "martyr", "virgin", "married_couple", "other"])
-      .nullable(),
-    canonization_stage: z.enum(["saint", "blessed", "venerable", "servant_of_god"]),
+    canonization_type: e(canonizationType.enumValues).nullable(),
+    canonization_stage: e(canonizationStage.enumValues),
     patronage: z.array(z.string()).nullable(),
     themes: z.array(z.string()).nullable(),
     biography_short: z.string().nullable(),
-    gender: z.enum(["male", "female", "group"]).nullable(),
+    gender: e(gender.enumValues).nullable(),
     lay_person: z.boolean().nullable(),
     image_url: z.string().nullable(),
     wikipedia_url: z.string().nullable(),
@@ -105,7 +119,7 @@ export const SourceSchema = z
     id: z.number().int(),
     url: z.string(),
     title: z.string().nullable(),
-    source_type: z.enum(["vatican_decree", "news_article", "book", "academic", "other"]),
+    source_type: e(sourceType.enumValues),
     accessed_date: z.string().nullable(),
   })
   .openapi("Source");
@@ -125,37 +139,29 @@ export const MiracleDetailSchema = z
     id: z.number().int(),
     slug: z.string(),
     title: z.string(),
-    miracle_category: z.enum(["intercessory", "associated", "apparition"]),
-    type: z.enum([
-      "healing", "nature", "eucharistic", "stigmata", "incorruptibility",
-      "apparition", "miraculous_image", "prophecy", "bilocation", "other",
-    ]),
+    miracle_category: e(miracleCategory.enumValues),
+    type: e(miracleType.enumValues),
     topics: z.array(z.string()).nullable(),
     date_of_event: z.string().nullable(),
-    date_precision: z.enum(["exact_day", "month", "year", "decade", "century", "unknown"]),
-    timing_relative_to_saint_death: z.enum(["during_lifetime", "posthumous", "not_applicable"]),
+    date_precision: e(datePrecision.enumValues),
+    timing_relative_to_saint_death: e(timingRelativeToSaintDeath.enumValues),
     location_name: z.string().nullable(),
     location_lat: z.string().nullable(),
     location_lng: z.string().nullable(),
     country: z.string().nullable(),
     region: z.string().nullable(),
     recipient_name: z.string().nullable(),
-    recipient_gender: z.enum(["male", "female", "not_applicable"]).nullable(),
+    recipient_gender: e(recipientGender.enumValues).nullable(),
     recipient_country: z.string().nullable(),
-    recipient_privacy: z.enum(["public", "first_name_only", "confidential", "not_applicable"]),
+    recipient_privacy: e(recipientPrivacy.enumValues),
     recipient_age_at_event: z.number().int().nullable(),
     medical_diagnosis: z.string().nullable(),
     cure_details: z.string().nullable(),
-    cure_characteristics: z.enum([
-      "instant_complete", "gradual_complete", "instant_partial", "gradual_partial", "not_applicable",
-    ]),
+    cure_characteristics: e(cureCharacteristics.enumValues),
     was_medically_verified: z.boolean(),
     medical_verification_date: z.string().nullable(),
-    intercessory_medium: z.enum([
-      "prayer_only", "relic", "blessed_oil", "medallion", "visitation",
-      "tomb_prayer", "saint_image", "not_applicable", "other",
-    ]),
-    approval_authority: z.enum(["vatican_dicastery", "lourdes_bureau", "local_bishop", "nihil_obstat", "none"]),
+    intercessory_medium: e(intercessoryMedium.enumValues),
+    approval_authority: e(approvalAuthority.enumValues),
     vatican_decree_date: z.string().nullable(),
     vatican_medical_board_verdict: z.string().nullable(),
     used_for_beatification: z.boolean(),
@@ -193,17 +199,13 @@ export const SearchResultSchema = z
 
 export const MiraclesQuerySchema = z.object({
   saint_id: z.coerce.number().int().optional(),
-  type: z
-    .enum([
-      "healing", "nature", "eucharistic", "stigmata", "incorruptibility",
-      "apparition", "miraculous_image", "prophecy", "bilocation", "other",
-    ])
-    .optional(),
+  type: e(miracleType.enumValues).optional(),
   country: z.string().optional(),
   year_from: z.coerce.number().int().optional(),
   year_to: z.coerce.number().int().optional(),
   used_for_beatification: z.string().optional(),
   used_for_canonization: z.string().optional(),
+  // "none" excluded — not a useful filter value
   approval_authority: z.enum(["vatican_dicastery", "lourdes_bureau", "local_bishop", "nihil_obstat"]).optional(),
   page: z.coerce.number().int().positive().default(1),
   limit: z.coerce.number().int().positive().max(100).default(20),

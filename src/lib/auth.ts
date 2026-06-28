@@ -16,14 +16,17 @@ async function hmac(message: string, secret: string): Promise<string> {
     .join("");
 }
 
-// Timing-safe string comparison
-function safeEqual(a: string, b: string): boolean {
-  if (a.length !== b.length) return false;
-  let result = 0;
-  for (let i = 0; i < a.length; i++) {
-    result |= a.charCodeAt(i) ^ b.charCodeAt(i);
-  }
-  return result === 0;
+async function hmacVerify(message: string, hexSig: string, secret: string): Promise<boolean> {
+  const enc = new TextEncoder();
+  const key = await crypto.subtle.importKey(
+    "raw",
+    enc.encode(secret),
+    { name: "HMAC", hash: "SHA-256" },
+    false,
+    ["verify"]
+  );
+  const sigBytes = new Uint8Array(hexSig.match(/.{2}/g)?.map(h => parseInt(h, 16)) ?? []);
+  return crypto.subtle.verify("HMAC", key, sigBytes, enc.encode(message));
 }
 
 export async function createSessionToken(sessionSecret: string): Promise<string> {
@@ -41,8 +44,7 @@ export async function validateSessionToken(
   const expiresAt = parseInt(token.slice(0, dot), 10);
   if (isNaN(expiresAt) || Date.now() > expiresAt) return false;
   const sig = token.slice(dot + 1);
-  const expected = await hmac(`${expiresAt}`, sessionSecret);
-  return safeEqual(sig, expected);
+  return hmacVerify(`${expiresAt}`, sig, sessionSecret);
 }
 
 export function sessionCookieHeader(token: string): string {

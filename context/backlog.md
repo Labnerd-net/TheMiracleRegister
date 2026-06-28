@@ -16,7 +16,7 @@ _None identified._
 - **#5 [src/pages/map.astro, src/pages/saints/[slug].astro, src/pages/miracles/[slug].astro]** Leaflet loaded from `unpkg.com` CDN with no `integrity` attribute on any of the six `<link>` and `<script>` tags. A compromised CDN response would execute arbitrary JS with no detection. Fix: add SRI `integrity="sha256-..."` hashes to all Leaflet resource tags.
 
 ### Low
-- **#7 [src/lib/auth.ts]** `safeEqual()` performs an early-exit length check before the constant-time XOR loop, making it technically not constant-time. In practice HMAC-SHA256 always produces a 64-char string so the branch is never taken, but the "timing-safe" comment is misleading. Fix: use `crypto.subtle.verify("HMAC", key, sig, expected)` instead.
+_None identified._
 
 ---
 
@@ -56,15 +56,12 @@ _None identified._
 - **#14 [src/components/MiracleForm.astro, src/pages/admin/miracles/[slug]/edit.astro]** Miracle location coordinates (`location_lat`, `location_lng`) are not in the admin form or edit handler. The public miracle detail page renders a Leaflet map if those coordinates are populated, but there's no way to set them through the UI — requires a direct DB edit. Fix: add `lat`/`lng` number inputs to `MiracleForm.astro` and wire them into the edit handler's `.set({})` call.
 - **#15 [src/components/MiracleForm.astro, src/components/SaintForm.astro]** `feast_month`, `feast_day_of_month`, and `feast_easter_offset` exist on both `miracles` and `saints` tables and are already displayed on public pages via `formatFeastDay()`. Neither admin form exposes these fields, so they can only be set via direct DB edit. Fix: add the three feast day inputs to both forms and wire them into both create and edit handlers.
 - **#16 [src/pages/admin/saints/[slug]/edit.astro]** The `saint_relations` join table is used by the public saint detail page and the API, but the admin saint edit page has no way to add or remove relations. There's no UI for the table at all. Fix: add an add/delete relations section to the saint edit page, matching the existing sources/locations pattern.
-- **#19 [src/api/schemas.ts]** Enum literals are hardcoded as string arrays throughout (e.g. `z.enum(["healing", "nature", ...])` at line 51). These duplicate `src/db/schema/enums.ts`. Adding a new miracle type to the Drizzle enum requires a separate manual update to `schemas.ts`. Fix: derive Zod enums from Drizzle enum values (e.g. `z.enum(miracleType.enumValues)`) throughout `schemas.ts`.
-- **#20 [src/pages/map.astro, src/pages/saints/[slug].astro]** Identical `typeColors` object (mapping `location_type` to hex color) is copy-pasted in both files. A color change or new location type requires updating both. Fix: extract to a shared constant in `src/lib/` or a shared Astro component.
 
 ### Low
 - **#22 [src/pages/saints/index.astro, src/pages/miracles/index.astro]** `buildApiUrl()`, `buildPageUrl()`, and `renderPagination()` are structurally identical across both list pages — only the field names differ. Fix: extract into a reusable client-side utility module.
 - **#23 [src/pages/saints/index.astro, src/pages/miracles/index.astro]** Each list page has an Astro server-rendered card template and a nearly identical hand-rolled string-concatenation version inside the client-side `renderCard()` JS. A card design change requires updating both. Fix: generate card HTML server-side and serve it via an SSR partial endpoint, or accept the duplication and keep both in sync.
 - **#24 [src/components/Pagination.astro]** The `Pagination` component is used in admin list pages but the public list pages build pagination HTML manually in both the Astro template and the client-side JS string. Fix: use the component on public pages or document why each path needs its own implementation.
-- **#25 [src/pages/admin/miracles/[slug]/edit.astro]** Source and image "Remove" buttons POST directly with no confirmation step. A misclick permanently deletes a source or image. Fix: add `onclick="return confirm('Remove this source?')"` or a `<dialog>` confirm.
-- **#26 [src/pages/saints/index.astro, src/pages/miracles/index.astro]** `applyFilters()` fires a fetch and replaces DOM content with no visual feedback while the request is in flight. On a slow edge response the user sees stale results with no indication an update is pending. Fix: add a loading class or spinner to the grid container during fetch.
+- **#25 [src/pages/saints/index.astro, src/pages/miracles/index.astro]** `applyFilters()` fires a fetch and replaces DOM content with no visual feedback while the request is in flight. On a slow edge response the user sees stale results with no indication an update is pending. Fix: add a loading class or spinner to the grid container during fetch.
 - **#27 [src/components/SaintForm.astro, src/components/MiracleForm.astro]** The slug input is shown only on create (guarded by `!v`), not on edit. A typo in the initial slug is permanently locked in without a direct DB edit. Fix: expose slug on the edit form with a warning about URL breakage, or add a redirect rule on slug change.
 
 ---
@@ -77,8 +74,7 @@ _None identified._
 ### Medium
 - **#28 [src/pages/miracles/index.astro, src/api/routes/miracles.ts]** Topic filter missing from `/miracles` filter bar. Topics are the primary discovery dimension (`MIRACLE_TOPICS` has 13 values, GIN index exists), displayed on list cards, but there's no Topic dropdown. The API `MiraclesQuerySchema` also has no `topic` param. Fix: add `topic` to the API schema with `sql\`${miracles.topics} @> ARRAY[${topic}]::text[]\`` condition, and add the dropdown to the filter bar and JS `buildApiUrl`/`buildPageUrl` functions.
 - **#29 [src/pages/miracles/index.astro]** Miracle category filter (`intercessory`, `associated`, `apparition`) missing from filter bar. Users cannot browse only apparitions or only intercessory miracles. Fix: add a Category dropdown to the filter bar, wired through the API schema and JS swap logic.
-- **#30 [src/pages/miracles/index.astro]** Miracles list default sort is alphabetical by title (`asc(miracles.title)`), which is the least useful default for a historical database. The API route already uses chronological order. Fix: change the Astro page default to `asc(miracles.date_of_event)` (nulls last) to match the timeline page expectations.
-- **#31 [src/pages/]** The OpenAPI spec is generated and served at `/api/v1/doc` but nothing on the public site links to it or explains the API exists. Fix: add an API page or section in the footer/about area pointing to `/api/v1/doc` with a brief description of available endpoints.
+- **#28 [src/pages/]** The OpenAPI spec is generated and served at `/api/v1/doc` but nothing on the public site links to it or explains the API exists. Fix: add an API page or section in the footer/about area pointing to `/api/v1/doc` with a brief description of available endpoints.
 
 ### Low
 - **#32 [src/pages/saints/index.astro, src/api/routes/saints.ts]** Nationality and patronage are prominent discovery axes (`saints_patronage_gin_idx` already exists) but neither is filterable. Low priority given the small current saint count, but worth adding when saints reach 30+.
@@ -99,9 +95,9 @@ _None identified._
 
 | Category | High | Medium | Low | Total |
 |----------|------|--------|-----|-------|
-| Security | 0 | 3 | 1 | 4 |
+| Security | 0 | 3 | 0 | 3 |
 | Bugs | 0 | 1 | 0 | 1 |
 | Performance | 0 | 0 | 1 | 1 |
-| Improvements & Refactors | 0 | 8 | 6 | 14 |
-| Feature Ideas | 0 | 4 | 11 | 15 |
-| **Total** | **0** | **16** | **19** | **35** |
+| Improvements & Refactors | 0 | 6 | 5 | 11 |
+| Feature Ideas | 0 | 3 | 10 | 13 |
+| **Total** | **0** | **13** | **16** | **29** |

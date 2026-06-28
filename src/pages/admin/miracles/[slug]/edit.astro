@@ -196,7 +196,7 @@ const [sources, images] = await Promise.all([
         <form method="post" style="flex-shrink:0">
           <input type="hidden" name="_action" value="delete_source" />
           <input type="hidden" name="source_id" value={s.id} />
-          <button type="submit" style="background:none;border:none;color:#dc2626;font-size:0.8rem;cursor:pointer;padding:0">Remove</button>
+          <button type="submit" onclick="return confirm('Remove this source?')" style="background:none;border:none;color:#dc2626;font-size:0.8rem;cursor:pointer;padding:0">Remove</button>
         </form>
       </div>
     ))}
@@ -256,7 +256,7 @@ const [sources, images] = await Promise.all([
         <form method="post" style="flex-shrink:0">
           <input type="hidden" name="_action" value="delete_image" />
           <input type="hidden" name="image_id" value={img.id} />
-          <button type="submit" style="background:none;border:none;color:#dc2626;font-size:0.8rem;cursor:pointer;padding:0">Remove</button>
+          <button type="submit" onclick="return confirm('Remove this image?')" style="background:none;border:none;color:#dc2626;font-size:0.8rem;cursor:pointer;padding:0">Remove</button>
         </form>
       </div>
     ))}

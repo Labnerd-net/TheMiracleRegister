@@ -63,7 +63,7 @@ const [[{ total }], pageMiracles, allSaints, countryRows] = await Promise.all([
     })
     .from(miracles)
     .where(where)
-    .orderBy(asc(miracles.title))
+    .orderBy(sql`${miracles.date_of_event} asc nulls last`)
     .limit(PAGE_SIZE)
     .offset(offset),
   db.select({ id: saints.id, name: saints.name }).from(saints).where(eq(saints.published, true)).orderBy(asc(saints.name)),

@@ -4,6 +4,7 @@ import { createDb } from "../db";
 import { miracles, saints, saintLocations } from "../db/schema";
 import { and, eq, isNotNull } from "drizzle-orm";
 import { env } from "cloudflare:workers";
+import { LOCATION_TYPE_COLORS } from "../lib/mapConstants";
 
 const db = createDb(env.DATABASE_URL);
 
@@ -107,20 +108,10 @@ const locationData = locationRows.map(l => ({
   </div>
 
   <script is:inline src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
-  <script is:inline define:vars={{ miracleData, locationData }}>
+  <script is:inline define:vars={{ miracleData, locationData, typeColors: LOCATION_TYPE_COLORS }}>
     function escHtml(s) {
       return String(s ?? "").replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;").replace(/"/g,"&quot;");
     }
-
-    const typeColors = {
-      tomb: "#c9a84c",
-      birthplace: "#4a90d9",
-      death_place: "#888888",
-      shrine: "#7c5cbf",
-      relic: "#c0392b",
-      major_devotional_center: "#27ae60",
-      other: "#5ba8a0",
-    };
 
     const categoryColors = {
       apparition: "#c9a84c",
