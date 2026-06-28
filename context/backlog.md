@@ -73,7 +73,7 @@ _None identified._
 
 ### Low
 - **#32 [src/pages/saints/index.astro, src/api/routes/saints.ts]** Nationality and patronage are prominent discovery axes (`saints_patronage_gin_idx` already exists) but neither is filterable. Low priority given the small current saint count, but worth adding when saints reach 30+.
-- **#33 [src/pages/miracles/index.astro]** Topic tags on miracle list cards render as plain `<span>` elements. On the detail page they link to `/search?q=<topic>` (ilike text search), which will match the word "children" anywhere in the synopsis — not a topic filter. Fix: make card tags link to `/miracles?topic=<topic>` once #28 is implemented.
+- **#33 [src/pages/miracles/index.astro]** Topic tags on miracle list cards render as plain `<span>` elements. On the detail page they link to `/search?q=<topic>` (ilike text search), which will match the word "children" anywhere in the synopsis — not a topic filter. Fix: make card tags link to `/miracles?topic=<topic>` (topic filter now exists).
 - **#34 [src/pages/]** No RSS/Atom feed. A `GET /feed.xml` returning recently published miracles and saints would serve devotional users and aggregators.
 - **#35 [src/pages/miracles/[slug].astro]** The Related Miracles section shows title and type but not which saint the miracle is attributed to. Since related miracles come from both saint-linked and topic-linked queries, saint attribution clarifies why each entry is related. Fix: include saint name(s) in the related miracles query and render them on each related card.
 - **#37 [src/api/routes/search.ts, src/pages/search.astro]** Full-text search upgrade — replace `ilike` with `pg_trgm` trigram indexes or `tsvector`/`tsquery` for better performance and stemming. Long-term consideration once the dataset justifies it.
@@ -93,6 +93,6 @@ _None identified._
 | Security | 0 | 3 | 0 | 3 |
 | Bugs | 0 | 1 | 0 | 1 |
 | Performance | 0 | 0 | 1 | 1 |
-| Improvements & Refactors | 0 | 3 | 5 | 8 |
-| Feature Ideas | 0 | 1 | 10 | 11 |
-| **Total** | **0** | **8** | **16** | **24** |
+| Improvements & Refactors | 0 | 1 | 5 | 6 |
+| Feature Ideas | 0 | 1 | 11 | 12 |
+| **Total** | **0** | **6** | **17** | **23** |
