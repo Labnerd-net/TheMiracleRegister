@@ -45,34 +45,52 @@ The authoritative feast day reference for this project. Covers the universal GRC
 
 - Feb 2 — Presentation of the Lord
 - Feb 3 — Saint Blaise; Saint Ansgar
+- Feb 4 — Saint Joseph of Leonissa (martyrologium)
 - Feb 5 — Saint Agatha
 - Feb 6 — Saint Paul Miki and Companions
 - Feb 8 — Saint Jerome Emiliani; Saint Josephine Bakhita
+- Feb 9 — Saint Apollonia, Martyr (martyrologium)
 - Feb 10 — Saint Scholastica
 - Feb 11 — Our Lady of Lourdes
+- Feb 13 — Saint Giles Mary of Saint Joseph (martyrologium)
 - Feb 14 — Saints Cyril and Methodius
+- Feb 15 — Saint Claude de la Colombière (martyrologium)
+- Feb 16 — Saint Gilbert of Sempringham (national — England)
 - Feb 17 — Seven Holy Founders of the Servite Order
+- Feb 19 — Saint Conrad of Piacenza (martyrologium)
 - Feb 20 — Saints Jacinta and Francisco Marto
 - Feb 21 — Saint Peter Damian
 - Feb 22 — Chair of Saint Peter
 - Feb 23 — Saint Polycarp
+- Feb 27 — Saint Gabriel of Our Lady of Sorrows (martyrologium)
 - Feb 27 — Saint Gregory of Narek
+- Feb 28 — Saint Oswald of Worcester, Bishop (national — England; Feb 29 in leap years)
 
 ---
 
 ## March
 
+- Mar 1 — Saint David of Wales, Bishop (national — Wales)
+- Mar 2 — Saint Agnes of Bohemia (martyrologium)
 - Mar 3 — Saint Katharine Drexel, Virgin (US optional memorial)
 - Mar 4 — Saint Casimir
+- Mar 5 — Saint John Joseph of the Cross (martyrologium)
+- Mar 6 — Saint Colette, Virgin (martyrologium)
 - Mar 7 — Saints Perpetua and Felicity
 - Mar 8 — Saint John of God
-- Mar 9 — Saint Frances of Rome
+- Mar 9 — Saint Frances of Rome; Saint Catherine of Bologna, Virgin (martyrologium)
+- Mar 10 — Saint John Ogilvie, Priest and Martyr (national — Scotland)
+- Mar 13 — Saint Leander of Seville, Bishop (martyrologium)
+- Mar 15 — Saint Clement Mary Hofbauer (martyrologium)
 - Mar 17 — Saint Patrick
-- Mar 18 — Saint Cyril of Jerusalem
+- Mar 18 — Saint Cyril of Jerusalem; Saint Salvator of Horta (martyrologium)
 - Mar 19 — Saint Joseph, Husband of Mary
+- Mar 22 — Saint Nicholas Owen, Martyr (martyrologium)
 - Mar 23 — Saint Turibius of Mongrovejo
 - Mar 24 — Saint Oscar Arnulfo Romero
 - Mar 25 — Annunciation of the Lord
+- Mar 30 — Saint Ludovico of Casoria (martyrologium)
+- Mar 31 — Saint Stephen of Mar Saba (martyrologium)
 
 ---
 

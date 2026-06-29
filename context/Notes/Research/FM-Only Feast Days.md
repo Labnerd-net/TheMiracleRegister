@@ -21,41 +21,11 @@ Saints and feasts in Franciscan Media with no match in the universal GRC or the 
 
 ## February
 
-- February 4 — Joseph of Leonissa
-- February 7 — Colette
-- February 12 — Apollonia
-- February 13 — Giles Mary of Saint Joseph
-- February 15 — Claude de la Colombière
-- February 16 — Gilbert of Sempringham
-- February 18 — Blessed John of Fiesole
-- February 19 — Conrad of Piacenza
-- February 24 — Blessed Luke Belludi
-- February 25 — Blessed Sebastian of Aparicio
-- February 26 — Maria Bertilla Boscardin
-- February 27 — Gabriel of Our Lady of Sorrows
-- February 28 — Blessed Daniel Brottier
-- February 29 — Oswald
+*(no unverified entries remaining)*
 
 ## March
 
-- March 1 — David of Wales
-- March 2 — Agnes of Bohemia
-- March 5 — John Joseph of the Cross
-- March 6 — Mary Ann of Jesus of Paredes
-- March 10 — Dominic Savio
-- March 11 — John Ogilvie
-- March 12 — Blessed Angela Salawa
-- March 13 — Leander of Seville
-- March 15 — Louise de Marillac
-- March 16 — Clement Mary Hofbauer
-- March 20 — Salvator of Horta
-- March 21 — Blessed John of Parma
-- March 22 — Nicholas Owen
-- March 26 — Catherine of Genoa
-- March 28 — Catharine of Bologna
-- March 29 — Ludovico of Casoria
-- March 30 — Peter Regalado
-- March 31 — Stephen of Mar Saba
+*(no unverified entries remaining)*
 
 ## April
 
@@ -79,6 +49,9 @@ Saints and feasts in Franciscan Media with no match in the universal GRC or the 
 - May 4 — Blessed Michael Giedroyc
 - May 5 — Hilary of Arles
 - May 6 — Saints Marian and James
+- May 6 — Dominic Savio *(FM listed Mar 10 — wrong; feast moved from Mar 9 to May 6 to avoid Lent)*
+- May 9 — Louise de Marillac *(FM listed Mar 15 — outdated; feast moved to May 9 in 2015)*
+- May 13 — Peter Regalado *(FM listed Mar 30 — wrong; correct feast is May 13)*
 - May 7 — Rose Venerini
 - May 8 — Peter of Tarentaise
 - May 11 — Ignatius of Laconi
@@ -86,6 +59,7 @@ Saints and feasts in Franciscan Media with no match in the universal GRC or the 
 - May 16 — Margaret of Cortona
 - May 17 — Paschal Baylon
 - May 19 — Theophilus of Corte
+- May 26 — Mary Ann of Jesus of Paredes *(FM listed Mar 6 — wrong; correct feast is May 26)*
 - May 28 — Venerable Pierre Toussaint
 - May 29 — Madeleine Sophie Barat
 - May 30 — Joan of Arc
@@ -130,6 +104,7 @@ Saints and feasts in Franciscan Media with no match in the universal GRC or the 
 
 - September 1 — Giles
 - September 2 — Blessed John Francis Burté and Companions
+- September 15 — Catherine of Genoa *(FM listed Mar 26 — wrong; correct feast is Sep 15)*
 - September 4 — Rose of Viterbo
 - September 6 — Blessed Claudio Granzotto
 - September 7 — Blessed Frédéric Ozanam
@@ -139,6 +114,7 @@ Saints and feasts in Franciscan Media with no match in the universal GRC or the 
 ## October
 
 - October 3 — Theodora Guérin
+- October 20 — Maria Bertilla Boscardin *(FM listed Feb 26 — wrong; correct feast is Oct 20)*
 - October 10 — Francis Borgia
 - October 21 — Hilarion
 - October 25 — Antônio de Sant'Anna Galvão
@@ -173,4 +149,4 @@ Saints and feasts in Franciscan Media with no match in the universal GRC or the 
 - December 30 — Egwin
 
 
-Total FM-only: 120 of 366
+Total FM-only: 95 of 366
