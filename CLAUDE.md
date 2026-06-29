@@ -35,7 +35,7 @@ A data-driven website documenting miracles attributed to Catholic saints. Focuse
 - **Primary:** Intercessory miracles — posthumous healings attributed to a saint's intercession
 - **Secondary:** Associated miracles for famous cases only (Tilma of Guadalupe, stigmata, incorrupt bodies)
 - Public-facing website with REST API from day one
-- Admin panel for data entry (to be designed)
+- Admin panel for data entry (built — password-protected at `/admin/*`)
 
 ---
 
@@ -125,7 +125,6 @@ Saint pages show related saints as links. API response includes a `related_saint
 | used_for_beatification | boolean | |
 | used_for_canonization | boolean | |
 | synopsis | text | 300–500 words narrative; longer only if the case warrants it |
-| image_url | text | nullable — Wikimedia Commons public domain image |
 | has_primary_sources | boolean | |
 | content_tier | enum | `core` (full narrative), `catalog` (short synopsis + external links), `stub` — default core |
 | feast_month | integer | nullable — numeric month (1–12); set for miracles tied to a feast day |
@@ -150,6 +149,19 @@ Medical conditions are **not** topics — use `medical_diagnosis` (free text). P
 **`SAINT_THEMES`** — tags on saint records describing spiritual/devotional character. Used for biography pages and saint discovery.
 
 `hope`, `perseverance`, `conversion`, `eucharistic`, `marian`, `martyrs`, `missionaries`, `saints-of-everyday-life`, `spiritual-direction`, `technology`
+
+### `miracle_images`
+
+Ordered images per miracle. Replaces the old `miracles.image_url` single column.
+
+| Column | Type | Notes |
+|---|---|---|
+| id | integer PK | |
+| miracle_id | FK → miracles | cascade delete |
+| url | text | Wikimedia Commons public domain image URL |
+| caption | text | nullable |
+| source_attribution | text | nullable — photographer/source credit |
+| display_order | integer | ascending; first image used as OG image |
 
 ### `miracle_saints`
 
@@ -271,3 +283,4 @@ Also check `context/Notes/` for in-progress research before starting data work.
 - **`MIRACLE_TOPICS` vs `SAINT_THEMES`:** Topics tag miracle records with any descriptive dimension of the event — recipient role, vocation, life circumstance, or context (e.g. `religious-life`, `veterans`, `mothers`, `conversion`). Themes tag saint records with spiritual/devotional character. Medical conditions belong in `medical_diagnosis`; miracle phenomena belong in the `type` enum.
 - **`noted_for` removed:** Was redundant with `themes` (structured) and `biography_short` (narrative). Saints have two tag fields: `patronage` (formal Catholic designation) and `themes` (standardized spiritual tags).
 - **Carlo Acutis' Eucharistic miracle site** (miracolieucaristici.org) is out of scope — different focus entirely
+- **Easter calculation:** `src/lib/easter.ts` implements Meeus/Jones/Butcher algorithm. `getEaster(year)` returns Easter Sunday UTC; `resolveMovableFeast(offset, year)` adds the offset. Used by the homepage Today's Feast widget to resolve `feast_easter_offset` values against the current year.
