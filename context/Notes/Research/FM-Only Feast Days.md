@@ -25,6 +25,9 @@ Saints and feasts in Franciscan Media with no match in the universal GRC or the 
 - Aug 18 Louis of Toulouse: FM date wrong; correct feast is Aug 19 (martyrologium).
 - Sep 6 Claudio Granzotto: still Blessed; also FM date wrong (feast is Mar 23, not Sep 6).
 - Sep 10 Thomas of Villanova: FM date wrong; correct feast is Sep 22 (martyrologium).
+- Oct 25 Antônio de Sant'Anna Galvão: FM date wrong (Oct 25 = beatification date); correct feast is May 11 (martyrologium).
+- Oct 26 Peter of Alcantara: FM date wrong; correct feast is Oct 18 (martyrologium).
+- Oct 30 Alphonsus Rodriguez: FM date wrong; correct feast is Oct 31 (martyrologium).
 
 
 ## January
@@ -65,16 +68,7 @@ Saints and feasts in Franciscan Media with no match in the universal GRC or the 
 
 ## October
 
-- October 3 — Theodora Guérin
-- October 20 — Maria Bertilla Boscardin *(FM listed Feb 26 — wrong; correct feast is Oct 20)*
-- October 10 — Francis Borgia
-- October 21 — Hilarion
-- October 25 — Antônio de Sant'Anna Galvão
-- October 26 — Peter of Alcantara
-- October 27 — Blessed Bartholomew of Vicenza
-- October 29 — Narcissus of Jerusalem
-- October 30 — Alphonsus Rodriguez
-- October 31 — Wolfgang of Regensburg
+*(no unverified entries remaining)*
 
 ## November
 
@@ -101,4 +95,4 @@ Saints and feasts in Franciscan Media with no match in the universal GRC or the 
 - December 30 — Egwin
 
 
-Total FM-only: 28 of 366
+Total FM-only: 18 of 366

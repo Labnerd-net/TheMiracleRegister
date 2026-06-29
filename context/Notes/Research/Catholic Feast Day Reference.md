@@ -139,6 +139,7 @@ The authoritative feast day reference for this project. Covers the universal GRC
 - May 10 — Saint John of Ávila
 - May 10 — Saint Damien de Veuster of Molokai, Priest (US optional memorial)
 - May 11 — Saint Ignatius of Laconi (martyrologium)
+- May 11 — Saint Antônio de Sant'Anna Galvão, Priest (martyrologium)
 - May 12 — Saint Leopold Mandic, Priest (martyrologium)
 - May 12 — Saints Nereus and Achilleus; Saint Pancras
 - May 13 — Our Lady of Fatima
@@ -294,11 +295,13 @@ The authoritative feast day reference for this project. Covers the universal GRC
 
 - Oct 1 — **Saint Thérèse of the Child Jesus (Thérèse of Lisieux)**
 - Oct 2 — Holy Guardian Angels
+- Oct 3 — Saint Theodora Guérin, Virgin (martyrologium)
 - Oct 4 — Saint Francis of Assisi
 - Oct 5 — **Saint Faustina Kowalska**; Blessed Francis Xavier Seelos, Priest (US optional memorial)
 - Oct 6 — Saint Bruno; Blessed Marie Rose Durocher, Virgin (US optional memorial)
 - Oct 7 — Our Lady of the Rosary
 - Oct 9 — Saint Denis and Companions; Saint John Leonardi; **Saint John Henry Newman**
+- Oct 10 — Saint Francis Borgia, Priest (martyrologium)
 - Oct 11 — **Saint John XXIII**
 - Oct 12 — **Saint Carlo Acutis** (canonized Apr 3, 2025)
 - Oct 14 — Saint Callistus I
@@ -306,11 +309,17 @@ The authoritative feast day reference for this project. Covers the universal GRC
 - Oct 16 — Saint Hedwig; Saint Margaret Mary Alacoque
 - Oct 17 — Saint Ignatius of Antioch
 - Oct 18 — Saint Luke, Evangelist
+- Oct 18 — Saint Peter of Alcantara, Priest (martyrologium)
 - Oct 19 — Saints John de Brébeuf and Isaac Jogues and Companions (US memorial); Saint Paul of the Cross
+- Oct 20 — Saint Maria Bertilla Boscardin, Virgin (martyrologium)
+- Oct 21 — Saint Hilarion, Abbot (martyrologium)
 - Oct 22 — **Saint John Paul II**
 - Oct 23 — Saint John of Capistrano
 - Oct 24 — Saint Anthony Mary Claret
 - Oct 28 — Saints Simon and Jude, Apostles
+- Oct 29 — Saint Narcissus of Jerusalem, Bishop (martyrologium)
+- Oct 31 — Saint Alphonsus Rodriguez (martyrologium)
+- Oct 31 — Saint Wolfgang of Regensburg, Bishop (martyrologium)
 
 ---
 
