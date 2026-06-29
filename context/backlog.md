@@ -76,6 +76,7 @@ _None identified._
 - **#44 [src/db/schema/saints.ts, src/db/schema/miracles.ts, src/pages/admin/]** R2 image storage — replace external Wikimedia URLs with images uploaded to Cloudflare R2, served via the Cloudflare Images binding for WebP/AVIF conversion, resizing, and CDN caching. Fixes the 7.5s mobile LCP (#40). Requires image upload UI in admin saint/miracle edit forms and a migration of existing `image_url` values. Near-term alternative: proxy existing Wikimedia URLs through `/cdn-cgi/image/width=400,format=auto/` with no schema changes. Worth doing at 30+ saints or when hosting images without a clean Wikimedia URL.
 - **#42 [src/pages/admin/index.astro]** Admin analytics dashboard — extend beyond total counts with aggregations by country, type, topic, canonization stage.
 - **#43 [src/pages/miracles/index.astro, src/pages/saints/index.astro]** Random page — `/random` redirects to a random published saint or miracle via `ORDER BY RANDOM() LIMIT 1`. Low-effort discovery feature.
+- **#45 [src/pages/calendar.astro]** Liturgical calendar view — monthly grid showing saints whose feast day falls on each day. Feast day data (`feast_month`, `feast_day_of_month`, `feast_easter_offset`) already on saints table; `src/lib/easter.ts` handles movable feasts. Hold until 40–50 saints are published — sparse data makes a grid feel broken. Nav placement alongside Map and Timeline.
 
 ---
 
@@ -87,5 +88,5 @@ _None identified._
 | Bugs | 0 | 0 | 0 | 0 |
 | Performance | 0 | 0 | 1 | 1 |
 | Improvements & Refactors | 0 | 0 | 3 | 3 |
-| Feature Ideas | 0 | 0 | 8 | 8 |
-| **Total** | **0** | **0** | **12** | **12** |
+| Feature Ideas | 0 | 0 | 9 | 9 |
+| **Total** | **0** | **0** | **13** | **13** |
