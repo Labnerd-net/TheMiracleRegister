@@ -3,6 +3,8 @@
 **Generated:** 2026-06-28  
 **Method:** FM list (366 entries) compared against `General Roman Calendar.md` (universal GRC) and the USCCB liturgical calendar for the USA. Entries removed where the same saint or feast appears in either calendar, regardless of date discrepancy.
 
+**Source of truth:** `General Roman Calendar.md` is authoritative for feast dates. Dates listed below are from FM and may differ from the Vatican-assigned feast day. Always verify against GRC before using a date from this list.
+
 Saints and feasts in Franciscan Media with no match in the universal GRC or the US calendar. 129 of 366 FM entries. These are candidates for review — most are national/diocesan saints from other countries, recently canonized saints not yet in major calendars, or Blessed/Venerable who haven't reached that level.
 
 **Known caveats in this list:**

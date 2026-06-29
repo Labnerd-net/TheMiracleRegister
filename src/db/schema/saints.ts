@@ -8,7 +8,7 @@ import {
   text,
   timestamp,
 } from "drizzle-orm/pg-core";
-import { canonizationStage, canonizationType, dispensationReason, gender } from "./enums";
+import { canonizationStage, canonizationType, dispensationReason, feastScope, gender } from "./enums";
 
 export const saints = pgTable(
   "saints",
@@ -24,6 +24,8 @@ export const saints = pgTable(
     feast_month: integer("feast_month"),
     feast_day_of_month: integer("feast_day_of_month"),
     feast_easter_offset: integer("feast_easter_offset"),
+    feast_scope: feastScope("feast_scope"),
+    feast_scope_detail: text("feast_scope_detail"),
     religious_order: text("religious_order"),
     nationality: text("nationality"),
     ministry_country: text("ministry_country"),

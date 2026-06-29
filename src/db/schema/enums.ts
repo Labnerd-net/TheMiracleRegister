@@ -131,3 +131,10 @@ export const approvalAuthority = pgEnum("approval_authority", [
   "nihil_obstat",
   "none",
 ]);
+
+export const feastScope = pgEnum("feast_scope", [
+  "universal",
+  "national",
+  "order",
+  "diocesan",
+]);

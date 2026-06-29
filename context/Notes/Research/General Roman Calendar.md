@@ -12,13 +12,18 @@ The GRC is the authoritative feast day reference for this project. Use it over F
 - Jan 1 — Solemnity of Mary, Holy Mother of God
 - Jan 2 — Saints Basil the Great and Gregory Nazianzen
 - Jan 3 — Most Holy Name of Jesus (optional memorial)
+- Jan 4 — Saint Elizabeth Ann Seton, Religious (US memorial)
+- Jan 5 — Saint John Neumann, Bishop (US memorial)
 - Jan 6 — Epiphany of the Lord
+- Jan 6 — Saint André Bessette, Religious (US optional memorial)
 - Jan 7 — Saint Raymond of Penyafort
 - Jan 13 — Saint Hilary
 - Jan 17 — Saint Anthony, Abbot
 - Jan 20 — Saint Fabian; Saint Sebastian
 - Jan 21 — Saint Agnes
 - Jan 22 — Saint Vincent
+- Jan 22 — Day of Prayer for the Legal Protection of Unborn Children (US observance)
+- Jan 23 — Saint Marianne Cope, Virgin (US optional memorial)
 - Jan 24 — Saint Francis de Sales
 - Jan 25 — Conversion of Saint Paul
 - Jan 26 — Saints Timothy and Titus
@@ -50,6 +55,7 @@ The GRC is the authoritative feast day reference for this project. Use it over F
 
 ## March
 
+- Mar 3 — Saint Katharine Drexel, Virgin (US optional memorial)
 - Mar 4 — Saint Casimir
 - Mar 7 — Saints Perpetua and Felicity
 - Mar 8 — Saint John of God
@@ -87,6 +93,8 @@ The GRC is the authoritative feast day reference for this project. Use it over F
 - May 2 — Saint Athanasius
 - May 3 — Saints Philip and James, Apostles
 - May 10 — Saint John of Ávila
+- May 10 — Saint Damien de Veuster of Molokai, Priest (US optional memorial)
+- May 15 — Saint Isidore the Farmer (US optional memorial)
 - May 12 — Saints Nereus and Achilleus; Saint Pancras
 - May 13 — Our Lady of Fatima
 - May 14 — Saint Matthias, Apostle
@@ -131,6 +139,7 @@ The GRC is the authoritative feast day reference for this project. Use it over F
 
 ## July
 
+- Jul 1 — Saint Junipero Serra, Priest (US optional memorial)
 - Jul 3 — Saint Thomas, Apostle
 - Jul 4 — Saint Elizabeth of Portugal; **Saint Pier Giorgio Frassati** (canonized Sep 7, 2025)
 - Jul 5 — Saint Anthony Zaccaria
@@ -139,7 +148,7 @@ The GRC is the authoritative feast day reference for this project. Use it over F
 - Jul 11 — Saint Benedict, Abbot
 - Jul 12 — **Saints Louis and Zélie Martin**
 - Jul 13 — Saint Henry
-- Jul 14 — Saint Camillus de Lellis *(US: Saint Kateri Tekakwitha)*
+- Jul 14 — Saint Camillus de Lellis; Saint Kateri Tekakwitha, Virgin (US memorial)
 - Jul 15 — Saint Bonaventure
 - Jul 16 — Our Lady of Mount Carmel
 - Jul 20 — Saint Apollinaris
@@ -214,8 +223,8 @@ The GRC is the authoritative feast day reference for this project. Use it over F
 - Oct 1 — **Saint Thérèse of the Child Jesus (Thérèse of Lisieux)**
 - Oct 2 — Holy Guardian Angels
 - Oct 4 — Saint Francis of Assisi
-- Oct 5 — **Saint Faustina Kowalska**
-- Oct 6 — Saint Bruno
+- Oct 5 — **Saint Faustina Kowalska**; Blessed Francis Xavier Seelos, Priest (US optional memorial)
+- Oct 6 — Saint Bruno; Blessed Marie Rose Durocher, Virgin (US optional memorial)
 - Oct 7 — Our Lady of the Rosary
 - Oct 9 — Saint Denis and Companions; Saint John Leonardi; **Saint John Henry Newman**
 - Oct 11 — **Saint John XXIII**
@@ -225,7 +234,7 @@ The GRC is the authoritative feast day reference for this project. Use it over F
 - Oct 16 — Saint Hedwig; Saint Margaret Mary Alacoque
 - Oct 17 — Saint Ignatius of Antioch
 - Oct 18 — Saint Luke, Evangelist
-- Oct 19 — Saints John de Brébeuf and Isaac Jogues and Companions; Saint Paul of the Cross
+- Oct 19 — Saints John de Brébeuf and Isaac Jogues and Companions (US memorial); Saint Paul of the Cross
 - Oct 22 — **Saint John Paul II**
 - Oct 23 — Saint John of Capistrano
 - Oct 24 — Saint Anthony Mary Claret
@@ -243,15 +252,17 @@ The GRC is the authoritative feast day reference for this project. Use it over F
 - Nov 10 — Saint Leo the Great
 - Nov 11 — Saint Martin of Tours
 - Nov 12 — Saint Josaphat
+- Nov 13 — Saint Frances Xavier Cabrini, Virgin (US memorial)
 - Nov 15 — Saint Albert the Great
 - Nov 16 — Saint Margaret of Scotland; Saint Gertrude
 - Nov 17 — Saint Elizabeth of Hungary
-- Nov 18 — Dedication of the Basilicas of Saints Peter and Paul
+- Nov 18 — Dedication of the Basilicas of Saints Peter and Paul; Saint Rose Philippine Duchesne, Virgin (US optional memorial)
 - Nov 21 — Presentation of the Blessed Virgin Mary
 - Nov 22 — Saint Cecilia
-- Nov 23 — Saint Clement I; Saint Columban
+- Nov 23 — Saint Clement I; Saint Columban; Blessed Miguel Agustín Pro, Priest and Martyr (US optional memorial)
 - Nov 24 — Saints Andrew Dung-Lac and Companions
 - Nov 25 — Saint Catherine of Alexandria
+- Nov 28 — Saint Catherine Labouré, Virgin (US optional memorial)
 - Nov 30 — Saint Andrew, Apostle
 - Last Sunday in Ordinary Time — Our Lord Jesus Christ, King of the Universe
 
@@ -280,54 +291,3 @@ The GRC is the authoritative feast day reference for this project. Use it over F
 - Dec 31 — Saint Sylvester I
 - Sunday within Octave of Christmas (or Dec 30) — Holy Family of Jesus, Mary and Joseph
 
----
-
-## US Calendar Additions (USCCB)
-
-Entries specific to the liturgical calendar for the Dioceses of the United States. Not in the universal GRC.
-
-### January
-- Jan 4 — Saint Elizabeth Ann Seton, Religious (memorial)
-- Jan 5 — Saint John Neumann, Bishop (memorial)
-- Jan 6 — Saint André Bessette, Religious (optional memorial)
-- Jan 22 — Day of Prayer for the Legal Protection of Unborn Children (US observance)
-- Jan 23 — Saint Marianne Cope, Virgin (optional memorial)
-
-### March
-- Mar 3 — Saint Katharine Drexel, Virgin (optional memorial)
-
-### May
-- May 10 — Saint Damien de Veuster of Molokai, Priest (optional memorial)
-- May 15 — Saint Isidore the Farmer (optional memorial)
-
-### July
-- Jul 1 — Saint Junipero Serra, Priest (optional memorial)
-- Jul 14 — Saint Kateri Tekakwitha, Virgin (memorial) *(universal date: same, but listed as US memorial)*
-
-### October
-- Oct 5 — Blessed Francis Xavier Seelos, Priest (optional memorial)
-- Oct 6 — Blessed Marie Rose Durocher, Virgin (optional memorial)
-- Oct 19 — Saints Jean de Brébeuf and Isaac Jogues, Priests and Companions, Martyrs (memorial) *(universal: optional memorial)*
-- Oct 20 — Saint Paul of the Cross, Priest (optional memorial) *(universal: optional memorial, same date)*
-
-### November
-- Nov 13 — Saint Frances Xavier Cabrini, Virgin (memorial)
-- Nov 18 — Saint Rose Philippine Duchesne, Virgin (optional memorial)
-- Nov 23 — Blessed Miguel Agustín Pro, Priest and Martyr (optional memorial)
-- Nov 28 — Saint Catherine Labouré, Virgin (optional memorial)
-
----
-
-## Known FM Discrepancies
-
-Dates where Franciscan Media Saint of the Day differs from the GRC. Do not use FM as the source of truth for these.
-
-| Saint | FM Date | GRC Date | Note |
-|---|---|---|---|
-| Gregory Nazianzen | Jan 14 | Jan 2 | GRC pairs him with Basil on Jan 2 |
-| Gianna Beretta Molla | Apr 19 | Apr 28 | FM uses her death date; Vatican feast is Apr 28 |
-| Paul VI | Sep 26 | May 29 | FM has wrong date |
-| Lorenzo Ruiz and Companions | Sep 22 | Sep 28 | FM has wrong date |
-| John Henry Newman | Sep 24 | Oct 9 | FM has wrong date |
-| Louis and Zélie Martin | Sep 25 | Jul 12 | Jul 12 added to GRC at their 2015 canonization |
-| Carlo Acutis | Oct 14 | Oct 12 | FM uses his death date; Vatican feast is Oct 12 |
