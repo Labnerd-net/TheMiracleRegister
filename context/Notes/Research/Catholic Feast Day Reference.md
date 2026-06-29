@@ -196,15 +196,19 @@ The authoritative feast day reference for this project. Covers the universal GRC
 ## July
 
 - Jul 1 — Saint Junipero Serra, Priest (US optional memorial)
+- Jul 1 — Saint Oliver Plunkett, Archbishop and Martyr (martyrologium)
 - Jul 3 — Saint Thomas, Apostle
 - Jul 4 — Saint Elizabeth of Portugal; **Saint Pier Giorgio Frassati** (canonized Sep 7, 2025)
 - Jul 5 — Saint Anthony Zaccaria
 - Jul 6 — Saint Maria Goretti
 - Jul 9 — Saint Augustine Zhao Rong and Companions
+- Jul 9 — Saint Veronica Giuliani, Virgin (martyrologium)
 - Jul 11 — Saint Benedict, Abbot
 - Jul 12 — **Saints Louis and Zélie Martin**
+- Jul 12 — Saints John Jones and John Wall, Martyrs (martyrologium)
 - Jul 13 — Saint Henry
 - Jul 14 — Saint Camillus de Lellis; Saint Kateri Tekakwitha, Virgin (US memorial)
+- Jul 14 — Saint Francis Solano, Priest (martyrologium)
 - Jul 15 — Saint Bonaventure
 - Jul 16 — Our Lady of Mount Carmel
 - Jul 20 — Saint Apollinaris
@@ -214,6 +218,7 @@ The authoritative feast day reference for this project. Covers the universal GRC
 - Jul 24 — Saint Sharbel Makhluf
 - Jul 25 — Saint James, Apostle
 - Jul 26 — Saints Joachim and Anne
+- Jul 27 — Saint Titus Brandsma, Priest and Martyr (martyrologium)
 - Jul 29 — Saints Martha, Mary and Lazarus
 - Jul 30 — Saint Peter Chrysologus
 - Jul 31 — Saint Ignatius of Loyola
@@ -229,6 +234,7 @@ The authoritative feast day reference for this project. Covers the universal GRC
 - Aug 6 — Transfiguration of the Lord
 - Aug 7 — Saint Sixtus II and Companions; Saint Cajetan
 - Aug 8 — Saint Dominic
+- Aug 8 — Saint Mary MacKillop, Virgin (martyrologium)
 - Aug 9 — Saint Teresa Benedicta of the Cross (Edith Stein)
 - Aug 10 — Saint Lawrence
 - Aug 11 — Saint Clare

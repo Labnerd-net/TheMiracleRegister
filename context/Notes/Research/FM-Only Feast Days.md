@@ -17,6 +17,11 @@ Saints and feasts in Franciscan Media with no match in the universal GRC or the 
 - Jun 14 Albert Chmielowski: FM date wrong; correct feast is Jun 17 (martyrologium).
 - Jun 15 Marguerite d'Youville: FM date wrong; correct feast is Dec 23 (martyrologium).
 - Jun 17 Joseph Cafasso: FM date wrong; correct feast is Jun 23 (martyrologium).
+- Jul 2 Oliver Plunkett: FM date wrong; correct feast is Jul 1 (martyrologium).
+- Jul 8 Gregory Grassi and Companions: part of 120 Martyrs of China (Jul 9 — Augustine Zhao Rong and Companions) already in reference.
+- Jul 10 Veronica Giuliani: FM date wrong; correct feast is Jul 9 (martyrologium).
+- Jul 17 Francis Solano: FM date wrong; correct feast is Jul 14 (martyrologium).
+- Jul 19 Mary MacKillop: FM date wrong; correct feast is Aug 8 (martyrologium).
 
 
 ## January
@@ -45,16 +50,7 @@ Saints and feasts in Franciscan Media with no match in the universal GRC or the 
 
 ## July
 
-- July 2 — Oliver Plunkett
-- July 7 — Blessed Emmanuel Ruiz and Companions
-- July 8 — Gregory Grassi and Companions
-- July 10 — Veronica Giuliani
-- July 12 — Saints John Jones and John Wall
-- July 17 — Francis Solano
-- July 19 — Mary MacKillop
-- July 27 — Titus Brandsma
-- July 28 — Blessed Stanley Rother
-- July 30 — Blessed Solanus Casey
+*(no unverified entries remaining)*
 
 ## August
 
@@ -113,4 +109,4 @@ Saints and feasts in Franciscan Media with no match in the universal GRC or the 
 - December 30 — Egwin
 
 
-Total FM-only: 52 of 366
+Total FM-only: 42 of 366
