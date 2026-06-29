@@ -12,11 +12,11 @@ The authoritative feast day reference for this project. Covers the universal GRC
 - Jan  1 — Solemnity of Mary, Holy Mother of God
 - Jan  2 — Saints Basil the Great and Gregory Nazianzen
 - Jan  3 — Most Holy Name of Jesus (optional memorial)
-- Jan  4 — Saint Elizabeth Ann Seton, Religious (US memorial)
+- Jan  4 — **Saint Elizabeth Ann Seton**, Religious (US memorial)
 - Jan  4 — Saint Angela of Foligno (martyrologium)
 - Jan  5 — Saint John Neumann, Bishop (US memorial)
 - Jan  6 — Epiphany of the Lord
-- Jan  6 — Saint André Bessette, Religious (US optional memorial)
+- Jan  6 — **Saint André Bessette**, Religious (US optional memorial)
 - Jan  7 — Saint Raymond of Penyafort
 - Jan  9 — Saint Adrian of Canterbury, Abbot (martyrologium)
 - Jan 10 — Saint Gregory of Nyssa, Bishop (martyrologium)
@@ -61,7 +61,7 @@ The authoritative feast day reference for this project. Covers the universal GRC
 - Feb 16 — Saint Gilbert of Sempringham (national — England)
 - Feb 17 — Seven Holy Founders of the Servite Order
 - Feb 19 — Saint Conrad of Piacenza (martyrologium)
-- Feb 20 — Saints Jacinta and Francisco Marto
+- Feb 20 — **Saints Jacinta and Francisco Marto**
 - Feb 21 — Saint Peter Damian
 - Feb 22 — Chair of Saint Peter
 - Feb 22 — Saint Margaret of Cortona (martyrologium)
@@ -115,7 +115,7 @@ The authoritative feast day reference for this project. Covers the universal GRC
 - Apr 12 — Saint Teresa of Los Andes, Virgin (martyrologium)
 - Apr 13 — Saint Martin I
 - Apr 15 — Saint Caesar de Bus (martyrologium)
-- Apr 16 — Saint Bernadette Soubirous, Virgin (martyrologium)
+- Apr 16 — **Saint Bernadette Soubirous**, Virgin (martyrologium)
 - Apr 16 — Saint Benedict Joseph Labre (martyrologium)
 - Apr 21 — Saint Anselm
 - Apr 21 — Saint Conrad of Parzham (martyrologium)
@@ -145,7 +145,7 @@ The authoritative feast day reference for this project. Covers the universal GRC
 - May  8 — Saint Magdalene of Canossa (martyrologium)
 - May  9 — Saint Louise de Marillac (martyrologium)
 - May 10 — Saint John of Ávila
-- May 10 — Saint Damien de Veuster of Molokai, Priest (US optional memorial)
+- May 10 — **Saint Damien de Veuster of Molokai**, Priest (US optional memorial)
 - May 11 — Saint Ignatius of Laconi (martyrologium)
 - May 11 — Saint Antônio de Sant'Anna Galvão, Priest (martyrologium)
 - May 12 — Saint Leopold Mandic, Priest (martyrologium)
@@ -252,7 +252,7 @@ The authoritative feast day reference for this project. Covers the universal GRC
 - Aug  7 — Saint Cajetan
 - Aug  8 — Saint Dominic
 - Aug  8 — Saint Mary MacKillop, Virgin (martyrologium)
-- Aug  9 — Saint Teresa Benedicta of the Cross (Edith Stein)
+- Aug  9 — **Saint Teresa Benedicta of the Cross (Edith Stein)**
 - Aug 10 — Saint Lawrence
 - Aug 11 — Saint Clare
 - Aug 12 — Saint Jane Frances de Chantal
@@ -377,7 +377,7 @@ The authoritative feast day reference for this project. Covers the universal GRC
 - Nov 24 — Saints Andrew Dung-Lac and Companions
 - Nov 25 — Saint Catherine of Alexandria
 - Nov 27 — Saint Francesco Antonio Fasani, Priest (martyrologium)
-- Nov 28 — Saint Catherine Labouré, Virgin (US optional memorial)
+- Nov 28 — **Saint Catherine Labouré**, Virgin (US optional memorial)
 - Nov 28 — Saint James of the Marche, Priest (martyrologium)
 - Nov 30 — Saint Andrew, Apostle
 - Last Sunday in Ordinary Time — Our Lord Jesus Christ, King of the Universe
@@ -393,7 +393,8 @@ The authoritative feast day reference for this project. Covers the universal GRC
 - Dec  6 — Saint Nicholas
 - Dec  7 — Saint Ambrose
 - Dec  8 — Immaculate Conception of the Blessed Virgin Mary
-- Dec  9 — **Saint Juan Diego** Cuauhtlatoatzin
+- Dec  9 — **Saint Juan Diego Cuauhtlatoatzin**
+- Dec  9 — **Venerable Fulton Sheen**, Bishop (d. 1979 — beatification pending)
 - Dec 10 — Our Lady of Loreto
 - Dec 11 — Saint Damasus I
 - Dec 12 — Our Lady of Guadalupe
