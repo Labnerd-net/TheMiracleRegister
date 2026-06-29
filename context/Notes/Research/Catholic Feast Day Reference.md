@@ -98,16 +98,26 @@ The authoritative feast day reference for this project. Covers the universal GRC
 - Mar  9 — Saint Frances of Rome
 - Mar  9 — Saint Catherine of Bologna, Virgin (martyrologium)
 - Mar 10 — Saint John Ogilvie, Priest and Martyr (national — Scotland)
+- Mar 11 — *(no clear winner — option: Saint Eulogius of Córdoba, Priest and Martyr, martyrologium — martyred by the Moors 859; known in Spain, not widely elsewhere)*
+- Mar 12 — *(no clear winner — Gregory the Great was here pre-1969, now Sep 3; option: Saint Innocent I, Pope, d. Mar 12 417, martyrologium — defended Roman primacy, confirmed the canon of Scripture)*
 - Mar 13 — Saint Leander of Seville, Bishop (martyrologium)
+- Mar 14 — *(no clear winner — option: Saint Matilda (Mathilda), Queen of Germany, martyrologium — wife of Henry the Fowler, mother of Emperor Otto I, d. 968; known in German tradition)*
 - Mar 15 — Saint Clement Mary Hofbauer (martyrologium)
+- Mar 16 — *(no clear winner — option: Saint Heribert of Cologne, Archbishop, martyrologium — d. 1021, known for miracles including ending a drought; German national figure)*
 - Mar 17 — Saint Patrick
 - Mar 18 — Saint Cyril of Jerusalem
 - Mar 18 — Saint Salvator of Horta (martyrologium)
 - Mar 19 — Saint Joseph, Husband of Mary
+- Mar 20 — Saint Cuthbert of Lindisfarne, Bishop (martyrologium) — bishop of Lindisfarne, d. 687; body found incorrupt in 698 and enshrined at Durham Cathedral after a century of Viking-era migration; renowned miracle-worker
+- Mar 21 — Saint Nicholas of Flüe (Brother Klaus), Hermit (martyrologium) — Swiss hermit and patron of Switzerland, d. 1487; reportedly subsisted on the Eucharist alone for 19+ years; canonized 1947
 - Mar 22 — Saint Nicholas Owen, Martyr (martyrologium)
 - Mar 23 — Saint Turibius of Mongrovejo
 - Mar 24 — Saint Oscar Arnulfo Romero
 - Mar 25 — Annunciation of the Lord
+- Mar 26 — *(no clear winner — option: Saint Ludger of Münster, Bishop, martyrologium — first bishop of Münster, d. 809; regionally significant in Germany)*
+- Mar 27 — *(no clear winner — option: Saint Rupert of Salzburg, Bishop, martyrologium — founded Salzburg, patron of Austria and Bavaria, d. c. 710)*
+- Mar 28 — *(no clear winner — nothing recognized holds this date in the current calendar)*
+- Mar 29 — *(no clear winner — nothing recognized holds this date in the current calendar)*
 - Mar 30 — Saint Ludovico of Casoria (martyrologium)
 - Mar 31 — Saint Stephen of Mar Saba (martyrologium)
 
