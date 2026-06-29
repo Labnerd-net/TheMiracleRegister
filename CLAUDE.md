@@ -212,6 +212,16 @@ Multiple geocoded locations per saint for map display. Managed via the saint edi
 | lat, lng | numeric(9,6) | optional coordinates |
 | location_type | enum | tomb, birthplace, death_place, shrine, relic, major_devotional_center, other |
 
+### Static Feast Day Data (`src/data/feastDays.ts`)
+
+Static TypeScript arrays covering all fixed and movable Catholic feast days for the `/calendar` page. Not in the DB — this is a build-time reference layer.
+
+- **`FIXED_FEASTS`** — 280+ fixed-date entries with `month`, `day`, `name`, and optional `scope` (`universal`, `us`, `national`, `martyrologium`, `diocesan`, `observance`) and `scopeDetail`.
+- **`MOVABLE_FEASTS`** — 8 Easter-relative entries with `easterOffset` matching the values used in `saints.feast_easter_offset` and `src/lib/easter.ts`.
+- Helper functions: `getFixedFeasts(month, day)` and `getMovableFeast(easterOffset)`.
+
+**`// [in DB]` convention:** When a saint is added to the DB, their corresponding entry in `FIXED_FEASTS` must be commented out with a `// [in DB]` marker. This prevents the calendar from showing both a linked saint card (from the DB) and a duplicate plain-text feast entry (from the static array). When a saint is removed from the DB, uncomment their entry. Do not delete `// [in DB]` entries — they preserve the feast day data for future use.
+
 ---
 
 ## API Endpoints
