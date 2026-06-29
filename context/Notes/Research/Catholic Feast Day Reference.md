@@ -224,20 +224,29 @@ The authoritative feast day reference for this project. Covers the universal GRC
 - Jun  1 — Saint Justin
 - Jun  2 — Saints Marcellinus and Peter
 - Jun  3 — Saints Charles Lwanga and Companions
+- Jun  4 — *(no clear winner — option: Saint Francis Caracciolo, Priest, martyrologium — co-founder of the Clerks Regular Minor, d. 1608)*
 - Jun  5 — Saint Boniface
 - Jun  6 — Saint Norbert
+- Jun  7 — *(no clear winner — option: Saint Robert of Newminster, Abbot, martyrologium / England — Cistercian abbot, d. 1159)*
 - Jun  8 — Saint William of York, Bishop (martyrologium)
 - Jun  9 — Saint Ephrem
+- Jun 10 — *(no clear winner — nothing recognized holds this date in the current calendar)*
 - Jun 11 — Saint Barnabas, Apostle
+- Jun 12 — *(no clear winner — nothing recognized holds this date in the current calendar)*
 - Jun 13 — Saint Anthony of Padua
+- Jun 14 — *(no clear winner — nothing recognized holds this date in the current calendar)*
+- Jun 15 — Saint Vitus, Martyr (martyrologium) — patron of epileptics, dancers, and actors, d. c. 303; well-known in Central Europe (Saint Vitus Cathedral, Prague); was in the universal calendar pre-1969
 - Jun 16 — Saint John Francis Regis, Priest (martyrologium)
 - Jun 17 — Saint Albert Chmielowski (martyrologium)
+- Jun 18 — *(no clear winner — option: Saint Gregory Barbarigo, Bishop, martyrologium — Bishop of Padua, d. 1697; canonized 1960; not widely known internationally)*
 - Jun 19 — Saint Romuald
+- Jun 20 — *(no clear winner — nothing recognized holds this date in the current calendar)*
 - Jun 21 — Saint Aloysius Gonzaga
 - Jun 22 — Saint Paulinus of Nola
 - Jun 22 — Saints John Fisher and Thomas More
 - Jun 23 — Saint Joseph Cafasso, Priest (martyrologium)
 - Jun 24 — Nativity of Saint John the Baptist
+- Jun 25 — *(no clear winner — option: Saint William of Vercelli, Abbot, martyrologium — founder of the Hermits of Montevergine, d. 1142; Italian, not widely known internationally)*
 - Jun 26 — Saint Josemaría Escrivá (optional memorial)
 - Jun 27 — Saint Cyril of Alexandria
 - Jun 28 — Saint Irenaeus
@@ -252,13 +261,17 @@ The authoritative feast day reference for this project. Covers the universal GRC
 
 - Jul  1 — Saint Junipero Serra, Priest (US optional memorial)
 - Jul  1 — Saint Oliver Plunkett, Archbishop and Martyr (martyrologium)
+- Jul  2 — *(no clear winner — the Visitation was formerly July 2 pre-1969, now May 31; nothing well-known currently holds this date)*
 - Jul  3 — Saint Thomas, Apostle
 - Jul  4 — Saint Elizabeth of Portugal
 - Jul  4 — **Saint Pier Giorgio Frassati** (canonized Sep 7, 2025)
 - Jul  5 — Saint Anthony Zaccaria
 - Jul  6 — Saint Maria Goretti
+- Jul  7 — *(no clear winner — option: Blessed Peter To Rot, Martyr, martyrologium — lay catechist, first blessed of Papua New Guinea, d. 1945; beatified by John Paul II 1995)*
+- Jul  8 — *(no clear winner — nothing recognized holds this date in the current calendar)*
 - Jul  9 — Saint Augustine Zhao Rong and Companions
 - Jul  9 — Saint Veronica Giuliani, Virgin (martyrologium)
+- Jul 10 — *(no clear winner — nothing recognized holds this date in the current calendar)*
 - Jul 11 — Saint Benedict, Abbot
 - Jul 12 — **Saints Louis and Zélie Martin**
 - Jul 12 — Saints John Jones and John Wall, Martyrs (martyrologium)
@@ -268,6 +281,9 @@ The authoritative feast day reference for this project. Covers the universal GRC
 - Jul 14 — Saint Francis Solano, Priest (martyrologium)
 - Jul 15 — Saint Bonaventure
 - Jul 16 — Our Lady of Mount Carmel
+- Jul 17 — Blessed Carmelites of Compiègne, Virgins and Martyrs (martyrologium) — 16 Carmelite nuns guillotined during the French Revolution, July 17, 1794; sang the Veni Creator Spiritus as they mounted the scaffold one by one; beatified 1906
+- Jul 18 — *(no clear winner — option: Saint Bruno of Segni, Bishop, martyrologium — theologian and biblical commentator, d. 1123)*
+- Jul 19 — *(no clear winner — option: Saint Macrina the Younger, Virgin, martyrologium — sister of Basil the Great and Gregory of Nyssa, foundational figure in monasticism, d. 379)*
 - Jul 20 — Saint Apollinaris
 - Jul 21 — Saint Lawrence of Brindisi
 - Jul 22 — Saint Mary Magdalene
@@ -288,6 +304,7 @@ The authoritative feast day reference for this project. Covers the universal GRC
 - Aug  1 — Saint Alphonsus Liguori
 - Aug  2 — Saint Eusebius of Vercelli
 - Aug  2 — Saint Peter Julian Eymard
+- Aug  3 — *(no clear winner — nothing recognized holds this date in the current calendar)*
 - Aug  4 — Saint Jean Vianney
 - Aug  5 — Dedication of the Basilica of Saint Mary Major
 - Aug  6 — Transfiguration of the Lord
@@ -306,6 +323,7 @@ The authoritative feast day reference for this project. Covers the universal GRC
 - Aug 15 — Assumption of the Blessed Virgin Mary
 - Aug 16 — Saint Stephen of Hungary
 - Aug 17 — Saint Joan of the Cross, Virgin (martyrologium)
+- Aug 18 — Saint Helena, Empress (martyrologium) — mother of Constantine, discoverer of the True Cross, builder of basilicas in the Holy Land, d. c. 330
 - Aug 19 — Saint John Eudes
 - Aug 19 — Saint Louis of Toulouse, Bishop (martyrologium)
 - Aug 20 — Saint Bernard of Clairvaux
@@ -328,11 +346,16 @@ The authoritative feast day reference for this project. Covers the universal GRC
 ## September
 
 - Sep  1 — Saint Giles, Abbot (martyrologium)
+- Sep  2 — *(no clear winner — nothing recognized holds this date in the current calendar)*
 - Sep  3 — Saint Gregory the Great
 - Sep  4 — Saint Rose of Viterbo, Virgin (martyrologium)
 - Sep  5 — **Saint Teresa of Calcutta (Mother Teresa)**
+- Sep  6 — *(no clear winner — nothing recognized holds this date in the current calendar)*
+- Sep  7 — *(no clear winner — option: Saint Cloud (Clodoald), Priest, martyrologium — Frankish prince turned monk, grandson of Clovis, d. c. 560; patron of Saint-Cloud, France)*
 - Sep  8 — Nativity of the Blessed Virgin Mary
 - Sep  9 — Saint Peter Claver
+- Sep 10 — Saint Nicholas of Tolentino, Priest (GRC optional memorial) — Augustinian friar and miracle-worker, d. 1305; patron of souls in purgatory; canonized 1446
+- Sep 11 — *(no clear winner — nothing recognized holds this date in the current calendar)*
 - Sep 12 — Most Holy Name of Mary
 - Sep 13 — Saint John Chrysostom
 - Sep 14 — Exaltation of the Holy Cross
@@ -347,6 +370,8 @@ The authoritative feast day reference for this project. Covers the universal GRC
 - Sep 21 — Saint Matthew, Apostle and Evangelist
 - Sep 22 — Saint Thomas of Villanova, Bishop (martyrologium)
 - Sep 23 — **Saint Pius of Pietrelcina (Padre Pio)**
+- Sep 24 — *(no clear winner — option: Our Lady of Mercy (Our Lady of Ransom) — feast of the Mercedarian Order, founded to ransom Christian captives; patroness of Spain and Latin America)*
+- Sep 25 — *(no clear winner — option: Saint Sergius of Radonezh, Abbot, martyrologium — Russian monk, d. 1392; one of the most venerated saints in Eastern Christianity; founded Trinity Lavra near Moscow)*
 - Sep 26 — Saints Cosmas and Damian
 - Sep 27 — Saint Vincent de Paul
 - Sep 28 — Saint Wenceslaus
@@ -367,12 +392,14 @@ The authoritative feast day reference for this project. Covers the universal GRC
 - Oct  6 — Saint Bruno
 - Oct  6 — Blessed Marie Rose Durocher, Virgin (US optional memorial)
 - Oct  7 — Our Lady of the Rosary
+- Oct  8 — *(no clear winner — nothing recognized holds this date in the current calendar)*
 - Oct  9 — Saint Denis and Companions
 - Oct  9 — Saint John Leonardi
 - Oct  9 — **Saint John Henry Newman**
 - Oct 10 — Saint Francis Borgia, Priest (martyrologium)
 - Oct 11 — **Saint John XXIII**
 - Oct 12 — **Saint Carlo Acutis** (canonized Apr 3, 2025)
+- Oct 13 — Saint Edward the Confessor, King (martyrologium / national — England) — last Anglo-Saxon king, patron of England, built Westminster Abbey, d. 1066
 - Oct 14 — Saint Callistus I
 - Oct 15 — Saint Teresa of Jesus (Teresa of Ávila)
 - Oct 16 — Saint Hedwig
@@ -387,8 +414,12 @@ The authoritative feast day reference for this project. Covers the universal GRC
 - Oct 22 — **Saint John Paul II**
 - Oct 23 — Saint John of Capistrano
 - Oct 24 — Saint Anthony Mary Claret
+- Oct 25 — Forty Martyrs of England and Wales (GRC optional memorial) — collective feast for the group canonized by Paul VI in 1970; Saints John Fisher and Thomas More are individually noted on Jun 22
+- Oct 26 — *(no clear winner — nothing recognized holds this date in the current calendar)*
+- Oct 27 — *(no clear winner — nothing recognized holds this date in the current calendar)*
 - Oct 28 — Saints Simon and Jude, Apostles
 - Oct 29 — Saint Narcissus of Jerusalem, Bishop (martyrologium)
+- Oct 30 — *(no clear winner — nothing recognized holds this date in the current calendar)*
 - Oct 31 — Saint Alphonsus Rodriguez (martyrologium)
 - Oct 31 — Saint Wolfgang of Regensburg, Bishop (martyrologium)
 
@@ -400,6 +431,10 @@ The authoritative feast day reference for this project. Covers the universal GRC
 - Nov  2 — Commemoration of All the Faithful Departed
 - Nov  3 — Saint Martin de Porres
 - Nov  4 — Saint Charles Borromeo
+- Nov  5 — *(no clear winner — nothing recognized holds this date in the current calendar)*
+- Nov  6 — Saint Leonard of Noblac, Hermit (martyrologium) — patron of prisoners and captives, d. c. 559; widely invoked across Western Europe for centuries
+- Nov  7 — *(no clear winner — option: Saint Willibrord, Bishop, martyrologium — Apostle to the Frisians, first Archbishop of Utrecht, d. 739)*
+- Nov  8 — *(no clear winner — nothing recognized holds this date in the current calendar)*
 - Nov  9 — Dedication of the Lateran Basilica
 - Nov 10 — Saint Leo the Great
 - Nov 11 — Saint Martin of Tours
@@ -414,6 +449,8 @@ The authoritative feast day reference for this project. Covers the universal GRC
 - Nov 17 — Saint Elizabeth of Hungary
 - Nov 18 — Dedication of the Basilicas of Saints Peter and Paul
 - Nov 18 — Saint Rose Philippine Duchesne, Virgin (US optional memorial)
+- Nov 19 — Saints Roque González, Alfonso Rodríguez, and Juan de Castillo, Priests and Martyrs (GRC optional memorial) — Jesuit martyrs of Paraguay, d. 1628; canonized 1988
+- Nov 20 — *(no clear winner — option: Saint Edmund the Martyr, King, martyrologium / England — King of East Anglia martyred by Danes, d. 869; patron of England)*
 - Nov 21 — Presentation of the Blessed Virgin Mary
 - Nov 22 — Saint Cecilia
 - Nov 23 — Saint Clement I
@@ -421,9 +458,11 @@ The authoritative feast day reference for this project. Covers the universal GRC
 - Nov 23 — Blessed Miguel Agustín Pro, Priest and Martyr (US optional memorial)
 - Nov 24 — Saints Andrew Dung-Lac and Companions
 - Nov 25 — Saint Catherine of Alexandria
+- Nov 26 — *(no clear winner — option: Saint Leonard of Port Maurice, Priest, martyrologium — Franciscan who spread the Way of the Cross devotion throughout Italy, d. 1751; canonized 1867)*
 - Nov 27 — Saint Francesco Antonio Fasani, Priest (martyrologium)
 - Nov 28 — **Saint Catherine Labouré**, Virgin (US optional memorial)
 - Nov 28 — Saint James of the Marche, Priest (martyrologium)
+- Nov 29 — *(no clear winner — option: Saint Saturninus (Sernin) of Toulouse, Bishop and Martyr, martyrologium — d. c. 250; the Basilica of Saint-Sernin in Toulouse is named for him; mainly known in France)*
 - Nov 30 — Saint Andrew, Apostle
 - Last Sunday in Ordinary Time — Our Lord Jesus Christ, King of the Universe
 
@@ -432,6 +471,7 @@ The authoritative feast day reference for this project. Covers the universal GRC
 ## December
 
 - Dec  1 — Saint Charles de Foucauld, Priest and Martyr (martyrologium)
+- Dec  2 — *(no clear winner — nothing recognized holds this date in the current calendar)*
 - Dec  3 — Saint Francis Xavier
 - Dec  4 — Saint John Damascene
 - Dec  5 — Saint Sabas, Abbot (martyrologium)
@@ -445,10 +485,17 @@ The authoritative feast day reference for this project. Covers the universal GRC
 - Dec 12 — Our Lady of Guadalupe
 - Dec 13 — Saint Lucy
 - Dec 14 — Saint John of the Cross
+- Dec 15 — *(no clear winner — nothing recognized holds this date in the current calendar)*
+- Dec 16 — *(no clear winner — option: Saint Adelaide (Adelheid) of Burgundy, Empress, martyrologium — Holy Roman Empress, wife of Otto I, d. 999; significant historical figure in Central Europe)*
+- Dec 17 — Saint Lazarus of Bethany (Roman Martyrology) — brother of Mary and Martha (Jul 29); his resurrection by Jesus is one of the most famous miracles in Scripture; feast Dec 17 in Western tradition
+- Dec 18 — *(no clear winner — nothing recognized holds this date in the current calendar)*
+- Dec 19 — *(no clear winner — nothing recognized holds this date in the current calendar)*
 - Dec 20 — Saint Dominic of Silos, Abbot (martyrologium)
 - Dec 21 — Saint Peter Canisius
+- Dec 22 — *(no clear winner — nothing recognized holds this date in the current calendar)*
 - Dec 23 — Saint John of Kanty
 - Dec 23 — Saint Marguerite d'Youville (martyrologium)
+- Dec 24 — *(no clear winner — Christmas Eve vigil; no saint's feast in the current universal calendar)*
 - Dec 25 — Nativity of the Lord
 - Dec 26 — Saint Stephen, First Martyr
 - Dec 27 — Saint John, Apostle and Evangelist
