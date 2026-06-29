@@ -172,12 +172,16 @@ The authoritative feast day reference for this project. Covers the universal GRC
 - Jun 3 — Saints Charles Lwanga and Companions
 - Jun 5 — Saint Boniface
 - Jun 6 — Saint Norbert
+- Jun 8 — Saint William of York, Bishop (martyrologium)
 - Jun 9 — Saint Ephrem
 - Jun 11 — Saint Barnabas, Apostle
 - Jun 13 — Saint Anthony of Padua
+- Jun 16 — Saint John Francis Regis, Priest (martyrologium)
+- Jun 17 — Saint Albert Chmielowski (martyrologium)
 - Jun 19 — Saint Romuald
 - Jun 21 — Saint Aloysius Gonzaga
 - Jun 22 — Saint Paulinus of Nola; Saints John Fisher and Thomas More
+- Jun 23 — Saint Joseph Cafasso, Priest (martyrologium)
 - Jun 24 — Nativity of Saint John the Baptist
 - Jun 26 — Saint Josemaría Escrivá (optional memorial)
 - Jun 27 — Saint Cyril of Alexandria
@@ -242,6 +246,7 @@ The authoritative feast day reference for this project. Covers the universal GRC
 - Aug 25 — Saint Louis of France; Saint Joseph Calasanz
 - Aug 27 — Saint Monica
 - Aug 28 — Saint Augustine of Hippo
+- Aug 28 — Saint Joachima de Mas (martyrologium)
 - Aug 29 — Passion of Saint John the Baptist
 
 ---
@@ -335,6 +340,7 @@ The authoritative feast day reference for this project. Covers the universal GRC
 - Dec 14 — Saint John of the Cross
 - Dec 21 — Saint Peter Canisius
 - Dec 23 — Saint John of Kanty
+- Dec 23 — Saint Marguerite d'Youville (martyrologium)
 - Dec 25 — Nativity of the Lord
 - Dec 26 — Saint Stephen, First Martyr
 - Dec 27 — Saint John, Apostle and Evangelist

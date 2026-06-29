@@ -13,6 +13,10 @@ Saints and feasts in Franciscan Media with no match in the universal GRC or the 
 - Jan 29 Brother Juniper: Listed as "Servant of God" — not beatified, so not applicable to the calendar.
 - Jan 30 Mary Angela Truszkowska: FM date is wrong (she died Oct 10; FM lists Jan 30). Still Blessed only — removed from list.
 - Jan 11 Blessed William Carter: Still Blessed (beatified 1987) — no universal feast. Removed from list.
+- Jun 10 Joachima (Joaquina de Mas): FM date wrong; correct feast is Aug 28 (martyrologium).
+- Jun 14 Albert Chmielowski: FM date wrong; correct feast is Jun 17 (martyrologium).
+- Jun 15 Marguerite d'Youville: FM date wrong; correct feast is Dec 23 (martyrologium).
+- Jun 17 Joseph Cafasso: FM date wrong; correct feast is Jun 23 (martyrologium).
 
 
 ## January
@@ -37,18 +41,7 @@ Saints and feasts in Franciscan Media with no match in the universal GRC or the 
 
 ## June
 
-- June 4 — Blessed Angelina of Marsciano
-- June 7 — Blessed Franz Jägerstätter
-- June 8 — William of York
-- June 10 — Joachima
-- June 12 — Blessed Jolenta of Poland
-- June 14 — Albert Chmielowski
-- June 15 — Marguerite d'Youville
-- June 16 — John Francis Regis
-- June 17 — Joseph Cafasso
-- June 18 — Venerable Matt Talbot
-- June 25 — Blessed Jutta of Thuringia
-- June 26 — Blessed Raymond Lull
+*(no unverified entries remaining)*
 
 ## July
 
@@ -120,4 +113,4 @@ Saints and feasts in Franciscan Media with no match in the universal GRC or the 
 - December 30 — Egwin
 
 
-Total FM-only: 64 of 366
+Total FM-only: 52 of 366
