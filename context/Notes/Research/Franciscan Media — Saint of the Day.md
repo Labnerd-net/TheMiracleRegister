@@ -13,7 +13,7 @@ Use as a reference for biography drafts, feast days, and candidate saints to add
 
 ## Known Date Discrepancies
 
-FM's feast dates do not always match the General Roman Calendar. See `General Roman Calendar.md` for the authoritative list and a full discrepancy table. Do not use FM as the source of truth for feast dates.
+FM's feast dates do not always match official Catholic calendars. See `Catholic Feast Day Reference.md` for the authoritative list. Do not use FM as the source of truth for feast dates.
 
 ---
 

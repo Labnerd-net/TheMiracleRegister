@@ -1,30 +1,23 @@
 # FM-Only Feast Days (not in GRC or US Calendar)
 
 **Generated:** 2026-06-28  
-**Method:** FM list (366 entries) compared against `General Roman Calendar.md` (universal GRC) and the USCCB liturgical calendar for the USA. Entries removed where the same saint or feast appears in either calendar, regardless of date discrepancy.
+**Method:** FM list (366 entries) compared against `Catholic Feast Day Reference.md` (universal GRC) and the USCCB liturgical calendar for the USA. Entries removed where the same saint or feast appears in either calendar, regardless of date discrepancy.
 
-**Source of truth:** `General Roman Calendar.md` is authoritative for feast dates. Dates listed below are from FM and may differ from the Vatican-assigned feast day. Always verify against GRC before using a date from this list.
+**Source of truth:** `Catholic Feast Day Reference.md` is authoritative for feast dates. Dates listed below are from FM and may differ from the Vatican-assigned feast day. Always verify against GRC before using a date from this list.
 
 Saints and feasts in Franciscan Media with no match in the universal GRC or the US calendar. 129 of 366 FM entries. These are candidates for review — most are national/diocesan saints from other countries, recently canonized saints not yet in major calendars, or Blessed/Venerable who haven't reached that level.
 
 **Known caveats in this list:**
-- Feb 20 Jacinta and Francisco Marto: Added to `General Roman Calendar.md` (2017 optional memorial) and removed from this list.
+- Feb 20 Jacinta and Francisco Marto: Added to `Catholic Feast Day Reference.md` (2017 optional memorial) and removed from this list.
 - Dec 24 Christmas at Greccio: A devotional observance, not a feast day — should be excluded from the calendar.
 - Jan 29 Brother Juniper: Listed as "Servant of God" — not beatified, so not applicable to the calendar.
+- Jan 30 Mary Angela Truszkowska: FM date is wrong (she died Oct 10; FM lists Jan 30). Still Blessed only — removed from list.
+- Jan 11 Blessed William Carter: Still Blessed (beatified 1987) — no universal feast. Removed from list.
 
 
 ## January
 
-- January 8 — Angela of Foligno
-- January 9 — Adrian of Canterbury
-- January 10 — Gregory of Nyssa
-- January 11 — Blessed William Carter
-- January 12 — Marguerite Bourgeoys
-- January 15 — Devasahayam Pillai
-- January 16 — Berard and Companions
-- January 18 — Charles of Sezze
 - January 29 — Servant of God Brother Juniper
-- January 30 — Blessed Mary Angela Truszkowska
 
 ## February
 
@@ -180,4 +173,4 @@ Saints and feasts in Franciscan Media with no match in the universal GRC or the 
 - December 30 — Egwin
 
 
-Total FM-only: 129 of 366
+Total FM-only: 120 of 366
