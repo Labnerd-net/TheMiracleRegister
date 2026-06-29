@@ -21,12 +21,15 @@ The authoritative feast day reference for this project. Covers the universal GRC
 - Jan  8 — Our Lady of Prompt Succor (diocesan — Archdiocese of New Orleans)
 - Jan  9 — Saint Adrian of Canterbury, Abbot (martyrologium)
 - Jan 10 — Saint Gregory of Nyssa, Bishop (martyrologium)
+- Jan 11 — *(no clear winner — option: Saint Theodosius the Cenobiarch, Father of cenobitic monasticism in Palestine, d. 529, martyrologium)*
 - Jan 12 — Saint Marguerite Bourgeoys, Virgin (national — Canada)
 - Jan 13 — Saint Hilary
 - Jan 14 — Saint Devasahayam Pillai, Martyr (martyrologium)
+- Jan 15 — Saint Paul the First Hermit (Paul of Thebes), Hermit (martyrologium) — first Christian hermit, c. 228–341; feast was on the universal calendar pre-1969; Saint Jerome wrote his Life
 - Jan 16 — Saints Berard and Companions, Martyrs (martyrologium)
 - Jan 17 — Saint Anthony, Abbot
 - Jan 18 — Saint Charles of Sezze (martyrologium)
+- Jan 19 — *(no clear winner — options: Saint Wulfstan of Worcester, Bishop, d. 1095, martyrologium / England; or Saint Canute Lavard, Martyr, d. 1131, martyrologium / Denmark)*
 - Jan 20 — Saint Fabian
 - Jan 20 — Saint Sebastian
 - Jan 21 — Saint Agnes
@@ -38,6 +41,8 @@ The authoritative feast day reference for this project. Covers the universal GRC
 - Jan 26 — Saints Timothy and Titus
 - Jan 27 — Saint Angela Merici
 - Jan 28 — Saint Thomas Aquinas
+- Jan 29 — *(no clear winner — option: Saint Gildas the Wise, Monk, c. 500–570, martyrologium / Wales — wrote earliest account of post-Roman Britain; mainly a British Isles feast)*
+- Jan 30 — *(no clear winner — option: Saint Bathildis (Balthild), Queen, d. 680, martyrologium — Frankish queen, founded Corbie and Chelles abbeys, patroness of children)*
 - Jan 31 — Saint John Bosco
 - Sunday after Jan 6 — Baptism of the Lord
 
