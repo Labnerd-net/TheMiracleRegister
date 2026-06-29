@@ -28,6 +28,11 @@ Saints and feasts in Franciscan Media with no match in the universal GRC or the 
 - Oct 25 Antônio de Sant'Anna Galvão: FM date wrong (Oct 25 = beatification date); correct feast is May 11 (martyrologium).
 - Oct 26 Peter of Alcantara: FM date wrong; correct feast is Oct 18 (martyrologium).
 - Oct 30 Alphonsus Rodriguez: FM date wrong; correct feast is Oct 31 (martyrologium).
+- Nov 6 Nicholas Tavelic and Companions: FM date wrong; correct feast is Nov 14 (martyrologium).
+- Nov 7 Didacus: FM listed US calendar date; universal feast is Nov 13 (martyrologium).
+- Nov 19 Agnes of Assisi: FM date wrong; correct feast is Nov 16 (martyrologium).
+- Dec 16 Honoratus Kozminski: still Blessed; also FM date wrong (feast is Oct 13, not Dec 16).
+- Dec 22 Jacopone da Todi: never officially beatified or canonized — popular veneration only.
 
 
 ## January
@@ -72,27 +77,11 @@ Saints and feasts in Franciscan Media with no match in the universal GRC or the 
 
 ## November
 
-- November 6 — Nicholas Tavelic and Companions
-- November 7 — Didacus
-- November 8 — Blessed John Duns Scotus
-- November 19 — Agnes of Assisi
-- November 27 — Francesco Antonio Fasani
-- November 28 — James of the Marche
+*(no unverified entries remaining)*
 
 ## December
 
-- December 1 — Charles de Foucauld
-- December 2 — Blessed Rafal Chylinski
-- December 5 — Sabas
-- December 10 — Blessed Adolph Kolping
-- December 15 — Blessed Mary Frances Schervier
-- December 16 — Blessed Honoratus Kozminski
-- December 18 — Blessed Anthony Grassi
-- December 19 — Blessed Urban V
-- December 20 — Dominic of Silos
-- December 22 — Blessed Jacopone da Todi
-- December 24 — Christmas at Greccio
-- December 30 — Egwin
+*(no unverified entries remaining)*
 
 
-Total FM-only: 18 of 366
+Total FM-only: 0 of 366 — verification complete

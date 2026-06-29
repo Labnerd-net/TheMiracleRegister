@@ -334,8 +334,11 @@ The authoritative feast day reference for this project. Covers the universal GRC
 - Nov 11 — Saint Martin of Tours
 - Nov 12 — Saint Josaphat
 - Nov 13 — Saint Frances Xavier Cabrini, Virgin (US memorial)
+- Nov 13 — Saint Didacus of Alcalá (martyrologium)
+- Nov 14 — Saints Nicholas Tavelic and Companions, Martyrs (martyrologium)
 - Nov 15 — Saint Albert the Great
 - Nov 16 — Saint Margaret of Scotland; Saint Gertrude
+- Nov 16 — Saint Agnes of Assisi, Virgin (martyrologium)
 - Nov 17 — Saint Elizabeth of Hungary
 - Nov 18 — Dedication of the Basilicas of Saints Peter and Paul; Saint Rose Philippine Duchesne, Virgin (US optional memorial)
 - Nov 21 — Presentation of the Blessed Virgin Mary
@@ -343,7 +346,9 @@ The authoritative feast day reference for this project. Covers the universal GRC
 - Nov 23 — Saint Clement I; Saint Columban; Blessed Miguel Agustín Pro, Priest and Martyr (US optional memorial)
 - Nov 24 — Saints Andrew Dung-Lac and Companions
 - Nov 25 — Saint Catherine of Alexandria
+- Nov 27 — Saint Francesco Antonio Fasani, Priest (martyrologium)
 - Nov 28 — Saint Catherine Labouré, Virgin (US optional memorial)
+- Nov 28 — Saint James of the Marche, Priest (martyrologium)
 - Nov 30 — Saint Andrew, Apostle
 - Last Sunday in Ordinary Time — Our Lord Jesus Christ, King of the Universe
 
@@ -351,8 +356,10 @@ The authoritative feast day reference for this project. Covers the universal GRC
 
 ## December
 
+- Dec 1 — Saint Charles de Foucauld, Priest and Martyr (martyrologium)
 - Dec 3 — Saint Francis Xavier
 - Dec 4 — Saint John Damascene
+- Dec 5 — Saint Sabas, Abbot (martyrologium)
 - Dec 6 — Saint Nicholas
 - Dec 7 — Saint Ambrose
 - Dec 8 — Immaculate Conception of the Blessed Virgin Mary
@@ -362,6 +369,7 @@ The authoritative feast day reference for this project. Covers the universal GRC
 - Dec 12 — Our Lady of Guadalupe
 - Dec 13 — Saint Lucy
 - Dec 14 — Saint John of the Cross
+- Dec 20 — Saint Dominic of Silos, Abbot (martyrologium)
 - Dec 21 — Saint Peter Canisius
 - Dec 23 — Saint John of Kanty
 - Dec 23 — Saint Marguerite d'Youville (martyrologium)
@@ -370,6 +378,7 @@ The authoritative feast day reference for this project. Covers the universal GRC
 - Dec 27 — Saint John, Apostle and Evangelist
 - Dec 28 — Holy Innocents
 - Dec 29 — Saint Thomas Becket
+- Dec 30 — Saint Egwin, Bishop (martyrologium)
 - Dec 31 — Saint Sylvester I
 - Sunday within Octave of Christmas (or Dec 30) — Holy Family of Jesus, Mary and Joseph
 
