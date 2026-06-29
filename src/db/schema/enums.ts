@@ -134,6 +134,7 @@ export const approvalAuthority = pgEnum("approval_authority", [
 
 export const feastScope = pgEnum("feast_scope", [
   "universal",
+  "martyrologium",
   "national",
   "order",
   "diocesan",

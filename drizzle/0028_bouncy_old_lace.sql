@@ -1,0 +1,1 @@
+ALTER TYPE "public"."feast_scope" ADD VALUE 'martyrologium' BEFORE 'national';
