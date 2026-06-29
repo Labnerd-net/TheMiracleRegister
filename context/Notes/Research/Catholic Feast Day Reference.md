@@ -77,7 +77,7 @@ The authoritative feast day reference for this project. Covers the universal GRC
 - Feb 22 — Saint Margaret of Cortona (martyrologium)
 - Feb 23 — Saint Polycarp
 - Feb 24 — *(no clear winner — Saint Matthias was here pre-1969, now moved to May 14; nothing well-known currently holds this date)*
-- Feb 25 — *(no clear winner — option: Saint Walburga (Walpurga), Anglo-Saxon abbess and missionary to Germany, d. 779, martyrologium — note: her oil relics are a documented associated miracle; mainly known in German and English contexts)*
+- Feb 25 — Saint Walburga (Walpurga), Abbess (martyrologium) — Anglo-Saxon missionary abbess in Germany, d. 779; her oil relics are a documented ongoing phenomenon; feast known across Germany and England
 - Feb 26 — *(no clear winner — option: Saint Porphyry of Gaza, Bishop, d. 420, some Western martyrologies — obscure)*
 - Feb 27 — Saint Gabriel of Our Lady of Sorrows (martyrologium)
 - Feb 27 — Saint Gregory of Narek
@@ -147,7 +147,7 @@ The authoritative feast day reference for this project. Covers the universal GRC
 - Apr 17 — *(no clear winner — option: Saint Stephen Harding, Abbot, martyrologium — co-founder of the Cistercians at Cîteaux, d. 1134; important in monastic history)*
 - Apr 18 — *(no clear winner — option: Saint Apollonius the Apologist, Martyr, martyrologium — Roman aristocrat who defended Christianity before the Senate before execution, d. c. 185)*
 - Apr 19 — *(no clear winner — option: Saint Alphege (Ælfheah) of Canterbury, Archbishop and Martyr, martyrologium / England — martyred by Danes who pelted him with bones when he refused to allow his ransom paid from the poor, d. 1012)*
-- Apr 20 — *(no clear winner — option: Saint Agnes of Montepulciano, Virgin, martyrologium — Dominican mystic, d. 1317; documented miracles include levitation and bilocation; canonized 1726)*
+- Apr 20 — Saint Agnes of Montepulciano, Virgin (martyrologium) — Dominican mystic, d. 1317; documented miracles include levitation and bilocation; canonized 1726
 - Apr 21 — Saint Anselm
 - Apr 21 — Saint Conrad of Parzham (martyrologium)
 - Apr 22 — *(no clear winner — nothing recognized holds this date in the current calendar)*
@@ -157,7 +157,7 @@ The authoritative feast day reference for this project. Covers the universal GRC
 - Apr 25 — Saint Mark, Evangelist
 - Apr 25 — Saint Pedro de San José Betancur (martyrologium)
 - Apr 26 — Our Lady of Good Counsel (martyrologium) — Marian feast tied to a fresco image that reportedly appeared miraculously at Genazzano, Italy in 1467; venerated by multiple popes; included in John Paul II's personal Marian coat of arms
-- Apr 27 — *(no clear winner — option: Saint Zita, Virgin, martyrologium — Italian laywoman and domestic servant, d. 1278; patron of household workers; known for miracles where angels reportedly completed her work while she prayed)*
+- Apr 27 — Saint Zita, Virgin (martyrologium) — Italian laywoman and domestic servant, d. 1278; patron of household workers; miracles where angels reportedly completed her work while she prayed
 - Apr 28 — **Saint Gianna Beretta Molla**
 - Apr 28 — Saint Louis Grignon de Montfort
 - Apr 28 — Saint Peter Chanel
@@ -190,7 +190,7 @@ The authoritative feast day reference for this project. Covers the universal GRC
 - May 13 — Saint Peter Regalado (martyrologium)
 - May 14 — Saint Matthias, Apostle
 - May 15 — Saint Isidore the Farmer (US optional memorial)
-- May 16 — *(no clear winner — options: Saint Brendan the Navigator, Abbot, martyrologium — Irish monk, d. c. 578, famous for legendary Atlantic voyage, one of the twelve apostles of Ireland; OR Saint Simon Stock, Priest, martyrologium — Carmelite prior general, d. 1265, received the Brown Scapular from Our Lady in a vision)*
+- May 16 — Saint Simon Stock, Prior General (martyrologium) — Carmelite prior general, d. 1265; received the Brown Scapular from Our Lady in a vision (1251); central figure in Marian devotion
 - May 17 — Saint Paschal Baylon (martyrologium)
 - May 18 — Saint John I
 - May 19 — Saint Theophilus of Corte (martyrologium)
@@ -370,8 +370,8 @@ The authoritative feast day reference for this project. Covers the universal GRC
 - Sep 21 — Saint Matthew, Apostle and Evangelist
 - Sep 22 — Saint Thomas of Villanova, Bishop (martyrologium)
 - Sep 23 — **Saint Pius of Pietrelcina (Padre Pio)**
-- Sep 24 — *(no clear winner — option: Our Lady of Mercy (Our Lady of Ransom) — feast of the Mercedarian Order, founded to ransom Christian captives; patroness of Spain and Latin America)*
-- Sep 25 — *(no clear winner — option: Saint Sergius of Radonezh, Abbot, martyrologium — Russian monk, d. 1392; one of the most venerated saints in Eastern Christianity; founded Trinity Lavra near Moscow)*
+- Sep 24 — Our Lady of Mercy (Our Lady of Ransom) — feast of the Mercedarian Order, founded to ransom Christian captives from the Moors; patroness of Spain and many Latin American countries
+- Sep 25 — Saint Sergius of Radonezh, Abbot (martyrologium) — Russian monk, d. 1392; one of the most venerated saints in all of Christianity; founded Trinity Lavra near Moscow; widely recognized in Western Catholic contexts
 - Sep 26 — Saints Cosmas and Damian
 - Sep 27 — Saint Vincent de Paul
 - Sep 28 — Saint Wenceslaus
@@ -450,7 +450,7 @@ The authoritative feast day reference for this project. Covers the universal GRC
 - Nov 18 — Dedication of the Basilicas of Saints Peter and Paul
 - Nov 18 — Saint Rose Philippine Duchesne, Virgin (US optional memorial)
 - Nov 19 — Saints Roque González, Alfonso Rodríguez, and Juan de Castillo, Priests and Martyrs (GRC optional memorial) — Jesuit martyrs of Paraguay, d. 1628; canonized 1988
-- Nov 20 — *(no clear winner — option: Saint Edmund the Martyr, King, martyrologium / England — King of East Anglia martyred by Danes, d. 869; patron of England)*
+- Nov 20 — Saint Edmund the Martyr, King (martyrologium / national — England) — King of East Anglia, d. 869; martyred by Danes; patron of England
 - Nov 21 — Presentation of the Blessed Virgin Mary
 - Nov 22 — Saint Cecilia
 - Nov 23 — Saint Clement I
