@@ -1,6 +1,6 @@
 # General Roman Calendar
 
-**Source:** Wikipedia — General Roman Calendar (cross-referenced with Vatican sources)
+**Sources:** Wikipedia — General Roman Calendar; USCCB liturgical calendar (mycatholic.life); cross-referenced with Vatican sources
 **Compiled:** 2026-06-28
 
 The GRC is the authoritative feast day reference for this project. Use it over Franciscan Media when dates conflict. See `Franciscan Media — Saint of the Day.md` for known FM discrepancies.
@@ -40,6 +40,7 @@ The GRC is the authoritative feast day reference for this project. Use it over F
 - Feb 11 — Our Lady of Lourdes
 - Feb 14 — Saints Cyril and Methodius
 - Feb 17 — Seven Holy Founders of the Servite Order
+- Feb 20 — Saints Jacinta and Francisco Marto
 - Feb 21 — Saint Peter Damian
 - Feb 22 — Chair of Saint Peter
 - Feb 23 — Saint Polycarp
@@ -118,6 +119,7 @@ The GRC is the authoritative feast day reference for this project. Use it over F
 - Jun 21 — Saint Aloysius Gonzaga
 - Jun 22 — Saint Paulinus of Nola; Saints John Fisher and Thomas More
 - Jun 24 — Nativity of Saint John the Baptist
+- Jun 26 — Saint Josemaría Escrivá (optional memorial)
 - Jun 27 — Saint Cyril of Alexandria
 - Jun 28 — Saint Irenaeus
 - Jun 29 — Saints Peter and Paul, Apostles
@@ -166,7 +168,7 @@ The GRC is the authoritative feast day reference for this project. Use it over F
 - Aug 10 — Saint Lawrence
 - Aug 11 — Saint Clare
 - Aug 12 — Saint Jane Frances de Chantal
-- Aug 13 — Saints Pontian and Hippolytus
+- Aug 13 — Saints Pontian and Hippolytus; Saint Maximus the Confessor
 - Aug 14 — **Saint Maximilian Kolbe**
 - Aug 15 — Assumption of the Blessed Virgin Mary
 - Aug 16 — Saint Stephen of Hungary
@@ -250,7 +252,6 @@ The GRC is the authoritative feast day reference for this project. Use it over F
 - Nov 23 — Saint Clement I; Saint Columban
 - Nov 24 — Saints Andrew Dung-Lac and Companions
 - Nov 25 — Saint Catherine of Alexandria
-- Nov 28 — **Saint Catherine Labouré** (US calendar)
 - Nov 30 — Saint Andrew, Apostle
 - Last Sunday in Ordinary Time — Our Lord Jesus Christ, King of the Universe
 
@@ -278,6 +279,42 @@ The GRC is the authoritative feast day reference for this project. Use it over F
 - Dec 29 — Saint Thomas Becket
 - Dec 31 — Saint Sylvester I
 - Sunday within Octave of Christmas (or Dec 30) — Holy Family of Jesus, Mary and Joseph
+
+---
+
+## US Calendar Additions (USCCB)
+
+Entries specific to the liturgical calendar for the Dioceses of the United States. Not in the universal GRC.
+
+### January
+- Jan 4 — Saint Elizabeth Ann Seton, Religious (memorial)
+- Jan 5 — Saint John Neumann, Bishop (memorial)
+- Jan 6 — Saint André Bessette, Religious (optional memorial)
+- Jan 22 — Day of Prayer for the Legal Protection of Unborn Children (US observance)
+- Jan 23 — Saint Marianne Cope, Virgin (optional memorial)
+
+### March
+- Mar 3 — Saint Katharine Drexel, Virgin (optional memorial)
+
+### May
+- May 10 — Saint Damien de Veuster of Molokai, Priest (optional memorial)
+- May 15 — Saint Isidore the Farmer (optional memorial)
+
+### July
+- Jul 1 — Saint Junipero Serra, Priest (optional memorial)
+- Jul 14 — Saint Kateri Tekakwitha, Virgin (memorial) *(universal date: same, but listed as US memorial)*
+
+### October
+- Oct 5 — Blessed Francis Xavier Seelos, Priest (optional memorial)
+- Oct 6 — Blessed Marie Rose Durocher, Virgin (optional memorial)
+- Oct 19 — Saints Jean de Brébeuf and Isaac Jogues, Priests and Companions, Martyrs (memorial) *(universal: optional memorial)*
+- Oct 20 — Saint Paul of the Cross, Priest (optional memorial) *(universal: optional memorial, same date)*
+
+### November
+- Nov 13 — Saint Frances Xavier Cabrini, Virgin (memorial)
+- Nov 18 — Saint Rose Philippine Duchesne, Virgin (optional memorial)
+- Nov 23 — Blessed Miguel Agustín Pro, Priest and Martyr (optional memorial)
+- Nov 28 — Saint Catherine Labouré, Virgin (optional memorial)
 
 ---
 
