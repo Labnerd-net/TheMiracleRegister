@@ -2,7 +2,23 @@
 
 ## Current Feature Spec File
 
-_None_
+### Today's Feast Widget (#38 + #39)
+
+Surface a saint whose feast day matches today on the homepage. DB columns (`feast_month`, `feast_day_of_month`, `feast_easter_offset`) already populated on saints.
+
+**Scope:**
+- `src/lib/easter.ts` — Meeus/Jones/Butcher Easter algorithm; `getEaster(year)` and `resolveMovableFeast(offset, year)` helpers
+- `src/pages/index.astro` — query saints matching today's feast (fixed + movable); render a "Today's Feast" section between the stats strip and featured carousel; hidden when no match
+
+**Query logic:**
+- Fixed feasts: `feast_month = M AND feast_day_of_month = D`
+- Movable feasts: compute today's offset from Easter for the current year, match `feast_easter_offset = N`
+- Both combined in one OR query; filter `published = true`
+
+**Widget UI:**
+- Renders only when ≥1 saint matches
+- Shows eyebrow "Today's Feast", saint name, feast day string, image, and link to saint page
+- Styled consistently with the rest of the homepage
 
 ## Current Feature Plan File
 
@@ -232,3 +248,6 @@ Replaced the 300ms failed-login delay with a Cloudflare KV counter keyed to clie
 
 ### API Docs Link in Footer
 Added an "API" link to the public site footer pointing to `/api/v1/doc` (the Swagger UI), making the REST API discoverable to visitors.
+
+### Religious Order Filter — Dropdown
+Replaced the free-text religious order input on `/saints` with a `<select>` populated dynamically from distinct `religious_order` values on published saints. Filter logic changed from `ilike` fuzzy match to exact equality. Debounce logic for the text input removed; `change` event now fires immediately on selection.

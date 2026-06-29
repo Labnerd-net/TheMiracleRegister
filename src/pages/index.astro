@@ -2,11 +2,19 @@
 import Base from "../layouts/Base.astro";
 import { createDb } from "../db";
 import { saints, miracles } from "../db/schema";
-import { sql, asc, eq, ne, and } from "drizzle-orm";
+import { sql, asc, eq, ne, and, or, isNotNull } from "drizzle-orm";
 import { env } from "cloudflare:workers";
+import { getEaster, resolveMovableFeast } from "../lib/easter";
 
 const db = createDb(env.DATABASE_URL);
-const [[{ saintCount }], [{ miracleCount }], [{ apparitionCount }], featuredSaints] = await Promise.all([
+
+const now = new Date();
+const todayMonth = now.getUTCMonth() + 1;
+const todayDay = now.getUTCDate();
+const todayYear = now.getUTCFullYear();
+const easterOffset = Math.round((now.getTime() - getEaster(todayYear).getTime()) / 86_400_000);
+
+const [[{ saintCount }], [{ miracleCount }], [{ apparitionCount }], featuredSaints, feastSaints] = await Promise.all([
   db.select({ saintCount: sql<number>`count(*)::int` }).from(saints).where(eq(saints.published, true)),
   db.select({ miracleCount: sql<number>`count(*)::int` }).from(miracles).where(and(eq(miracles.published, true), ne(miracles.miracle_category, "apparition"))),
   db.select({ apparitionCount: sql<number>`count(*)::int` }).from(miracles).where(and(eq(miracles.published, true), eq(miracles.miracle_category, "apparition"))),
@@ -18,6 +26,28 @@ const [[{ saintCount }], [{ miracleCount }], [{ apparitionCount }], featuredSain
     canonization_stage: saints.canonization_stage,
     feast_day: saints.feast_day,
   }).from(saints).where(eq(saints.published, true)).orderBy(asc(saints.name)),
+  db.select({
+    slug: saints.slug,
+    name: saints.name,
+    saint_name: saints.saint_name,
+    image_url: saints.image_url,
+    feast_day: saints.feast_day,
+    canonization_stage: saints.canonization_stage,
+  }).from(saints).where(
+    and(
+      eq(saints.published, true),
+      or(
+        and(
+          eq(saints.feast_month, todayMonth),
+          eq(saints.feast_day_of_month, todayDay)
+        ),
+        and(
+          isNotNull(saints.feast_easter_offset),
+          eq(saints.feast_easter_offset, easterOffset)
+        )
+      )
+    )
+  ).orderBy(asc(saints.name)),
 ]);
 ---
 
@@ -59,6 +89,33 @@ const [[{ saintCount }], [{ miracleCount }], [{ apparitionCount }], featuredSain
       </div>
     </div>
   </section>
+
+  <!-- Today's Feast -->
+  {feastSaints.length > 0 && (
+    <section class="feast-section">
+      <div class="max-w-6xl mx-auto px-4 sm:px-8 py-10 sm:py-14">
+        <p class="eyebrow mb-8">Today's Feast</p>
+        <div class="feast-grid">
+          {feastSaints.map(s => (
+            <a href={`/saints/${s.slug}`} class="feast-card no-underline group">
+              <div class="feast-img-wrap">
+                {s.image_url ? (
+                  <img src={s.image_url} alt={s.name} class="feast-img saint-img" />
+                ) : (
+                  <div class="saint-placeholder w-full h-full">{s.name.charAt(0)}</div>
+                )}
+              </div>
+              <div class="feast-info">
+                <p class="feast-name group-hover:text-[--color-accent]">{s.saint_name ?? s.name}</p>
+                {s.feast_day && <p class="feast-day-str">{s.feast_day}</p>}
+                <span class={`stage-badge ${s.canonization_stage}`}>{s.canonization_stage}</span>
+              </div>
+            </a>
+          ))}
+        </div>
+      </div>
+    </section>
+  )}
 
   <!-- Featured saints carousel -->
   <section class="py-14 sm:py-20" style="overflow:hidden">
@@ -177,6 +234,60 @@ const [[{ saintCount }], [{ miracleCount }], [{ apparitionCount }], featuredSain
       margin-right: 0;
       border-right: none;
     }
+  }
+
+  .feast-section {
+    border-top: 1px solid var(--rule-soft);
+    background: var(--bg-subtle);
+  }
+
+  .feast-grid {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 1.5rem 2.5rem;
+  }
+
+  .feast-card {
+    display: flex;
+    align-items: center;
+    gap: 1.25rem;
+    text-decoration: none;
+  }
+
+  .feast-img-wrap {
+    width: 72px;
+    height: 96px;
+    flex-shrink: 0;
+    overflow: hidden;
+    background: var(--bg-elevated);
+  }
+
+  .feast-img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: top;
+  }
+
+  .feast-info {
+    display: flex;
+    flex-direction: column;
+    gap: 0.3rem;
+  }
+
+  .feast-name {
+    font-family: var(--font-display);
+    font-size: 1.2rem;
+    font-weight: 400;
+    color: var(--text-1);
+    line-height: 1.2;
+    transition: color 0.2s;
+  }
+
+  .feast-day-str {
+    font-family: var(--font-sans);
+    font-size: 0.7rem;
+    color: var(--text-4);
   }
 
   .saint-img { transition: transform 0.7s ease; }
