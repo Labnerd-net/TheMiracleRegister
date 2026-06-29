@@ -127,26 +127,37 @@ The authoritative feast day reference for this project. Covers the universal GRC
 
 - Apr  1 — Saint Hugh of Grenoble, Bishop (martyrologium)
 - Apr  2 — Saint Francis of Paola
+- Apr  3 — Saint Richard of Chichester, Bishop (martyrologium / national — England) — d. 1253; his prayer "O most merciful Redeemer, Friend and Brother..." is widely known
 - Apr  4 — Saint Isidore of Seville
 - Apr  4 — Saint Benedict the African (martyrologium)
 - Apr  5 — Saint Vincent Ferrer
 - Apr  5 — Saint Crescentia Hoess, Virgin (martyrologium)
+- Apr  6 — *(no clear winner — nothing recognized holds this date in the current calendar)*
 - Apr  7 — Saint John Baptist de la Salle
 - Apr  8 — Saint Julie Billiart, Virgin (martyrologium)
 - Apr  9 — Saint Casilda (martyrologium)
+- Apr 10 — *(no clear winner — option: Saint Fulbert of Chartres, Bishop, martyrologium — theologian, d. 1028; mainly known in France)*
 - Apr 11 — Saint Stanislaus
 - Apr 12 — Saint Teresa of Los Andes, Virgin (martyrologium)
 - Apr 13 — Saint Martin I
+- Apr 14 — *(no clear winner — option: Blessed Lydwine (Lidwine) of Schiedam, Virgin, martyrologium — Dutch mystic, d. 1433; bedridden after a skating accident at 15, reportedly survived on the Eucharist alone; stigmatist)*
 - Apr 15 — Saint Caesar de Bus (martyrologium)
 - Apr 16 — **Saint Bernadette Soubirous**, Virgin (martyrologium)
 - Apr 16 — Saint Benedict Joseph Labre (martyrologium)
+- Apr 17 — *(no clear winner — option: Saint Stephen Harding, Abbot, martyrologium — co-founder of the Cistercians at Cîteaux, d. 1134; important in monastic history)*
+- Apr 18 — *(no clear winner — option: Saint Apollonius the Apologist, Martyr, martyrologium — Roman aristocrat who defended Christianity before the Senate before execution, d. c. 185)*
+- Apr 19 — *(no clear winner — option: Saint Alphege (Ælfheah) of Canterbury, Archbishop and Martyr, martyrologium / England — martyred by Danes who pelted him with bones when he refused to allow his ransom paid from the poor, d. 1012)*
+- Apr 20 — *(no clear winner — option: Saint Agnes of Montepulciano, Virgin, martyrologium — Dominican mystic, d. 1317; documented miracles include levitation and bilocation; canonized 1726)*
 - Apr 21 — Saint Anselm
 - Apr 21 — Saint Conrad of Parzham (martyrologium)
+- Apr 22 — *(no clear winner — nothing recognized holds this date in the current calendar)*
 - Apr 23 — Saint Adalbert
 - Apr 23 — Saint George
 - Apr 24 — Saint Fidelis of Sigmaringen
 - Apr 25 — Saint Mark, Evangelist
 - Apr 25 — Saint Pedro de San José Betancur (martyrologium)
+- Apr 26 — Our Lady of Good Counsel (martyrologium) — Marian feast tied to a fresco image that reportedly appeared miraculously at Genazzano, Italy in 1467; venerated by multiple popes; included in John Paul II's personal Marian coat of arms
+- Apr 27 — *(no clear winner — option: Saint Zita, Virgin, martyrologium — Italian laywoman and domestic servant, d. 1278; patron of household workers; known for miracles where angels reportedly completed her work while she prayed)*
 - Apr 28 — **Saint Gianna Beretta Molla**
 - Apr 28 — Saint Louis Grignon de Montfort
 - Apr 28 — Saint Peter Chanel
