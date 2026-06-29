@@ -26,7 +26,8 @@ The authoritative feast day reference for this project. Covers the universal GRC
 - Jan 16 — Saints Berard and Companions, Martyrs (martyrologium)
 - Jan 17 — Saint Anthony, Abbot
 - Jan 18 — Saint Charles of Sezze (martyrologium)
-- Jan 20 — Saint Fabian; Saint Sebastian
+- Jan 20 — Saint Fabian
+- Jan 20 — Saint Sebastian
 - Jan 21 — Saint Agnes
 - Jan 22 — Saint Vincent
 - Jan 22 — Day of Prayer for the Legal Protection of Unborn Children (US observance)
@@ -44,11 +45,13 @@ The authoritative feast day reference for this project. Covers the universal GRC
 ## February
 
 - Feb 2 — Presentation of the Lord
-- Feb 3 — Saint Blaise; Saint Ansgar
+- Feb 3 — Saint Ansgar
+- Feb 3 — Saint Blaise
 - Feb 4 — Saint Joseph of Leonissa (martyrologium)
 - Feb 5 — Saint Agatha
 - Feb 6 — Saint Paul Miki and Companions
-- Feb 8 — Saint Jerome Emiliani; Saint Josephine Bakhita
+- Feb 8 — Saint Josephine Bakhita
+- Feb 8 — Saint Jerome Emiliani
 - Feb 9 — Saint Apollonia, Martyr (martyrologium)
 - Feb 10 — Saint Scholastica
 - Feb 11 — Our Lady of Lourdes
@@ -79,12 +82,14 @@ The authoritative feast day reference for this project. Covers the universal GRC
 - Mar 6 — Saint Colette, Virgin (martyrologium)
 - Mar 7 — Saints Perpetua and Felicity
 - Mar 8 — Saint John of God
-- Mar 9 — Saint Frances of Rome; Saint Catherine of Bologna, Virgin (martyrologium)
+- Mar 9 — Saint Frances of Rome
+- Mar 9 — Saint Catherine of Bologna, Virgin (martyrologium)
 - Mar 10 — Saint John Ogilvie, Priest and Martyr (national — Scotland)
 - Mar 13 — Saint Leander of Seville, Bishop (martyrologium)
 - Mar 15 — Saint Clement Mary Hofbauer (martyrologium)
 - Mar 17 — Saint Patrick
-- Mar 18 — Saint Cyril of Jerusalem; Saint Salvator of Horta (martyrologium)
+- Mar 18 — Saint Cyril of Jerusalem
+- Mar 18 — Saint Salvator of Horta (martyrologium)
 - Mar 19 — Saint Joseph, Husband of Mary
 - Mar 22 — Saint Nicholas Owen, Martyr (martyrologium)
 - Mar 23 — Saint Turibius of Mongrovejo
@@ -114,11 +119,14 @@ The authoritative feast day reference for this project. Covers the universal GRC
 - Apr 16 — Saint Benedict Joseph Labre (martyrologium)
 - Apr 21 — Saint Anselm
 - Apr 21 — Saint Conrad of Parzham (martyrologium)
-- Apr 23 — Saint George; Saint Adalbert
+- Apr 23 — Saint Adalbert
+- Apr 23 — Saint George
 - Apr 24 — Saint Fidelis of Sigmaringen
 - Apr 25 — Saint Mark, Evangelist
 - Apr 25 — Saint Pedro de San José Betancur (martyrologium)
-- Apr 28 — Saint Peter Chanel; Saint Louis Grignon de Montfort; **Saint Gianna Beretta Molla**
+- Apr 28 — **Saint Gianna Beretta Molla**
+- Apr 28 — Saint Louis Grignon de Montfort
+- Apr 28 — Saint Peter Chanel
 - Apr 29 — Saint Catherine of Siena
 - Apr 30 — Saint Pius V
 
@@ -141,7 +149,8 @@ The authoritative feast day reference for this project. Covers the universal GRC
 - May 11 — Saint Ignatius of Laconi (martyrologium)
 - May 11 — Saint Antônio de Sant'Anna Galvão, Priest (martyrologium)
 - May 12 — Saint Leopold Mandic, Priest (martyrologium)
-- May 12 — Saints Nereus and Achilleus; Saint Pancras
+- May 12 — Saints Nereus and Achilleus
+- May 12 — Saint Pancras
 - May 13 — Our Lady of Fatima
 - May 13 — Saint Peter Regalado (martyrologium)
 - May 14 — Saint Matthias, Apostle
@@ -152,7 +161,9 @@ The authoritative feast day reference for this project. Covers the universal GRC
 - May 20 — Saint Bernardine of Siena
 - May 21 — Saint Christopher Magallanes and Companions
 - May 22 — Saint Rita of Cascia
-- May 25 — Saint Bede the Venerable; Saint Gregory VII; Saint Mary Magdalene de' Pazzi
+- May 25 — Saint Bede the Venerable
+- May 25 — Saint Gregory VII
+- May 25 — Saint Mary Magdalene de' Pazzi
 - May 25 — Saint Madeleine Sophie Barat, Virgin (martyrologium)
 - May 26 — Saint Philip Neri
 - May 26 — Saint Mary Ann of Jesus of Paredes (martyrologium)
@@ -181,7 +192,8 @@ The authoritative feast day reference for this project. Covers the universal GRC
 - Jun 17 — Saint Albert Chmielowski (martyrologium)
 - Jun 19 — Saint Romuald
 - Jun 21 — Saint Aloysius Gonzaga
-- Jun 22 — Saint Paulinus of Nola; Saints John Fisher and Thomas More
+- Jun 22 — Saint Paulinus of Nola
+- Jun 22 — Saints John Fisher and Thomas More
 - Jun 23 — Saint Joseph Cafasso, Priest (martyrologium)
 - Jun 24 — Nativity of Saint John the Baptist
 - Jun 26 — Saint Josemaría Escrivá (optional memorial)
@@ -199,7 +211,8 @@ The authoritative feast day reference for this project. Covers the universal GRC
 - Jul 1 — Saint Junipero Serra, Priest (US optional memorial)
 - Jul 1 — Saint Oliver Plunkett, Archbishop and Martyr (martyrologium)
 - Jul 3 — Saint Thomas, Apostle
-- Jul 4 — Saint Elizabeth of Portugal; **Saint Pier Giorgio Frassati** (canonized Sep 7, 2025)
+- Jul 4 — Saint Elizabeth of Portugal
+- Jul 4 — **Saint Pier Giorgio Frassati** (canonized Sep 7, 2025)
 - Jul 5 — Saint Anthony Zaccaria
 - Jul 6 — Saint Maria Goretti
 - Jul 9 — Saint Augustine Zhao Rong and Companions
@@ -208,7 +221,8 @@ The authoritative feast day reference for this project. Covers the universal GRC
 - Jul 12 — **Saints Louis and Zélie Martin**
 - Jul 12 — Saints John Jones and John Wall, Martyrs (martyrologium)
 - Jul 13 — Saint Henry
-- Jul 14 — Saint Camillus de Lellis; Saint Kateri Tekakwitha, Virgin (US memorial)
+- Jul 14 — Saint Camillus de Lellis
+- Jul 14 — **Saint Kateri Tekakwitha, Virgin (US memorial)**
 - Jul 14 — Saint Francis Solano, Priest (martyrologium)
 - Jul 15 — Saint Bonaventure
 - Jul 16 — Our Lady of Mount Carmel
@@ -229,18 +243,21 @@ The authoritative feast day reference for this project. Covers the universal GRC
 ## August
 
 - Aug 1 — Saint Alphonsus Liguori
-- Aug 2 — Saint Eusebius of Vercelli; Saint Peter Julian Eymard
+- Aug 2 — Saint Eusebius of Vercelli
+- Aug 2 — Saint Peter Julian Eymard
 - Aug 4 — Saint Jean Vianney
 - Aug 5 — Dedication of the Basilica of Saint Mary Major
 - Aug 6 — Transfiguration of the Lord
-- Aug 7 — Saint Sixtus II and Companions; Saint Cajetan
+- Aug 7 — Saint Sixtus II and Companions
+- Aug 7 — Saint Cajetan
 - Aug 8 — Saint Dominic
 - Aug 8 — Saint Mary MacKillop, Virgin (martyrologium)
 - Aug 9 — Saint Teresa Benedicta of the Cross (Edith Stein)
 - Aug 10 — Saint Lawrence
 - Aug 11 — Saint Clare
 - Aug 12 — Saint Jane Frances de Chantal
-- Aug 13 — Saints Pontian and Hippolytus; Saint Maximus the Confessor
+- Aug 13 — Saints Pontian and Hippolytus
+- Aug 13 — Saint Maximus the Confessor
 - Aug 14 — **Saint Maximilian Kolbe**
 - Aug 15 — Assumption of the Blessed Virgin Mary
 - Aug 16 — Saint Stephen of Hungary
@@ -252,7 +269,8 @@ The authoritative feast day reference for this project. Covers the universal GRC
 - Aug 22 — Queenship of the Blessed Virgin Mary
 - Aug 23 — Saint Rose of Lima
 - Aug 24 — Saint Bartholomew, Apostle
-- Aug 25 — Saint Louis of France; Saint Joseph Calasanz
+- Aug 25 — Saint Louis of France
+- Aug 25 — Saint Joseph Calasanz
 - Aug 27 — Saint Monica
 - Aug 28 — Saint Augustine of Hippo
 - Aug 28 — Saint Joachima de Mas (martyrologium)
@@ -276,7 +294,8 @@ The authoritative feast day reference for this project. Covers the universal GRC
 - Sep 15 — Our Lady of Sorrows
 - Sep 15 — Saint Catherine of Genoa (martyrologium)
 - Sep 16 — Saints Cornelius and Cyprian
-- Sep 17 — Saint Robert Bellarmine; Saint Hildegard of Bingen
+- Sep 17 — Saint Robert Bellarmine
+- Sep 17 — Saint Hildegard of Bingen
 - Sep 18 — Saint Joseph of Cupertino, Priest (martyrologium)
 - Sep 19 — Saint Januarius
 - Sep 20 — Saints Andrew Kim Tae-gon, Paul Chong Ha-sang and Companions
@@ -285,7 +304,8 @@ The authoritative feast day reference for this project. Covers the universal GRC
 - Sep 23 — **Saint Pius of Pietrelcina (Padre Pio)**
 - Sep 26 — Saints Cosmas and Damian
 - Sep 27 — Saint Vincent de Paul
-- Sep 28 — Saint Wenceslaus; Saint Lawrence Ruiz and Companions
+- Sep 28 — Saint Wenceslaus
+- Sep 28 — Saint Lawrence Ruiz and Companions
 - Sep 29 — Saints Michael, Gabriel and Raphael, Archangels
 - Sep 30 — Saint Jerome
 
@@ -297,20 +317,26 @@ The authoritative feast day reference for this project. Covers the universal GRC
 - Oct 2 — Holy Guardian Angels
 - Oct 3 — Saint Theodora Guérin, Virgin (martyrologium)
 - Oct 4 — Saint Francis of Assisi
-- Oct 5 — **Saint Faustina Kowalska**; Blessed Francis Xavier Seelos, Priest (US optional memorial)
-- Oct 6 — Saint Bruno; Blessed Marie Rose Durocher, Virgin (US optional memorial)
+- Oct 5 — **Saint Faustina Kowalska**
+- Oct 5 — Blessed Francis Xavier Seelos, Priest (US optional memorial)
+- Oct 6 — Saint Bruno
+- Oct 6 — Blessed Marie Rose Durocher, Virgin (US optional memorial)
 - Oct 7 — Our Lady of the Rosary
-- Oct 9 — Saint Denis and Companions; Saint John Leonardi; **Saint John Henry Newman**
+- Oct 9 — Saint Denis and Companions
+- Oct 9 — Saint John Leonardi
+- Oct 9 — **Saint John Henry Newman**
 - Oct 10 — Saint Francis Borgia, Priest (martyrologium)
 - Oct 11 — **Saint John XXIII**
 - Oct 12 — **Saint Carlo Acutis** (canonized Apr 3, 2025)
 - Oct 14 — Saint Callistus I
 - Oct 15 — Saint Teresa of Jesus (Teresa of Ávila)
-- Oct 16 — Saint Hedwig; Saint Margaret Mary Alacoque
+- Oct 16 — Saint Hedwig
+- Oct 16 — Saint Margaret Mary Alacoque
 - Oct 17 — Saint Ignatius of Antioch
 - Oct 18 — Saint Luke, Evangelist
 - Oct 18 — Saint Peter of Alcantara, Priest (martyrologium)
-- Oct 19 — Saints John de Brébeuf and Isaac Jogues and Companions (US memorial); Saint Paul of the Cross
+- Oct 19 — Saints John de Brébeuf and Isaac Jogues and Companions (US memorial)
+- Oct 19 — Saint Paul of the Cross
 - Oct 20 — Saint Maria Bertilla Boscardin, Virgin (martyrologium)
 - Oct 21 — Saint Hilarion, Abbot (martyrologium)
 - Oct 22 — **Saint John Paul II**
@@ -337,13 +363,17 @@ The authoritative feast day reference for this project. Covers the universal GRC
 - Nov 13 — Saint Didacus of Alcalá (martyrologium)
 - Nov 14 — Saints Nicholas Tavelic and Companions, Martyrs (martyrologium)
 - Nov 15 — Saint Albert the Great
-- Nov 16 — Saint Margaret of Scotland; Saint Gertrude
+- Nov 16 — Saint Margaret of Scotland
+- Nov 16 — Saint Gertrude
 - Nov 16 — Saint Agnes of Assisi, Virgin (martyrologium)
 - Nov 17 — Saint Elizabeth of Hungary
-- Nov 18 — Dedication of the Basilicas of Saints Peter and Paul; Saint Rose Philippine Duchesne, Virgin (US optional memorial)
+- Nov 18 — Dedication of the Basilicas of Saints Peter and Paul
+- Nov 18 — Saint Rose Philippine Duchesne, Virgin (US optional memorial)
 - Nov 21 — Presentation of the Blessed Virgin Mary
 - Nov 22 — Saint Cecilia
-- Nov 23 — Saint Clement I; Saint Columban; Blessed Miguel Agustín Pro, Priest and Martyr (US optional memorial)
+- Nov 23 — Saint Clement I
+- Nov 23 — Saint Columban
+- Nov 23 — Blessed Miguel Agustín Pro, Priest and Martyr (US optional memorial)
 - Nov 24 — Saints Andrew Dung-Lac and Companions
 - Nov 25 — Saint Catherine of Alexandria
 - Nov 27 — Saint Francesco Antonio Fasani, Priest (martyrologium)
