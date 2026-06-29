@@ -141,10 +141,10 @@ const ogDesc = ogDescription(miracle.synopsis) || undefined;
   )}
 
   <div class="page-header">
-    <div class="max-w-6xl mx-auto px-4 sm:px-8 py-4">
+    <div class="max-w-6xl mx-auto px-4 sm:px-6 py-4">
       <a href="/miracles" style="font-family:var(--font-sans);font-size:0.68rem;font-weight:500;letter-spacing:0.08em;text-transform:uppercase;color:var(--text-4);text-decoration:none">← Miracles</a>
     </div>
-    <div class="max-w-6xl mx-auto px-4 sm:px-8 pb-10 sm:pb-14 pt-6 lg:grid lg:grid-cols-[1fr_220px] lg:gap-16 lg:items-start">
+    <div class="max-w-6xl mx-auto px-4 sm:px-6 pb-10 sm:pb-14 pt-6 lg:grid lg:grid-cols-[1fr_220px] lg:gap-16 lg:items-start">
       <div>
         <div class="flex flex-wrap items-center gap-3 mb-5">
           <span style="font-family:var(--font-sans);font-size:0.65rem;font-weight:600;letter-spacing:0.1em;text-transform:uppercase;color:var(--text-4)">{fmt(miracle.miracle_category)} miracle</span>
@@ -222,7 +222,7 @@ const ogDesc = ogDescription(miracle.synopsis) || undefined;
   </div>
 
   {images[0] && (
-    <div class="max-w-6xl mx-auto px-4 sm:px-8 pb-8">
+    <div class="max-w-6xl mx-auto px-4 sm:px-6 pb-8">
       <div class="rounded overflow-hidden" style="background:var(--bg-elevated)">
         <img src={images[0].url} alt={images[0].caption ?? miracle.title} class="w-full object-cover" style="max-height:480px;object-position:center" />
         {(images[0].caption || images[0].source_attribution) && (
@@ -236,7 +236,7 @@ const ogDesc = ogDescription(miracle.synopsis) || undefined;
     </div>
   )}
 
-  <div class="max-w-6xl mx-auto px-4 sm:px-8 py-10 sm:py-14 lg:grid lg:grid-cols-[1fr_240px] lg:gap-12">
+  <div class="max-w-6xl mx-auto px-4 sm:px-6 py-10 sm:py-14 lg:grid lg:grid-cols-[1fr_240px] lg:gap-12">
 
     <aside class="mb-8 lg:mb-0 lg:col-start-2 lg:row-start-1">
       <div class="card p-5 lg:sticky lg:top-24">
