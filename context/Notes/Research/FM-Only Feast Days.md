@@ -22,6 +22,7 @@ Saints and feasts in Franciscan Media with no match in the universal GRC or the 
 - Jul 10 Veronica Giuliani: FM date wrong; correct feast is Jul 9 (martyrologium).
 - Jul 17 Francis Solano: FM date wrong; correct feast is Jul 14 (martyrologium).
 - Jul 19 Mary MacKillop: FM date wrong; correct feast is Aug 8 (martyrologium).
+- Aug 18 Louis of Toulouse: FM date wrong; correct feast is Aug 19 (martyrologium).
 
 
 ## January
@@ -54,11 +55,7 @@ Saints and feasts in Franciscan Media with no match in the universal GRC or the 
 
 ## August
 
-- August 13 — Blessed Michael J. McGivney
-- August 17 — Joan of the Cross
-- August 18 — Louis of Toulouse
-- August 30 — Jeanne Jugan
-- August 31 — Saints Joseph of Arimathea and Nicodemus
+*(no unverified entries remaining)*
 
 ## September
 
@@ -109,4 +106,4 @@ Saints and feasts in Franciscan Media with no match in the universal GRC or the 
 - December 30 — Egwin
 
 
-Total FM-only: 42 of 366
+Total FM-only: 37 of 366

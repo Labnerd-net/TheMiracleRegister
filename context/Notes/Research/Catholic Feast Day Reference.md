@@ -243,7 +243,9 @@ The authoritative feast day reference for this project. Covers the universal GRC
 - Aug 14 — **Saint Maximilian Kolbe**
 - Aug 15 — Assumption of the Blessed Virgin Mary
 - Aug 16 — Saint Stephen of Hungary
+- Aug 17 — Saint Joan of the Cross, Virgin (martyrologium)
 - Aug 19 — Saint John Eudes
+- Aug 19 — Saint Louis of Toulouse, Bishop (martyrologium)
 - Aug 20 — Saint Bernard of Clairvaux
 - Aug 21 — Saint Pius X
 - Aug 22 — Queenship of the Blessed Virgin Mary
@@ -254,6 +256,8 @@ The authoritative feast day reference for this project. Covers the universal GRC
 - Aug 28 — Saint Augustine of Hippo
 - Aug 28 — Saint Joachima de Mas (martyrologium)
 - Aug 29 — Passion of Saint John the Baptist
+- Aug 30 — Saint Jeanne Jugan, Virgin (martyrologium)
+- Aug 31 — Saints Joseph of Arimathea and Nicodemus (martyrologium)
 
 ---
 
