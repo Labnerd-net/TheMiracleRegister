@@ -13,13 +13,7 @@ Use as a reference for biography drafts, feast days, and candidate saints to add
 
 ## Known Date Discrepancies
 
-FM's feast dates for the following saints do not match the Vatican Roman Calendar. Do not use FM as the source of truth for these:
-
-| Saint | FM Date | Correct Date | Note |
-|---|---|---|---|
-| Gianna Beretta Molla | April 19 | **April 28** | Her death date (1962); April 28 is the Vatican feast day |
-| Carlo Acutis | October 14 | **October 12** | His death date (2006); October 12 is the Vatican feast day |
-| Louis & Zélie Martin | September 25 | **July 12** | July 12 added to Roman Calendar at their 2015 canonization |
+FM's feast dates do not always match the General Roman Calendar. See `General Roman Calendar.md` for the authoritative list and a full discrepancy table. Do not use FM as the source of truth for feast dates.
 
 ---
 
