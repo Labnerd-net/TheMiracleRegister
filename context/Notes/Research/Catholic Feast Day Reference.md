@@ -96,16 +96,27 @@ The authoritative feast day reference for this project. Covers the universal GRC
 
 ## April
 
+- Apr 1 — Saint Hugh of Grenoble, Bishop (martyrologium)
 - Apr 2 — Saint Francis of Paola
 - Apr 4 — Saint Isidore of Seville
+- Apr 4 — Saint Benedict the African (martyrologium)
 - Apr 5 — Saint Vincent Ferrer
+- Apr 5 — Saint Crescentia Hoess, Virgin (martyrologium)
 - Apr 7 — Saint John Baptist de la Salle
+- Apr 8 — Saint Julie Billiart, Virgin (martyrologium)
+- Apr 9 — Saint Casilda (martyrologium)
 - Apr 11 — Saint Stanislaus
+- Apr 12 — Saint Teresa of Los Andes, Virgin (martyrologium)
 - Apr 13 — Saint Martin I
+- Apr 15 — Saint Caesar de Bus (martyrologium)
+- Apr 16 — Saint Bernadette Soubirous, Virgin (martyrologium)
+- Apr 16 — Saint Benedict Joseph Labre (martyrologium)
 - Apr 21 — Saint Anselm
+- Apr 21 — Saint Conrad of Parzham (martyrologium)
 - Apr 23 — Saint George; Saint Adalbert
 - Apr 24 — Saint Fidelis of Sigmaringen
 - Apr 25 — Saint Mark, Evangelist
+- Apr 25 — Saint Pedro de San José Betancur (martyrologium)
 - Apr 28 — Saint Peter Chanel; Saint Louis Grignon de Montfort; **Saint Gianna Beretta Molla**
 - Apr 29 — Saint Catherine of Siena
 - Apr 30 — Saint Pius V

@@ -29,20 +29,7 @@ Saints and feasts in Franciscan Media with no match in the universal GRC or the 
 
 ## April
 
-- April 1 — Hugh of Grenoble
-- April 3 — Benedict the African
-- April 6 — Crescentia Hoess
-- April 8 — Julie Billiart
-- April 9 — Casilda
-- April 10 — Magdalene of Canossa
-- April 12 — Teresa of Los Andes
-- April 14 — Blessed Peter Gonzalez
-- April 15 — Caesar de Bus
-- April 16 — Bernadette Soubirous
-- April 17 — Benedict Joseph Labre
-- April 18 — Blessed James Oldo
-- April 20 — Conrad of Parzham
-- April 26 — Pedro de San José Betancur
+*(no unverified entries remaining)*
 
 ## May
 
@@ -50,6 +37,7 @@ Saints and feasts in Franciscan Media with no match in the universal GRC or the 
 - May 5 — Hilary of Arles
 - May 6 — Saints Marian and James
 - May 6 — Dominic Savio *(FM listed Mar 10 — wrong; feast moved from Mar 9 to May 6 to avoid Lent)*
+- May 8 — Magdalene of Canossa *(FM listed Apr 10 — wrong; correct feast is May 8)*
 - May 9 — Louise de Marillac *(FM listed Mar 15 — outdated; feast moved to May 9 in 2015)*
 - May 13 — Peter Regalado *(FM listed Mar 30 — wrong; correct feast is May 13)*
 - May 7 — Rose Venerini
@@ -149,4 +137,4 @@ Saints and feasts in Franciscan Media with no match in the universal GRC or the 
 - December 30 — Egwin
 
 
-Total FM-only: 95 of 366
+Total FM-only: 82 of 366
