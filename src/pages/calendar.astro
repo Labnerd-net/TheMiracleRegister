@@ -1,0 +1,301 @@
+---
+import Base from "../layouts/Base.astro";
+import { createDb } from "../db";
+import { saints } from "../db/schema";
+import { and, eq, inArray, isNotNull, or, asc } from "drizzle-orm";
+import { env } from "cloudflare:workers";
+import { getEaster, resolveMovableFeast } from "../lib/easter";
+import { FIXED_FEASTS, MOVABLE_FEASTS } from "../data/feastDays";
+
+const db = createDb(env.DATABASE_URL);
+
+const now = new Date();
+const todayYear = now.getUTCFullYear();
+const todayMonth = now.getUTCMonth() + 1;
+const todayDay = now.getUTCDate();
+
+const rawMonth = Astro.url.searchParams.get("month");
+const rawYear = Astro.url.searchParams.get("year");
+
+let month = rawMonth ? parseInt(rawMonth, 10) : todayMonth;
+let year = rawYear ? parseInt(rawYear, 10) : todayYear;
+
+if (isNaN(month) || month < 1 || month > 12) month = todayMonth;
+if (isNaN(year) || year < 2020 || year > 2099) year = todayYear;
+
+const prevMonth = month === 1 ? 12 : month - 1;
+const prevYear = month === 1 ? year - 1 : year;
+const nextMonth = month === 12 ? 1 : month + 1;
+const nextYear = month === 12 ? year + 1 : year;
+
+const MONTH_NAMES = [
+  "January", "February", "March", "April", "May", "June",
+  "July", "August", "September", "October", "November", "December",
+];
+const monthName = MONTH_NAMES[month - 1];
+
+// Days in month and first weekday offset
+const daysInMonth = new Date(Date.UTC(year, month, 0)).getUTCDate();
+const firstDayOfWeek = new Date(Date.UTC(year, month - 1, 1)).getUTCDay(); // 0=Sun
+
+// Resolve movable feasts that fall in this month
+const easterDate = getEaster(year);
+type MovableResolved = { day: number; name: string; easterOffset: number };
+const movableThisMonth: MovableResolved[] = [];
+for (const feast of MOVABLE_FEASTS) {
+  const feastDate = resolveMovableFeast(feast.easterOffset, year);
+  if (feastDate.getUTCMonth() + 1 === month) {
+    movableThisMonth.push({ day: feastDate.getUTCDate(), name: feast.name, easterOffset: feast.easterOffset });
+  }
+}
+const movableOffsets = movableThisMonth.map((f) => f.easterOffset);
+
+// DB query: saints with fixed feast in this month OR movable feast in this month
+const dbSaints = await db
+  .select({
+    slug: saints.slug,
+    name: saints.name,
+    saint_name: saints.saint_name,
+    feast_day_of_month: saints.feast_day_of_month,
+    feast_easter_offset: saints.feast_easter_offset,
+  })
+  .from(saints)
+  .where(
+    and(
+      eq(saints.published, true),
+      or(
+        and(eq(saints.feast_month, month), isNotNull(saints.feast_day_of_month)),
+        movableOffsets.length > 0
+          ? and(isNotNull(saints.feast_easter_offset), inArray(saints.feast_easter_offset, movableOffsets))
+          : undefined
+      )
+    )
+  )
+  .orderBy(asc(saints.name));
+
+// Build per-day data: day → { dbSaints, staticFeasts }
+type DaySaint = { slug: string; name: string; saint_name: string | null };
+type DayCell = { saints: DaySaint[]; feasts: string[] };
+const cells = new Map<number, DayCell>();
+
+function getCell(day: number): DayCell {
+  if (!cells.has(day)) cells.set(day, { saints: [], feasts: [] });
+  return cells.get(day)!;
+}
+
+// Place DB saints
+for (const s of dbSaints) {
+  if (s.feast_day_of_month !== null) {
+    getCell(s.feast_day_of_month).saints.push({ slug: s.slug, name: s.name, saint_name: s.saint_name });
+  } else if (s.feast_easter_offset !== null) {
+    const resolved = movableThisMonth.find((m) => m.easterOffset === s.feast_easter_offset);
+    if (resolved) {
+      getCell(resolved.day).saints.push({ slug: s.slug, name: s.name, saint_name: s.saint_name });
+    }
+  }
+}
+
+// Place static fixed feasts (skip if a DB saint covers this day with the same name)
+for (const feast of FIXED_FEASTS) {
+  if (feast.month !== month) continue;
+  const cell = getCell(feast.day);
+  const alreadyCovered = cell.saints.some(
+    (s) => (s.saint_name ?? s.name).toLowerCase() === feast.name.toLowerCase()
+  );
+  if (!alreadyCovered) cell.feasts.push(feast.name);
+}
+
+// Place static movable feasts
+for (const feast of movableThisMonth) {
+  const cell = getCell(feast.day);
+  const alreadyCovered = cell.saints.some(
+    (s) => (s.saint_name ?? s.name).toLowerCase() === feast.name.toLowerCase()
+  );
+  if (!alreadyCovered) cell.feasts.push(feast.name);
+}
+
+// Build grid: 6 rows × 7 cols; leading empty cells + day numbers
+const totalCells = 42;
+const grid: (number | null)[] = Array(firstDayOfWeek).fill(null);
+for (let d = 1; d <= daysInMonth; d++) grid.push(d);
+while (grid.length < totalCells) grid.push(null);
+
+const isCurrentMonth = year === todayYear && month === todayMonth;
+---
+
+<Base
+  title={`${monthName} ${year} — Feast Day Calendar`}
+  description={`Catholic feast days and saints for ${monthName} ${year}.`}
+>
+  <div class="max-w-6xl mx-auto px-4 sm:px-8 py-10 sm:py-14">
+
+    <!-- Header -->
+    <div class="cal-header">
+      <a href={`/calendar?month=${prevMonth}&year=${prevYear}`} class="cal-nav" aria-label="Previous month">←</a>
+      <div class="cal-title-block">
+        <p class="eyebrow mb-1">Feast Day Calendar</p>
+        <h1 class="cal-month-title">{monthName} {year}</h1>
+      </div>
+      <a href={`/calendar?month=${nextMonth}&year=${nextYear}`} class="cal-nav" aria-label="Next month">→</a>
+    </div>
+
+    <!-- Day-of-week headers -->
+    <div class="cal-grid">
+      {["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"].map((d) => (
+        <div class="cal-dow">{d}</div>
+      ))}
+
+      <!-- Day cells -->
+      {grid.map((day) => {
+        if (day === null) return <div class="cal-cell cal-cell--empty" />;
+        const cell = cells.get(day);
+        const isToday = isCurrentMonth && day === todayDay;
+        return (
+          <div class={`cal-cell${isToday ? " cal-cell--today" : ""}`}>
+            <span class={`cal-day-num${isToday ? " cal-day-num--today" : ""}`}>{day}</span>
+            {cell && (
+              <div class="cal-entries">
+                {cell.saints.map((s) => (
+                  <a href={`/saints/${s.slug}`} class="cal-saint">{s.saint_name ?? s.name}</a>
+                ))}
+                {cell.feasts.map((f) => (
+                  <span class="cal-feast">{f}</span>
+                ))}
+              </div>
+            )}
+          </div>
+        );
+      })}
+    </div>
+
+    <!-- Legend -->
+    <div class="cal-legend">
+      <span class="cal-saint cal-legend-item">Saint in the register</span>
+      <span class="cal-feast cal-legend-item">Liturgical feast</span>
+    </div>
+
+  </div>
+</Base>
+
+<style>
+  .cal-header {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    margin-bottom: 2rem;
+    gap: 1rem;
+  }
+
+  .cal-title-block {
+    text-align: center;
+  }
+
+  .cal-month-title {
+    font-family: var(--font-display);
+    font-size: clamp(1.8rem, 4vw, 2.8rem);
+    font-weight: 300;
+    color: var(--text-1);
+    line-height: 1.1;
+    letter-spacing: -0.01em;
+  }
+
+  .cal-nav {
+    font-family: var(--font-sans);
+    font-size: 1.25rem;
+    color: var(--text-3);
+    text-decoration: none;
+    padding: 0.5rem 0.75rem;
+    line-height: 1;
+    transition: color 0.15s;
+    margin-top: 1.5rem;
+  }
+  .cal-nav:hover { color: var(--text-1); }
+
+  .cal-grid {
+    display: grid;
+    grid-template-columns: repeat(7, 1fr);
+    border-top: 1px solid var(--rule);
+    border-left: 1px solid var(--rule);
+  }
+
+  .cal-dow {
+    font-family: var(--font-sans);
+    font-size: 0.6rem;
+    font-weight: 600;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--text-4);
+    padding: 0.6rem 0.75rem;
+    border-right: 1px solid var(--rule);
+    border-bottom: 1px solid var(--rule);
+  }
+
+  .cal-cell {
+    min-height: 7rem;
+    padding: 0.5rem 0.6rem 0.6rem;
+    border-right: 1px solid var(--rule);
+    border-bottom: 1px solid var(--rule);
+    vertical-align: top;
+    background: var(--bg-page);
+  }
+
+  .cal-cell--empty {
+    background: var(--bg-subtle);
+    min-height: 7rem;
+  }
+
+  .cal-cell--today {
+    background: var(--bg-elevated);
+  }
+
+  .cal-day-num {
+    font-family: var(--font-sans);
+    font-size: 0.72rem;
+    font-weight: 500;
+    color: var(--text-4);
+    display: block;
+    margin-bottom: 0.35rem;
+  }
+
+  .cal-day-num--today {
+    color: var(--color-accent);
+    font-weight: 700;
+  }
+
+  .cal-entries {
+    display: flex;
+    flex-direction: column;
+    gap: 0.2rem;
+  }
+
+  .cal-saint {
+    font-family: var(--font-sans);
+    font-size: 0.62rem;
+    font-weight: 500;
+    color: var(--color-accent);
+    text-decoration: none;
+    line-height: 1.3;
+    display: block;
+  }
+  .cal-saint:hover { text-decoration: underline; }
+
+  .cal-feast {
+    font-family: var(--font-sans);
+    font-size: 0.6rem;
+    color: var(--text-3);
+    line-height: 1.3;
+    display: block;
+  }
+
+  .cal-legend {
+    display: flex;
+    gap: 1.5rem;
+    margin-top: 1.25rem;
+    padding-top: 1rem;
+    border-top: 1px solid var(--rule-soft);
+  }
+
+  .cal-legend-item {
+    pointer-events: none;
+  }
+</style>
