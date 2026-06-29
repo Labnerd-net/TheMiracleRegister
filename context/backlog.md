@@ -77,6 +77,7 @@ _None identified._
 - **#42 [src/pages/admin/index.astro]** Admin analytics dashboard — extend beyond total counts with aggregations by country, type, topic, canonization stage.
 - **#43 [src/pages/miracles/index.astro, src/pages/saints/index.astro]** Random page — `/random` redirects to a random published saint or miracle via `ORDER BY RANDOM() LIMIT 1`. Low-effort discovery feature.
 - **#45 [src/pages/calendar.astro]** Liturgical calendar view — monthly grid showing saints whose feast day falls on each day. Feast day data (`feast_month`, `feast_day_of_month`, `feast_easter_offset`) already on saints table; `src/lib/easter.ts` handles movable feasts. Hold until 40–50 saints are published — sparse data makes a grid feel broken. Nav placement alongside Map and Timeline.
+- **#46 [src/pages/feast-days.astro]** Feast day list page — all 366 days of the year populated from the Franciscan Media Saint of the Day data (saved at `context/Notes/Research/Franciscan Media — Saint of the Day.md`). Each entry shows the FM saint name(s); entries where we have a published saint matching on `feast_month` + `feast_day_of_month` become links to our saint page. Solves the density problem of a sparse calendar — every day has content, our saints are just elevated. Build as a simple list first; can be reskinned into a grid (#45) later.
 
 ---
 
@@ -88,5 +89,5 @@ _None identified._
 | Bugs | 0 | 0 | 0 | 0 |
 | Performance | 0 | 0 | 1 | 1 |
 | Improvements & Refactors | 0 | 0 | 3 | 3 |
-| Feature Ideas | 0 | 0 | 9 | 9 |
-| **Total** | **0** | **0** | **13** | **13** |
+| Feature Ideas | 0 | 0 | 10 | 10 |
+| **Total** | **0** | **0** | **14** | **14** |
