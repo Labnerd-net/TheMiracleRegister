@@ -9,30 +9,26 @@ Research notes for InProgress saints in `context/Notes/Research/Saints/InProgres
 
 | Priority | Saint | Feast Day | Canonized | Notes | Research Notes |
 |---|---|---|---|---|---|
-| 1* | Edith Stein (Teresa Benedicta) | Aug 9 | 1998 | Martyr; 2 miracles | Yes |
-| 2* | John XXIII | Oct 11 | 2014 | Canonized same day as John Paul II; canonization miracle dispensed (papal_exception); one miracle (Capitani) used for beatification | Yes |
-| 3  | Josemaría Escrivá | Jun 26 | 2002 | Founder of Opus Dei; 2 miracles | Yes (stubs only) |
-| 4  | John Neumann | Jan 5 | 1977 | First American male saint; 3 miracles | Yes (stubs only) |
-| 5  | Marguerite d'Youville | Oct 16 | 1990 | Founder of Grey Nuns; 2 miracles | Yes (stubs only) |
-| 6* | Elizabeth Ann Seton | Jan 4 | 1975 | First American-born saint; 3 miracles (2 beatification, 1 canonization) | Yes |
-| 7* | Damien of Molokai | May 10 | 2009 | Apostle to lepers in Hawaii; 2 miracles | Yes |
-| 8  | Katharine Drexel | Mar 3 | 2000 | Founder of Sisters of the Blessed Sacrament; 2 miracles | No |
-| 9  | Oscar Romero | Mar 24 | 2018 | Martyr, El Salvador; 1 miracle (beatification) | No |
-| 10 | Frances Xavier Cabrini | Nov 13 | 1946 | First American citizen canonized; 2 miracles | No |
-| 11 | Justino Russolillo | — | 2011 | Founder of Vocationists; 1 miracle | Yes (stubs only) |
-| 12 | John of the Cross | Dec 14 | 1726 | Doctor of the Church; older canonization — documentation thinner | No |
-| 13 | Josephine Bakhita | Feb 8 | 2000 | Former Sudanese slave; compelling modern story; 2 miracles | No |
-| 14 | Marianne Cope | Jan 23 | 2012 | Worked alongside Damien of Molokai; natural pairing with existing saint; 2 miracles | No |
-| 15 | Mary MacKillop | Aug 8 | 2010 | First Australian saint; 2 miracles | No |
-| 16 | John Henry Newman | Oct 9 | 2019 | Cardinal; 2 well-documented miracles; recent Positio accessible | No |
-| 17 | Paul VI | May 29 | 2018 | Major historical figure; 2 miracles; canonized same day as Romero | No |
-| 18 | Titus Brandsma | Jul 27 | 2022 | Most recent canonization; Dutch journalist/Carmelite martyr; died at Dachau | No |
-| 19 | Devasahayam Pillai | Jan 14 | 2022 | First Indian layman canonized; martyr; very recent | No |
-| 20 | Jeanne Jugan | Aug 30 | 2009 | Founder of Little Sisters of the Poor; 2 miracles | No |
-| 21 | Theodora Guérin | Oct 3 | 2006 | American saint (Indiana); 2 miracles | No |
-| 22 | Maria Goretti | Jul 6 | 1950 | Classic well-known case; documented miracles | No |
-| 23 | Blessed Stanley Rother | Jul 28 | 2017 (beatified) | First US-born martyr beatified; not yet canonized — 1 miracle only | No |
-| 24 | Blessed Michael J. McGivney | Aug 13 | 2020 (beatified) | Founder of Knights of Columbus; not yet canonized — 1 miracle only | No |
+| 1  | Josemaría Escrivá | Jun 26 | 2002 | Founder of Opus Dei; 2 miracles | Yes (stubs only) |
+| 2  | John Neumann | Jan 5 | 1977 | First American male saint; 3 miracles | Yes (stubs only) |
+| 3  | Marguerite d'Youville | Oct 16 | 1990 | Founder of Grey Nuns; 2 miracles | Yes (stubs only) |
+| 4  | Katharine Drexel | Mar 3 | 2000 | Founder of Sisters of the Blessed Sacrament; 2 miracles | No |
+| 5  | Oscar Romero | Mar 24 | 2018 | Martyr, El Salvador; 1 miracle (beatification) | No |
+| 6  | Frances Xavier Cabrini | Nov 13 | 1946 | First American citizen canonized; 2 miracles | No |
+| 7  | Justino Russolillo | — | 2011 | Founder of Vocationists; 1 miracle | Yes (stubs only) |
+| 8  | John of the Cross | Dec 14 | 1726 | Doctor of the Church; older canonization — documentation thinner | No |
+| 9  | Josephine Bakhita | Feb 8 | 2000 | Former Sudanese slave; compelling modern story; 2 miracles | No |
+| 10 | Marianne Cope | Jan 23 | 2012 | Worked alongside Damien of Molokai; natural pairing with existing saint; 2 miracles | No |
+| 11 | Mary MacKillop | Aug 8 | 2010 | First Australian saint; 2 miracles | No |
+| 12 | John Henry Newman | Oct 9 | 2019 | Cardinal; 2 well-documented miracles; recent Positio accessible | No |
+| 13 | Paul VI | May 29 | 2018 | Major historical figure; 2 miracles; canonized same day as Romero | No |
+| 14 | Titus Brandsma | Jul 27 | 2022 | Most recent canonization; Dutch journalist/Carmelite martyr; died at Dachau | No |
+| 15 | Devasahayam Pillai | Jan 14 | 2022 | First Indian layman canonized; martyr; very recent | No |
+| 16 | Jeanne Jugan | Aug 30 | 2009 | Founder of Little Sisters of the Poor; 2 miracles | No |
+| 17 | Theodora Guérin | Oct 3 | 2006 | American saint (Indiana); 2 miracles | No |
+| 18 | Maria Goretti | Jul 6 | 1950 | Classic well-known case; documented miracles | No |
+| 19 | Blessed Stanley Rother | Jul 28 | 2017 (beatified) | First US-born martyr beatified; not yet canonized — 1 miracle only | No |
+| 20 | Blessed Michael J. McGivney | Aug 13 | 2020 (beatified) | Founder of Knights of Columbus; not yet canonized — 1 miracle only | No |
 
 ---
 
@@ -62,7 +58,6 @@ Use `miracle_category: associated`, `type: incorruptibility`.
 | 3 | Charbel Makhlouf | 1898 | Annaya, Lebanon | Body exuded blood and oil for decades after death — unusually well-documented post-death phenomena | No |
 | 4 | John Bosco | 1888 | Turin, Italy | Founder of Salesians; body in wax mask reliquary at Basilica of Mary Help of Christians | No |
 | 5 | Vincent de Paul | 1660 | Paris, France | Body exhibited every 100 years; venerated at Chapel of the Miraculous Medal (same site as Catherine Labouré) | No |
-| 6*| John XXIII | 1963 | Vatican | Already in priority saints list — incorruptibility would be a second miracle record linked to the same saint | No |
 
 ---
 
