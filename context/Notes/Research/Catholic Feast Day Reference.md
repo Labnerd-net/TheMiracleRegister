@@ -50,28 +50,35 @@ The authoritative feast day reference for this project. Covers the universal GRC
 
 ## February
 
+- Feb  1 — Saint Brigid of Ireland, Abbess (martyrologium / national — Ireland, England) — patroness of Ireland alongside Patrick and Columba; abbess of Kildare, c. 451–525
 - Feb  2 — Presentation of the Lord
 - Feb  3 — Saint Ansgar
 - Feb  3 — Saint Blaise
 - Feb  4 — Saint Joseph of Leonissa (martyrologium)
 - Feb  5 — Saint Agatha
 - Feb  6 — Saint Paul Miki and Companions
+- Feb  7 — *(no clear winner — option: Blessed Pope Pius IX, d. Feb 7 1878, beatified 2000, martyrologium — historically significant but only a Blessed)*
 - Feb  8 — Saint Josephine Bakhita
 - Feb  8 — Saint Jerome Emiliani
 - Feb  9 — Saint Apollonia, Martyr (martyrologium)
 - Feb 10 — Saint Scholastica
 - Feb 11 — Our Lady of Lourdes
+- Feb 12 — *(no clear winner — nothing recognized holds this date in the current calendar)*
 - Feb 13 — Saint Giles Mary of Saint Joseph (martyrologium)
 - Feb 14 — Saints Cyril and Methodius
 - Feb 15 — Saint Claude de la Colombière (martyrologium)
 - Feb 16 — Saint Gilbert of Sempringham (national — England)
 - Feb 17 — Seven Holy Founders of the Servite Order
+- Feb 18 — Blessed Fra Angelico (Giovanni da Fiesole, OP), Religious (martyrologium) — Dominican painter of the Annunciation and San Marco frescoes, d. 1455; patron of Catholic artists declared by John Paul II
 - Feb 19 — Saint Conrad of Piacenza (martyrologium)
 - Feb 20 — **Saints Jacinta and Francisco Marto**
 - Feb 21 — Saint Peter Damian
 - Feb 22 — Chair of Saint Peter
 - Feb 22 — Saint Margaret of Cortona (martyrologium)
 - Feb 23 — Saint Polycarp
+- Feb 24 — *(no clear winner — Saint Matthias was here pre-1969, now moved to May 14; nothing well-known currently holds this date)*
+- Feb 25 — *(no clear winner — option: Saint Walburga (Walpurga), Anglo-Saxon abbess and missionary to Germany, d. 779, martyrologium — note: her oil relics are a documented associated miracle; mainly known in German and English contexts)*
+- Feb 26 — *(no clear winner — option: Saint Porphyry of Gaza, Bishop, d. 420, some Western martyrologies — obscure)*
 - Feb 27 — Saint Gabriel of Our Lady of Sorrows (martyrologium)
 - Feb 27 — Saint Gregory of Narek
 - Feb 28 — Saint Oswald of Worcester, Bishop (national — England; Feb 29 in leap years)
