@@ -33,24 +33,7 @@ Saints and feasts in Franciscan Media with no match in the universal GRC or the 
 
 ## May
 
-- May 4 — Blessed Michael Giedroyc
-- May 5 — Hilary of Arles
-- May 6 — Saints Marian and James
-- May 6 — Dominic Savio *(FM listed Mar 10 — wrong; feast moved from Mar 9 to May 6 to avoid Lent)*
-- May 8 — Magdalene of Canossa *(FM listed Apr 10 — wrong; correct feast is May 8)*
-- May 9 — Louise de Marillac *(FM listed Mar 15 — outdated; feast moved to May 9 in 2015)*
-- May 13 — Peter Regalado *(FM listed Mar 30 — wrong; correct feast is May 13)*
-- May 7 — Rose Venerini
-- May 8 — Peter of Tarentaise
-- May 11 — Ignatius of Laconi
-- May 12 — Leopold Mandic
-- May 16 — Margaret of Cortona
-- May 17 — Paschal Baylon
-- May 19 — Theophilus of Corte
-- May 26 — Mary Ann of Jesus of Paredes *(FM listed Mar 6 — wrong; correct feast is May 26)*
-- May 28 — Venerable Pierre Toussaint
-- May 29 — Madeleine Sophie Barat
-- May 30 — Joan of Arc
+*(no unverified entries remaining)*
 
 ## June
 
@@ -137,4 +120,4 @@ Saints and feasts in Franciscan Media with no match in the universal GRC or the 
 - December 30 — Egwin
 
 
-Total FM-only: 82 of 366
+Total FM-only: 64 of 366

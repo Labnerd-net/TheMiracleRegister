@@ -61,6 +61,7 @@ The authoritative feast day reference for this project. Covers the universal GRC
 - Feb 20 — Saints Jacinta and Francisco Marto
 - Feb 21 — Saint Peter Damian
 - Feb 22 — Chair of Saint Peter
+- Feb 22 — Saint Margaret of Cortona (martyrologium)
 - Feb 23 — Saint Polycarp
 - Feb 27 — Saint Gabriel of Our Lady of Sorrows (martyrologium)
 - Feb 27 — Saint Gregory of Narek
@@ -128,20 +129,35 @@ The authoritative feast day reference for this project. Covers the universal GRC
 - May 1 — Saint Joseph the Worker
 - May 2 — Saint Athanasius
 - May 3 — Saints Philip and James, Apostles
+- May 5 — Saint Hilary of Arles, Bishop (martyrologium)
+- May 6 — Saints Marian and James, Martyrs (martyrologium)
+- May 6 — Saint Dominic Savio (martyrologium)
+- May 7 — Saint Rose Venerini, Virgin (martyrologium)
+- May 8 — Saint Peter of Tarentaise, Bishop (martyrologium)
+- May 8 — Saint Magdalene of Canossa (martyrologium)
+- May 9 — Saint Louise de Marillac (martyrologium)
 - May 10 — Saint John of Ávila
 - May 10 — Saint Damien de Veuster of Molokai, Priest (US optional memorial)
-- May 15 — Saint Isidore the Farmer (US optional memorial)
+- May 11 — Saint Ignatius of Laconi (martyrologium)
+- May 12 — Saint Leopold Mandic, Priest (martyrologium)
 - May 12 — Saints Nereus and Achilleus; Saint Pancras
 - May 13 — Our Lady of Fatima
+- May 13 — Saint Peter Regalado (martyrologium)
 - May 14 — Saint Matthias, Apostle
+- May 15 — Saint Isidore the Farmer (US optional memorial)
+- May 17 — Saint Paschal Baylon (martyrologium)
 - May 18 — Saint John I
+- May 19 — Saint Theophilus of Corte (martyrologium)
 - May 20 — Saint Bernardine of Siena
 - May 21 — Saint Christopher Magallanes and Companions
 - May 22 — Saint Rita of Cascia
 - May 25 — Saint Bede the Venerable; Saint Gregory VII; Saint Mary Magdalene de' Pazzi
+- May 25 — Saint Madeleine Sophie Barat, Virgin (martyrologium)
 - May 26 — Saint Philip Neri
+- May 26 — Saint Mary Ann of Jesus of Paredes (martyrologium)
 - May 27 — Saint Augustine of Canterbury
 - May 29 — **Saint Paul VI**
+- May 30 — Saint Joan of Arc (national — France)
 - May 31 — Visitation of the Blessed Virgin Mary
 - Monday after Pentecost — Blessed Virgin Mary, Mother of the Church
 - First Sunday after Pentecost — Most Holy Trinity
