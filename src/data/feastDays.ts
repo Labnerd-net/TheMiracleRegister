@@ -25,11 +25,11 @@ export const FIXED_FEASTS: FixedFeastEntry[] = [
   { month: 1, day: 1, name: 'Solemnity of Mary, Holy Mother of God' },
   { month: 1, day: 2, name: 'Saints Basil the Great and Gregory Nazianzen' },
   { month: 1, day: 3, name: 'Most Holy Name of Jesus' },
-  { month: 1, day: 4, name: 'Saint Elizabeth Ann Seton', scope: 'us' },
+  // { month: 1, day: 4, name: 'Saint Elizabeth Ann Seton', scope: 'us' }, // [in DB]
   { month: 1, day: 4, name: 'Saint Angela of Foligno', scope: 'martyrologium' },
   { month: 1, day: 5, name: 'Saint John Neumann', scope: 'us' },
   { month: 1, day: 6, name: 'Epiphany of the Lord' },
-  { month: 1, day: 6, name: 'Saint André Bessette', scope: 'us' },
+  // { month: 1, day: 6, name: 'Saint André Bessette', scope: 'us' }, // [in DB]
   { month: 1, day: 7, name: 'Saint Raymond of Penyafort' },
   { month: 1, day: 8, name: 'Our Lady of Prompt Succor', scope: 'diocesan', scopeDetail: 'Archdiocese of New Orleans' },
   { month: 1, day: 9, name: 'Saint Adrian of Canterbury', scope: 'martyrologium' },
@@ -74,7 +74,7 @@ export const FIXED_FEASTS: FixedFeastEntry[] = [
   { month: 2, day: 17, name: 'Seven Holy Founders of the Servite Order' },
   { month: 2, day: 18, name: 'Blessed Fra Angelico', scope: 'martyrologium' },
   { month: 2, day: 19, name: 'Saint Conrad of Piacenza', scope: 'martyrologium' },
-  { month: 2, day: 20, name: 'Saints Jacinta and Francisco Marto' },
+  // { month: 2, day: 20, name: 'Saints Jacinta and Francisco Marto' }, // [in DB]
   { month: 2, day: 21, name: 'Saint Peter Damian' },
   { month: 2, day: 22, name: 'Chair of Saint Peter' },
   { month: 2, day: 22, name: 'Saint Margaret of Cortona', scope: 'martyrologium' },
@@ -126,7 +126,7 @@ export const FIXED_FEASTS: FixedFeastEntry[] = [
   { month: 4, day: 12, name: 'Saint Teresa of Los Andes', scope: 'martyrologium' },
   { month: 4, day: 13, name: 'Saint Martin I' },
   { month: 4, day: 15, name: 'Saint Caesar de Bus', scope: 'martyrologium' },
-  { month: 4, day: 16, name: 'Saint Bernadette Soubirous', scope: 'martyrologium' },
+  // { month: 4, day: 16, name: 'Saint Bernadette Soubirous', scope: 'martyrologium' }, // [in DB]
   { month: 4, day: 16, name: 'Saint Benedict Joseph Labre', scope: 'martyrologium' },
   { month: 4, day: 20, name: 'Saint Agnes of Montepulciano', scope: 'martyrologium' },
   { month: 4, day: 21, name: 'Saint Anselm' },
@@ -138,7 +138,7 @@ export const FIXED_FEASTS: FixedFeastEntry[] = [
   { month: 4, day: 25, name: 'Saint Pedro de San José Betancur', scope: 'martyrologium' },
   { month: 4, day: 26, name: 'Our Lady of Good Counsel', scope: 'martyrologium' },
   { month: 4, day: 27, name: 'Saint Zita', scope: 'martyrologium' },
-  { month: 4, day: 28, name: 'Saint Gianna Beretta Molla' },
+  // { month: 4, day: 28, name: 'Saint Gianna Beretta Molla' }, // [in DB]
   { month: 4, day: 28, name: 'Saint Louis Grignon de Montfort' },
   { month: 4, day: 28, name: 'Saint Peter Chanel' },
   { month: 4, day: 29, name: 'Saint Catherine of Siena' },
@@ -157,7 +157,7 @@ export const FIXED_FEASTS: FixedFeastEntry[] = [
   { month: 5, day: 8, name: 'Saint Magdalene of Canossa', scope: 'martyrologium' },
   { month: 5, day: 9, name: 'Saint Louise de Marillac', scope: 'martyrologium' },
   { month: 5, day: 10, name: 'Saint John of Ávila' },
-  { month: 5, day: 10, name: 'Saint Damien de Veuster of Molokai', scope: 'us' },
+  // { month: 5, day: 10, name: 'Saint Damien de Veuster of Molokai', scope: 'us' }, // [in DB]
   { month: 5, day: 11, name: 'Saint Ignatius of Laconi', scope: 'martyrologium' },
   { month: 5, day: 11, name: "Saint Antônio de Sant'Anna Galvão", scope: 'martyrologium' },
   { month: 5, day: 12, name: 'Saint Leopold Mandic', scope: 'martyrologium' },
@@ -216,17 +216,17 @@ export const FIXED_FEASTS: FixedFeastEntry[] = [
   { month: 7, day: 1, name: 'Saint Oliver Plunkett', scope: 'martyrologium' },
   { month: 7, day: 3, name: 'Saint Thomas, Apostle' },
   { month: 7, day: 4, name: 'Saint Elizabeth of Portugal' },
-  { month: 7, day: 4, name: 'Saint Pier Giorgio Frassati' },
+  // { month: 7, day: 4, name: 'Saint Pier Giorgio Frassati' }, // [in DB]
   { month: 7, day: 5, name: 'Saint Anthony Zaccaria' },
   { month: 7, day: 6, name: 'Saint Maria Goretti' },
   { month: 7, day: 9, name: 'Saint Augustine Zhao Rong and Companions' },
   { month: 7, day: 9, name: 'Saint Veronica Giuliani', scope: 'martyrologium' },
   { month: 7, day: 11, name: 'Saint Benedict, Abbot' },
-  { month: 7, day: 12, name: 'Saints Louis and Zélie Martin' },
+  // { month: 7, day: 12, name: 'Saints Louis and Zélie Martin' }, // [in DB]
   { month: 7, day: 12, name: 'Saints John Jones and John Wall', scope: 'martyrologium' },
   { month: 7, day: 13, name: 'Saint Henry' },
   { month: 7, day: 14, name: 'Saint Camillus de Lellis' },
-  { month: 7, day: 14, name: 'Saint Kateri Tekakwitha', scope: 'us' },
+  // { month: 7, day: 14, name: 'Saint Kateri Tekakwitha', scope: 'us' }, // [in DB]
   { month: 7, day: 14, name: 'Saint Francis Solano', scope: 'martyrologium' },
   { month: 7, day: 15, name: 'Saint Bonaventure' },
   { month: 7, day: 16, name: 'Our Lady of Mount Carmel' },
@@ -255,14 +255,14 @@ export const FIXED_FEASTS: FixedFeastEntry[] = [
   { month: 8, day: 7, name: 'Saint Cajetan' },
   { month: 8, day: 8, name: 'Saint Dominic' },
   { month: 8, day: 8, name: 'Saint Mary MacKillop', scope: 'martyrologium' },
-  { month: 8, day: 9, name: 'Saint Teresa Benedicta of the Cross (Edith Stein)' },
+  // { month: 8, day: 9, name: 'Saint Teresa Benedicta of the Cross (Edith Stein)' }, // [in DB]
   { month: 8, day: 10, name: 'Saint Lawrence' },
   { month: 8, day: 11, name: 'Saint Clare' },
   { month: 8, day: 12, name: 'Saint Jane Frances de Chantal' },
   { month: 8, day: 13, name: 'Saints Pontian and Hippolytus' },
   { month: 8, day: 13, name: 'Saint Maximus the Confessor' },
   { month: 8, day: 13, name: 'Blessed Michael J. McGivney', scope: 'us' },
-  { month: 8, day: 14, name: 'Saint Maximilian Kolbe' },
+  // { month: 8, day: 14, name: 'Saint Maximilian Kolbe' }, // [in DB]
   { month: 8, day: 15, name: 'Assumption of the Blessed Virgin Mary' },
   { month: 8, day: 16, name: 'Saint Stephen of Hungary' },
   { month: 8, day: 17, name: 'Saint Joan of the Cross', scope: 'martyrologium' },
@@ -288,7 +288,7 @@ export const FIXED_FEASTS: FixedFeastEntry[] = [
   { month: 9, day: 1, name: 'Saint Giles', scope: 'martyrologium' },
   { month: 9, day: 3, name: 'Saint Gregory the Great' },
   { month: 9, day: 4, name: 'Saint Rose of Viterbo', scope: 'martyrologium' },
-  { month: 9, day: 5, name: 'Saint Teresa of Calcutta (Mother Teresa)' },
+  // { month: 9, day: 5, name: 'Saint Teresa of Calcutta (Mother Teresa)' }, // [in DB]
   { month: 9, day: 8, name: 'Nativity of the Blessed Virgin Mary' },
   { month: 9, day: 9, name: 'Saint Peter Claver' },
   { month: 9, day: 10, name: 'Saint Nicholas of Tolentino' },
@@ -305,7 +305,7 @@ export const FIXED_FEASTS: FixedFeastEntry[] = [
   { month: 9, day: 20, name: 'Saints Andrew Kim Tae-gon, Paul Chong Ha-sang and Companions' },
   { month: 9, day: 21, name: 'Saint Matthew, Apostle and Evangelist' },
   { month: 9, day: 22, name: 'Saint Thomas of Villanova', scope: 'martyrologium' },
-  { month: 9, day: 23, name: 'Saint Pius of Pietrelcina (Padre Pio)' },
+  // { month: 9, day: 23, name: 'Saint Pius of Pietrelcina (Padre Pio)' }, // [in DB]
   { month: 9, day: 24, name: 'Our Lady of Mercy (Our Lady of Ransom)' },
   { month: 9, day: 25, name: 'Saint Sergius of Radonezh', scope: 'martyrologium' },
   { month: 9, day: 26, name: 'Saints Cosmas and Damian' },
@@ -316,11 +316,11 @@ export const FIXED_FEASTS: FixedFeastEntry[] = [
   { month: 9, day: 30, name: 'Saint Jerome' },
 
   // October
-  { month: 10, day: 1, name: 'Saint Thérèse of the Child Jesus (Thérèse of Lisieux)' },
+  // { month: 10, day: 1, name: 'Saint Thérèse of the Child Jesus (Thérèse of Lisieux)' }, // [in DB]
   { month: 10, day: 2, name: 'Holy Guardian Angels' },
   { month: 10, day: 3, name: 'Saint Theodora Guérin', scope: 'martyrologium' },
   { month: 10, day: 4, name: 'Saint Francis of Assisi' },
-  { month: 10, day: 5, name: 'Saint Faustina Kowalska' },
+  // { month: 10, day: 5, name: 'Saint Faustina Kowalska' }, // [in DB]
   { month: 10, day: 5, name: 'Blessed Francis Xavier Seelos', scope: 'us' },
   { month: 10, day: 6, name: 'Saint Bruno' },
   { month: 10, day: 6, name: 'Blessed Marie Rose Durocher', scope: 'us' },
@@ -329,8 +329,8 @@ export const FIXED_FEASTS: FixedFeastEntry[] = [
   { month: 10, day: 9, name: 'Saint John Leonardi' },
   { month: 10, day: 9, name: 'Saint John Henry Newman' },
   { month: 10, day: 10, name: 'Saint Francis Borgia', scope: 'martyrologium' },
-  { month: 10, day: 11, name: 'Saint John XXIII' },
-  { month: 10, day: 12, name: 'Saint Carlo Acutis' },
+  // { month: 10, day: 11, name: 'Saint John XXIII' }, // [in DB]
+  // { month: 10, day: 12, name: 'Saint Carlo Acutis' }, // [in DB]
   { month: 10, day: 13, name: 'Saint Edward the Confessor', scope: 'national', scopeDetail: 'England' },
   { month: 10, day: 14, name: 'Saint Callistus I' },
   { month: 10, day: 15, name: 'Saint Teresa of Jesus (Teresa of Ávila)' },
@@ -343,7 +343,7 @@ export const FIXED_FEASTS: FixedFeastEntry[] = [
   { month: 10, day: 19, name: 'Saint Paul of the Cross' },
   { month: 10, day: 20, name: 'Saint Maria Bertilla Boscardin', scope: 'martyrologium' },
   { month: 10, day: 21, name: 'Saint Hilarion', scope: 'martyrologium' },
-  { month: 10, day: 22, name: 'Saint John Paul II' },
+  // { month: 10, day: 22, name: 'Saint John Paul II' }, // [in DB]
   { month: 10, day: 23, name: 'Saint John of Capistrano' },
   { month: 10, day: 24, name: 'Saint Anthony Mary Claret' },
   { month: 10, day: 25, name: 'Forty Martyrs of England and Wales' },
@@ -382,7 +382,7 @@ export const FIXED_FEASTS: FixedFeastEntry[] = [
   { month: 11, day: 24, name: 'Saints Andrew Dung-Lac and Companions' },
   { month: 11, day: 25, name: 'Saint Catherine of Alexandria' },
   { month: 11, day: 27, name: 'Saint Francesco Antonio Fasani', scope: 'martyrologium' },
-  { month: 11, day: 28, name: 'Saint Catherine Labouré', scope: 'us' },
+  // { month: 11, day: 28, name: 'Saint Catherine Labouré', scope: 'us' }, // [in DB]
   { month: 11, day: 28, name: 'Saint James of the Marche', scope: 'martyrologium' },
   { month: 11, day: 30, name: 'Saint Andrew, Apostle' },
 
@@ -394,7 +394,7 @@ export const FIXED_FEASTS: FixedFeastEntry[] = [
   { month: 12, day: 6, name: 'Saint Nicholas' },
   { month: 12, day: 7, name: 'Saint Ambrose' },
   { month: 12, day: 8, name: 'Immaculate Conception of the Blessed Virgin Mary' },
-  { month: 12, day: 9, name: 'Saint Juan Diego Cuauhtlatoatzin' },
+  // { month: 12, day: 9, name: 'Saint Juan Diego Cuauhtlatoatzin' }, // [in DB]
   { month: 12, day: 10, name: 'Our Lady of Loreto' },
   { month: 12, day: 11, name: 'Saint Damasus I' },
   { month: 12, day: 12, name: 'Our Lady of Guadalupe' },
