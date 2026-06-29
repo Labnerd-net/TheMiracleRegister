@@ -263,7 +263,9 @@ The authoritative feast day reference for this project. Covers the universal GRC
 
 ## September
 
+- Sep 1 — Saint Giles, Abbot (martyrologium)
 - Sep 3 — Saint Gregory the Great
+- Sep 4 — Saint Rose of Viterbo, Virgin (martyrologium)
 - Sep 5 — **Saint Teresa of Calcutta (Mother Teresa)**
 - Sep 8 — Nativity of the Blessed Virgin Mary
 - Sep 9 — Saint Peter Claver
@@ -271,11 +273,14 @@ The authoritative feast day reference for this project. Covers the universal GRC
 - Sep 13 — Saint John Chrysostom
 - Sep 14 — Exaltation of the Holy Cross
 - Sep 15 — Our Lady of Sorrows
+- Sep 15 — Saint Catherine of Genoa (martyrologium)
 - Sep 16 — Saints Cornelius and Cyprian
 - Sep 17 — Saint Robert Bellarmine; Saint Hildegard of Bingen
+- Sep 18 — Saint Joseph of Cupertino, Priest (martyrologium)
 - Sep 19 — Saint Januarius
 - Sep 20 — Saints Andrew Kim Tae-gon, Paul Chong Ha-sang and Companions
 - Sep 21 — Saint Matthew, Apostle and Evangelist
+- Sep 22 — Saint Thomas of Villanova, Bishop (martyrologium)
 - Sep 23 — **Saint Pius of Pietrelcina (Padre Pio)**
 - Sep 26 — Saints Cosmas and Damian
 - Sep 27 — Saint Vincent de Paul

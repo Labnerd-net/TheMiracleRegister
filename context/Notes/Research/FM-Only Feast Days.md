@@ -23,11 +23,13 @@ Saints and feasts in Franciscan Media with no match in the universal GRC or the 
 - Jul 17 Francis Solano: FM date wrong; correct feast is Jul 14 (martyrologium).
 - Jul 19 Mary MacKillop: FM date wrong; correct feast is Aug 8 (martyrologium).
 - Aug 18 Louis of Toulouse: FM date wrong; correct feast is Aug 19 (martyrologium).
+- Sep 6 Claudio Granzotto: still Blessed; also FM date wrong (feast is Mar 23, not Sep 6).
+- Sep 10 Thomas of Villanova: FM date wrong; correct feast is Sep 22 (martyrologium).
 
 
 ## January
 
-- January 29 — Servant of God Brother Juniper
+*(no unverified entries remaining)*
 
 ## February
 
@@ -59,14 +61,7 @@ Saints and feasts in Franciscan Media with no match in the universal GRC or the 
 
 ## September
 
-- September 1 — Giles
-- September 2 — Blessed John Francis Burté and Companions
-- September 15 — Catherine of Genoa *(FM listed Mar 26 — wrong; correct feast is Sep 15)*
-- September 4 — Rose of Viterbo
-- September 6 — Blessed Claudio Granzotto
-- September 7 — Blessed Frédéric Ozanam
-- September 10 — Thomas of Villanova
-- September 18 — Joseph of Cupertino
+*(no unverified entries remaining)*
 
 ## October
 
@@ -106,4 +101,4 @@ Saints and feasts in Franciscan Media with no match in the universal GRC or the 
 - December 30 — Egwin
 
 
-Total FM-only: 37 of 366
+Total FM-only: 28 of 366
