@@ -3,7 +3,7 @@ import AdminBase from "../../../../layouts/AdminBase.astro";
 import { createDb } from "../../../../db";
 import { saints, saintSources, saintLocations, saintRelations } from "../../../../db/schema";
 import { asc, and, eq, ne } from "drizzle-orm";
-import { canonizationType, canonizationStage, dispensationReason, gender, sourceType, locationType, relationTypeEnum } from "../../../../db/schema/enums";
+import { canonizationType, canonizationStage, dispensationReason, feastScope, gender, sourceType, locationType, relationTypeEnum } from "../../../../db/schema/enums";
 import { parseEnum, formHelpers } from "../../../../lib/form-utils";
 import { humanizeSnakeCase } from "../../../../lib/format";
 import { SaintFormSchema, formatZodErrors } from "../../../../lib/form-schemas";
@@ -134,6 +134,8 @@ if (Astro.request.method === "POST") {
       feast_month: (() => { const n = parseInt(get("feast_month")); return isNaN(n) ? null : n; })(),
       feast_day_of_month: (() => { const n = parseInt(get("feast_day_of_month")); return isNaN(n) ? null : n; })(),
       feast_easter_offset: (() => { const n = parseInt(get("feast_easter_offset")); return isNaN(n) ? null : n; })(),
+      feast_scope: parseEnum(get("feast_scope"), feastScope.enumValues),
+      feast_scope_detail: get("feast_scope_detail") || null,
       image_url: get("image_url") || null,
       wikipedia_url: get("wikipedia_url") || null,
       published: getBool("published"),

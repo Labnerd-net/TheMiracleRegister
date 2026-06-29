@@ -1,6 +1,6 @@
 ---
 import { SAINT_THEMES } from "../db/topics";
-import { canonizationType, canonizationStage, dispensationReason, gender } from "../db/schema/enums";
+import { canonizationType, canonizationStage, dispensationReason, feastScope, gender } from "../db/schema/enums";
 import type { saints } from "../db/schema";
 
 type Saint = typeof saints.$inferSelect;
@@ -96,8 +96,33 @@ const join = (arr: string[] | null | undefined) => arr?.join(", ") ?? "";
         <label for="feast_easter_offset">Easter Offset <span style="font-weight:400;color:#888">(days from Easter, for movable feasts)</span></label>
         <input type="number" id="feast_easter_offset" name="feast_easter_offset" value={v?.feast_easter_offset ?? ""} style="max-width:100px" />
       </div>
+      <div class="field">
+        <label for="feast_scope">Feast Scope</label>
+        <select id="feast_scope" name="feast_scope">
+          <option value="">— select —</option>
+          {feastScope.enumValues.map((s) => (
+            <option value={s} selected={v?.feast_scope === s}>{s}</option>
+          ))}
+        </select>
+      </div>
+      <div class="field" id="feast_scope_detail_field" style={(!v?.feast_scope_detail && (v?.feast_scope === 'universal' || v?.feast_scope === 'martyrologium' || !v?.feast_scope)) ? "display:none" : ""}>
+        <label for="feast_scope_detail">Scope Detail <span style="font-weight:400;color:#888">(e.g. US, England, Franciscan)</span></label>
+        <input type="text" id="feast_scope_detail" name="feast_scope_detail" value={v?.feast_scope_detail ?? ""} />
+      </div>
     </div>
   </fieldset>
+<script>
+  const scopeSelect = document.getElementById('feast_scope') as HTMLSelectElement;
+  const scopeDetail = document.getElementById('feast_scope_detail_field') as HTMLElement;
+  function updateScopeDetail() {
+    const hidden = scopeSelect.value === 'universal' || scopeSelect.value === 'martyrologium' || scopeSelect.value === '';
+    scopeDetail.style.display = hidden ? 'none' : '';
+  }
+  if (scopeSelect && scopeDetail) {
+    scopeSelect.addEventListener('change', updateScopeDetail);
+    updateScopeDetail();
+  }
+</script>
 
   <fieldset>
     <legend>Canonization</legend>
