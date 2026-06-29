@@ -171,6 +171,7 @@ The authoritative feast day reference for this project. Covers the universal GRC
 - May  1 — Saint Joseph the Worker
 - May  2 — Saint Athanasius
 - May  3 — Saints Philip and James, Apostles
+- May  4 — Saint Florian of Lorch, Martyr (martyrologium) — patron of Austria, Poland, and firefighters, d. 304; widely invoked in Central Europe
 - May  5 — Saint Hilary of Arles, Bishop (martyrologium)
 - May  6 — Saints Marian and James, Martyrs (martyrologium)
 - May  6 — Saint Dominic Savio (martyrologium)
@@ -189,12 +190,15 @@ The authoritative feast day reference for this project. Covers the universal GRC
 - May 13 — Saint Peter Regalado (martyrologium)
 - May 14 — Saint Matthias, Apostle
 - May 15 — Saint Isidore the Farmer (US optional memorial)
+- May 16 — *(no clear winner — options: Saint Brendan the Navigator, Abbot, martyrologium — Irish monk, d. c. 578, famous for legendary Atlantic voyage, one of the twelve apostles of Ireland; OR Saint Simon Stock, Priest, martyrologium — Carmelite prior general, d. 1265, received the Brown Scapular from Our Lady in a vision)*
 - May 17 — Saint Paschal Baylon (martyrologium)
 - May 18 — Saint John I
 - May 19 — Saint Theophilus of Corte (martyrologium)
 - May 20 — Saint Bernardine of Siena
 - May 21 — Saint Christopher Magallanes and Companions
 - May 22 — Saint Rita of Cascia
+- May 23 — *(no clear winner — option: Saint John Baptist de Rossi, Priest, martyrologium — Italian priest known for pastoral work with Rome's poor, d. 1764; not widely known outside Italy)*
+- May 24 — Our Lady Help of Christians (martyrologium) — Marian feast; patroness of Australia; central to the Salesian tradition as Don Bosco's principal patroness
 - May 25 — Saint Bede the Venerable
 - May 25 — Saint Gregory VII
 - May 25 — Saint Mary Magdalene de' Pazzi
@@ -202,6 +206,7 @@ The authoritative feast day reference for this project. Covers the universal GRC
 - May 26 — Saint Philip Neri
 - May 26 — Saint Mary Ann of Jesus of Paredes (martyrologium)
 - May 27 — Saint Augustine of Canterbury
+- May 28 — *(no clear winner — option: Saint Germain (Germanus) of Paris, Bishop, martyrologium — patron of Paris, d. 576; Saint-Germain-des-Prés is named for him; regionally known)*
 - May 29 — **Saint Paul VI**
 - May 30 — Saint Joan of Arc (national — France)
 - May 31 — Visitation of the Blessed Virgin Mary
