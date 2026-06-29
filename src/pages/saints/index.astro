@@ -6,7 +6,7 @@ import { saints } from "../../db/schema";
 import { canonizationStage } from "../../db/schema/enums";
 import { SAINT_THEMES } from "../../db/topics";
 import { humanizeSnakeCase } from "../../lib/format";
-import { asc, count, eq, and, ilike, sql } from "drizzle-orm";
+import { asc, count, eq, and, sql, isNotNull } from "drizzle-orm";
 import { env } from "cloudflare:workers";
 
 const PAGE_SIZE = 20;
@@ -29,10 +29,10 @@ const db = createDb(env.DATABASE_URL);
 const conditions = [eq(saints.published, true)];
 if (filterStage) conditions.push(eq(saints.canonization_stage, filterStage));
 if (filterTheme) conditions.push(sql`${saints.themes} @> ARRAY[${filterTheme}]::text[]`);
-if (filterOrder) conditions.push(ilike(saints.religious_order, `%${filterOrder}%`));
+if (filterOrder) conditions.push(eq(saints.religious_order, filterOrder));
 const where = and(...conditions);
 
-const [[{ total }], pageSaints] = await Promise.all([
+const [[{ total }], pageSaints, orderRows] = await Promise.all([
   db.select({ total: count() }).from(saints).where(where),
   db
     .select({
@@ -51,7 +51,14 @@ const [[{ total }], pageSaints] = await Promise.all([
     .orderBy(asc(saints.name))
     .limit(PAGE_SIZE)
     .offset(offset),
+  db
+    .selectDistinct({ religious_order: saints.religious_order })
+    .from(saints)
+    .where(and(eq(saints.published, true), isNotNull(saints.religious_order)))
+    .orderBy(asc(saints.religious_order)),
 ]);
+
+const religiousOrders = orderRows.map(r => r.religious_order as string);
 
 const totalPages = Math.max(1, Math.ceil(total / PAGE_SIZE));
 if (page > totalPages) return Astro.redirect(buildUrl(totalPages));
@@ -105,7 +112,12 @@ function buildUrl(p: number) {
 
         <div class="filter-group">
           <label class="filter-label">Religious Order</label>
-          <input type="text" name="religious_order" value={filterOrder ?? ""} placeholder="e.g. Franciscan" class="filter-input filter-input--text" />
+          <select name="religious_order" class="filter-select">
+            <option value="">All Orders</option>
+            {religiousOrders.map(o => (
+              <option value={o} selected={o === filterOrder}>{o}</option>
+            ))}
+          </select>
         </div>
 
       </div>
@@ -166,8 +178,6 @@ function buildUrl(p: number) {
   const paginationEl = document.getElementById("saints-pagination");
   const countEl = document.getElementById("saints-count");
   if (!form || !gridEl || !paginationEl || !countEl) return;
-
-  let debounceTimer = 0;
 
   function esc(str: string | null | undefined): string {
     return String(str ?? "").replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;").replace(/"/g, "&quot;");
@@ -257,18 +267,7 @@ function buildUrl(p: number) {
     }
   }
 
-  form.addEventListener("change", (e) => {
-    const target = e.target as HTMLInputElement;
-    if (target.type === "text") return;
-    applyFilters();
-  });
-
-  form.addEventListener("input", (e) => {
-    const target = e.target as HTMLInputElement;
-    if (target.type !== "text") return;
-    clearTimeout(debounceTimer);
-    debounceTimer = window.setTimeout(() => applyFilters(), 400);
-  });
+  form.addEventListener("change", () => applyFilters());
 
   form.addEventListener("submit", (e) => {
     e.preventDefault();
@@ -335,10 +334,6 @@ function buildUrl(p: number) {
     background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='10' height='6'%3E%3Cpath d='M0 0l5 6 5-6z' fill='%23666'/%3E%3C/svg%3E");
     background-repeat: no-repeat;
     background-position: right 0.55rem center;
-  }
-
-  .filter-input--text {
-    min-width: 12rem;
   }
 
   .filter-select:focus,

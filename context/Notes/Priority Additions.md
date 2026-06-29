@@ -21,6 +21,18 @@ Research notes for InProgress saints in `context/Notes/Research/Saints/InProgres
 | 10 | Frances Xavier Cabrini | Nov 13 | 1946 | First American citizen canonized; 2 miracles | No |
 | 11 | Justino Russolillo | — | 2011 | Founder of Vocationists; 1 miracle | Yes (stubs only) |
 | 12 | John of the Cross | Dec 14 | 1726 | Doctor of the Church; older canonization — documentation thinner | No |
+| 13 | Josephine Bakhita | Feb 8 | 2000 | Former Sudanese slave; compelling modern story; 2 miracles | No |
+| 14 | Marianne Cope | Jan 23 | 2012 | Worked alongside Damien of Molokai; natural pairing with existing saint; 2 miracles | No |
+| 15 | Mary MacKillop | Jul 19 | 2010 | First Australian saint; 2 miracles | No |
+| 16 | John Henry Newman | Sep 24 | 2019 | Cardinal; 2 well-documented miracles; recent Positio accessible | No |
+| 17 | Paul VI | Sep 26 | 2018 | Major historical figure; 2 miracles; canonized same day as Romero | No |
+| 18 | Titus Brandsma | Jul 27 | 2022 | Most recent canonization; Dutch journalist/Carmelite martyr; died at Dachau | No |
+| 19 | Devasahayam Pillai | Jan 15 | 2022 | First Indian layman canonized; martyr; very recent | No |
+| 20 | Jeanne Jugan | Aug 30 | 2009 | Founder of Little Sisters of the Poor; 2 miracles | No |
+| 21 | Theodora Guérin | Oct 3 | 2006 | American saint (Indiana); 2 miracles | No |
+| 22 | Maria Goretti | Jul 6 | 1950 | Classic well-known case; documented miracles | No |
+| 23 | Blessed Stanley Rother | Jul 28 | 2017 (beatified) | First US-born martyr beatified; not yet canonized — 1 miracle only | No |
+| 24 | Blessed Michael J. McGivney | Aug 13 | 2020 (beatified) | Founder of Knights of Columbus; not yet canonized — 1 miracle only | No |
 
 ---
 
