@@ -18,6 +18,7 @@ The authoritative feast day reference for this project. Covers the universal GRC
 - Jan  6 — Epiphany of the Lord
 - Jan  6 — **Saint André Bessette**, Religious (US optional memorial)
 - Jan  7 — Saint Raymond of Penyafort
+- Jan  8 — Our Lady of Prompt Succor (diocesan — Archdiocese of New Orleans)
 - Jan  9 — Saint Adrian of Canterbury, Abbot (martyrologium)
 - Jan 10 — Saint Gregory of Nyssa, Bishop (martyrologium)
 - Jan 12 — Saint Marguerite Bourgeoys, Virgin (national — Canada)
@@ -171,6 +172,9 @@ The authoritative feast day reference for this project. Covers the universal GRC
 - May 29 — **Saint Paul VI**
 - May 30 — Saint Joan of Arc (national — France)
 - May 31 — Visitation of the Blessed Virgin Mary
+- Second Sunday of Easter — Divine Mercy Sunday
+- Ascension Thursday (or transferred Sunday) — Ascension of the Lord
+- Seventh Sunday after Easter — Pentecost Sunday
 - Monday after Pentecost — Blessed Virgin Mary, Mother of the Church
 - First Sunday after Pentecost — Most Holy Trinity
 - Thursday after Holy Trinity — Most Holy Body and Blood of Christ (Corpus Christi)
@@ -234,6 +238,7 @@ The authoritative feast day reference for this project. Covers the universal GRC
 - Jul 25 — Saint James, Apostle
 - Jul 26 — Saints Joachim and Anne
 - Jul 27 — Saint Titus Brandsma, Priest and Martyr (martyrologium)
+- Jul 28 — Blessed Stanley Rother, Priest and Martyr (US optional memorial)
 - Jul 29 — Saints Martha, Mary and Lazarus
 - Jul 30 — Saint Peter Chrysologus
 - Jul 31 — Saint Ignatius of Loyola
@@ -258,6 +263,7 @@ The authoritative feast day reference for this project. Covers the universal GRC
 - Aug 12 — Saint Jane Frances de Chantal
 - Aug 13 — Saints Pontian and Hippolytus
 - Aug 13 — Saint Maximus the Confessor
+- Aug 13 — Blessed Michael J. McGivney, Priest (US optional memorial)
 - Aug 14 — **Saint Maximilian Kolbe**
 - Aug 15 — Assumption of the Blessed Virgin Mary
 - Aug 16 — Saint Stephen of Hungary
@@ -271,6 +277,7 @@ The authoritative feast day reference for this project. Covers the universal GRC
 - Aug 24 — Saint Bartholomew, Apostle
 - Aug 25 — Saint Louis of France
 - Aug 25 — Saint Joseph Calasanz
+- Aug 26 — Our Lady of Czestochowa (optional memorial)
 - Aug 27 — Saint Monica
 - Aug 28 — Saint Augustine of Hippo
 - Aug 28 — Saint Joachima de Mas (martyrologium)
