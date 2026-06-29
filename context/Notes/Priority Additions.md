@@ -85,12 +85,15 @@ Research notes in `context/Notes/Research/Verified Healing Miracles/Lourdes/`.
 
 Church-approved or formally acknowledged apparitions. Use `miracle_category: apparition`.
 
-**Already in DB:** Our Lady of Guadalupe, Our Lady of Lourdes, Our Lady of Fatima, Our Lady of Knock, Our Lady of the Miraculous Medal, Our Lady of La Salette, Our Lady of Laus, Our Lady of Pontmain, Our Lady of Gietrzwald, Our Lady of Philippsdorf, Our Lady of Beauraing, Our Lady of Banneux, Our Lady of Siluva, Our Lady of Kibeho, Our Lady of Medjugorje, Our Lady of the Rosary (Ratisbonne)
+**Already in DB:** Our Lady of Guadalupe, Our Lady of Lourdes, Our Lady of Fatima, Our Lady of Knock, Our Lady of the Miraculous Medal, Our Lady of La Salette, Our Lady of Laus, Our Lady of Pontmain, Our Lady of Gietrzwald, Our Lady of Philippsdorf, Our Lady of Beauraing, Our Lady of Banneux, Our Lady of Siluva, Our Lady of Kibeho, Our Lady of Medjugorje, Our Lady of the Rosary (Ratisbonne), Our Lady of Champion, Our Lady of Akita
 
 | Priority | Apparition | Feast | Location | Notes | Research Notes |
 |---|---|---|---|---|---|
-| 1*| Our Lady of Champion | Oct 9 | Champion, Wisconsin, USA | Only approved Marian apparition in the US; Adèle Brise, 1859; approved Diocese of Green Bay 2010. NOTE: Aug 15 in original was wrong — all apparitions were October 1859 | Yes |
-| 2*| Our Lady of Akita | Oct 13 | Akita, Japan | Apparitions and weeping statue, 1973; statue wept 101 times; Bishop Ito formal declaration 1984; Ratzinger 1988 verbal only — approval_authority is local_bishop | Yes |
+| 1 | Our Lady of Zeitoun | — | Zeitoun, Cairo, Egypt | 1968–71; mass public witnesses (tens of thousands); photographs and film footage exist; recognized by Coptic Orthodox Church and local Catholic bishop — approval_authority is local_bishop | No |
+| 2 | Weeping Madonna of Syracuse | Aug 29 | Syracuse, Sicily, Italy | Plaster statue wept 1953; tears chemically analyzed; recognized by Italian Bishops' Conference; Pope Pius XII publicly acknowledged it — approval_authority is local_bishop | No |
+| 3 | Our Lady of Good Success | Feb 2 | Quito, Ecuador | 1610s apparitions to Venerable Mariana de Jesús Torres; bishop-approved; notable for prophetic content; older case with thinner documentation | No |
+| 4 | Our Lady of San Nicolás | — | San Nicolás, Argentina | 1983; ongoing messages to Gladys Quiroga de Motta; bishop-approved 2016 | No |
+| 5 | Our Lady of Betania | Mar 25 | Betania, Venezuela | 1984; multiple witnesses to apparition; bishop-approved 1987; recipient Blessed María Esperanza | No |
 
 ---
 
