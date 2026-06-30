@@ -1,0 +1,31 @@
+---
+import { createDb } from "../db";
+import { saints, miracles } from "../db/schema";
+import { eq, sql } from "drizzle-orm";
+import { env } from "cloudflare:workers";
+
+const db = createDb(env.DATABASE_URL);
+
+const pickSaint = Math.random() < 0.5;
+
+if (pickSaint) {
+  const [result] = await db
+    .select({ slug: saints.slug })
+    .from(saints)
+    .where(eq(saints.published, true))
+    .orderBy(sql`RANDOM()`)
+    .limit(1);
+  if (result) return Astro.redirect(`/saints/${result.slug}`);
+}
+
+const [result] = await db
+  .select({ slug: miracles.slug })
+  .from(miracles)
+  .where(eq(miracles.published, true))
+  .orderBy(sql`RANDOM()`)
+  .limit(1);
+
+if (result) return Astro.redirect(`/miracles/${result.slug}`);
+
+return Astro.redirect("/");
+---
