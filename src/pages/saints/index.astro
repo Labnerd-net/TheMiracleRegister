@@ -5,7 +5,7 @@ import { saints } from "../../db/schema";
 import { canonizationStage } from "../../db/schema/enums";
 import { SAINT_THEMES } from "../../db/topics";
 import { humanizeSnakeCase } from "../../lib/format";
-import { asc, count, eq, and, sql, isNotNull } from "drizzle-orm";
+import { asc, count, eq, and, sql, isNotNull, ilike } from "drizzle-orm";
 import { env } from "cloudflare:workers";
 
 const PAGE_SIZE = 20;
@@ -21,7 +21,8 @@ const filterStage = (canonizationStage.enumValues as string[]).includes(rawStage
 const rawTheme = sp.get("theme") ?? "";
 const filterTheme = (SAINT_THEMES as readonly string[]).includes(rawTheme) ? rawTheme : undefined;
 const filterOrder = sp.get("religious_order") || undefined;
-const hasActiveFilters = !!(filterStage || filterTheme || filterOrder);
+const filterNationality = sp.get("nationality") || undefined;
+const hasActiveFilters = !!(filterStage || filterTheme || filterOrder || filterNationality);
 
 const db = createDb(env.DATABASE_URL);
 
@@ -29,9 +30,10 @@ const conditions = [eq(saints.published, true)];
 if (filterStage) conditions.push(eq(saints.canonization_stage, filterStage));
 if (filterTheme) conditions.push(sql`${saints.themes} @> ARRAY[${filterTheme}]::text[]`);
 if (filterOrder) conditions.push(eq(saints.religious_order, filterOrder));
+if (filterNationality) conditions.push(eq(saints.nationality, filterNationality));
 const where = and(...conditions);
 
-const [[{ total }], pageSaints, orderRows] = await Promise.all([
+const [[{ total }], pageSaints, orderRows, nationalityRows] = await Promise.all([
   db.select({ total: count() }).from(saints).where(where),
   db
     .select({
@@ -55,9 +57,15 @@ const [[{ total }], pageSaints, orderRows] = await Promise.all([
     .from(saints)
     .where(and(eq(saints.published, true), isNotNull(saints.religious_order)))
     .orderBy(asc(saints.religious_order)),
+  db
+    .selectDistinct({ nationality: saints.nationality })
+    .from(saints)
+    .where(and(eq(saints.published, true), isNotNull(saints.nationality)))
+    .orderBy(asc(saints.nationality)),
 ]);
 
 const religiousOrders = orderRows.map(r => r.religious_order as string);
+const nationalities = nationalityRows.map(r => r.nationality as string);
 
 const totalPages = Math.max(1, Math.ceil(total / PAGE_SIZE));
 if (page > totalPages) return Astro.redirect(buildUrl(totalPages));
@@ -67,6 +75,7 @@ function buildUrl(p: number) {
   if (filterStage) params.set("canonization_stage", filterStage);
   if (filterTheme) params.set("theme", filterTheme);
   if (filterOrder) params.set("religious_order", filterOrder);
+  if (filterNationality) params.set("nationality", filterNationality);
   params.set("page", String(p));
   return `/saints?${params.toString()}`;
 }
@@ -115,6 +124,16 @@ function buildUrl(p: number) {
             <option value="">All Orders</option>
             {religiousOrders.map(o => (
               <option value={o} selected={o === filterOrder}>{o}</option>
+            ))}
+          </select>
+        </div>
+
+        <div class="filter-group">
+          <label class="filter-label">Nationality</label>
+          <select name="nationality" class="filter-select">
+            <option value="">All Nationalities</option>
+            {nationalities.map(n => (
+              <option value={n} selected={n === filterNationality}>{n}</option>
             ))}
           </select>
         </div>
@@ -197,9 +216,11 @@ function buildUrl(p: number) {
     const stage = fd.get("canonization_stage") as string;
     const theme = fd.get("theme") as string;
     const order = fd.get("religious_order") as string;
+    const nationality = fd.get("nationality") as string;
     if (stage) p.set("canonization_stage", stage);
     if (theme) p.set("theme", theme);
     if (order) p.set("religious_order", order);
+    if (nationality) p.set("nationality", nationality);
     p.set("page", String(page));
     p.set("limit", "20");
     return `/api/v1/saints?${p.toString()}`;
@@ -210,9 +231,11 @@ function buildUrl(p: number) {
     const stage = fd.get("canonization_stage") as string;
     const theme = fd.get("theme") as string;
     const order = fd.get("religious_order") as string;
+    const nationality = fd.get("nationality") as string;
     if (stage) p.set("canonization_stage", stage);
     if (theme) p.set("theme", theme);
     if (order) p.set("religious_order", order);
+    if (nationality) p.set("nationality", nationality);
     if (page > 1) p.set("page", String(page));
     const qs = p.toString();
     return qs ? `/saints?${qs}` : "/saints";

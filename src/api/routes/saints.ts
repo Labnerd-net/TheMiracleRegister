@@ -20,6 +20,7 @@ const SaintsQuerySchema = z.object({
   canonization_stage: z.enum(canonizationStage.enumValues).optional(),
   theme: z.enum(SAINT_THEMES).optional(),
   religious_order: z.string().max(100).optional(),
+  nationality: z.string().max(100).optional(),
 });
 
 const saintsRoute = new OpenAPIHono<ApiEnv>();
@@ -37,7 +38,7 @@ saintsRoute.openapi(
     },
   }),
   async (c) => {
-    const { page, limit, canonization_stage, theme, religious_order } = c.req.valid("query");
+    const { page, limit, canonization_stage, theme, religious_order, nationality } = c.req.valid("query");
     const offset = (page - 1) * limit;
     const db = createDb(c.env.DATABASE_URL);
 
@@ -45,6 +46,7 @@ saintsRoute.openapi(
     if (canonization_stage) conditions.push(eq(saints.canonization_stage, canonization_stage));
     if (theme) conditions.push(sql`${saints.themes} @> ARRAY[${theme}]::text[]`);
     if (religious_order) conditions.push(ilike(saints.religious_order, `%${religious_order}%`));
+    if (nationality) conditions.push(eq(saints.nationality, nationality));
     const where = and(...conditions);
 
     const [rows, [{ total }]] = await Promise.all([
