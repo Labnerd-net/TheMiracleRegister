@@ -82,5 +82,5 @@ _None identified._
 | Bugs | 0 | 0 | 0 | 0 |
 | Performance | 0 | 0 | 1 | 1 |
 | Improvements & Refactors | 0 | 0 | 3 | 3 |
-| Feature Ideas | 0 | 0 | 4 | 4 |
-| **Total** | **0** | **0** | **8** | **8** |
+| Feature Ideas | 0 | 0 | 3 | 3 |
+| **Total** | **0** | **0** | **7** | **7** |
