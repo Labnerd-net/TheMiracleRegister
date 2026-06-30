@@ -10,16 +10,23 @@ import { FIXED_FEASTS, MOVABLE_FEASTS } from "../data/feastDays";
 const db = createDb(env.DATABASE_URL);
 
 const now = new Date();
-const timezone = (Astro.locals as any).runtime?.cf?.timezone ?? 'UTC';
+let timezone = 'UTC';
+try {
+  const cfTz = (Astro.locals as any).runtime?.cf?.timezone;
+  if (cfTz && typeof cfTz === 'string') {
+    new Intl.DateTimeFormat('en-US', { timeZone: cfTz }); // validate before using
+    timezone = cfTz;
+  }
+} catch { /* invalid timezone — fall back to UTC */ }
 const dateParts = new Intl.DateTimeFormat('en-US', {
   timeZone: timezone,
   year: 'numeric',
   month: 'numeric',
   day: 'numeric',
 }).formatToParts(now);
-const todayYear = parseInt(dateParts.find(p => p.type === 'year')!.value);
-const todayMonth = parseInt(dateParts.find(p => p.type === 'month')!.value);
-const todayDay = parseInt(dateParts.find(p => p.type === 'day')!.value);
+const todayYear = parseInt(dateParts.find(p => p.type === 'year')?.value ?? String(now.getUTCFullYear()));
+const todayMonth = parseInt(dateParts.find(p => p.type === 'month')?.value ?? String(now.getUTCMonth() + 1));
+const todayDay = parseInt(dateParts.find(p => p.type === 'day')?.value ?? String(now.getUTCDate()));
 
 const rawMonth = Astro.url.searchParams.get("month");
 const rawYear = Astro.url.searchParams.get("year");
