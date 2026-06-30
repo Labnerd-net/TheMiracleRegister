@@ -238,14 +238,6 @@ const isCurrentMonth = year === todayYear && month === todayMonth;
   }
   .cal-nav:hover { color: var(--text-1); }
 
-  @media (max-width: 767px) {
-    .cal-grid { display: none; }
-  }
-
-  @media (min-width: 768px) {
-    .cal-agenda { display: none; }
-  }
-
   .cal-agenda {
     display: flex;
     flex-direction: column;
@@ -309,6 +301,14 @@ const isCurrentMonth = year === todayYear && month === todayMonth;
     grid-template-columns: repeat(7, 1fr);
     border-top: 1px solid var(--rule);
     border-left: 1px solid var(--rule);
+  }
+
+  @media (max-width: 767px) {
+    .cal-grid { display: none; }
+  }
+
+  @media (min-width: 768px) {
+    .cal-agenda { display: none; }
   }
 
   .cal-dow {
