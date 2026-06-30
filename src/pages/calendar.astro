@@ -139,7 +139,34 @@ const isCurrentMonth = year === todayYear && month === todayMonth;
       <a href={`/calendar?month=${nextMonth}&year=${nextYear}`} class="cal-nav" aria-label="Next month">→</a>
     </div>
 
-    <!-- Day-of-week headers -->
+    <!-- Agenda view (mobile only) -->
+    <div class="cal-agenda">
+      {Array.from({length: daysInMonth}, (_, i) => i + 1).map((day) => {
+        const cell = cells.get(day);
+        if (!cell) return null;
+        const dow = (firstDayOfWeek + day - 1) % 7;
+        const dowName = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"][dow];
+        const isToday = isCurrentMonth && day === todayDay;
+        return (
+          <div class={`agenda-day${isToday ? " agenda-day--today" : ""}`}>
+            <div class="agenda-date">
+              <span class={`agenda-day-num${isToday ? " agenda-day-num--today" : ""}`}>{day}</span>
+              <span class="agenda-dow">{dowName}</span>
+            </div>
+            <div class="agenda-entries">
+              {cell.saints.map((s) => (
+                <a href={`/saints/${s.slug}`} class="cal-saint">{s.saint_name ?? s.name}</a>
+              ))}
+              {cell.feasts.map((f) => (
+                <span class="cal-feast">{f}</span>
+              ))}
+            </div>
+          </div>
+        );
+      })}
+    </div>
+
+    <!-- Day-of-week headers (desktop grid) -->
     <div class="cal-grid">
       {["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"].map((d) => (
         <div class="cal-dow">{d}</div>
@@ -210,6 +237,72 @@ const isCurrentMonth = year === todayYear && month === todayMonth;
     margin-top: 1.5rem;
   }
   .cal-nav:hover { color: var(--text-1); }
+
+  @media (max-width: 767px) {
+    .cal-grid { display: none; }
+  }
+
+  @media (min-width: 768px) {
+    .cal-agenda { display: none; }
+  }
+
+  .cal-agenda {
+    display: flex;
+    flex-direction: column;
+    border-top: 1px solid var(--rule);
+  }
+
+  .agenda-day {
+    display: flex;
+    gap: 1rem;
+    padding: 0.75rem 0;
+    border-bottom: 1px solid var(--rule);
+  }
+
+  .agenda-day--today {
+    background: var(--bg-elevated);
+    margin: 0 -1rem;
+    padding: 0.75rem 1rem;
+  }
+
+  .agenda-date {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    min-width: 2.5rem;
+    flex-shrink: 0;
+    padding-top: 0.1rem;
+  }
+
+  .agenda-day-num {
+    font-family: var(--font-sans);
+    font-size: 1.1rem;
+    font-weight: 500;
+    color: var(--text-2);
+    line-height: 1;
+  }
+
+  .agenda-day-num--today {
+    color: var(--color-accent);
+    font-weight: 700;
+  }
+
+  .agenda-dow {
+    font-family: var(--font-sans);
+    font-size: 0.6rem;
+    font-weight: 600;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--text-4);
+    margin-top: 0.2rem;
+  }
+
+  .agenda-entries {
+    display: flex;
+    flex-direction: column;
+    gap: 0.25rem;
+    padding-top: 0.1rem;
+  }
 
   .cal-grid {
     display: grid;
