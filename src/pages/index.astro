@@ -9,9 +9,16 @@ import { getEaster, resolveMovableFeast } from "../lib/easter";
 const db = createDb(env.DATABASE_URL);
 
 const now = new Date();
-const todayMonth = now.getUTCMonth() + 1;
-const todayDay = now.getUTCDate();
-const todayYear = now.getUTCFullYear();
+const timezone = (Astro.locals as any).runtime?.cf?.timezone ?? 'UTC';
+const dateParts = new Intl.DateTimeFormat('en-US', {
+  timeZone: timezone,
+  year: 'numeric',
+  month: 'numeric',
+  day: 'numeric',
+}).formatToParts(now);
+const todayYear = parseInt(dateParts.find(p => p.type === 'year')!.value);
+const todayMonth = parseInt(dateParts.find(p => p.type === 'month')!.value);
+const todayDay = parseInt(dateParts.find(p => p.type === 'day')!.value);
 const easterOffset = Math.round((now.getTime() - getEaster(todayYear).getTime()) / 86_400_000);
 
 const [[{ saintCount }], [{ miracleCount }], [{ apparitionCount }], featuredSaints, feastSaints] = await Promise.all([
