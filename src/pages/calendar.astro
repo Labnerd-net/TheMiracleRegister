@@ -12,7 +12,9 @@ const db = createDb(env.DATABASE_URL);
 const now = new Date();
 let timezone = 'UTC';
 // Prefer timezone cookie set by client JS; fall back to cf.timezone (Enterprise-only), then UTC
-const tzCookie = Astro.cookies.get('tz')?.value;
+const rawCookies = Astro.request.headers.get('cookie') ?? '';
+const tzCookieMatch = rawCookies.match(/(?:^|;\s*)tz=([^;]*)/);
+const tzCookie = tzCookieMatch ? decodeURIComponent(tzCookieMatch[1]) : undefined;
 const cfTz = (Astro.locals as any).runtime?.cf?.timezone;
 for (const candidate of [tzCookie, cfTz]) {
   if (!candidate || typeof candidate !== 'string') continue;
