@@ -10,25 +10,9 @@ import { FIXED_FEASTS, MOVABLE_FEASTS } from "../data/feastDays";
 const db = createDb(env.DATABASE_URL);
 
 const now = new Date();
-let timezone = 'UTC';
-// Prefer timezone cookie set by client JS; fall back to cf.timezone (Enterprise-only), then UTC
-const rawCookies = Astro.request.headers.get('cookie') ?? '';
-const tzCookieMatch = rawCookies.match(/(?:^|;\s*)tz=([^;]*)/);
-const tzCookie = tzCookieMatch ? decodeURIComponent(tzCookieMatch[1]) : undefined;
-const cfTz = (Astro.locals as any).runtime?.cf?.timezone;
-for (const candidate of [tzCookie, cfTz]) {
-  if (!candidate || typeof candidate !== 'string') continue;
-  try { new Intl.DateTimeFormat('en-US', { timeZone: candidate }); timezone = candidate; break; } catch {}
-}
-const dateParts = new Intl.DateTimeFormat('en-US', {
-  timeZone: timezone,
-  year: 'numeric',
-  month: 'numeric',
-  day: 'numeric',
-}).formatToParts(now);
-const todayYear = parseInt(dateParts.find(p => p.type === 'year')?.value ?? String(now.getUTCFullYear()));
-const todayMonth = parseInt(dateParts.find(p => p.type === 'month')?.value ?? String(now.getUTCMonth() + 1));
-const todayDay = parseInt(dateParts.find(p => p.type === 'day')?.value ?? String(now.getUTCDate()));
+const todayYear = now.getUTCFullYear();
+const todayMonth = now.getUTCMonth() + 1;
+const todayDay = now.getUTCDate();
 
 const rawMonth = Astro.url.searchParams.get("month");
 const rawYear = Astro.url.searchParams.get("year");
@@ -408,36 +392,3 @@ const isCurrentMonth = year === todayYear && month === todayMonth;
     pointer-events: none;
   }
 </style>
-
-<script>
-  // Correct "today" highlight using the browser's local date (server may have used UTC)
-  (function () {
-    const now = new Date();
-    const params = new URLSearchParams(location.search);
-    const calMonth = parseInt(params.get('month') || String(now.getMonth() + 1));
-    const calYear  = parseInt(params.get('year')  || String(now.getFullYear()));
-    if (calYear !== now.getFullYear() || calMonth !== now.getMonth() + 1) return;
-
-    const localDay = now.getDate();
-
-    // Clear server-rendered markers
-    document.querySelectorAll('.cal-cell--today').forEach(el => el.classList.remove('cal-cell--today'));
-    document.querySelectorAll('.cal-day-num--today').forEach(el => el.classList.remove('cal-day-num--today'));
-    document.querySelectorAll('.agenda-day--today').forEach(el => el.classList.remove('agenda-day--today'));
-    document.querySelectorAll('.agenda-day-num--today').forEach(el => el.classList.remove('agenda-day-num--today'));
-
-    // Apply correct markers
-    document.querySelectorAll('.cal-day-num').forEach(span => {
-      if (parseInt(span.textContent ?? '') === localDay) {
-        span.classList.add('cal-day-num--today');
-        span.closest('.cal-cell')?.classList.add('cal-cell--today');
-      }
-    });
-    document.querySelectorAll('.agenda-day-num').forEach(span => {
-      if (parseInt(span.textContent ?? '') === localDay) {
-        span.classList.add('agenda-day-num--today');
-        span.closest('.agenda-day')?.classList.add('agenda-day--today');
-      }
-    });
-  })();
-</script>
