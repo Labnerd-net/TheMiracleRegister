@@ -10,13 +10,13 @@ const db = createDb(env.DATABASE_URL);
 
 const now = new Date();
 let timezone = 'UTC';
-try {
-  const cfTz = (Astro.locals as any).runtime?.cf?.timezone;
-  if (cfTz && typeof cfTz === 'string') {
-    new Intl.DateTimeFormat('en-US', { timeZone: cfTz }); // validate before using
-    timezone = cfTz;
-  }
-} catch { /* invalid timezone — fall back to UTC */ }
+// Prefer timezone cookie set by client JS; fall back to cf.timezone (Enterprise-only), then UTC
+const tzCookie = Astro.cookies.get('tz')?.value;
+const cfTz = (Astro.locals as any).runtime?.cf?.timezone;
+for (const candidate of [tzCookie, cfTz]) {
+  if (!candidate || typeof candidate !== 'string') continue;
+  try { new Intl.DateTimeFormat('en-US', { timeZone: candidate }); timezone = candidate; break; } catch {}
+}
 const dateParts = new Intl.DateTimeFormat('en-US', {
   timeZone: timezone,
   year: 'numeric',

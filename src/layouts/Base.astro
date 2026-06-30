@@ -39,6 +39,11 @@ const canonicalUrl = Astro.url.origin + Astro.url.pathname;
           document.documentElement.setAttribute('data-theme', 'dark');
         }
       })();
+      // Set timezone cookie so SSR pages can use the browser's local timezone
+      try {
+        var _tz = Intl.DateTimeFormat().resolvedOptions().timeZone;
+        if (_tz) document.cookie = 'tz=' + encodeURIComponent(_tz) + '; path=/; SameSite=Lax; Max-Age=31536000';
+      } catch(e) {}
     </script>
     <slot name="head" />
   </head>
