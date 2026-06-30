@@ -34,6 +34,7 @@ A data-driven website documenting miracles attributed to Catholic saints. Focuse
 
 - **Primary:** Intercessory miracles — posthumous healings attributed to a saint's intercession
 - **Secondary:** Associated miracles for famous cases only (Tilma of Guadalupe, stigmata, incorrupt bodies)
+- **Tertiary:** Feast day calendar as a discovery layer — every published saint is reachable by feast date, with the full liturgical calendar as context. Only canonized saints have universal feast days; Blessed, Venerable, and Servants of God do not appear on the calendar unless a local feast day has been specifically recorded.
 - Public-facing website with REST API from day one
 - Admin panel for data entry (built — password-protected at `/admin/*`)
 
