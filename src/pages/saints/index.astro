@@ -1,6 +1,5 @@
 ---
 import Base from "../../layouts/Base.astro";
-import Pagination from "../../components/Pagination.astro";
 import { createDb } from "../../db";
 import { saints } from "../../db/schema";
 import { canonizationStage } from "../../db/schema/enums";
@@ -164,9 +163,19 @@ function buildUrl(p: number) {
       ))}
     </div>
 
-    <nav id="saints-pagination" aria-label="Page navigation">
-      <Pagination page={page} totalPages={totalPages} prevUrl={buildUrl(page - 1)} nextUrl={buildUrl(page + 1)} />
-    </nav>
+    {totalPages > 1 && (
+      <nav id="saints-pagination" class="pagination" aria-label="Page navigation">
+        {page > 1
+          ? <a href={buildUrl(page - 1)} class="pagination-btn">← Previous</a>
+          : <span class="pagination-btn disabled">← Previous</span>
+        }
+        <span class="pagination-info">Page {page} of {totalPages}</span>
+        {page < totalPages
+          ? <a href={buildUrl(page + 1)} class="pagination-btn">Next →</a>
+          : <span class="pagination-btn disabled">Next →</span>
+        }
+      </nav>
+    )}
   </div>
 
 </Base>
