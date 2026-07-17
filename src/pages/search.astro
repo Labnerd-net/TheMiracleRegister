@@ -2,22 +2,37 @@
 import Base from "../layouts/Base.astro";
 import { createDb } from "../db";
 import { searchContent, type SearchResult } from "../lib/search";
+import { isRateLimited } from "../lib/rateLimit";
 import { env } from "cloudflare:workers";
+
+const SEARCH_RATE_LIMIT_MAX = 30;
+const SEARCH_RATE_LIMIT_WINDOW_SECONDS = 60;
 
 const q = Astro.url.searchParams.get("q")?.trim() ?? "";
 
 let saintResults: SearchResult[] = [];
 let miracleResults: SearchResult[] = [];
+let rateLimited = false;
 
 if (q.length >= 2) {
-  const db = createDb(env.DATABASE_URL);
-  const { results } = await searchContent(db, { q, excerptLength: 220, perEntityLimit: 200 });
-  saintResults = results.filter((r) => r.type === "saint");
-  miracleResults = results.filter((r) => r.type === "miracle");
+  const ip = Astro.clientAddress ?? "unknown";
+  rateLimited = await isRateLimited(env.RATE_LIMIT, `search:${ip}`, {
+    max: SEARCH_RATE_LIMIT_MAX,
+    windowSeconds: SEARCH_RATE_LIMIT_WINDOW_SECONDS,
+  });
+
+  if (!rateLimited) {
+    const db = createDb(env.DATABASE_URL);
+    const { results } = await searchContent(db, { q, excerptLength: 220, perEntityLimit: 200 });
+    saintResults = results.filter((r) => r.type === "saint");
+    miracleResults = results.filter((r) => r.type === "miracle");
+  } else {
+    Astro.response.status = 429;
+  }
 }
 
 const total = saintResults.length + miracleResults.length;
-const hasQuery = q.length >= 2;
+const hasQuery = q.length >= 2 && !rateLimited;
 const hasResults = total > 0;
 ---
 
@@ -49,6 +64,12 @@ const hasResults = total > 0;
         <p class="search-hint">Enter at least 2 characters.</p>
       )}
     </form>
+
+    {rateLimited && (
+      <div class="results-header">
+        <p class="results-count">Too many searches. Try again in a minute.</p>
+      </div>
+    )}
 
     {hasQuery && (
       <div class="results-header">

@@ -1,8 +1,17 @@
 import { describe, expect, it } from "vitest";
 import app from "../src/api/index";
 
+// In-memory KV stub — real rate limiting is exercised separately, not in these API tests.
+const rateLimitStore = new Map<string, string>();
+const fakeRateLimitKv = {
+  get: async (key: string) => rateLimitStore.get(key) ?? null,
+  put: async (key: string, value: string) => {
+    rateLimitStore.set(key, value);
+  },
+} as unknown as KVNamespace;
+
 // Pass the test DATABASE_URL as Cloudflare env bindings
-const testEnv = { DATABASE_URL: process.env.DATABASE_URL! };
+const testEnv = { DATABASE_URL: process.env.DATABASE_URL!, RATE_LIMIT: fakeRateLimitKv };
 const req = (path: string) => app.request(path, undefined, testEnv);
 
 describe("GET /api/v1/saints", () => {

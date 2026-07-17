@@ -6,12 +6,28 @@ import metadata from "./routes/metadata";
 import saints from "./routes/saints";
 import search from "./routes/search";
 import types from "./routes/types";
+import { isRateLimited } from "../lib/rateLimit";
 import type { ApiEnv } from "./env";
 
 const app = new OpenAPIHono<ApiEnv>().basePath("/api/v1");
 
 // Public read-only API — open CORS is intentional. Admin endpoints must never be added under /api/v1/.
 app.use("*", cors({ origin: "*" }));
+
+const RATE_LIMIT_MAX = 60;
+const RATE_LIMIT_WINDOW_SECONDS = 60;
+
+app.use("*", async (c: Context<ApiEnv>, next: () => Promise<void>) => {
+  const ip = c.req.header("CF-Connecting-IP") ?? "unknown";
+  const limited = await isRateLimited(c.env.RATE_LIMIT, `api:${ip}`, {
+    max: RATE_LIMIT_MAX,
+    windowSeconds: RATE_LIMIT_WINDOW_SECONDS,
+  });
+  if (limited) {
+    return c.json({ data: null, meta: null, error: "Too many requests" }, 429);
+  }
+  await next();
+});
 
 const cache = (maxAge: number) => async (c: Context<ApiEnv>, next: () => Promise<void>) => {
   await next();
