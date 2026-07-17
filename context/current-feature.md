@@ -10,6 +10,9 @@ _None_
 
 ## History
 
+### Add /calendar to Sitemap + Fix Sitemap 500 (backlog #21)
+`src/pages/sitemap.xml.ts` omitted `/calendar` from its static entries despite it being a real indexable content page. Added `url("/calendar")`. While verifying in the browser, found `/sitemap.xml` was already returning a 500 on `main` — `lastmod.slice is not a function`, because Drizzle returns `updated_at` as a `Date` object, not a string, and the `url()` helper assumed a string. Fixed in the same commit (flagged to the user first, since it's a separate bug): `url()` now accepts `Date | string | null` and calls `.toISOString()` on `Date` values before slicing. Verified `/sitemap.xml` returns 200 with correct `<lastmod>` dates and includes `/calendar`.
+
 ### Rate Limit Public API and Search (backlog #1)
 Rate limiting previously existed only for `/admin/login`; the public `/api/v1/*` routes and `/search` page ran unbounded `ILIKE '%...%'` queries with no per-IP throttling. Added a shared `isRateLimited()` helper (`src/lib/rateLimit.ts`) reusing the existing `RATE_LIMIT` KV namespace and the same counter pattern as login. Applied as Hono middleware across all of `/api/v1/*` (60 req/min per IP, covers `/api/v1/search` automatically) and separately on the `/search` Astro page (30 req/min per IP, since it's not under `/api/v1/*`) — sets `Astro.response.status = 429` when limited, with a "Too many searches" message in place of results. Added `RATE_LIMIT` to the Hono `ApiEnv` bindings type and a fake in-memory KV stub to `tests/api.test.ts` (test env previously had no KV binding). Verified locally: 60th+ API request and 31st+ search-page request return 429; normal traffic under the threshold is unaffected. Build, tests, and manual load pass.
 

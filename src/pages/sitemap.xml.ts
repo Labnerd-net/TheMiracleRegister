@@ -6,11 +6,11 @@ import { env } from "cloudflare:workers";
 
 const SITE = "https://themiracleregister.org";
 
-function url(path: string, lastmod?: string | null): string {
+function url(path: string, lastmod?: Date | string | null): string {
   const loc = `${SITE}${path}`;
-  return lastmod
-    ? `  <url><loc>${loc}</loc><lastmod>${lastmod.slice(0, 10)}</lastmod></url>`
-    : `  <url><loc>${loc}</loc></url>`;
+  if (!lastmod) return `  <url><loc>${loc}</loc></url>`;
+  const date = lastmod instanceof Date ? lastmod.toISOString() : lastmod;
+  return `  <url><loc>${loc}</loc><lastmod>${date.slice(0, 10)}</lastmod></url>`;
 }
 
 export const GET: APIRoute = async () => {
@@ -36,6 +36,7 @@ export const GET: APIRoute = async () => {
     url("/map"),
     url("/miracles/timeline"),
     url("/search"),
+    url("/calendar"),
     ...saintRows.map((s) => url(`/saints/${s.slug}`, s.updated_at)),
     ...miracleRows.map((m) => url(`/miracles/${m.slug}`, m.updated_at)),
   ].join("\n");
