@@ -10,6 +10,9 @@ _None_
 
 ## History
 
+### Dedupe Client-Side Filter URL Builders on List Pages (backlog #10)
+`src/pages/miracles/index.astro` and `src/pages/saints/index.astro` each defined `buildApiUrl()` and `buildPageUrl()` in their client `<script>` block — two near-byte-identical ~12-line functions per page independently re-encoding the same filter form fields into query params. Scoped the fix to the client script only (left server-side `buildUrl()`/WHERE-clause code alone — not actually duplicated, and `buildUrl()` sits on the SSR redirect path where an accidental behavior change carries more risk than the duplication it isn't). Each page now defines one declarative filter-field list and a single `buildParams()` helper that both URL builders call. Verified in a real browser (Playwright): multi-filter combos on both `/miracles` and `/saints` produce correct page URLs, correct underlying API param names (e.g. `beatification` on the page URL vs `used_for_beatification` sent to the API), and correct result counts. Build and test suite pass.
+
 ### Cap Homepage Featured Saints Query (backlog #4)
 The "Featured Saints" carousel query in `src/pages/index.astro` selected every published saint with no `LIMIT`, scaling linearly with the table just to render a homepage strip. Added `.limit(20)`. Verified locally: homepage renders identically with the current dataset (well under 20 saints), query now bounded regardless of table growth.
 

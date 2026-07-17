@@ -213,31 +213,26 @@ function buildUrl(p: number) {
     return String(str ?? "").replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;").replace(/"/g, "&quot;");
   }
 
-  function buildApiUrl(fd: FormData, page: number): string {
+  const FILTER_FIELDS = ["canonization_stage", "theme", "religious_order", "nationality"];
+
+  function buildParams(fd: FormData): URLSearchParams {
     const p = new URLSearchParams();
-    const stage = fd.get("canonization_stage") as string;
-    const theme = fd.get("theme") as string;
-    const order = fd.get("religious_order") as string;
-    const nationality = fd.get("nationality") as string;
-    if (stage) p.set("canonization_stage", stage);
-    if (theme) p.set("theme", theme);
-    if (order) p.set("religious_order", order);
-    if (nationality) p.set("nationality", nationality);
+    for (const field of FILTER_FIELDS) {
+      const value = fd.get(field) as string;
+      if (value) p.set(field, value);
+    }
+    return p;
+  }
+
+  function buildApiUrl(fd: FormData, page: number): string {
+    const p = buildParams(fd);
     p.set("page", String(page));
     p.set("limit", "20");
     return `/api/v1/saints?${p.toString()}`;
   }
 
   function buildPageUrl(fd: FormData, page: number): string {
-    const p = new URLSearchParams();
-    const stage = fd.get("canonization_stage") as string;
-    const theme = fd.get("theme") as string;
-    const order = fd.get("religious_order") as string;
-    const nationality = fd.get("nationality") as string;
-    if (stage) p.set("canonization_stage", stage);
-    if (theme) p.set("theme", theme);
-    if (order) p.set("religious_order", order);
-    if (nationality) p.set("nationality", nationality);
+    const p = buildParams(fd);
     if (page > 1) p.set("page", String(page));
     const qs = p.toString();
     return qs ? `/saints?${qs}` : "/saints";

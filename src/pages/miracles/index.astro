@@ -309,55 +309,39 @@ function buildUrl(p: number) {
     return String(str ?? "").replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;").replace(/"/g, "&quot;");
   }
 
-  function buildApiUrl(fd: FormData, page: number): string {
+  type FilterField = { form: string; api?: string };
+  const FILTER_FIELDS: FilterField[] = [
+    { form: "saint_id" },
+    { form: "type" },
+    { form: "topic" },
+    { form: "category" },
+    { form: "country" },
+    { form: "year_from" },
+    { form: "year_to" },
+    { form: "beatification", api: "used_for_beatification" },
+    { form: "canonization", api: "used_for_canonization" },
+    { form: "approval_authority" },
+  ];
+
+  function buildParams(fd: FormData, mode: "api" | "page"): URLSearchParams {
     const p = new URLSearchParams();
-    const saintId = fd.get("saint_id") as string;
-    const type = fd.get("type") as string;
-    const topic = fd.get("topic") as string;
-    const category = fd.get("category") as string;
-    const country = fd.get("country") as string;
-    const yearFrom = fd.get("year_from") as string;
-    const yearTo = fd.get("year_to") as string;
-    const beat = fd.get("beatification") as string;
-    const canon = fd.get("canonization") as string;
-    const approval = fd.get("approval_authority") as string;
-    if (saintId) p.set("saint_id", saintId);
-    if (type) p.set("type", type);
-    if (topic) p.set("topic", topic);
-    if (category) p.set("category", category);
-    if (country) p.set("country", country);
-    if (yearFrom) p.set("year_from", yearFrom);
-    if (yearTo) p.set("year_to", yearTo);
-    if (beat) p.set("used_for_beatification", "1");
-    if (canon) p.set("used_for_canonization", "1");
-    if (approval) p.set("approval_authority", approval);
+    for (const f of FILTER_FIELDS) {
+      const value = fd.get(f.form) as string;
+      if (!value) continue;
+      p.set(mode === "api" ? (f.api ?? f.form) : f.form, value);
+    }
+    return p;
+  }
+
+  function buildApiUrl(fd: FormData, page: number): string {
+    const p = buildParams(fd, "api");
     p.set("page", String(page));
     p.set("limit", "20");
     return `/api/v1/miracles?${p.toString()}`;
   }
 
   function buildPageUrl(fd: FormData, page: number): string {
-    const p = new URLSearchParams();
-    const saintId = fd.get("saint_id") as string;
-    const type = fd.get("type") as string;
-    const topic = fd.get("topic") as string;
-    const category = fd.get("category") as string;
-    const country = fd.get("country") as string;
-    const yearFrom = fd.get("year_from") as string;
-    const yearTo = fd.get("year_to") as string;
-    const beat = fd.get("beatification") as string;
-    const canon = fd.get("canonization") as string;
-    const approval = fd.get("approval_authority") as string;
-    if (saintId) p.set("saint_id", saintId);
-    if (type) p.set("type", type);
-    if (topic) p.set("topic", topic);
-    if (category) p.set("category", category);
-    if (country) p.set("country", country);
-    if (yearFrom) p.set("year_from", yearFrom);
-    if (yearTo) p.set("year_to", yearTo);
-    if (beat) p.set("beatification", "1");
-    if (canon) p.set("canonization", "1");
-    if (approval) p.set("approval_authority", approval);
+    const p = buildParams(fd, "page");
     if (page > 1) p.set("page", String(page));
     const qs = p.toString();
     return qs ? `/miracles?${qs}` : "/miracles";
