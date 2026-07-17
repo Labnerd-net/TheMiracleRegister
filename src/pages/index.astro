@@ -6,6 +6,8 @@ import { sql, asc, eq, ne, and, or, isNotNull } from "drizzle-orm";
 import { env } from "cloudflare:workers";
 import { getEaster, resolveMovableFeast } from "../lib/easter";
 
+Astro.response.headers.set("Cache-Control", "public, max-age=3600, stale-while-revalidate=86400");
+
 const db = createDb(env.DATABASE_URL);
 
 const now = new Date();

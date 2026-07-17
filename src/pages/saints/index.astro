@@ -24,6 +24,8 @@ const filterOrder = sp.get("religious_order") || undefined;
 const filterNationality = sp.get("nationality") || undefined;
 const hasActiveFilters = !!(filterStage || filterTheme || filterOrder || filterNationality);
 
+Astro.response.headers.set("Cache-Control", "public, max-age=1800, stale-while-revalidate=86400");
+
 const db = createDb(env.DATABASE_URL);
 
 const conditions = [eq(saints.published, true)];

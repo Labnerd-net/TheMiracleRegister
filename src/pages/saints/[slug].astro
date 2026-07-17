@@ -19,6 +19,11 @@ const [saint] = await db.select().from(saints).where(
 );
 if (!saint) return Astro.redirect("/404");
 
+Astro.response.headers.set(
+  "Cache-Control",
+  isPreview ? "no-store" : "public, max-age=3600, stale-while-revalidate=86400"
+);
+
 const [saintMiracles, relatedRows, sources, locations] = await Promise.all([
   db.select({
     slug: miracles.slug,

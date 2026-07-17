@@ -32,6 +32,8 @@ const rawCategory = sp.get("category") ?? "";
 const filterCategory = (miracleCategory.enumValues as string[]).includes(rawCategory) ? rawCategory as typeof miracleCategory.enumValues[number] : undefined;
 const hasActiveFilters = !!(filterSaintId || filterType || filterTopic || filterCategory || filterCountry || filterYearFrom || filterYearTo || filterBeat || filterCanon || filterApproval);
 
+Astro.response.headers.set("Cache-Control", "public, max-age=1800, stale-while-revalidate=86400");
+
 const db = createDb(env.DATABASE_URL);
 
 // Build where conditions
