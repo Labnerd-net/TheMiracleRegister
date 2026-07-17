@@ -41,6 +41,7 @@ _None identified._
 
 ### Low
 - **#12 [src/api/routes/search.ts, src/pages/search.astro]** Search is implemented as `ilike(field, \`%${q}%\`)` against multiple text columns. No index can accelerate a leading-wildcard pattern. Fix: add PostgreSQL `pg_trgm` trigram indexes on synopsis, biography_short, medical_diagnosis, and cure_details for substring-match acceleration, or migrate to `tsvector`/`tsquery` for full stemming support.
+- **#45 [Cloudflare dashboard — WAF, not a code change]** WordPress vulnerability-scanner bots (`/wp-admin/*`, `*.php`, `/wp-content/*`, etc.) generate steady request noise against the Worker — ~1,000+ hits/week per observability logs (2026-07-17 investigation). These don't reach Neon (no DB call on unmatched routes) so they don't affect compute cost, but they inflate Worker request volume and log noise. Fix: add a Cloudflare WAF rule blocking known WP-scanner path patterns at the edge. Deferred — page caching (deployed 2026-07-17) addressed the actual Neon CU-hour driver; revisit only if Worker request volume/logging becomes a separate concern.
 
 ---
 
@@ -80,7 +81,7 @@ _None identified._
 |----------|------|--------|-----|-------|
 | Security | 0 | 0 | 0 | 0 |
 | Bugs | 0 | 0 | 0 | 0 |
-| Performance | 0 | 0 | 1 | 1 |
+| Performance | 0 | 0 | 2 | 2 |
 | Improvements & Refactors | 0 | 0 | 3 | 3 |
 | Feature Ideas | 0 | 0 | 3 | 3 |
-| **Total** | **0** | **0** | **7** | **7** |
+| **Total** | **0** | **0** | **8** | **8** |
