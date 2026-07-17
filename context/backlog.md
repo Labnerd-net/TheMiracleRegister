@@ -1,7 +1,7 @@
 # Project Backlog
 
 > Generated: 2026-07-17
-> Updated: 2026-07-17 — #1, #2, #8, #9 completed and removed
+> Updated: 2026-07-17 — #1, #2, #4, #8, #9, #10, #21 completed and removed
 > Focus: Full audit
 
 ---
@@ -38,7 +38,6 @@ _None identified._
 _None identified._
 
 ### Medium
-- **#4 Homepage fetches every published saint unbounded** (`src/pages/index.astro:23-30`): The "Featured Saints" carousel selects every published saint with no `LIMIT`, scaling linearly with the table just to render a homepage strip. Fix: add a `LIMIT` (e.g. 12–20) and/or a `featured` flag, or select a curated/random subset server-side.
 - **#5 `/random` forces a full table scan + sort** (`src/pages/random.astro:14-28`): `ORDER BY RANDOM()` scans and sorts the entire `saints`/`miracles` tables on every request (page sets `Cache-Control: no-store`, so this runs every hit). Fix: use `OFFSET floor(random() * count) LIMIT 1` with a pre-fetched count, or `TABLESAMPLE`.
 - **#6 Missing index on `published` columns** (`src/db/schema/saints.ts`, `src/db/schema/miracles.ts`): Nearly every public-facing query filters on `eq(saints.published, true)` / `eq(miracles.published, true)`, but there's no index on either column. Currently masked by small data volume — add a btree (or partial) index once the dataset grows.
 
@@ -53,7 +52,6 @@ _None identified._
 _None identified._
 
 ### Medium
-- **#10 Filter-building logic triplicated per list page** (`src/pages/miracles/index.astro`, `src/pages/saints/index.astro`): The same ~9 filter params are independently encoded in server-side `where` construction, `buildApiUrl()`, and `buildPageUrl()`, plus client-side `renderCard()` duplicates the server-rendered card markup. Fix: a single declarative filter-schema (param → validator → column) shared between server render and client fetch.
 - **#11 Feast-day resolution logic duplicated across three files** (`src/pages/index.astro:38-52`, `src/pages/calendar.astro:58-77`): The fixed-month/day-or-movable-Easter-offset match logic is reimplemented per page rather than centralized alongside `src/lib/easter.ts`. Fix: extract `getFeastsForDate()` / `getFeastsForMonth()` helpers in `src/lib/`.
 - **#12 Client-side JS duplicates server-rendered card markup** (`src/pages/miracles/index.astro`, `src/pages/miracles/[slug].astro`): `renderCard`, `buildApiUrl`, `buildPageUrl`, and lightbox logic are inlined in `<script>` blocks (~180 lines) rather than extracted to a shared module, duplicating server-side rendering logic and risking drift. Fix: extract into a shared TS module (e.g. `src/lib/miracleCard.ts`).
 - **#13 No lint/format tooling configured**: `package.json` has no `lint`/`format` script and no ESLint/Prettier config exists, despite `CLAUDE.md` documenting a `typecheck → lint → test → deploy` CI pipeline that doesn't appear to exist (no `.github/workflows` found). Fix: add `astro check` + ESLint as a script/CI stage to catch drift like #8–#10 before merge, or update docs to reflect actual pipeline.
@@ -66,7 +64,6 @@ _None identified._
 - **#18 Admin form validation gaps for topics/themes/URLs** (`src/lib/form-utils.ts`, `src/pages/admin/miracles/new.astro`, `.../[slug]/edit.astro`): Only `title`/`saint_ids` or `name`/`canonization_stage` are Zod-validated; topics/themes aren't checked against the canonical `MIRACLE_TOPICS`/`SAINT_THEMES` lists, and URL fields aren't validated as URLs. Low risk (single trusted admin) but allows typo'd values into controlled-vocabulary columns, silently breaking topic filtering.
 - **#19 Admin edit pages mix many unrelated form actions** (`src/pages/admin/miracles/[slug]/edit.astro`, `src/pages/admin/saints/[slug]/edit.astro`): 300+ line files handling `add_image`/`delete_image`/`add_source`/`delete_source`/main update (plus relations/locations on the saints version) in one file. Consider extracting each sub-resource action into shared `src/lib/` helpers.
 - **#20 Inconsistent boolean query-param typing** (`src/api/schemas.ts:209-210`, `src/api/routes/miracles.ts:73-74`): `used_for_beatification`/`used_for_canonization` are typed `z.string().optional()` and checked with `=== "1"` rather than `z.coerce.boolean()` or `z.enum(["1"])`, showing as free-text in the generated OpenAPI spec.
-- **#21 Sitemap omits `/calendar`** (`src/pages/sitemap.xml.ts:32-38`): Lists `/`, `/saints`, `/miracles`, `/map`, `/miracles/timeline`, `/search` but not the calendar page, despite it being a real indexable content page and explicitly framed as a discovery layer.
 - **#22 Admin middleware re-validates HMAC on every request** (`src/middleware.ts:8`): Not a bug at current scale — every `/admin` request pays the `crypto.subtle` HMAC verify cost, and auth is a single shared password. Just flagging as the one place session logic lives if multi-user admin accounts are ever added.
 
 ---
@@ -96,7 +93,7 @@ _None identified._
 |----------|------|--------|-----|-------|
 | Security | 0 | 1 | 0 | 1 |
 | Bugs | 0 | 0 | 0 | 0 |
-| Performance | 0 | 3 | 1 | 4 |
-| Improvements & Refactors | 0 | 5 | 8 | 13 |
+| Performance | 0 | 2 | 1 | 3 |
+| Improvements & Refactors | 0 | 4 | 7 | 11 |
 | Feature Ideas | 2 | 3 | 4 | 9 |
-| **Total** | 2 | 12 | 13 | 27 |
+| **Total** | 2 | 10 | 12 | 24 |
