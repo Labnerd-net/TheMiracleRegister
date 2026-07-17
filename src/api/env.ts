@@ -1,1 +1,1 @@
-export type ApiEnv = { Bindings: { DATABASE_URL: string } };
+export type ApiEnv = { Bindings: { DATABASE_URL: string; RATE_LIMIT: KVNamespace } };
