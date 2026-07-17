@@ -10,6 +10,9 @@ _None_
 
 ## History
 
+### Constant-Time Admin Password Comparison (backlog #2)
+Replaced the plain `===` comparison of the submitted login password against `env.ADMIN_PASSWORD` with a constant-time check. Added `verifyPassword()` to `src/lib/auth.ts`, which HMACs the expected password and verifies the submitted password's HMAC against it via `crypto.subtle.verify` (constant-time by spec). Wired into `src/pages/admin/login.astro`. Verified locally: wrong password still shows "Incorrect password," correct password redirects to `/admin` with a valid session cookie.
+
 ### Drizzle Schema and Neon Setup
 Initialized the full TypeScript project and database layer. Defined all 4 tables (saints, saint_relations, miracles, miracle_sources) split per file, 13 Postgres enums, Drizzle config, Neon client, and migration tooling. Migration applied successfully to Neon dev branch.
 

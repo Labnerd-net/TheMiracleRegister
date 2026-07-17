@@ -29,6 +29,15 @@ async function hmacVerify(message: string, hexSig: string, secret: string): Prom
   return crypto.subtle.verify("HMAC", key, sigBytes, enc.encode(message));
 }
 
+export async function verifyPassword(
+  password: string,
+  expectedPassword: string,
+  secret: string
+): Promise<boolean> {
+  const expectedSig = await hmac(expectedPassword, secret);
+  return hmacVerify(password, expectedSig, secret);
+}
+
 export async function createSessionToken(sessionSecret: string): Promise<string> {
   const expiresAt = Date.now() + SESSION_DURATION_MS;
   const sig = await hmac(`${expiresAt}`, sessionSecret);

@@ -1,6 +1,6 @@
 ---
 import { env } from "cloudflare:workers";
-import { SESSION_COOKIE, createSessionToken, sessionCookieHeader } from "../../lib/auth";
+import { SESSION_COOKIE, createSessionToken, sessionCookieHeader, verifyPassword } from "../../lib/auth";
 
 const MAX_ATTEMPTS = 5;
 const WINDOW_SECONDS = 15 * 60;
@@ -21,7 +21,7 @@ if (attempts >= MAX_ATTEMPTS) {
   const form = await Astro.request.formData();
   const password = form.get("password")?.toString() ?? "";
 
-  if (password === env.ADMIN_PASSWORD) {
+  if (await verifyPassword(password, env.ADMIN_PASSWORD, env.SESSION_SECRET)) {
     await env.RATE_LIMIT.delete(kvKey);
     const token = await createSessionToken(env.SESSION_SECRET);
     return new Response(null, {
