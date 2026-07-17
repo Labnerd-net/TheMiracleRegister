@@ -10,6 +10,9 @@ _None_
 
 ## History
 
+### Cap Homepage Featured Saints Query (backlog #4)
+The "Featured Saints" carousel query in `src/pages/index.astro` selected every published saint with no `LIMIT`, scaling linearly with the table just to render a homepage strip. Added `.limit(20)`. Verified locally: homepage renders identically with the current dataset (well under 20 saints), query now bounded regardless of table growth.
+
 ### Rate Limit Public API and Search (backlog #1)
 Rate limiting previously existed only for `/admin/login`; the public `/api/v1/*` routes and `/search` page ran unbounded `ILIKE '%...%'` queries with no per-IP throttling. Added a shared `isRateLimited()` helper (`src/lib/rateLimit.ts`) reusing the existing `RATE_LIMIT` KV namespace and the same counter pattern as login. Applied as Hono middleware across all of `/api/v1/*` (60 req/min per IP, covers `/api/v1/search` automatically) and separately on the `/search` Astro page (30 req/min per IP, since it's not under `/api/v1/*`) — sets `Astro.response.status = 429` when limited, with a "Too many searches" message in place of results. Added `RATE_LIMIT` to the Hono `ApiEnv` bindings type and a fake in-memory KV stub to `tests/api.test.ts` (test env previously had no KV binding). Verified locally: 60th+ API request and 31st+ search-page request return 429; normal traffic under the threshold is unaffected. Build, tests, and manual load pass.
 
