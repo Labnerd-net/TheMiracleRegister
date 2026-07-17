@@ -1,53 +1,19 @@
 ---
 import Base from "../layouts/Base.astro";
 import { createDb } from "../db";
-import { miracles, saints } from "../db/schema";
-import { and, eq, ilike, or, sql } from "drizzle-orm";
+import { searchContent, type SearchResult } from "../lib/search";
 import { env } from "cloudflare:workers";
 
 const q = Astro.url.searchParams.get("q")?.trim() ?? "";
 
-type SaintResult = { slug: string; name: string; excerpt: string | null };
-type MiracleResult = { slug: string; title: string; excerpt: string | null };
-
-let saintResults: SaintResult[] = [];
-let miracleResults: MiracleResult[] = [];
+let saintResults: SearchResult[] = [];
+let miracleResults: SearchResult[] = [];
 
 if (q.length >= 2) {
   const db = createDb(env.DATABASE_URL);
-  const pattern = `%${q}%`;
-
-  [saintResults, miracleResults] = await Promise.all([
-    db
-      .select({
-        slug: saints.slug,
-        name: saints.name,
-        excerpt: sql<string | null>`LEFT(${saints.biography_short}, 220)`,
-      })
-      .from(saints)
-      .where(and(
-        eq(saints.published, true),
-        or(ilike(saints.name, pattern), ilike(saints.biography_short, pattern))
-      ))
-      .limit(200),
-    db
-      .select({
-        slug: miracles.slug,
-        title: miracles.title,
-        excerpt: sql<string | null>`LEFT(${miracles.synopsis}, 220)`,
-      })
-      .from(miracles)
-      .where(and(
-        eq(miracles.published, true),
-        or(
-          ilike(miracles.title, pattern),
-          ilike(miracles.synopsis, pattern),
-          ilike(miracles.medical_diagnosis, pattern),
-          ilike(miracles.cure_details, pattern),
-        )
-      ))
-      .limit(200),
-  ]);
+  const { results } = await searchContent(db, { q, excerptLength: 220, perEntityLimit: 200 });
+  saintResults = results.filter((r) => r.type === "saint");
+  miracleResults = results.filter((r) => r.type === "miracle");
 }
 
 const total = saintResults.length + miracleResults.length;
@@ -104,7 +70,7 @@ const hasResults = total > 0;
                 <a href={`/saints/${s.slug}`} class="result-card block no-underline group">
                   <div class="card px-6 py-4">
                     <div class="result-type-tag">Saint</div>
-                    <h3 class="result-title group-hover:text-[--color-accent]">{s.name}</h3>
+                    <h3 class="result-title group-hover:text-[--color-accent]">{s.title}</h3>
                     {s.excerpt && (
                       <p class="result-excerpt">{s.excerpt.length === 220 ? s.excerpt + "…" : s.excerpt}</p>
                     )}

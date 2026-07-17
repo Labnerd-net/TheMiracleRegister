@@ -10,6 +10,9 @@ _None_
 
 ## History
 
+### Deduplicate Search Logic Between API and Page (backlog #9)
+`src/api/routes/search.ts` and `src/pages/search.astro` independently ran near-identical `ilike` queries against `saints`/`miracles`, maintained as two separate code paths. Extracted a shared `searchContent()` into `src/lib/search.ts`, parameterized by `excerptLength`/`perEntityLimit` so each caller's existing visible behavior is preserved exactly (200-char excerpt/100 per-entity cap for the API, 220-char/200-cap for the page — no behavior change). Both the API route and the Astro page now call the same function; the page filters the unified result list by `type` to render its Saints/Miracles sections. Topic search remains API-only (page has no topic UI) — not part of this dedup. Verified build, tests, and manual queries against both entry points render identically to before.
+
 ### Single Source of Truth for Miracle Types (backlog #8)
 `MIRACLE_TYPES` was hardcoded independently in three places — `src/api/routes/metadata.ts`, `src/api/routes/types.ts`, and `src/pages/miracles/index.astro` — each a manual copy of the 10 values in the canonical `miracleType` enum (`src/db/schema/enums.ts`). Any new miracle type required updating all four locations in sync. Replaced all three with derivations from `miracleType.enumValues`, using the existing `humanizeSnakeCase()` helper for labels (verified it reproduces the old hardcoded labels exactly, e.g. "Miraculous Image"). Verified `/api/v1/types`, `/api/v1/metadata`, and the `/miracles` filter dropdown all render identical output to before. Build, tests, and preview all pass.
 
