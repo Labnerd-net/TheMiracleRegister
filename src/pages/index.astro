@@ -27,7 +27,7 @@ const [[{ saintCount }], [{ miracleCount }], [{ apparitionCount }], featuredSain
     nationality: saints.nationality,
     canonization_stage: saints.canonization_stage,
     feast_day: saints.feast_day,
-  }).from(saints).where(eq(saints.published, true)).orderBy(asc(saints.name)),
+  }).from(saints).where(eq(saints.published, true)).orderBy(asc(saints.name)).limit(20),
   db.select({
     slug: saints.slug,
     name: saints.name,

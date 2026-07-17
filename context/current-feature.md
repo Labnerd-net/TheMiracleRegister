@@ -10,6 +10,9 @@ _None_
 
 ## History
 
+### Cap Homepage Featured Saints Query (backlog #4)
+The "Featured Saints" carousel query in `src/pages/index.astro` selected every published saint with no `LIMIT`, scaling linearly with the table just to render a homepage strip. Added `.limit(20)`. Verified locally: homepage renders identically with the current dataset (well under 20 saints), query now bounded regardless of table growth.
+
 ### Add /calendar to Sitemap + Fix Sitemap 500 (backlog #21)
 `src/pages/sitemap.xml.ts` omitted `/calendar` from its static entries despite it being a real indexable content page. Added `url("/calendar")`. While verifying in the browser, found `/sitemap.xml` was already returning a 500 on `main` — `lastmod.slice is not a function`, because Drizzle returns `updated_at` as a `Date` object, not a string, and the `url()` helper assumed a string. Fixed in the same commit (flagged to the user first, since it's a separate bug): `url()` now accepts `Date | string | null` and calls `.toISOString()` on `Date` values before slicing. Verified `/sitemap.xml` returns 200 with correct `<lastmod>` dates and includes `/calendar`.
 
