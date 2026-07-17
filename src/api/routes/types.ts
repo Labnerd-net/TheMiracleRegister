@@ -1,18 +1,12 @@
 import { OpenAPIHono, createRoute, z } from "@hono/zod-openapi";
 import { MiracleTypeItemSchema, envelopeSchema } from "../schemas";
+import { miracleType } from "../../db/schema/enums";
+import { humanizeSnakeCase } from "../../lib/format";
 
-const MIRACLE_TYPES = [
-  { type: "healing", label: "Healing" },
-  { type: "nature", label: "Nature" },
-  { type: "eucharistic", label: "Eucharistic" },
-  { type: "stigmata", label: "Stigmata" },
-  { type: "incorruptibility", label: "Incorruptibility" },
-  { type: "apparition", label: "Apparition" },
-  { type: "miraculous_image", label: "Miraculous Image" },
-  { type: "prophecy", label: "Prophecy" },
-  { type: "bilocation", label: "Bilocation" },
-  { type: "other", label: "Other" },
-] as const;
+const MIRACLE_TYPES = miracleType.enumValues.map((type) => ({
+  type,
+  label: humanizeSnakeCase(type),
+}));
 
 const types = new OpenAPIHono();
 

@@ -10,6 +10,9 @@ _None_
 
 ## History
 
+### Single Source of Truth for Miracle Types (backlog #8)
+`MIRACLE_TYPES` was hardcoded independently in three places — `src/api/routes/metadata.ts`, `src/api/routes/types.ts`, and `src/pages/miracles/index.astro` — each a manual copy of the 10 values in the canonical `miracleType` enum (`src/db/schema/enums.ts`). Any new miracle type required updating all four locations in sync. Replaced all three with derivations from `miracleType.enumValues`, using the existing `humanizeSnakeCase()` helper for labels (verified it reproduces the old hardcoded labels exactly, e.g. "Miraculous Image"). Verified `/api/v1/types`, `/api/v1/metadata`, and the `/miracles` filter dropdown all render identical output to before. Build, tests, and preview all pass.
+
 ### Constant-Time Admin Password Comparison (backlog #2)
 Replaced the plain `===` comparison of the submitted login password against `env.ADMIN_PASSWORD` with a constant-time check. Added `verifyPassword()` to `src/lib/auth.ts`, which HMACs the expected password and verifies the submitted password's HMAC against it via `crypto.subtle.verify` (constant-time by spec). Wired into `src/pages/admin/login.astro`. Verified locally: wrong password still shows "Incorrect password," correct password redirects to `/admin` with a valid session cookie.
 
