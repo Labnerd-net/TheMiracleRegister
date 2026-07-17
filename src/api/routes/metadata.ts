@@ -1,5 +1,7 @@
 import { OpenAPIHono, createRoute, z } from "@hono/zod-openapi";
 import { MIRACLE_TOPICS, SAINT_THEMES } from "../../db/topics";
+import { miracleType } from "../../db/schema/enums";
+import { humanizeSnakeCase } from "../../lib/format";
 import { envelopeSchema } from "../schemas";
 
 const MetadataSchema = z
@@ -12,18 +14,10 @@ const MetadataSchema = z
   })
   .openapi("Metadata");
 
-const MIRACLE_TYPES = [
-  { value: "healing", label: "Healing" },
-  { value: "nature", label: "Nature" },
-  { value: "eucharistic", label: "Eucharistic" },
-  { value: "stigmata", label: "Stigmata" },
-  { value: "incorruptibility", label: "Incorruptibility" },
-  { value: "apparition", label: "Apparition" },
-  { value: "miraculous_image", label: "Miraculous Image" },
-  { value: "prophecy", label: "Prophecy" },
-  { value: "bilocation", label: "Bilocation" },
-  { value: "other", label: "Other" },
-] as const;
+const MIRACLE_TYPES = miracleType.enumValues.map((value) => ({
+  value,
+  label: humanizeSnakeCase(value),
+}));
 
 const MIRACLE_CATEGORIES = [
   { value: "intercessory", label: "Intercessory" },

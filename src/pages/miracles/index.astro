@@ -119,10 +119,6 @@ function buildUrl(p: number) {
   return `/miracles?${params.toString()}`;
 }
 
-const MIRACLE_TYPES = [
-  "healing", "nature", "eucharistic", "stigmata", "incorruptibility",
-  "apparition", "miraculous_image", "prophecy", "bilocation", "other",
-] as const;
 ---
 
 <Base title="Miracles">
@@ -155,7 +151,7 @@ const MIRACLE_TYPES = [
           <label class="filter-label">Type</label>
           <select name="type" class="filter-select">
             <option value="">All Types</option>
-            {MIRACLE_TYPES.map(t => (
+            {miracleType.enumValues.map(t => (
               <option value={t} selected={t === filterType}>{humanizeSnakeCase(t)}</option>
             ))}
           </select>
