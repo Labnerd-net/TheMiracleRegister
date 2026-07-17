@@ -10,6 +10,9 @@
   "observability": {
     "enabled": true
   },
+  "cache": {
+    "enabled": true
+  },
   "kv_namespaces": [
     {
       "binding": "RATE_LIMIT",

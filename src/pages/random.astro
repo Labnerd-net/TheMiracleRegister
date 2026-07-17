@@ -4,6 +4,8 @@ import { saints, miracles } from "../db/schema";
 import { eq, sql } from "drizzle-orm";
 import { env } from "cloudflare:workers";
 
+Astro.response.headers.set("Cache-Control", "no-store");
+
 const db = createDb(env.DATABASE_URL);
 
 const pickSaint = Math.random() < 0.5;
