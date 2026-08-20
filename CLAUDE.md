@@ -268,8 +268,7 @@ All routes under `/api/v1/`. Hono + `@hono/zod-openapi` — OpenAPI spec generat
 
 ## Research Notes
 
-Research notes and AI handoffs in Nextcloud: `MiraclesProject/Research/`
-Also check `context/Notes/` for in-progress research before starting data work.
+Claude handles both coding and research for this project — there are no separate AI handoffs. Research is confined to `context/Notes/`; check there for in-progress research before starting data work.
 
 ---
 
