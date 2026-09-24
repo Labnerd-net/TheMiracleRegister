@@ -10,26 +10,26 @@ Nationality:       American
 Ministry Country:  United States
 Religious Order:   [null — diocesan secular clergy, Diocese of Peoria; no religious order]
 Gender:            male
-Saint Name:        Venerable Fulton Sheen
+Saint Name:        Blessed Fulton Sheen
 Beatification Miracle Dispensed: false
 Canonization Miracle Dispensed: [null — not yet canonized]
 Dispensation Reason: [null]
 Lay Person:        false
-Feast Day:         December 9
-Beatification Date: September 24, 2026 (scheduled; not yet occurred as of June 2026)
+Feast Day:         December 9 (UNVERIFIED — confirm against the apostolic letter of beatification)
+Beatification Date: September 24, 2026
 Beatified By:      Cardinal Luis Antonio Tagle (as papal legate for Pope Leo XIV)
 Canonization Date: [null]
 Canonized By:      [null]
 Canonization Type: confessor
-Canonization Stage: venerable (update to blessed after September 24, 2026)
+Canonization Stage: blessed
 Patronage:         [null — no patronage formally declared yet]
 Themes:            eucharistic, marian, missionaries, spiritual-direction
 Biography Short:   See Biography.md
 Image URL:         [TO BE ADDED — check Wikimedia Commons]
 Wikipedia URL:     https://en.wikipedia.org/wiki/Fulton_J._Sheen
 
-NOTE: Beatification scheduled September 24, 2026, St. Louis, Missouri. Update
-canonization_stage to `blessed` and saint_name to "Blessed Fulton Sheen" after that date.
+NOTE: Beatified September 24, 2026, St. Louis, Missouri. DB updated same day (stage, saint_name,
+beatification_date, beatified_by, biography). Feast day still unverified.
 
 =======================================================================
 
@@ -51,8 +51,10 @@ SAINT LOCATIONS (saint_locations table)
 
 1. Location: El Paso, Illinois, USA | Lat: 40.7392 | Lng: -89.0165 | Type: birthplace
 2. Location: New York City, New York, USA | Lat: 40.7580 | Lng: -73.9855 | Type: death_place
-3. Location: St. Mary's Cathedral, Peoria, Illinois, USA | Lat: 40.6936 | Lng: -89.5890 | Type: tomb
+3. Location: Cathedral of St. Mary of the Immaculate Conception, Peoria, Illinois, USA | Lat: 40.698406 | Lng: -89.584961 | Type: tomb
 
-NOTE on tomb: His remains were transferred from St. Patrick's Cathedral, New York, to St. Mary's Cathedral in Peoria as a condition of the beatification process. Confirm final resting place before DB entry.
+NOTE on tomb: Confirmed. Side chapel of the Cathedral of St. Mary of the Immaculate Conception,
+607 NE Madison Ave., Peoria, IL 61603. Remains transferred from St. Patrick's Cathedral, New York.
+Coordinates from OpenStreetMap geocode of the street address.
 
 =======================================================================

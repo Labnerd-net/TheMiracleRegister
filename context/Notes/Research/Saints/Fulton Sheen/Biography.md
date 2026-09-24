@@ -6,4 +6,4 @@ From 1950 to 1966 Sheen served as national director of the Society for the Propa
 
 Throughout his life Sheen maintained a daily holy hour before the Blessed Sacrament — a practice he credited with sustaining his priesthood and his public ministry. His Marian devotion was equally central; he attributed all of his work to the intercession of Our Lady. He is widely regarded as one of the most influential American Catholics of the twentieth century, with a body of writing and broadcast work that continues to be studied and republished.
 
-His cause for canonization was opened by the Diocese of Peoria. Pope Benedict XVI declared him Venerable on June 28, 2012, recognizing his heroic virtue. His beatification is scheduled for September 24, 2026, in St. Louis.
+His cause for canonization was opened by the Diocese of Peoria. Pope Benedict XVI declared him Venerable on June 28, 2012, recognizing his heroic virtue. He was beatified on September 24, 2026, in St. Louis, at a Mass at which Cardinal Luis Antonio Tagle, as papal legate, read Pope Leo XIV's apostolic letter declaring him Blessed.
