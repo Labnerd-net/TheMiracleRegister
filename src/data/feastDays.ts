@@ -205,7 +205,7 @@ export const FIXED_FEASTS: FixedFeastEntry[] = [
   { month: 6, day: 22, name: 'Saints John Fisher and Thomas More' },
   { month: 6, day: 23, name: 'Saint Joseph Cafasso', scope: 'martyrologium' },
   { month: 6, day: 24, name: 'Nativity of Saint John the Baptist' },
-  { month: 6, day: 26, name: 'Saint Josemaría Escrivá' },
+  // { month: 6, day: 26, name: 'Saint Josemaría Escrivá' }, // [in DB]
   { month: 6, day: 27, name: 'Saint Cyril of Alexandria' },
   { month: 6, day: 28, name: 'Saint Irenaeus' },
   { month: 6, day: 29, name: 'Saints Peter and Paul, Apostles' },

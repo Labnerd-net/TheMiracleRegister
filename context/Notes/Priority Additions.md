@@ -9,7 +9,6 @@ Research notes for InProgress saints in `context/Notes/Research/Saints/InProgres
 
 | Priority | Saint | Feast Day | Canonized | Notes | Research Notes |
 |---|---|---|---|---|---|
-| 1  | Josemaría Escrivá | Jun 26 | 2002 | Founder of Opus Dei; 2 miracles | Yes (stubs only) |
 | 2  | John Neumann | Jan 5 | 1977 | First American male saint; 3 miracles | Yes (stubs only) |
 | 3  | Marguerite d'Youville | Oct 16 | 1990 | Founder of Grey Nuns; 2 miracles | Yes (stubs only) |
 | 4  | Katharine Drexel | Mar 3 | 2000 | Founder of Sisters of the Blessed Sacrament; 2 miracles | No |
