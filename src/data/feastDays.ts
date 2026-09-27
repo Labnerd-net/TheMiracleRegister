@@ -27,7 +27,7 @@ export const FIXED_FEASTS: FixedFeastEntry[] = [
   { month: 1, day: 3, name: 'Most Holy Name of Jesus' },
   // { month: 1, day: 4, name: 'Saint Elizabeth Ann Seton', scope: 'us' }, // [in DB]
   { month: 1, day: 4, name: 'Saint Angela of Foligno', scope: 'martyrologium' },
-  { month: 1, day: 5, name: 'Saint John Neumann', scope: 'us' },
+  // { month: 1, day: 5, name: 'Saint John Neumann', scope: 'us' }, // [in DB]
   { month: 1, day: 6, name: 'Epiphany of the Lord' },
   // { month: 1, day: 6, name: 'Saint André Bessette', scope: 'us' }, // [in DB]
   { month: 1, day: 7, name: 'Saint Raymond of Penyafort' },
