@@ -19,7 +19,6 @@ Research notes for InProgress saints in `context/Notes/Research/Saints/InProgres
 | 9  | Josephine Bakhita | Feb 8 | 2000 | Former Sudanese slave; compelling modern story; 2 miracles | No |
 | 10 | Marianne Cope | Jan 23 | 2012 | Worked alongside Damien of Molokai; natural pairing with existing saint; 2 miracles | No |
 | 11 | Mary MacKillop | Aug 8 | 2010 | First Australian saint; 2 miracles | No |
-| 12 | John Henry Newman | Oct 9 | 2019 | Cardinal; 2 well-documented miracles; recent Positio accessible | No |
 | 13 | Paul VI | May 29 | 2018 | Major historical figure; 2 miracles; canonized same day as Romero | No |
 | 14 | Titus Brandsma | Jul 27 | 2022 | Most recent canonization; Dutch journalist/Carmelite martyr; died at Dachau | No |
 | 15 | Devasahayam Pillai | Jan 14 | 2022 | First Indian layman canonized; martyr; very recent | No |
