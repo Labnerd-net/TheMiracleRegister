@@ -1,7 +1,7 @@
 # Priority Additions to the DB
 
 Ordered priority list for new saints and miracles to add. Check off as completed.
-Research notes for InProgress saints in `context/Notes/Research/Saints/InProgress/`.
+Research notes for in-progress saints live directly under `context/Notes/Research/Saints/` (format template in `_Template/`); a folder is deleted once its saint is fully published and verified against the DB.
 
 ---
 
