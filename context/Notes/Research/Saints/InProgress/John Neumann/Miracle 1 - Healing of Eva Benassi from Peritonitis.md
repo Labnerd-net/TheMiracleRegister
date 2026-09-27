@@ -4,14 +4,14 @@ Saint:        John Neumann
 Miracle:      Healing of Eva Benassi from Peritonitis
 Recipient:    Eva Benassi
 Condition:    Tuberculous (tubercular) peritonitis
-Date:         1923 (month/day not found in secondary sources)
-Location:     Sassuolo, Northern Italy
+Date:         May 1923 (exact day not confirmed — one account narrows the application of the relic to "between 8 and 9 o'clock Monday evening")
+Location:     Sassuolo, Northern Italy (Institute of St. Joseph boarding school)
 
 ---
 
-In 1923, in the small manufacturing town of Sassuolo in Italy's Emilia-Romagna region, eleven-year-old Eva Benassi was stricken with acute tuberculous peritonitis — an infection of the abdominal lining seeded by tuberculosis elsewhere in the body, and in the pre-antibiotic era almost uniformly fatal once fully established. Her physician, identified in period accounts as Dr. Louis Barbante, examined her and told the family plainly that her death was imminent, likely within hours. A priest was called to the house to administer the last rites, and the household began the grim work of preparing for a child's funeral.
+In May 1923, at the boarding school of the Institute of St. Joseph in Sassuolo, a manufacturing town in Italy's Emilia-Romagna region, eleven-year-old Eva Benassi grew drowsy and feverish during study hours, complaining of headaches and abdominal pain. Her physician, identified in period accounts as Dr. Louis Barbante, initially prescribed medicine for what looked like a lesser illness, but as her condition worsened he revised the diagnosis to tubercular peritonitis — an infection of the abdominal lining seeded by tuberculosis elsewhere in the body, and in the pre-antibiotic era almost uniformly fatal once fully established. He told the family plainly that her death was imminent and foreseeable before the night was out.
 
-Rather than accept the prognosis as final, a religious sister connected to Eva's school — named in surviving accounts as Sister Elizabeth — gathered the school community in prayer that evening, invoking the intercession of Bishop John Neumann of Philadelphia, who had died in 1860 and was at that time still only a Venerable, decades before his own cause would reach beatification. A holy picture bearing Neumann's likeness was pressed against Eva's abdomen as the prayers continued through the night, in the hope that a bishop half a world away and more than sixty years in his grave might obtain from God what medicine in Sassuolo could not.
+Rather than accept the prognosis as final, the school community turned that Monday evening — between eight and nine o'clock, by the surviving account — to a holy picture of Bishop John Neumann of Philadelphia, who had died in 1860 and was at that time still only a Venerable, decades before his own cause would reach beatification. By one telling, the choice of intercessor was not arbitrary: the same image was already credited within the family with an earlier cure of Eva's father, though the details of that claimed healing were not preserved in the sources consulted for this note and would need further research before inclusion in any published account. The picture was pressed against Eva's abdomen as prayers continued into the night, in the hope that a bishop half a world away and more than sixty years in his grave might obtain from God what medicine in Sassuolo could not.
 
 By the time Dr. Barbante returned the following morning, expecting to confirm the death he had forecast, he instead found a girl with no clinical trace of the disease that had been consuming her hours before — no fever, no abdominal rigidity, no sign of the infection that should have killed her. Eva made a full recovery and went on to live a long and healthy life, one that would eventually place her case at the center of an American bishop's road to sainthood on another continent.
 
@@ -26,8 +26,8 @@ Synopsis File:       Miracle 1 - Healing of Eva Benassi from Peritonitis
 Miracle Category:    intercessory
 Type:                healing
 Topics:              children
-Date of Event:       1923
-Date Precision:      year
+Date of Event:       1923-05
+Date Precision:      month
 Timing Relative to Saint Death:posthumous
 Location Name:       Sassuolo
 Country:             Italy
@@ -41,7 +41,7 @@ Recipient Age Approximate:false
 Recipient Gender:    female
 Recipient Country:   Italy
 Medical Diagnosis:   Tuberculous peritonitis
-Cure Details:        [TO BE RESEARCHED — narrative detail beyond "full recovery overnight"]
+Cure Details:        Onset of drowsiness, fever, headache and abdominal pain progressed within days to a terminal peritonitis diagnosis; overnight reversal of all symptoms after a Neumann holy picture was applied to her abdomen during evening prayers
 Cure Characteristics:instant_complete
 Medically Verified:  true
 Medical Verification Date:
@@ -59,6 +59,6 @@ Sources:
 3. URL: http://membrane.com/philanet/neumann/miracles2.html | Title: Miracles performed by Saint John Neumann | Type: other (site unreachable at research time — connection refused; content referenced via search snippet only, re-verify before use)
 
 Open questions before this can move past stub status:
-- Exact date of the healing (only "1923" found)
+- Exact day of the healing (narrowed to May 1923, specifically a Monday evening — could be cross-referenced against a 1923 calendar and the Institute of St. Joseph's own records if they survive)
 - Primary Vatican decree text/date for the March 1963 approval
-- Full narrative detail for the synopsis (500-1000 words needs more than the one-paragraph summary found so far)
+- The claim that the same Neumann image had earlier cured Eva's father — mentioned in one source with no supporting detail; needs its own research pass before repeating it anywhere public-facing
