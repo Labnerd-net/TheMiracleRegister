@@ -1,5 +1,6 @@
 ---
 import { MIRACLE_TOPICS } from "../db/topics";
+import { COUNTRIES } from "../db/countries";
 import {
   miracleCategory, miracleType, datePrecision, timingRelativeToSaintDeath,
   recipientPrivacy, recipientGender, cureCharacteristics, intercessoryMedium, approvalAuthority,
@@ -125,7 +126,7 @@ const currentSaintIds = new Set(selectedSaintIds);
       </div>
       <div class="field">
         <label for="country">Country</label>
-        <input type="text" id="country" name="country" value={v?.country ?? ""} />
+        <input type="text" id="country" name="country" value={v?.country ?? ""} list="country-options" />
       </div>
       <div class="field">
         <label for="region">Region</label>
@@ -184,7 +185,7 @@ const currentSaintIds = new Set(selectedSaintIds);
       </div>
       <div class="field">
         <label for="recipient_country">Recipient Country</label>
-        <input type="text" id="recipient_country" name="recipient_country" value={v?.recipient_country ?? ""} />
+        <input type="text" id="recipient_country" name="recipient_country" value={v?.recipient_country ?? ""} list="country-options" />
       </div>
       <div class="field">
         <label for="recipient_age_at_event">Age at Event</label>
@@ -325,4 +326,8 @@ const currentSaintIds = new Set(selectedSaintIds);
     <button type="submit" class="btn btn-primary">{v ? "Save Changes" : "Create Miracle"}</button>
     <a href="/admin/miracles" class="btn btn-secondary">Cancel</a>
   </div>
+
+  <datalist id="country-options">
+    {COUNTRIES.map((c) => <option value={c} />)}
+  </datalist>
 </form>

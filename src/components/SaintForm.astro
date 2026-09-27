@@ -1,5 +1,6 @@
 ---
 import { SAINT_THEMES } from "../db/topics";
+import { COUNTRIES } from "../db/countries";
 import { canonizationType, canonizationStage, dispensationReason, feastScope, gender } from "../db/schema/enums";
 import type { saints } from "../db/schema";
 
@@ -74,7 +75,7 @@ const join = (arr: string[] | null | undefined) => arr?.join(", ") ?? "";
       </div>
       <div class="field">
         <label for="ministry_country">Country of Ministry</label>
-        <input type="text" id="ministry_country" name="ministry_country" value={v?.ministry_country ?? ""} placeholder="if different from nationality" />
+        <input type="text" id="ministry_country" name="ministry_country" value={v?.ministry_country ?? ""} placeholder="if different from nationality" list="country-options" />
       </div>
       <div class="field">
         <label for="religious_order">Religious Order</label>
@@ -257,4 +258,8 @@ const join = (arr: string[] | null | undefined) => arr?.join(", ") ?? "";
     <button type="submit" class="btn btn-primary">{v ? "Save Changes" : "Create Saint"}</button>
     <a href="/admin/saints" class="btn btn-secondary">Cancel</a>
   </div>
+
+  <datalist id="country-options">
+    {COUNTRIES.map((c) => <option value={c} />)}
+  </datalist>
 </form>
