@@ -23,17 +23,20 @@ Canonized By:        Pope Paul VI
 Canonization Type:   confessor
 Canonization Stage:  saint
 Patronage:           Immigrants, Catholic education, Philadelphia, bishops
-Themes:              immigration, education, perseverance, american
+Themes:              perseverance, missionaries
+                     (NOTE: previous draft listed "immigration, education, american" —
+                     none of those are in the canonical SAINT_THEMES list in src/db/topics.ts.
+                     Swapped for the closest canonical fits. Revisit if a better fit is added.)
 Biography Short:     See Biography note
 Image URL:           [TO BE ADDED]
 Wikipedia URL:       https://en.wikipedia.org/wiki/John_Neumann
 
 =======================================================================
-
 SAINT SOURCES (saint_sources table)
 =======================================================================
-
-[TO BE ADDED]
+1. URL: https://www.britannica.com/biography/Saint-John-Neumann | Title: St. John Neumann | Britannica | Type: other
+2. URL: https://www.vaticannews.va/en/saints/01/05/st--john-n--neumann--bishop-of-philadelphia--united-states.html | Title: St. John N. Neumann, Bishop of Philadelphia | Vatican News | Type: other
+3. URL: https://chrc-phila.org/canonization-of-saint-john-neumann/ | Title: Canonization of Saint John Neumann | Catholic Historical Research Center, Archdiocese of Philadelphia | Type: academic
 
 =======================================================================
 RELATIONS (saint_relations table)
