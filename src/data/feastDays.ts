@@ -327,7 +327,7 @@ export const FIXED_FEASTS: FixedFeastEntry[] = [
   { month: 10, day: 7, name: 'Our Lady of the Rosary' },
   { month: 10, day: 9, name: 'Saint Denis and Companions' },
   { month: 10, day: 9, name: 'Saint John Leonardi' },
-  { month: 10, day: 9, name: 'Saint John Henry Newman' },
+  // { month: 10, day: 9, name: 'Saint John Henry Newman' }, // [in DB]
   { month: 10, day: 10, name: 'Saint Francis Borgia', scope: 'martyrologium' },
   // { month: 10, day: 11, name: 'Saint John XXIII' }, // [in DB]
   // { month: 10, day: 12, name: 'Saint Carlo Acutis' }, // [in DB]
