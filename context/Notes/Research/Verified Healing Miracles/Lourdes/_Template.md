@@ -52,7 +52,6 @@ Copy this file to `[Recipient Name].md` when starting research on a new Lourdes 
 | approval_authority | lourdes_bureau |
 | used_for_beatification | false |
 | used_for_canonization | false |
-| has_primary_sources | [true | false] |
 | content_tier | core |
 | miracle_saints | (none — intercession attributed to Our Lady of Lourdes, not a canonized saint) |
 

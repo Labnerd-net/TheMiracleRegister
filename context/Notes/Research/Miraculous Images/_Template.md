@@ -49,7 +49,6 @@ Copy this file to `[Image Name].md` when starting research on a new miraculous i
 | vatican_decree_date | |
 | used_for_beatification | false |
 | used_for_canonization | false |
-| has_primary_sources | [true | false] |
 | content_tier | core |
 | miracle_saints | [linked saint slug if the image is tied to a specific saint's cause, else (none)] |
 

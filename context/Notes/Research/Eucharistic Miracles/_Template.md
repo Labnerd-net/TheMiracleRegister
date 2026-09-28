@@ -52,7 +52,6 @@ Copy this file to `[Case Name].md` when starting research on a new Eucharistic m
 | vatican_medical_board_verdict | |
 | used_for_beatification | false |
 | used_for_canonization | false |
-| has_primary_sources | [true | false] |
 | content_tier | core |
 | miracle_saints | (none — standalone record) |
 

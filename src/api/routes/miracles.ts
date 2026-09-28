@@ -160,7 +160,6 @@ miraclesRoute.openapi(
       used_for_canonization: miracles.used_for_canonization,
       witness_count: miracles.witness_count,
       synopsis: miracles.synopsis,
-      has_primary_sources: miracles.has_primary_sources,
       recipient_gender: miracles.recipient_gender,
       recipient_country: miracles.recipient_country,
     }).from(miracles).where(and(eq(miracles.slug, slug), eq(miracles.published, true)));

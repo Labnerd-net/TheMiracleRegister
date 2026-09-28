@@ -169,7 +169,6 @@ export const MiracleDetailSchema = z
     used_for_canonization: z.boolean(),
     witness_count: z.number().int().nullable(),
     synopsis: z.string().nullable(),
-    has_primary_sources: z.boolean(),
     saints: z.array(z.object({ id: z.number().int(), slug: z.string(), name: z.string() })),
     sources: z.array(SourceSchema),
     images: z.array(MiracleImageSchema),

@@ -1,0 +1,1 @@
+ALTER TABLE "miracles" DROP COLUMN "has_primary_sources";

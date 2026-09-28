@@ -49,7 +49,6 @@ Copy this file to `[Miracle Name].md` when starting research on a new nature-mir
 | approval_authority | [vatican_dicastery | local_bishop | none] |
 | used_for_beatification | false |
 | used_for_canonization | false |
-| has_primary_sources | [true | false] |
 | content_tier | core |
 | miracle_saints | [linked saint slug if applicable, else (none)] |
 

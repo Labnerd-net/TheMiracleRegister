@@ -126,7 +126,6 @@ Saint pages show related saints as links. API response includes a `related_saint
 | used_for_beatification | boolean | |
 | used_for_canonization | boolean | |
 | synopsis | text | 300–500 words narrative; longer only if the case warrants it |
-| has_primary_sources | boolean | |
 | content_tier | enum | `core` (full narrative), `catalog` (short synopsis + external links), `stub` — default core |
 | feast_month | integer | nullable — numeric month (1–12); set for miracles tied to a feast day |
 | feast_day_of_month | integer | nullable — day of month; null for movable feasts |

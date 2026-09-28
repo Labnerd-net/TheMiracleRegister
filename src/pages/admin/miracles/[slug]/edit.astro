@@ -130,7 +130,6 @@ if (Astro.request.method === "POST") {
         used_for_canonization: getBool("used_for_canonization"),
         synopsis: get("synopsis") || null,
         content_tier: parseEnum(get("content_tier"), contentTier.enumValues) ?? miracle.content_tier,
-        has_primary_sources: getBool("has_primary_sources"),
         feast_month: (() => { const n = parseInt(get("feast_month")); return isNaN(n) ? null : n; })(),
         feast_day_of_month: (() => { const n = parseInt(get("feast_day_of_month")); return isNaN(n) ? null : n; })(),
         feast_easter_offset: (() => { const n = parseInt(get("feast_easter_offset")); return isNaN(n) ? null : n; })(),

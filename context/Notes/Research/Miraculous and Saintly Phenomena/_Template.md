@@ -48,7 +48,6 @@ Copy this file to `[Saint Name] — [Phenomenon].md` when starting research on a
 | approval_authority | [vatican_dicastery | local_bishop | none] |
 | used_for_beatification | false |
 | used_for_canonization | false |
-| has_primary_sources | [true | false] |
 | content_tier | core |
 | miracle_saints | [saint slug this phenomenon is attributed to] |
 
