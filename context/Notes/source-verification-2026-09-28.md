@@ -2,21 +2,21 @@
 
 Scope: full audit of every `miracle_sources` and `saint_sources` row on **published** records — 179 miracle sources + 62 saint sources = 241 total.
 
-Method: dumped via `dump-sources.ts`, checked with 17 parallel subagents (WebFetch per source) per the `verify-sources` skill heuristics. Source_id 275 was fixed in a prior, separately-requested scoped run and is reflected here as `ok`. All 28 `type_mismatch` findings were fixed on 2026-09-28 (source_type updated to the suggested value). Of the 8 `mismatch` findings, 5 turned out to be exact-URL duplicates of a source already attached to the miracle's saint and were deleted from `miracle_sources` on 2026-09-28 (ids 249, 261, 263, 272, 280). All fixed items have been moved to the bottom of this file — the sections up top (`dead`, `mismatch`, `needs_review`) are what's still open and requires manual review in the admin panel.
+Method: dumped via `dump-sources.ts`, checked with 17 parallel subagents (WebFetch per source) per the `verify-sources` skill heuristics. Source_id 275 was fixed in a prior, separately-requested scoped run and is reflected here as `ok`. All 28 `type_mismatch` findings were fixed on 2026-09-28 (source_type updated to the suggested value). Of the 8 original `mismatch` findings, 5 turned out to be exact-URL duplicates of a source already attached to the miracle's saint and were deleted from `miracle_sources` on 2026-09-28 (ids 249, 261, 263, 272, 280); the remaining 3 were fixed 2026-09-29 (see bottom). All fixed items have been moved to the bottom of this file — the sections up top (`dead`, `needs_review`) are what's still open and requires manual review in the admin panel.
 
 ## Summary
 
 - Checked: 241
 - ok: 201
 - dead: 6 — removed from DB 2026-09-29, tracked in dead-links-archive.md
-- mismatch: 3 — still open (5 more fixed 2026-09-28, see bottom)
+- mismatch: 0 — all 8 fixed (5 on 2026-09-28, 3 on 2026-09-29, see bottom)
 - wikipedia_duplicate: 0
 - type_mismatch: 0 — all 28 fixed 2026-09-28, see bottom
 - needs_review: 26 — still open
 
 ## Highlights
 
-- **The original 8 `mismatch` cases were the closest thing to your original concern** ("wrong miracle" links) — a vatican.va canonization/beatification *homily* was attached to a specific miracle record, but homilies are thematic and never name the private individual healed, so the page genuinely doesn't document that case. 5 of the 8 turned out to be the exact same URL already sitting on the linked saint's `saint_sources` — redundant on the miracle, so they were deleted from `miracle_sources` (see "Fixed" section at the bottom). The remaining 3 are a different homily than what's on the saint page, so they're still open for manual review.
+- **The original 8 `mismatch` cases were the closest thing to your original concern** ("wrong miracle" links) — a vatican.va canonization/beatification *homily* was attached to a specific miracle record, but homilies are thematic and never name the private individual healed, so the page genuinely doesn't document that case. 5 of the 8 turned out to be the exact same URL already sitting on the linked saint's `saint_sources` — redundant on the miracle, so they were deleted from `miracle_sources`. The remaining 3 were a different homily than what's on the saint page and were recategorized to `other` on 2026-09-29 rather than replaced, since no vatican.va page names those specific recipients (see "Fixed" section at the bottom). This pattern — a genuine Vatican homily that's thematic rather than case-specific — is now documented directly in the `verify-sources` skill's categorization heuristics so future audits catch it without needing a fresh investigation each time.
 - **Source_id 370 and 371 are the same URL attached to two different recipients** (Carl Kalin vs. Anne Theresa O'Neill) — worth a manual look, since at most one of those attributions can be right.
 - No `wikipedia_duplicate` hits — no saint_sources row duplicates a saint's `wikipedia_url`.
 
@@ -25,23 +25,6 @@ Method: dumped via `dump-sources.ts`, checked with 17 parallel subagents (WebFet
 ### Dead / unreachable links (6) — removed from DB 2026-09-29
 
 These 6 rows were deleted from `miracle_sources`/`saint_sources` on 2026-09-29 since they were broken on the live site. Full detail (URL, reason, source_id) is preserved in [`dead-links-archive.md`](./dead-links-archive.md) — a standalone tracker so they can be periodically re-checked, and re-added via the admin panel if the URL ever comes back.
-
-### Content mismatch — wrong miracle/saint (3)
-
-- **`healing-of-sr-marie-simon-pierre`** (miracle) — source_id 277
-  `https://www.vatican.va/content/benedict-xvi/en/homilies/2011/documents/hf_ben-xvi_hom_20110501_beatificazione-gpii.html`
-  Current category: `vatican_decree`
-  Benedict XVI's beatification homily for John Paul II is a genuine Vatican document but never mentions Sr. Marie Simon-Pierre, Parkinson's, or Aix-en-Provence — it's thematic, not the miracle record. Not a saint-page duplicate: John Paul II's saint_sources only has the 2014 canonization homily (id 663), a different document.
-
-- **`healing-of-monica-besra`** (miracle) — source_id 279
-  `https://www.vatican.va/content/john-paul-ii/en/homilies/2003/documents/hf_jp-ii_hom_20031019_mother-theresa.html`
-  Current category: `vatican_decree`
-  John Paul II's beatification homily for Mother Teresa contains no mention of Monica Besra or her tumor healing. Not a saint-page duplicate: Mother Teresa's saint_sources only has the 2016 Francis canonization homily (id 665), a different document.
-
-- **`healing-of-sr-concepcion-boullon-rubio`** (miracle) — source_id 373
-  `https://www.vatican.va/content/john-paul-ii/it/homilies/1992/documents/hf_jp-ii_hom_19920517_beatifications.html`
-  Current category: `vatican_decree`
-  Homily covers Escrivá's and Bakhita's beatification in general spiritual terms but never mentions Sister Concepción Boullón Rubio or the specific 1976 healing. Not a saint-page duplicate: Josemaría Escrivá's saint_sources only has the 2002 canonization homily (id 735), a different document.
 
 ### Needs manual review (inconclusive fetch) (26)
 
@@ -342,3 +325,26 @@ Exact-URL duplicates of a source already attached to the miracle's linked saint 
   `https://chrc-phila.org/canonization-of-saint-john-neumann/`
   ~~Current: `academic`~~ → Updated to `other`.
   This is a diocesan historical research center's archive page, not a .edu domain or journal publisher, so 'other' fits better than 'academic'; content matches Neumann's canonization.
+
+## Fixed 2026-09-29
+
+### Content mismatch — thematic homily recategorized, not replaced (3)
+
+Researched each case for a vatican.va page naming the specific recipient (none exists — these beatification-stage miracles were never given an individual public page, unlike the rare exception found for Escrivá's *canonization* miracle at `vatican.va/latest/documents/escriva_miracolo-canoniz_en.html`, which already correctly cites it on `healing-of-dr-manuel-nevado-rey`). Recategorized the mismatched homily to `other` in each case rather than deleting it — it's still a legitimate Vatican document, just not proof of this specific case — and added a case-specific corroborating source where one was found.
+
+- **`healing-of-sr-marie-simon-pierre`** (miracle) — source_id 277
+  `https://www.vatican.va/content/benedict-xvi/en/homilies/2011/documents/hf_ben-xvi_hom_20110501_beatificazione-gpii.html`
+  ~~Current: `vatican_decree`~~ → Updated to `other`.
+  Also added source_id 394 — `https://www.ncronline.org/blogs/ncr-today/i-was-cured-during-night-between-second-and-third-june` (`news_article`), Sr. Marie Simon-Pierre's own first-person account of her cure. Fetch was blocked (403) so content wasn't directly re-confirmed on this pass — worth a manual spot-check.
+
+- **`healing-of-monica-besra`** (miracle) — source_id 279
+  `https://www.vatican.va/content/john-paul-ii/en/homilies/2003/documents/hf_jp-ii_hom_20031019_mother-theresa.html`
+  ~~Current: `vatican_decree`~~ → Updated to `other`.
+  Also added source_id 395 — `https://www.washingtonpost.com/world/asia_pacific/the-vatican-believes-mother-teresa-cured-this-woman-but-was-it-a-miracle/2016/09/01/83664464-6e12-11e6-993f-73c693a89820_story.html` (`news_article`), confirmed by search snippet to name Besra specifically.
+
+- **`healing-of-sr-concepcion-boullon-rubio`** (miracle) — source_id 373
+  `https://www.vatican.va/content/john-paul-ii/it/homilies/1992/documents/hf_jp-ii_hom_19920517_beatifications.html`
+  ~~Current: `vatican_decree`~~ → Updated to `other`.
+  No new source added — the existing source_id 374 (`opusdei.org`, already `other`) was independently re-confirmed to name Sister Concepción Boullón Rubio specifically. Also found the actual CCS decree text naming her mirrored at `opusdei.org/de/article/dekret-uber-die-anerkennung-eines-josemaria-escriva-zugeschriebenen-wunders-6-juli-1991/` — genuine decree content, but per the hosting rule it would be `other` (not vatican.va-hosted), so not added as a duplicate of source 374's coverage.
+
+All 3 lose their only Tier 1 (`vatican_decree`) source as a result — tracked as new entries in `source-coverage-gaps.md`'s Tier 1 gap list, not a regression, since they were never actually satisfying Tier 1 in substance.

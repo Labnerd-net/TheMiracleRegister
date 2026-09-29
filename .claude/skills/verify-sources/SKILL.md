@@ -75,10 +75,27 @@ content-match mode's job).
 
 | `approval_authority` | Tier 1 requirement |
 |---|---|
-| `vatican_dicastery` | A source with `source_type: vatican_decree` **hosted on vatican.va** (hostname `vatican.va` or ending `.vatican.va`). `vaticannews.va` is a different domain — that's press coverage of a decree, not the decree, and should be `news_article` instead. |
+| `vatican_dicastery` | A source with `source_type: vatican_decree` **hosted on vatican.va** (hostname `vatican.va` or ending `.vatican.va`). `vaticannews.va` is a different domain — that's press coverage of a decree, not the decree, and should be `news_article` instead. **Narrow exception:** a pre-internet-era papal document (e.g. a 1920s–1950s canonization bull) that vatican.va simply never put online can be satisfied by a well-established, disinterested historical archive — `papalencyclicals.net` is the confirmed example — but only when content-match independently confirms the archived text actually names *this* case's recipient. This is different from the piercedhearts.org/opusdei.org mirrors below: those were reposts of *modern* documents that have (or should have) a real vatican.va original, hosted by a party with a stake in the cause (a shrine, the postulating organization); a neutral archive filling a genuine vatican.va gap for a 100-year-old bull is a different situation. Don't extend this exception to devotional/postulator sites re-hosting something modern — it's specifically for filling vatican.va's historical gaps via a neutral source. |
 | `lourdes_bureau` | Bureau des Constatations Médicales / CMIL documentation |
 | `local_bishop` / `nihil_obstat` | The issuing ordinary's own decree or tribunal announcement, if publicly findable |
 | `none` | No decree exists by definition (most apparitions/phenomena). Fall back to the **bundle rule**: an official shrine/diocesan account of the case *plus* at least one independent Tier 2 source. Don't keep hunting for a primary document that was never published. |
+
+**A beatification/canonization homily attached to a *miracle* record is
+`other`, not `vatican_decree`, unless it explicitly names that miracle's
+recipient.** Homilies are thematic — they praise the new Blessed/Saint in
+general terms and almost never name the specific case, even when hosted on
+vatican.va. The same homily is legitimately `vatican_decree` when it's
+attached to the *saint's* own record (there it's confirming the status leg,
+not standing in as proof of a specific miracle). Vatican does occasionally
+publish a page naming an individual recipient — e.g.
+`vatican.va/latest/documents/<name>_miracolo-canoniz_en.html` for
+Escrivá's canonization miracle — so check for a case-specific page before
+concluding none exists, but don't accept a generic homily as satisfying this
+row just because it's genuinely vatican.va-hosted. Coverage mode can't catch
+this on its own (it doesn't fetch, so it can't tell a case-specific decree
+from a thematic homily by source_type alone) — this is exactly what
+content-match mode's per-source fetch is for, so treat any `vatican_decree`
+row on a miracle record as worth re-confirming during a content-match pass.
 
 Tier 2 = corroborating, not proof on its own: Catholic press by name
 (`news_article`), books, academic retrospectives (`academic`). Reference
@@ -220,6 +237,13 @@ list):
 >      summarizing a decree is borderline — prefer `vatican_decree` only if
 >      it's the primary Vatican-authored document, not a third party
 >      reporting on one. `vaticannews.va` specifically is a different domain
+>      **On a miracle record specifically**: a beatification/canonization
+>      homily is `vatican_decree` only if it names *this* recipient — if it's
+>      generic praise of the new Blessed/Saint with no mention of the actual
+>      case (the common case), that's a content `mismatch`, and the fix is
+>      recategorizing to `other`, not finding a replacement URL. The same
+>      homily is correctly `vatican_decree` when it's attached to the saint's
+>      own record instead.
 >      from `vatican.va` and is almost always `news_article`, not
 >      `vatican_decree`.
 >    - Catholic press (catholicnewsagency.com, ewtn/ewtnnews.com,
