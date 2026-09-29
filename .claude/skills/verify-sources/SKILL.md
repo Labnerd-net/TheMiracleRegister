@@ -1,36 +1,159 @@
 ---
 name: verify-sources
-description: Audits `miracle_sources` and `saint_sources` rows on published (live) records — fetches each URL and checks it actually documents the miracle/saint it's attached to, and that `source_type` is categorized correctly. Use when the user asks to verify, audit, or sanity-check sources/links/citations, check for a source pointing at the wrong miracle/saint, re-check `source_type` categorization, or re-check previously dead links. Produces a markdown report in `context/Notes/` for manual review and maintains `context/Notes/dead-links-archive.md` — never edits DB records itself.
+description: Audits `miracle_sources` and `saint_sources` on published (live) records, in two modes. Content-match mode fetches each URL to check it actually documents the miracle/saint it's attached to and that `source_type` is categorized correctly. Coverage mode (no fetching) checks whether each record's source *set* meets the sourcing standard — e.g. a canonization miracle missing its vatican.va decree, or a saint with zero biographical sourcing. Use when the user asks to verify, audit, or sanity-check sources/links/citations; check for a source pointing at the wrong miracle/saint; re-check `source_type` categorization; re-check previously dead links; or check source coverage/completeness/whether something is "properly sourced." Produces/updates `context/Notes/source-coverage-gaps.md` (coverage mode) or a dated report (content-match mode), plus `context/Notes/dead-links-archive.md` — never edits DB records itself.
 ---
 
 # verify-sources
 
-Checks two things about every source row attached to a **published** miracle
-or saint, since those are the only ones actually live on the site:
+Two independent checks live here, sharing one data dump because they read the
+same underlying fact (what sourcing does this record currently have?) but
+answer different questions:
+
+1. **Content-match mode** — fetches every URL. Expensive (one request per
+   source, ~240 today), and results decay over time as pages die or move —
+   this is why it has a cheaper `recheck` mode for previously-dead links.
+   Run this periodically (monthly/quarterly) or when asked to verify links.
+2. **Coverage mode** — no fetching at all, pure structural check against the
+   fields already in the DB (`content_tier`, `approval_authority`,
+   `used_for_beatification`/`canonization`, source_type mix). Cheap enough to
+   run after every batch of admin-panel data entry, or whenever asked whether
+   something is "properly sourced" / "has enough sources."
+
+This never edits the database. Both modes produce output for manual review;
+the user fixes flagged rows or gaps by hand in the admin panel (source rows
+are edited on the miracle/saint edit page — add/delete pattern).
+
+## Step 0 — parse scope and mode from `$ARGUMENTS`
+
+- Mentions **coverage**, **requirements**, **completeness**, "enough
+  sources," "properly sourced," or similar → **coverage mode**, skip to that
+  section below.
+- `recheck`, "check dead links," or similar → **recheck mode** (content-match
+  side), skip to that section below.
+- Otherwise → **content-match mode**, full audit by default.
+- A saint slug (e.g. `john-paul-ii`) → pass `--saint=<slug>` to the dump
+  script — only that saint's sources and the sources of miracles linked to
+  them.
+- A miracle slug → pass `--miracle=<slug>` — just that one miracle's sources.
+- A bare number (e.g. "check 20") → pass `--limit=<n>` for a quick sample run
+  (content-match mode only — coverage mode is cheap enough to always run in
+  full).
+
+Don't guess slugs — if the user names a saint/miracle in prose ("check John
+Paul II's sources"), resolve it to the slug via the dump script's own output
+or a quick DB lookup rather than assuming spelling.
+
+## Dump the data (shared by every mode)
+
+Run from the repo root:
+
+```bash
+npx tsx .claude/skills/verify-sources/scripts/dump-sources.ts [flags]
+```
+
+Read-only (`SELECT` only). Prints `{ miracles: [...], saints: [...] }` —
+every published miracle/saint, each with its full `sources` array nested
+inline, plus the fields both modes need: `content_tier`,
+`approval_authority`, `used_for_beatification`/`used_for_canonization`,
+`has_medical_board_verdict`, linked `saints` (for miracles), and
+`canonization_stage`/`wikipedia_url` (for saints). Redirect to a temp file
+rather than reading the raw output inline for a full run — it's large enough
+that you don't need to hold all of it in your own context (see below).
+
+---
+
+## Coverage mode
+
+Checks whether each record's *set* of sources meets the sourcing standard —
+not whether any individual URL is reachable or correctly categorized (that's
+content-match mode's job).
+
+### The standard
+
+**Miracles.** Tier 1 = the adjudication record itself, mapped from
+`approval_authority`:
+
+| `approval_authority` | Tier 1 requirement |
+|---|---|
+| `vatican_dicastery` | A source with `source_type: vatican_decree` **hosted on vatican.va** (hostname `vatican.va` or ending `.vatican.va`). `vaticannews.va` is a different domain — that's press coverage of a decree, not the decree, and should be `news_article` instead. |
+| `lourdes_bureau` | Bureau des Constatations Médicales / CMIL documentation |
+| `local_bishop` / `nihil_obstat` | The issuing ordinary's own decree or tribunal announcement, if publicly findable |
+| `none` | No decree exists by definition (most apparitions/phenomena). Fall back to the **bundle rule**: an official shrine/diocesan account of the case *plus* at least one independent Tier 2 source. Don't keep hunting for a primary document that was never published. |
+
+Tier 2 = corroborating, not proof on its own: Catholic press by name
+(`news_article`), books, academic retrospectives (`academic`). Reference
+only, doesn't count toward the standard: Wikipedia, devotional/apologetics/
+advocacy blogs (these are fine as `other` but shouldn't be the only source on
+a `core` record).
+
+Minimum bar by `content_tier`:
+- `core` + (`used_for_beatification` or `used_for_canonization`): must have
+  the Tier 1 source for its `approval_authority` (or the bundle, for `none`).
+- `core`, not used for beat/canon (apparitions, stigmata, incorruptibles,
+  Eucharistic miracles): apply the bundle rule regardless of
+  `approval_authority`, since these rarely have a clean dicastery decree even
+  when the field says `vatican_dicastery`.
+- `catalog`: at least one Tier 2 source.
+- `stub`: no hard requirement; note but don't flag as a gap.
+
+**Saints.** No biographical decree exists — the canonization decree confirms
+the miracle, not the life. Two separate legs, both required:
+- **Status leg**: a source hosted on vatican.va (any `source_type`) —
+  confirms the beatification/canonization act itself. A `vaticannews.va`
+  source does not satisfy this (same distinction as above).
+- **Biography leg**: at least one source with editorial accountability
+  beyond a personal devotional blog — the saint's own religious order,
+  a diocesan archive, an official shrine/postulator site, or a scholarly
+  book/academic source. Don't require a published biography be hunted down
+  when a decent order/diocesan/shrine site exists.
+- Wikipedia never counts toward either leg, and should never appear as a
+  `saint_sources` row at all — it's already surfaced via `wikipedia_url`, and
+  a duplicate row renders twice on the saint page.
+
+### Running the check
+
+This is pure data analysis on the dump's JSON — no fetching, no subagents
+needed. For each miracle, check its `sources` array's `source_type`/`url`
+mix against the table above given its `content_tier`/`approval_authority`/
+`used_for_*`. For each saint, check for a vatican.va source (status leg) and
+a substantive non-devotional source (biography leg). Judgment calls (is this
+domain an "official shrine"? does this bundle satisfy the fallback rule?) are
+expected — flag borderline cases rather than silently deciding either way.
+
+### Recording findings — `context/Notes/source-coverage-gaps.md`
+
+Unlike content-match mode, coverage gaps don't decay with time — a record
+either has adequate sourcing or it doesn't, and it stays that way until
+someone fixes it in the admin panel. So this is a **living file**, updated in
+place, not a new dated snapshot per run:
+
+- Create the file with `## Open` and `## Resolved` headings if it doesn't
+  exist yet.
+- Group open items under `## Open` by check type (e.g. "Core miracles
+  missing Tier 1," "Catalog miracles with no Tier 2 source," "Saints missing
+  the status leg," "Saints missing the biography leg"), one line per record
+  with slug, what's missing, and what's already on file.
+- On each run: anything newly resolved (a gap from a prior run no longer
+  reproduces) moves to `## Resolved` with today's date. Anything still open
+  keeps its original "first flagged" date if the file already has one for
+  that record; otherwise it's new. Don't re-flag something already sitting
+  in `## Resolved` unless it's newly regressed — if it has, move it back to
+  `## Open` with a note that it regressed and why, if apparent (e.g. "a
+  duplicate-source cleanup removed the only vatican_decree row").
+- Tell the user a short summary (e.g. "14 open gaps: 6 miracles missing
+  Tier 1, 12 catalog miracles with zero sources, 5 saints missing biography
+  sourcing — see source-coverage-gaps.md") — no separate narrative report.
+
+---
+
+## Content-match mode
+
+Checks two things about every source row:
 
 1. **Content match** — does the URL actually document *this* miracle/saint,
    not a different one by the same saint, or an unrelated page entirely?
 2. **Categorization** — is `source_type` (`vatican_decree`, `news_article`,
    `book`, `academic`, `other`) the right bucket for what the URL actually is?
-
-This never edits the database. It produces a report; the user fixes flagged
-rows by hand in the admin panel (source rows are edited on the miracle/saint
-edit page — add/delete pattern, same as sources have always worked).
-
-## Step 0 — parse scope from `$ARGUMENTS`
-
-- `recheck`, `check dead links`, or similar — **recheck mode**, skip to the
-  section below instead of a full audit.
-- Empty → full audit of every published miracle's and saint's sources.
-- A saint slug (e.g. `john-paul-ii`) → pass `--saint=<slug>` to the dump
-  script — only that saint's sources and the sources of miracles linked to
-  them.
-- A miracle slug → pass `--miracle=<slug>` — just that one miracle's sources.
-- A bare number (e.g. "check 20") → pass `--limit=<n>` for a quick sample run.
-
-Don't guess slugs — if the user names a saint/miracle in prose ("check John
-Paul II's sources"), resolve it to the slug via the dump script's own output
-or a quick DB lookup rather than assuming spelling.
 
 ### Recheck mode
 
@@ -42,42 +165,25 @@ pipeline. Instead:
 2. Fetch each URL directly with `WebFetch` (batch into `general-purpose`
    subagents only if there are more than ~15 — this list is usually small).
 3. For each: if it now loads and still documents the record it's attached
-   to (same content-match check as Step 2 below) → move the entry to
-   **Resolved** with today's date and a one-line note on what confirmed it
-   (don't just delete it — the resolution itself is worth keeping). If still
-   dead → update `Last checked` to today; update the note only if the
-   failure reason changed.
+   to (same content-match check as below) → move the entry to **Resolved**
+   with today's date and a one-line note on what confirmed it (don't just
+   delete it — the resolution itself is worth keeping). If still dead →
+   update `Last checked` to today; update the note only if the failure
+   reason changed.
 4. Rewrite `dead-links-archive.md` in place with these updates.
 5. Tell the user a short summary (e.g. "2 of 6 came back: X, Y — moved to
    Resolved. 4 still dead.") and stop — no dated audit report is needed for
    a recheck-only run.
 
-## Step 1 — dump the data
+### Full audit — verify each source
 
-Run from the repo root:
-
-```bash
-npx tsx .claude/skills/verify-sources/scripts/dump-sources.ts [flags]
-```
-
-This is a read-only script (`SELECT` only, no writes) that hits the same
-`DATABASE_URL` as the app via `createDb`. It prints JSON:
-`{ miracle_sources: [...], saint_sources: [...] }`, each row already joined
-with the identifying context needed to judge a match — miracle title,
-recipient name, location, date, and the linked saint(s)' `name`/`saint_name`/
-`birth_name` for `miracle_sources`; the saint's own names and
-`wikipedia_url` for `saint_sources`.
-
-Redirect to a temp file rather than reading the raw output inline if it's a
-full run — it can be 150–250KB across ~240 rows, and you don't need to hold
-all of it in your own context (see Step 2).
-
-## Step 2 — verify each source
-
-Combine `miracle_sources` and `saint_sources` into one list. **Do not fetch
-every URL yourself in the main context** — each fetched page's content adds
-up fast across hundreds of sources and this is exactly the kind of
-parallelizable, context-heavy research that belongs in subagents.
+Flatten `miracles[].sources` and `saints[].sources` into one list, keeping
+each source's parent record fields (`recipient_name`, `location_name`,
+`country`, `date_of_event`, `saints`/`wikipedia_url`) attached as its
+`record` context. **Do not fetch every URL yourself in the main context** —
+each fetched page's content adds up fast across hundreds of sources and this
+is exactly the kind of parallelizable, context-heavy research that belongs
+in subagents.
 
 - **≤ 8 sources total** (a scoped single-saint or single-miracle run): just
   fetch and check them directly with `WebFetch` — spinning up a subagent for
@@ -88,7 +194,8 @@ parallelizable, context-heavy research that belongs in subagents.
   back before writing the report). For ~240 sources that's roughly 16 agents
   in one batch of parallel calls.
 
-Give each subagent this exact task shape (fill in its slice of the JSON):
+Give each subagent this exact task shape (fill in its slice of the flattened
+list):
 
 > For each source object below, fetch its `url` with WebFetch. Determine:
 >
@@ -112,13 +219,17 @@ Give each subagent this exact task shape (fill in its slice of the JSON):
 >      decree/positio → `vatican_decree`. A Vatican News *press release*
 >      summarizing a decree is borderline — prefer `vatican_decree` only if
 >      it's the primary Vatican-authored document, not a third party
->      reporting on one.
+>      reporting on one. `vaticannews.va` specifically is a different domain
+>      from `vatican.va` and is almost always `news_article`, not
+>      `vatican_decree`.
 >    - Catholic press (catholicnewsagency.com, ewtn/ewtnnews.com,
 >      ncregister.com, aleteia.org, zenit.org, cruxnow.com,
 >      americamagazine.org, ncronline.org, osvnews.com, romereports.com,
 >      diocesan newsrooms) → `news_article`.
 >    - `.edu`, journal publishers (jstor.org, springer, wiley, tandfonline),
->      `doi.org` → `academic`.
+>      `doi.org` → `academic`. A general encyclopedia (Britannica, New
+>      Advent) or a `.edu` devotional/campus-ministry profile is `other`, not
+>      `academic`, despite the domain.
 >    - Google Books, archive.org book scans, a publisher/ISBN listing →
 >      `book`.
 >    - `wikipedia.org` on a **saint** source is always worth flagging
@@ -126,10 +237,12 @@ Give each subagent this exact task shape (fill in its slice of the JSON):
 >      the saint's own `wikipedia_url` field already covers this and a
 >      `saint_sources` row for it renders as a duplicate reference. (Not an
 >      issue on miracle sources.)
->    - Anything else (miraclehunter.com, a parish/diocese page that isn't a
->      decree, a local bishop's recognition letter, a blog) → `other` is
->      usually correct as-is; only flag if it was mis-tagged as one of the
->      more specific categories above.
+>    - Anything else (miraclehunter.com, an apologetics/advocacy nonprofit
+>      blog, a diocesan historical/archival center page, a retailer's
+>      devotional blog, a parish/diocese page that isn't a decree, a local
+>      bishop's recognition letter) → `other` is usually correct as-is; only
+>      flag if it was mis-tagged as one of the more specific categories
+>      above.
 >
 > Return **only** a JSON array, one object per input source:
 > `{ source_id, kind, status, current_source_type, suggested_source_type, note }`
@@ -138,7 +251,7 @@ Give each subagent this exact task shape (fill in its slice of the JSON):
 > when `status` is `type_mismatch`; otherwise omit it. Keep `note` to one
 > sentence — the reason, not a restatement of the status.
 
-## Step 3 — merge, update the dead-links archive, and write the report
+### Merge, update the dead-links archive, and write the report
 
 Collect every batch's JSON array (or your own direct-fetch results for small
 runs) into one list keyed by `source_id`.
@@ -170,7 +283,7 @@ Then write a markdown report to `context/Notes/source-verification-<YYYY-MM-DD>.
    notes. This is a checklist for the user to work through in the admin
    panel, not a narrative report.
 
-## Step 4 — tell the user
+### Tell the user
 
 Report the file path, the headline counts (e.g. "212 ok, 9 flagged: 3 dead
 links, 4 mismatches, 2 wikipedia duplicates"), mention the dead-links archive

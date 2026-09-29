@@ -7,10 +7,20 @@ import { saints } from "../../../../src/db/schema/saints";
 import { miracleSaints } from "../../../../src/db/schema/miracle-saints";
 import { eq, inArray } from "drizzle-orm";
 
-// Dumps every source row attached to a *published* miracle or saint, with
-// enough context (title, recipient, saint names) for a fetched page to be
-// checked against. Only published records are included because unpublished
-// drafts aren't live and aren't in scope for this audit.
+// Dumps every published miracle and saint, each with its full source list
+// nested inline, plus the fields needed for both checks the verify-sources
+// skill runs against this data:
+//   - content/categorization check (Step 2): needs recipient/location/date/
+//     saint-name context alongside each source URL
+//   - coverage check (coverage mode): needs content_tier, approval_authority,
+//     used_for_beatification/canonization, canonization_stage, etc. to judge
+//     whether the *set* of sources on a record meets the sourcing standard
+// One query shape serves both so there's a single source of truth for what
+// "the current state of sourcing" looks like — flatten it however a given
+// check needs at read time rather than re-querying the DB per check.
+//
+// Read-only (SELECT only, no writes). Only published records are included
+// because unpublished drafts aren't live and aren't in scope for either audit.
 
 function getArg(flag: string): string | undefined {
   const prefix = `${flag}=`;
@@ -35,6 +45,11 @@ async function main() {
       location_name: miracles.location_name,
       country: miracles.country,
       date_of_event: miracles.date_of_event,
+      content_tier: miracles.content_tier,
+      approval_authority: miracles.approval_authority,
+      used_for_beatification: miracles.used_for_beatification,
+      used_for_canonization: miracles.used_for_canonization,
+      vatican_medical_board_verdict: miracles.vatican_medical_board_verdict,
       published: miracles.published,
     })
     .from(miracles)
@@ -62,6 +77,7 @@ async function main() {
       saint_name: saints.saint_name,
       birth_name: saints.birth_name,
       wikipedia_url: saints.wikipedia_url,
+      canonization_stage: saints.canonization_stage,
       published: saints.published,
     })
     .from(saints)
@@ -80,6 +96,7 @@ async function main() {
           saint_name: saints.saint_name,
           birth_name: saints.birth_name,
           wikipedia_url: saints.wikipedia_url,
+          canonization_stage: saints.canonization_stage,
           published: saints.published,
         })
         .from(saints)
@@ -96,40 +113,18 @@ async function main() {
     saintsByMiracle.set(link.miracle_id, list);
   }
 
-  const miracleById = new Map(miracleRows.map((m) => [m.id, m]));
-
   const rawMiracleSources = miracleIds.length
     ? await db
         .select()
         .from(miracleSources)
         .where(inArray(miracleSources.miracle_id, miracleIds))
     : [];
-
-  const miracleSourceRows = rawMiracleSources.map((row) => {
-    const m = miracleById.get(row.miracle_id)!;
-    return {
-      kind: "miracle" as const,
-      source_id: row.id,
-      url: row.url,
-      title: row.title,
-      source_type: row.source_type,
-      accessed_date: row.accessed_date,
-      record: {
-        id: m.id,
-        slug: m.slug,
-        title: m.title,
-        recipient_name: m.recipient_name,
-        location_name: m.location_name,
-        country: m.country,
-        date_of_event: m.date_of_event,
-        saints: (saintsByMiracle.get(m.id) ?? []).map((s) => ({
-          name: s.name,
-          saint_name: s.saint_name,
-          birth_name: s.birth_name,
-        })),
-      },
-    };
-  });
+  const miracleSourcesById = new Map<number, typeof rawMiracleSources>();
+  for (const row of rawMiracleSources) {
+    const list = miracleSourcesById.get(row.miracle_id) ?? [];
+    list.push(row);
+    miracleSourcesById.set(row.miracle_id, list);
+  }
 
   const saintIds = saintRows.map((s) => s.id);
   const rawSaintSources = saintIds.length
@@ -138,52 +133,75 @@ async function main() {
         .from(saintSources)
         .where(inArray(saintSources.saint_id, saintIds))
     : [];
+  const saintSourcesById = new Map<number, typeof rawSaintSources>();
+  for (const row of rawSaintSources) {
+    const list = saintSourcesById.get(row.saint_id) ?? [];
+    list.push(row);
+    saintSourcesById.set(row.saint_id, list);
+  }
 
-  const saintSourceRows = rawSaintSources.map((row) => {
-    const s = saintById.get(row.saint_id)!;
-    return {
-      kind: "saint" as const,
+  let miracleOut = miracleRows.map((m) => ({
+    kind: "miracle" as const,
+    id: m.id,
+    slug: m.slug,
+    title: m.title,
+    recipient_name: m.recipient_name,
+    location_name: m.location_name,
+    country: m.country,
+    date_of_event: m.date_of_event,
+    content_tier: m.content_tier,
+    approval_authority: m.approval_authority,
+    used_for_beatification: m.used_for_beatification,
+    used_for_canonization: m.used_for_canonization,
+    has_medical_board_verdict: !!m.vatican_medical_board_verdict,
+    saints: (saintsByMiracle.get(m.id) ?? []).map((s) => ({
+      slug: s.slug,
+      name: s.name,
+      saint_name: s.saint_name,
+      birth_name: s.birth_name,
+    })),
+    sources: (miracleSourcesById.get(m.id) ?? []).map((row) => ({
       source_id: row.id,
       url: row.url,
       title: row.title,
       source_type: row.source_type,
       accessed_date: row.accessed_date,
-      record: {
-        id: s.id,
-        slug: s.slug,
-        name: s.name,
-        saint_name: s.saint_name,
-        birth_name: s.birth_name,
-        wikipedia_url: s.wikipedia_url,
-      },
-    };
-  });
+    })),
+  }));
 
-  let filteredMiracleSources = miracleSourceRows;
-  let filteredSaintSources = saintSourceRows;
+  let saintOut = saintRows.map((s) => ({
+    kind: "saint" as const,
+    id: s.id,
+    slug: s.slug,
+    name: s.name,
+    saint_name: s.saint_name,
+    birth_name: s.birth_name,
+    wikipedia_url: s.wikipedia_url,
+    canonization_stage: s.canonization_stage,
+    sources: (saintSourcesById.get(s.id) ?? []).map((row) => ({
+      source_id: row.id,
+      url: row.url,
+      title: row.title,
+      source_type: row.source_type,
+      accessed_date: row.accessed_date,
+    })),
+  }));
 
   if (miracleSlugFilter) {
-    filteredMiracleSources = filteredMiracleSources.filter(
-      (r) => r.record.slug === miracleSlugFilter
-    );
-    filteredSaintSources = [];
+    miracleOut = miracleOut.filter((m) => m.slug === miracleSlugFilter);
+    saintOut = [];
   }
 
   if (saintSlugFilter) {
-    filteredMiracleSources = filteredMiracleSources.filter((r) =>
-      (saintsByMiracle.get(r.record.id) ?? []).some((s) => s.slug === saintSlugFilter)
+    miracleOut = miracleOut.filter((m) =>
+      m.saints.some((s) => s.slug === saintSlugFilter)
     );
-    filteredSaintSources = filteredSaintSources.filter(
-      (r) => r.record.slug === saintSlugFilter
-    );
+    saintOut = saintOut.filter((s) => s.slug === saintSlugFilter);
   }
 
   if (limit) {
-    filteredMiracleSources = filteredMiracleSources.slice(0, limit);
-    filteredSaintSources = filteredSaintSources.slice(
-      0,
-      Math.max(0, limit - filteredMiracleSources.length)
-    );
+    miracleOut = miracleOut.slice(0, limit);
+    saintOut = saintOut.slice(0, Math.max(0, limit - miracleOut.length));
   }
 
   process.stdout.write(
@@ -191,8 +209,8 @@ async function main() {
       {
         generated_at: new Date().toISOString(),
         only_published: onlyPublished,
-        miracle_sources: filteredMiracleSources,
-        saint_sources: filteredSaintSources,
+        miracles: miracleOut,
+        saints: saintOut,
       },
       null,
       2
