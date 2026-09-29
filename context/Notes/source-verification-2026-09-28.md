@@ -24,35 +24,7 @@ Method: dumped via `dump-sources.ts`, checked with 17 parallel subagents (WebFet
 
 ### Dead / unreachable links (6)
 
-- **`eucharistic-miracle-of-buenos-aires`** (miracle) — source_id 232
-  `https://parroquiasantamariacaballito.com.ar/`
-  Current category: `other`
-  Site returned HTTP 500 Internal Server Error.
-
-- **`healing-of-domenico-sellan`** (miracle) — source_id 324
-  `https://frassatiusa.org/first-miracle`
-  Current category: `other`
-  Returned HTTP 403 Forbidden on two separate fetch attempts.
-
-- **`eucharistic-miracle-of-tixtla`** (miracle) — source_id 336
-  `http://archive.therealpresence.org/eucharst/mir/english_pdf/Tixtla1.pdf`
-  Current category: `other`
-  Fetch failed twice with an expired SSL certificate error; the archive.therealpresence.org host is unreachable.
-
-- **`padre-pio`** (saint) — source_id 668
-  `https://www.santuariopadrepio.it/`
-  Current category: `other`
-  TLS certificate mismatch (cert issued for a different host) blocks standard fetches; the underlying redirect target (conventosantuariopadrepio.it) is reachable and still documents Padre Pio, but this exact URL is broken.
-
-- **`elizabeth-ann-seton`** (saint) — source_id 733
-  `https://catholicsaints.day/elizabeth-ann-seton/`
-  Current category: `other`
-  DNS resolution fails (domain does not resolve) via both WebFetch and curl.
-
-- **`josemaria-escriva`** (saint) — source_id 735
-  `https://www.vatican.va/content/john-paul-ii/en/homilies/2002/documents/hf_jp-ii_hom_20021006_canonization-escriva.html`
-  Current category: `vatican_decree`
-  Confirmed HTTP 404 via both WebFetch and curl; the page no longer exists at this path.
+Moved to [`dead-links-archive.md`](./dead-links-archive.md) — a standalone, ongoing tracker so these can be periodically re-checked without re-running a full audit. Rows are still live in the DB.
 
 ### Content mismatch — wrong miracle/saint (3)
 
