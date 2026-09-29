@@ -2,25 +2,25 @@
 
 Scope: full audit of every `miracle_sources` and `saint_sources` row on **published** records — 179 miracle sources + 62 saint sources = 241 total.
 
-Method: dumped via `dump-sources.ts`, checked with 17 parallel subagents (WebFetch per source) per the `verify-sources` skill heuristics. Source_id 275 was fixed in a prior, separately-requested scoped run and is reflected here as `ok`. All 28 `type_mismatch` findings below were fixed on 2026-09-28 (source_type updated to the suggested value). Of the 8 `mismatch` findings, 5 turned out to be exact-URL duplicates of a source already attached to the miracle's saint and were deleted from `miracle_sources` on 2026-09-28 (ids 249, 261, 263, 272, 280). The remaining `dead`, 3 `mismatch`, and `needs_review` findings are still open and require manual review in the admin panel.
+Method: dumped via `dump-sources.ts`, checked with 17 parallel subagents (WebFetch per source) per the `verify-sources` skill heuristics. Source_id 275 was fixed in a prior, separately-requested scoped run and is reflected here as `ok`. All 28 `type_mismatch` findings were fixed on 2026-09-28 (source_type updated to the suggested value). Of the 8 `mismatch` findings, 5 turned out to be exact-URL duplicates of a source already attached to the miracle's saint and were deleted from `miracle_sources` on 2026-09-28 (ids 249, 261, 263, 272, 280). All fixed items have been moved to the bottom of this file — the sections up top (`dead`, `mismatch`, `needs_review`) are what's still open and requires manual review in the admin panel.
 
 ## Summary
 
 - Checked: 241
 - ok: 201
-- dead: 6
-- mismatch: 3 (5 fixed 2026-09-28 — removed as saint-source duplicates)
+- dead: 6 — still open
+- mismatch: 3 — still open (5 more fixed 2026-09-28, see bottom)
 - wikipedia_duplicate: 0
-- type_mismatch: 0 (28 fixed 2026-09-28)
-- needs_review: 26
+- type_mismatch: 0 — all 28 fixed 2026-09-28, see bottom
+- needs_review: 26 — still open
 
 ## Highlights
 
-- **The original 8 `mismatch` cases were the closest thing to your original concern** ("wrong miracle" links) — a vatican.va canonization/beatification *homily* was attached to a specific miracle record, but homilies are thematic and never name the private individual healed, so the page genuinely doesn't document that case. 5 of the 8 turned out to be the exact same URL already sitting on the linked saint's `saint_sources` — redundant on the miracle, so they were deleted from `miracle_sources` (see "Fixed" list below). The remaining 3 are a different homily than what's on the saint page, so they're still open for manual review.
+- **The original 8 `mismatch` cases were the closest thing to your original concern** ("wrong miracle" links) — a vatican.va canonization/beatification *homily* was attached to a specific miracle record, but homilies are thematic and never name the private individual healed, so the page genuinely doesn't document that case. 5 of the 8 turned out to be the exact same URL already sitting on the linked saint's `saint_sources` — redundant on the miracle, so they were deleted from `miracle_sources` (see "Fixed" section at the bottom). The remaining 3 are a different homily than what's on the saint page, so they're still open for manual review.
 - **Source_id 370 and 371 are the same URL attached to two different recipients** (Carl Kalin vs. Anne Theresa O'Neill) — worth a manual look, since at most one of those attributions can be right.
 - No `wikipedia_duplicate` hits — no saint_sources row duplicates a saint's `wikipedia_url`.
 
-## Flagged sources
+## Open — needs manual review
 
 ### Dead / unreachable links (6)
 
@@ -54,8 +54,7 @@ Method: dumped via `dump-sources.ts`, checked with 17 parallel subagents (WebFet
   Current category: `vatican_decree`
   Confirmed HTTP 404 via both WebFetch and curl; the page no longer exists at this path.
 
-
-### Content mismatch — wrong miracle/saint (3 open; 5 fixed)
+### Content mismatch — wrong miracle/saint (3)
 
 - **`healing-of-sr-marie-simon-pierre`** (miracle) — source_id 277
   `https://www.vatican.va/content/benedict-xvi/en/homilies/2011/documents/hf_ben-xvi_hom_20110501_beatificazione-gpii.html`
@@ -72,7 +71,143 @@ Method: dumped via `dump-sources.ts`, checked with 17 parallel subagents (WebFet
   Current category: `vatican_decree`
   Homily covers Escrivá's and Bakhita's beatification in general spiritual terms but never mentions Sister Concepción Boullón Rubio or the specific 1976 healing. Not a saint-page duplicate: Josemaría Escrivá's saint_sources only has the 2002 canonization homily (id 735), a different document.
 
-**Fixed 2026-09-28 — removed from `miracle_sources` as exact-URL duplicates already present on the linked saint's page:**
+### Needs manual review (inconclusive fetch) (26)
+
+- **`healing-of-jake-finkbonner`** (miracle) — source_id 198
+  `https://www.ncregister.com/news/pope-approves-miracle-of-kateri-tekakwitha`
+  Current category: `news_article`
+  Page loaded and covers the Vatican's approval of a miracle for Kateri Tekakwitha's canonization, but never names Jake Finkbonner, Ferndale WA, or the flesh-eating-bacteria diagnosis, so it can't be confirmed as documenting this specific case rather than being a generic announcement.
+
+- **`eucharistic-miracle-of-lanciano`** (miracle) — source_id 227
+  `https://pubmed.ncbi.nlm.nih.gov/4950729/`
+  Current category: `academic`
+  PubMed served a bot-check/CAPTCHA page instead of the article; could not confirm reachability or content match.
+
+- **`eucharistic-miracle-of-lanciano`** (miracle) — source_id 228
+  `https://www.miracolieucaristici.org/`
+  Current category: `other`
+  Only the bare homepage/language-selector loaded; no Lanciano-specific content was visible to confirm the match.
+
+- **`our-lady-of-the-miraculous-medal`** (miracle) — source_id 203
+  `https://amm.org/`
+  Current category: `other`
+  Official Association of the Miraculous Medal homepage; content is generic devotional/organizational material and doesn't specifically document Catherine Labouré or the 1830 apparition.
+
+- **`eucharistic-miracle-of-sokolka`** (miracle) — source_id 236
+  `https://www.miracolieucaristici.org/en/liste/scheda_c.html?nat=polonia&wh=sokolka`
+  Current category: `other`
+  Page loaded but only navigation chrome ('Miracles list', 'Visualizza Pdf') was retrievable, no substantive body content to confirm the Sokolka case is documented.
+
+- **`lourdes-healing-of-antonietta-raco`** (miracle) — source_id 237
+  `https://www.thecatholictelegraph.com/a-voice-told-me-not-to-be-afraid-the-story-of-lourdes-72nd-recognized-miracle/101501`
+  Current category: `news_article`
+  Fetch returned HTTP 403 Forbidden (likely bot-blocking), so reachability and content could not be confirmed either way.
+
+- **`vanishing-of-smallpox-scars`** (miracle) — source_id 264
+  `https://www.katerishrine.org/`
+  Current category: `other`
+  Reachable official shrine homepage that names Kateri Tekakwitha but is a thin/generic visitor-info page with no mention of her death or the smallpox scars vanishing.
+
+- **`healing-of-sr-marie-simon-pierre`** (miracle) — source_id 276
+  `https://www.archbalt.org/may-1-beatification-set-for-pope-john-paul-ii-after-miracle-approved/`
+  Current category: `news_article`
+  Page loaded but content was truncated to just the headline on fetch, so the body could not be checked against the record.
+
+- **`beatification-miracle-of-catherine-laboure`** (miracle) — source_id 289
+  `https://hozana.org/en/saints/saint-catherine-laboure`
+  Current category: `other`
+  Page is a general Catherine Labouré bio mentioning one posthumous healing anecdote, but the record has no recipient/date/location to confirm this is the specific beatification miracle.
+
+- **`divine-mercy-revelations`** (miracle) — source_id 293
+  `https://www.thedivinemercy.org/`
+  Current category: `other`
+  Bare org homepage with current news/nav content (Fulton Sheen beatification, livestream schedule); mentions Faustina only as a nav link, no actual documentation of the 1931 revelations.
+
+- **`our-lady-of-guadalupe-apparitions`** (miracle) — source_id 306
+  `https://www.virgendeguadalupe.org.mx/`
+  Current category: `other`
+  Official Basilica homepage references Juan Diego and the apparitions in nav/sections but the fetched homepage itself has no substantive account of the 1531 event, too thin to confirm case-specific content.
+
+- **`tilma-of-guadalupe`** (miracle) — source_id 307
+  `https://www.virgendeguadalupe.org.mx/`
+  Current category: `other`
+  Same official Basilica homepage as source 306; references Juan Diego/apparitions in navigation but homepage content is too thin to confirm tilma-specific details.
+
+- **`healing-of-maria-pellemans`** (miracle) — source_id 323
+  `https://archives.carmeldelisieux.fr/en/naissance-dune-sainte/la-beatification-et-la-canonisation/historique-de-la-beatification-et-de-la-canonisation/`
+  Current category: `other`
+  Page names the healed person 'Pius Pellemans' (Schaerbeek, Brussels) rather than 'Maria Pellemans'; disease (pulmonary tuberculosis), Lisieux tomb cure, and canonization timeline otherwise match, but the first-name conflict with the record and with the canonization bull text needs human judgment.
+
+- **`healing-of-sr-caterina-capitani`** (miracle) — source_id 344
+  `https://www.vatican.va/special/canonizzazione-27042014/index_en.html`
+  Current category: `vatican_decree`
+  Page confirms the 2014 canonization of John XXIII/John Paul II but is a general index of homilies/bios with no mention of Sister Caterina Capitani or her specific healing, so case-specific match can't be confirmed.
+
+- **`healing-of-audrey-toguchi`** (miracle) — source_id 355
+  `https://www.atlasobscura.com/articles/how-the-vatican-investigated-a-modern-miracle-at-a-leprosy-settlement-in-hawaii`
+  Current category: `news_article`
+  Server returned HTTP 403 Forbidden on repeated fetch attempts (likely bot-blocking), so content could not be verified either way.
+
+- **`our-lady-of-akita`** (miracle) — source_id 362
+  `https://www.ucanews.com/story-archive/?post_id=36862&post_name=%2F1988%2F08%2F17%2Fcardinal-ratzinger-said-to-approve-messages-of-blessed-mother-at-akita`
+  Current category: `news_article`
+  WebFetch returned HTTP 403 Forbidden (likely anti-bot blocking on ucanews.com); could not verify content match or confirm the link still resolves for normal users.
+
+- **`our-lady-of-akita`** (miracle) — source_id 363
+  `https://www.ucanews.com/story-archive/?post_name=/1988/09/14/bishop-ito-clarifies-cardinal-ratzingers-remarks-on-messages-of-mary&post_id=36975`
+  Current category: `news_article`
+  WebFetch returned HTTP 403 Forbidden (likely anti-bot blocking on ucanews.com); could not verify content match or confirm the link still resolves for normal users.
+
+- **`healing-of-carl-kalin`** (miracle) — source_id 369
+  `https://www.nytimes.com/1975/09/15/archives/the-miracle-occurs-daily-at-st-josephs.html`
+  Current category: `news_article`
+  WebFetch cannot access nytimes.com directly; a web search corroborates this Sept 15, 1975 article is about Carl Kalin's healing, but content was not directly verified on the page itself.
+
+- **`healing-of-carl-kalin`** (miracle) — source_id 370
+  `https://www.nytimes.com/1975/09/13/archives/mother-setons-day-will-be-his-too-mother-setons-day-will-be-special.html`
+  Current category: `news_article`
+  WebFetch cannot access nytimes.com directly and web search found no corroborating description of this article's actual content; cannot confirm it discusses Carl Kalin.
+
+- **`healing-of-anne-theresa-oneill`** (miracle) — source_id 371
+  `https://www.nytimes.com/1975/09/13/archives/mother-setons-day-will-be-his-too-mother-setons-day-will-be-special.html`
+  Current category: `news_article`
+  Same URL as source 370, attached here to a different record (O'Neill); WebFetch cannot access nytimes.com and no corroboration found, so it's unclear whether this article documents O'Neill's case specifically.
+
+- **`healing-of-sr-gertrude-korzendorfer`** (miracle) — source_id 372
+  `https://www.nytimes.com/1974/12/13/archives/for-mother-seton-sainthood-crowns-career-in-church-6-saints-are.html`
+  Current category: `news_article`
+  nytimes.com is blocked from fetching (and archive.org fallback also blocked), so content could not be verified against the Korzendorfer case.
+
+- **`carlo-acutis`** (saint) — source_id 688
+  `https://www.carloacutis.com/`
+  Current category: `other`
+  Page is a JS-rendered shell that only returns header/title text ("Carlo Acutis" / "San Carlo Acutis") on fetch, too thin to confirm biographical content actually documents him.
+
+- **`bernadette-soubirous`** (saint) — source_id 694
+  `https://www.britannica.com/biography/Saint-Bernadette-of-Lourdes`
+  Current category: `academic`
+  Britannica returned HTTP 403 Forbidden to the fetch tool (likely bot-blocking) so content could not be verified; also Britannica is a general encyclopedia, not an academic journal/publisher, so source_type academic is questionable regardless.
+
+- **`juan-diego`** (saint) — source_id 703
+  `https://www.virgendeguadalupe.org.mx/`
+  Current category: `other`
+  URL is the basilica's homepage, which only lists a 'San Juan Diego' menu link without substantive biographical content in the fetched page, too thin to confirm a specific match.
+
+- **`pier-giorgio-frassati`** (saint) — source_id 711
+  `https://frassatiusa.org/`
+  Current category: `other`
+  Returns HTTP 403 Forbidden via both WebFetch and a curl request with a browser user-agent; domain resolves so this looks like bot-blocking rather than a dead site, but content could not be verified.
+
+- **`elizabeth-ann-seton`** (saint) — source_id 734
+  `https://www.nytimes.com/1974/12/13/archives/for-mother-seton-sainthood-crowns-career-in-church-6-saints-are.html`
+  Current category: `news_article`
+  Returns HTTP 403 (bot-block/paywall) from both WebFetch and curl; Wayback Machine lookup was rate-limited, so content could not be verified.
+
+## Fixed 2026-09-28
+
+### Content mismatch — removed as saint-source duplicates (5)
+
+Exact-URL duplicates of a source already attached to the miracle's linked saint — deleted from `miracle_sources`.
 
 - **`healing-of-giuseppe-carlo-audino`** (miracle) — source_id 249 (deleted)
   `https://www.vatican.va/content/benedict-xvi/en/homilies/2010/documents/hf_ben-xvi_hom_20101017_canonizations.html`
@@ -94,8 +229,7 @@ Method: dumped via `dump-sources.ts`, checked with 17 parallel subagents (WebFet
   `https://www.vatican.va/content/francesco/en/homilies/2016/documents/papa-francesco_20160904_omelia-canonizzazione-madre-teresa.html`
   Duplicate of `mother-teresa` saint_sources id 665.
 
-
-### Category mismatch (source_type) — 28 fixed 2026-09-28
+### Category mismatch (source_type) — corrected (28)
 
 - **`incorruptibility-of-bernadette-soubirous`** (miracle) — source_id 212
   `https://www.thedivinemercy.org/articles/bernadettes-body-still-rests-incorrupt`
@@ -236,137 +370,3 @@ Method: dumped via `dump-sources.ts`, checked with 17 parallel subagents (WebFet
   `https://chrc-phila.org/canonization-of-saint-john-neumann/`
   ~~Current: `academic`~~ → Updated to `other`.
   This is a diocesan historical research center's archive page, not a .edu domain or journal publisher, so 'other' fits better than 'academic'; content matches Neumann's canonization.
-
-
-### Needs manual review (inconclusive fetch) (26)
-
-- **`healing-of-jake-finkbonner`** (miracle) — source_id 198
-  `https://www.ncregister.com/news/pope-approves-miracle-of-kateri-tekakwitha`
-  Current category: `news_article`
-  Page loaded and covers the Vatican's approval of a miracle for Kateri Tekakwitha's canonization, but never names Jake Finkbonner, Ferndale WA, or the flesh-eating-bacteria diagnosis, so it can't be confirmed as documenting this specific case rather than being a generic announcement.
-
-- **`eucharistic-miracle-of-lanciano`** (miracle) — source_id 227
-  `https://pubmed.ncbi.nlm.nih.gov/4950729/`
-  Current category: `academic`
-  PubMed served a bot-check/CAPTCHA page instead of the article; could not confirm reachability or content match.
-
-- **`eucharistic-miracle-of-lanciano`** (miracle) — source_id 228
-  `https://www.miracolieucaristici.org/`
-  Current category: `other`
-  Only the bare homepage/language-selector loaded; no Lanciano-specific content was visible to confirm the match.
-
-- **`our-lady-of-the-miraculous-medal`** (miracle) — source_id 203
-  `https://amm.org/`
-  Current category: `other`
-  Official Association of the Miraculous Medal homepage; content is generic devotional/organizational material and doesn't specifically document Catherine Labouré or the 1830 apparition.
-
-- **`eucharistic-miracle-of-sokolka`** (miracle) — source_id 236
-  `https://www.miracolieucaristici.org/en/liste/scheda_c.html?nat=polonia&wh=sokolka`
-  Current category: `other`
-  Page loaded but only navigation chrome ('Miracles list', 'Visualizza Pdf') was retrievable, no substantive body content to confirm the Sokolka case is documented.
-
-- **`lourdes-healing-of-antonietta-raco`** (miracle) — source_id 237
-  `https://www.thecatholictelegraph.com/a-voice-told-me-not-to-be-afraid-the-story-of-lourdes-72nd-recognized-miracle/101501`
-  Current category: `news_article`
-  Fetch returned HTTP 403 Forbidden (likely bot-blocking), so reachability and content could not be confirmed either way.
-
-- **`vanishing-of-smallpox-scars`** (miracle) — source_id 264
-  `https://www.katerishrine.org/`
-  Current category: `other`
-  Reachable official shrine homepage that names Kateri Tekakwitha but is a thin/generic visitor-info page with no mention of her death or the smallpox scars vanishing.
-
-- **`healing-of-sr-marie-simon-pierre`** (miracle) — source_id 276
-  `https://www.archbalt.org/may-1-beatification-set-for-pope-john-paul-ii-after-miracle-approved/`
-  Current category: `news_article`
-  Page loaded but content was truncated to just the headline on fetch, so the body could not be checked against the record.
-
-- **`beatification-miracle-of-catherine-laboure`** (miracle) — source_id 289
-  `https://hozana.org/en/saints/saint-catherine-laboure`
-  Current category: `other`
-  Page is a general Catherine Labouré bio mentioning one posthumous healing anecdote, but the record has no recipient/date/location to confirm this is the specific beatification miracle.
-
-- **`divine-mercy-revelations`** (miracle) — source_id 293
-  `https://www.thedivinemercy.org/`
-  Current category: `other`
-  Bare org homepage with current news/nav content (Fulton Sheen beatification, livestream schedule); mentions Faustina only as a nav link, no actual documentation of the 1931 revelations.
-
-- **`our-lady-of-guadalupe-apparitions`** (miracle) — source_id 306
-  `https://www.virgendeguadalupe.org.mx/`
-  Current category: `other`
-  Official Basilica homepage references Juan Diego and the apparitions in nav/sections but the fetched homepage itself has no substantive account of the 1531 event, too thin to confirm case-specific content.
-
-- **`tilma-of-guadalupe`** (miracle) — source_id 307
-  `https://www.virgendeguadalupe.org.mx/`
-  Current category: `other`
-  Same official Basilica homepage as source 306; references Juan Diego/apparitions in navigation but homepage content is too thin to confirm tilma-specific details.
-
-- **`healing-of-maria-pellemans`** (miracle) — source_id 323
-  `https://archives.carmeldelisieux.fr/en/naissance-dune-sainte/la-beatification-et-la-canonisation/historique-de-la-beatification-et-de-la-canonisation/`
-  Current category: `other`
-  Page names the healed person 'Pius Pellemans' (Schaerbeek, Brussels) rather than 'Maria Pellemans'; disease (pulmonary tuberculosis), Lisieux tomb cure, and canonization timeline otherwise match, but the first-name conflict with the record and with the canonization bull text needs human judgment.
-
-- **`healing-of-sr-caterina-capitani`** (miracle) — source_id 344
-  `https://www.vatican.va/special/canonizzazione-27042014/index_en.html`
-  Current category: `vatican_decree`
-  Page confirms the 2014 canonization of John XXIII/John Paul II but is a general index of homilies/bios with no mention of Sister Caterina Capitani or her specific healing, so case-specific match can't be confirmed.
-
-- **`healing-of-audrey-toguchi`** (miracle) — source_id 355
-  `https://www.atlasobscura.com/articles/how-the-vatican-investigated-a-modern-miracle-at-a-leprosy-settlement-in-hawaii`
-  Current category: `news_article`
-  Server returned HTTP 403 Forbidden on repeated fetch attempts (likely bot-blocking), so content could not be verified either way.
-
-- **`our-lady-of-akita`** (miracle) — source_id 362
-  `https://www.ucanews.com/story-archive/?post_id=36862&post_name=%2F1988%2F08%2F17%2Fcardinal-ratzinger-said-to-approve-messages-of-blessed-mother-at-akita`
-  Current category: `news_article`
-  WebFetch returned HTTP 403 Forbidden (likely anti-bot blocking on ucanews.com); could not verify content match or confirm the link still resolves for normal users.
-
-- **`our-lady-of-akita`** (miracle) — source_id 363
-  `https://www.ucanews.com/story-archive/?post_name=/1988/09/14/bishop-ito-clarifies-cardinal-ratzingers-remarks-on-messages-of-mary&post_id=36975`
-  Current category: `news_article`
-  WebFetch returned HTTP 403 Forbidden (likely anti-bot blocking on ucanews.com); could not verify content match or confirm the link still resolves for normal users.
-
-- **`healing-of-carl-kalin`** (miracle) — source_id 369
-  `https://www.nytimes.com/1975/09/15/archives/the-miracle-occurs-daily-at-st-josephs.html`
-  Current category: `news_article`
-  WebFetch cannot access nytimes.com directly; a web search corroborates this Sept 15, 1975 article is about Carl Kalin's healing, but content was not directly verified on the page itself.
-
-- **`healing-of-carl-kalin`** (miracle) — source_id 370
-  `https://www.nytimes.com/1975/09/13/archives/mother-setons-day-will-be-his-too-mother-setons-day-will-be-special.html`
-  Current category: `news_article`
-  WebFetch cannot access nytimes.com directly and web search found no corroborating description of this article's actual content; cannot confirm it discusses Carl Kalin.
-
-- **`healing-of-anne-theresa-oneill`** (miracle) — source_id 371
-  `https://www.nytimes.com/1975/09/13/archives/mother-setons-day-will-be-his-too-mother-setons-day-will-be-special.html`
-  Current category: `news_article`
-  Same URL as source 370, attached here to a different record (O'Neill); WebFetch cannot access nytimes.com and no corroboration found, so it's unclear whether this article documents O'Neill's case specifically.
-
-- **`healing-of-sr-gertrude-korzendorfer`** (miracle) — source_id 372
-  `https://www.nytimes.com/1974/12/13/archives/for-mother-seton-sainthood-crowns-career-in-church-6-saints-are.html`
-  Current category: `news_article`
-  nytimes.com is blocked from fetching (and archive.org fallback also blocked), so content could not be verified against the Korzendorfer case.
-
-- **`carlo-acutis`** (saint) — source_id 688
-  `https://www.carloacutis.com/`
-  Current category: `other`
-  Page is a JS-rendered shell that only returns header/title text ("Carlo Acutis" / "San Carlo Acutis") on fetch, too thin to confirm biographical content actually documents him.
-
-- **`bernadette-soubirous`** (saint) — source_id 694
-  `https://www.britannica.com/biography/Saint-Bernadette-of-Lourdes`
-  Current category: `academic`
-  Britannica returned HTTP 403 Forbidden to the fetch tool (likely bot-blocking) so content could not be verified; also Britannica is a general encyclopedia, not an academic journal/publisher, so source_type academic is questionable regardless.
-
-- **`juan-diego`** (saint) — source_id 703
-  `https://www.virgendeguadalupe.org.mx/`
-  Current category: `other`
-  URL is the basilica's homepage, which only lists a 'San Juan Diego' menu link without substantive biographical content in the fetched page, too thin to confirm a specific match.
-
-- **`pier-giorgio-frassati`** (saint) — source_id 711
-  `https://frassatiusa.org/`
-  Current category: `other`
-  Returns HTTP 403 Forbidden via both WebFetch and a curl request with a browser user-agent; domain resolves so this looks like bot-blocking rather than a dead site, but content could not be verified.
-
-- **`elizabeth-ann-seton`** (saint) — source_id 734
-  `https://www.nytimes.com/1974/12/13/archives/for-mother-seton-sainthood-crowns-career-in-church-6-saints-are.html`
-  Current category: `news_article`
-  Returns HTTP 403 (bot-block/paywall) from both WebFetch and curl; Wayback Machine lookup was rate-limited, so content could not be verified.
-
