@@ -8,7 +8,7 @@ Method: dumped via `dump-sources.ts`, checked with 17 parallel subagents (WebFet
 
 - Checked: 241
 - ok: 201
-- dead: 6 — still open
+- dead: 6 — removed from DB 2026-09-29, tracked in dead-links-archive.md
 - mismatch: 3 — still open (5 more fixed 2026-09-28, see bottom)
 - wikipedia_duplicate: 0
 - type_mismatch: 0 — all 28 fixed 2026-09-28, see bottom
@@ -22,9 +22,9 @@ Method: dumped via `dump-sources.ts`, checked with 17 parallel subagents (WebFet
 
 ## Open — needs manual review
 
-### Dead / unreachable links (6)
+### Dead / unreachable links (6) — removed from DB 2026-09-29
 
-Moved to [`dead-links-archive.md`](./dead-links-archive.md) — a standalone, ongoing tracker so these can be periodically re-checked without re-running a full audit. Rows are still live in the DB.
+These 6 rows were deleted from `miracle_sources`/`saint_sources` on 2026-09-29 since they were broken on the live site. Full detail (URL, reason, source_id) is preserved in [`dead-links-archive.md`](./dead-links-archive.md) — a standalone tracker so they can be periodically re-checked, and re-added via the admin panel if the URL ever comes back.
 
 ### Content mismatch — wrong miracle/saint (3)
 
