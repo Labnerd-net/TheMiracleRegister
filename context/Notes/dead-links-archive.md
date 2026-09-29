@@ -2,7 +2,7 @@
 
 Ongoing tracker for `miracle_sources` / `saint_sources` rows whose URL was unreachable at time of check. These rows are still live in the DB (not removed) — this file exists so a URL can be periodically re-checked and, if it comes back, cleared here without having to re-run a full audit to rediscover it.
 
-**When re-checking:** fetch the URL again. If it resolves and still documents the record, mark it `RESOLVED` below with the date and move it out of the active list (or delete the entry). If it's still dead, leave it and update `last_checked`.
+**When re-checking** (see the `verify-sources` skill's recheck mode): fetch the URL again. If it resolves and still documents the record, move the entry to **Resolved** with today's date and a one-line note on what confirmed it. If still dead, leave it under **Active** and bump `Last checked` to today.
 
 ## Active (still dead)
 

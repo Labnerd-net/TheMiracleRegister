@@ -1,6 +1,6 @@
 ---
 name: verify-sources
-description: Audits `miracle_sources` and `saint_sources` rows on published (live) records — fetches each URL and checks it actually documents the miracle/saint it's attached to, and that `source_type` is categorized correctly. Use when the user asks to verify, audit, or sanity-check sources/links/citations, check for a source pointing at the wrong miracle/saint, or re-check `source_type` categorization. Produces a markdown report in `context/Notes/` for manual review — never edits records itself.
+description: Audits `miracle_sources` and `saint_sources` rows on published (live) records — fetches each URL and checks it actually documents the miracle/saint it's attached to, and that `source_type` is categorized correctly. Use when the user asks to verify, audit, or sanity-check sources/links/citations, check for a source pointing at the wrong miracle/saint, re-check `source_type` categorization, or re-check previously dead links. Produces a markdown report in `context/Notes/` for manual review and maintains `context/Notes/dead-links-archive.md` — never edits DB records itself.
 ---
 
 # verify-sources
@@ -19,6 +19,8 @@ edit page — add/delete pattern, same as sources have always worked).
 
 ## Step 0 — parse scope from `$ARGUMENTS`
 
+- `recheck`, `check dead links`, or similar — **recheck mode**, skip to the
+  section below instead of a full audit.
 - Empty → full audit of every published miracle's and saint's sources.
 - A saint slug (e.g. `john-paul-ii`) → pass `--saint=<slug>` to the dump
   script — only that saint's sources and the sources of miracles linked to
@@ -29,6 +31,26 @@ edit page — add/delete pattern, same as sources have always worked).
 Don't guess slugs — if the user names a saint/miracle in prose ("check John
 Paul II's sources"), resolve it to the slug via the dump script's own output
 or a quick DB lookup rather than assuming spelling.
+
+### Recheck mode
+
+For "recheck the dead links" style requests, don't run the full dump/audit
+pipeline. Instead:
+
+1. Read `context/Notes/dead-links-archive.md` and take every entry listed
+   under **Active**.
+2. Fetch each URL directly with `WebFetch` (batch into `general-purpose`
+   subagents only if there are more than ~15 — this list is usually small).
+3. For each: if it now loads and still documents the record it's attached
+   to (same content-match check as Step 2 below) → move the entry to
+   **Resolved** with today's date and a one-line note on what confirmed it
+   (don't just delete it — the resolution itself is worth keeping). If still
+   dead → update `Last checked` to today; update the note only if the
+   failure reason changed.
+4. Rewrite `dead-links-archive.md` in place with these updates.
+5. Tell the user a short summary (e.g. "2 of 6 came back: X, Y — moved to
+   Resolved. 4 still dead.") and stop — no dated audit report is needed for
+   a recheck-only run.
 
 ## Step 1 — dump the data
 
@@ -116,20 +138,34 @@ Give each subagent this exact task shape (fill in its slice of the JSON):
 > when `status` is `type_mismatch`; otherwise omit it. Keep `note` to one
 > sentence — the reason, not a restatement of the status.
 
-## Step 3 — merge and write the report
+## Step 3 — merge, update the dead-links archive, and write the report
 
 Collect every batch's JSON array (or your own direct-fetch results for small
-runs) into one list keyed by `source_id`. Write a markdown report to
-`context/Notes/source-verification-<YYYY-MM-DD>.md` (today's date), structured as:
+runs) into one list keyed by `source_id`.
+
+**First, reconcile `dead` findings against `context/Notes/dead-links-archive.md`**
+(create the file with an `## Active` and `## Resolved` heading if it doesn't
+exist yet):
+
+- Any source with `status: dead` this run: if a matching **Active** entry
+  (same `source_id`) already exists, just bump its `Last checked` date. If
+  it's new, add an entry with `First flagged: <today>` and `Last checked: <today>`.
+- Any URL currently listed under **Active** that came back `ok` in *this*
+  run (it can happen if a full audit re-covers a previously dead source) —
+  move it to **Resolved** with today's date, same as recheck mode does.
+- Leave everything else in the archive untouched.
+
+Then write a markdown report to `context/Notes/source-verification-<YYYY-MM-DD>.md`
+(today's date), structured as:
 
 1. **Summary** — counts: total checked, `ok`, and each issue status. Note the
    scope (full audit vs. the saint/miracle/limit the user asked for).
-2. **Flagged sources**, grouped by status, most actionable first
-   (`dead`, `mismatch`, `wikipedia_duplicate`, `type_mismatch`,
-   `needs_review`). Each entry: the miracle or saint slug (link target for
-   the admin panel), the URL, current vs. suggested category if relevant,
-   and the one-line note. Skip the `ok` rows in the body — they're already
-   covered by the summary count.
+2. **Flagged sources**, grouped by status, most actionable first. For `dead`,
+   don't repeat the full detail — one line pointing at the archive (e.g.
+   "`dead` (3) — see `dead-links-archive.md`, N new this run, M carried
+   over"). Then `mismatch`, `wikipedia_duplicate`, `type_mismatch`,
+   `needs_review` in full, same as before. Skip `ok` rows entirely — they're
+   already covered by the summary count.
 3. Nothing else — no "ok" listing, no recommendations beyond what's in the
    notes. This is a checklist for the user to work through in the admin
    panel, not a narrative report.
@@ -137,5 +173,6 @@ runs) into one list keyed by `source_id`. Write a markdown report to
 ## Step 4 — tell the user
 
 Report the file path, the headline counts (e.g. "212 ok, 9 flagged: 3 dead
-links, 4 mismatches, 2 wikipedia duplicates"), and remind them nothing was
-changed in the database — every fix happens by hand in the admin panel.
+links, 4 mismatches, 2 wikipedia duplicates"), mention the dead-links archive
+was updated (N new / M still active / K resolved), and remind them nothing
+was changed in the database — every fix happens by hand in the admin panel.
