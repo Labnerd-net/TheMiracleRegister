@@ -2,21 +2,21 @@
 
 Scope: full audit of every `miracle_sources` and `saint_sources` row on **published** records — 179 miracle sources + 62 saint sources = 241 total.
 
-Method: dumped via `dump-sources.ts`, checked with 17 parallel subagents (WebFetch per source) per the `verify-sources` skill heuristics. Source_id 275 was fixed in a prior, separately-requested scoped run and is reflected here as `ok`. All 28 `type_mismatch` findings below were fixed on 2026-09-28 (source_type updated to the suggested value). The remaining `dead`, `mismatch`, and `needs_review` findings are still open and require manual review in the admin panel.
+Method: dumped via `dump-sources.ts`, checked with 17 parallel subagents (WebFetch per source) per the `verify-sources` skill heuristics. Source_id 275 was fixed in a prior, separately-requested scoped run and is reflected here as `ok`. All 28 `type_mismatch` findings below were fixed on 2026-09-28 (source_type updated to the suggested value). Of the 8 `mismatch` findings, 5 turned out to be exact-URL duplicates of a source already attached to the miracle's saint and were deleted from `miracle_sources` on 2026-09-28 (ids 249, 261, 263, 272, 280). The remaining `dead`, 3 `mismatch`, and `needs_review` findings are still open and require manual review in the admin panel.
 
 ## Summary
 
 - Checked: 241
 - ok: 201
 - dead: 6
-- mismatch: 8
+- mismatch: 3 (5 fixed 2026-09-28 — removed as saint-source duplicates)
 - wikipedia_duplicate: 0
 - type_mismatch: 0 (28 fixed 2026-09-28)
 - needs_review: 26
 
 ## Highlights
 
-- **The 8 `mismatch` cases below are the closest thing to your original concern** ("wrong miracle" links) — 7 of them share the same pattern: a vatican.va canonization/beatification *homily* was attached to a specific miracle record, but homilies are thematic and never name the private individual healed, so the page genuinely doesn't document that case. These aren't necessarily wrong sources (the homily is real and from the right event), but they don't individually confirm the miracle they're attached to.
+- **The original 8 `mismatch` cases were the closest thing to your original concern** ("wrong miracle" links) — a vatican.va canonization/beatification *homily* was attached to a specific miracle record, but homilies are thematic and never name the private individual healed, so the page genuinely doesn't document that case. 5 of the 8 turned out to be the exact same URL already sitting on the linked saint's `saint_sources` — redundant on the miracle, so they were deleted from `miracle_sources` (see "Fixed" list below). The remaining 3 are a different homily than what's on the saint page, so they're still open for manual review.
 - **Source_id 370 and 371 are the same URL attached to two different recipients** (Carl Kalin vs. Anne Theresa O'Neill) — worth a manual look, since at most one of those attributions can be right.
 - No `wikipedia_duplicate` hits — no saint_sources row duplicates a saint's `wikipedia_url`.
 
@@ -55,47 +55,44 @@ Method: dumped via `dump-sources.ts`, checked with 17 parallel subagents (WebFet
   Confirmed HTTP 404 via both WebFetch and curl; the page no longer exists at this path.
 
 
-### Content mismatch — wrong miracle/saint (8)
-
-- **`healing-of-giuseppe-carlo-audino`** (miracle) — source_id 249
-  `https://www.vatican.va/content/benedict-xvi/en/homilies/2010/documents/hf_ben-xvi_hom_20101017_canonizations.html`
-  Current category: `vatican_decree`
-  This is Benedict XVI's 2010 canonization homily (which pertains to the 1999 child-healing canonization miracle), not documentation of the 1958 Audino beatification miracle it's attached to here; it names no specific miracle.
-
-- **`healing-of-lucia-sylvia-cirilo`** (miracle) — source_id 263
-  `https://www.vatican.va/news_services/liturgy/saints/ns_lit_doc_20040516_beretta-molla_en.html`
-  Current category: `vatican_decree`
-  This is a Vatican biography of Gianna Beretta Molla's life and death; it contains no mention of Lucia Sylvia Cirilo or the 1977 Brazil healing.
-
-- **`healing-of-juan-jose-barragan-silva`** (miracle) — source_id 272
-  `https://www.vatican.va/news_services/liturgy/saints/ns_lit_doc_20020731_juan-diego_en.html`
-  Current category: `vatican_decree`
-  Vatican biography page on Juan Diego covers his life and 1990 beatification but never mentions the Juan Jose Barragan Silva healing in Queretaro that is this record's canonization miracle.
-
-- **`healing-of-fr-ronald-pytel`** (miracle) — source_id 261
-  `https://www.saint-faustina.org/`
-  Current category: `other`
-  Site covers Divine Mercy devotion and St. Faustina generally but makes no mention of Fr. Ronald Pytel or the 1995 Baltimore healing.
+### Content mismatch — wrong miracle/saint (3 open; 5 fixed)
 
 - **`healing-of-sr-marie-simon-pierre`** (miracle) — source_id 277
   `https://www.vatican.va/content/benedict-xvi/en/homilies/2011/documents/hf_ben-xvi_hom_20110501_beatificazione-gpii.html`
   Current category: `vatican_decree`
-  Benedict XVI's beatification homily for John Paul II is a genuine Vatican document but never mentions Sr. Marie Simon-Pierre, Parkinson's, or Aix-en-Provence — it's thematic, not the miracle record.
+  Benedict XVI's beatification homily for John Paul II is a genuine Vatican document but never mentions Sr. Marie Simon-Pierre, Parkinson's, or Aix-en-Provence — it's thematic, not the miracle record. Not a saint-page duplicate: John Paul II's saint_sources only has the 2014 canonization homily (id 663), a different document.
 
 - **`healing-of-monica-besra`** (miracle) — source_id 279
   `https://www.vatican.va/content/john-paul-ii/en/homilies/2003/documents/hf_jp-ii_hom_20031019_mother-theresa.html`
   Current category: `vatican_decree`
-  John Paul II's beatification homily for Mother Teresa contains no mention of Monica Besra or her tumor healing.
-
-- **`healing-of-marcilio-haddad-andrino`** (miracle) — source_id 280
-  `https://www.vatican.va/content/francesco/en/homilies/2016/documents/papa-francesco_20160904_omelia-canonizzazione-madre-teresa.html`
-  Current category: `vatican_decree`
-  Pope Francis's canonization homily for Mother Teresa contains no mention of Marcilio Haddad Andrino or the Brazil healing case.
+  John Paul II's beatification homily for Mother Teresa contains no mention of Monica Besra or her tumor healing. Not a saint-page duplicate: Mother Teresa's saint_sources only has the 2016 Francis canonization homily (id 665), a different document.
 
 - **`healing-of-sr-concepcion-boullon-rubio`** (miracle) — source_id 373
   `https://www.vatican.va/content/john-paul-ii/it/homilies/1992/documents/hf_jp-ii_hom_19920517_beatifications.html`
   Current category: `vatican_decree`
-  Homily covers Escrivá's and Bakhita's beatification in general spiritual terms but never mentions Sister Concepción Boullón Rubio or the specific 1976 healing.
+  Homily covers Escrivá's and Bakhita's beatification in general spiritual terms but never mentions Sister Concepción Boullón Rubio or the specific 1976 healing. Not a saint-page duplicate: Josemaría Escrivá's saint_sources only has the 2002 canonization homily (id 735), a different document.
+
+**Fixed 2026-09-28 — removed from `miracle_sources` as exact-URL duplicates already present on the linked saint's page:**
+
+- **`healing-of-giuseppe-carlo-audino`** (miracle) — source_id 249 (deleted)
+  `https://www.vatican.va/content/benedict-xvi/en/homilies/2010/documents/hf_ben-xvi_hom_20101017_canonizations.html`
+  Duplicate of `andre-bessette` saint_sources id 676.
+
+- **`healing-of-lucia-sylvia-cirilo`** (miracle) — source_id 263 (deleted)
+  `https://www.vatican.va/news_services/liturgy/saints/ns_lit_doc_20040516_beretta-molla_en.html`
+  Duplicate of `gianna-beretta-molla` saint_sources id 671.
+
+- **`healing-of-juan-jose-barragan-silva`** (miracle) — source_id 272 (deleted)
+  `https://www.vatican.va/news_services/liturgy/saints/ns_lit_doc_20020731_juan-diego_en.html`
+  Duplicate of `juan-diego` saint_sources id 689.
+
+- **`healing-of-fr-ronald-pytel`** (miracle) — source_id 261 (deleted)
+  `https://www.saint-faustina.org/`
+  Duplicate of `faustina-kowalska` saint_sources id 670.
+
+- **`healing-of-marcilio-haddad-andrino`** (miracle) — source_id 280 (deleted)
+  `https://www.vatican.va/content/francesco/en/homilies/2016/documents/papa-francesco_20160904_omelia-canonizzazione-madre-teresa.html`
+  Duplicate of `mother-teresa` saint_sources id 665.
 
 
 ### Category mismatch (source_type) — 28 fixed 2026-09-28
