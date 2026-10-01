@@ -53,7 +53,7 @@ function categoryDot(category: string): string {
 }
 ---
 
-<Base title="Timeline — The Miracle Register">
+<Base title="Timeline">
   <div class="page-header">
     <div class="max-w-4xl mx-auto px-4 sm:px-6 py-8 sm:py-10">
       <a href="/miracles" style="font-family:var(--font-sans);font-size:0.68rem;font-weight:500;letter-spacing:0.08em;text-transform:uppercase;color:var(--text-4);text-decoration:none">← Miracles</a>
@@ -67,7 +67,7 @@ function categoryDot(category: string): string {
       {decades.map(([decade, items]) => (
         <div class="decade-block">
           <div class="decade-marker">
-            <span class="decade-label">{decade}s</span>
+            <h2 class="decade-label">{decade}s</h2>
             <div class="decade-line"></div>
           </div>
           <div class="decade-items">

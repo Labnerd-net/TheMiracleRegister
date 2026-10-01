@@ -89,8 +89,9 @@ function buildUrl(p: number) {
   <div class="page-header">
     <div class="max-w-6xl mx-auto px-4 sm:px-6 py-10 sm:py-16">
       <p class="eyebrow mb-4">The Register</p>
-      <h1 style="font-family:var(--font-display);font-size:clamp(2.5rem,5vw,4rem);font-weight:300;color:var(--text-1);line-height:1.05;letter-spacing:-0.01em">Saints</h1>
+      <h1 style="font-family:var(--font-display);font-size:clamp(2.5rem,5vw,4rem);font-weight:300;color:var(--text-1);line-height:1.05;letter-spacing:-0.01em" id="page-title" tabindex="-1">Saints</h1>
       <p id="saints-count" style="font-family:var(--font-sans);font-size:0.8rem;color:var(--text-4);margin-top:0.6rem;letter-spacing:0.02em">{total} saints documented</p>
+      <p id="saints-status" class="sr-only" role="status" aria-live="polite" aria-atomic="true"></p>
     </div>
   </div>
 
@@ -101,8 +102,8 @@ function buildUrl(p: number) {
       <div class="filter-controls">
 
         <div class="filter-group">
-          <label class="filter-label">Stage</label>
-          <select name="canonization_stage" class="filter-select">
+          <label class="filter-label" for="f-stage">Stage</label>
+          <select id="f-stage" name="canonization_stage" class="filter-select">
             <option value="">All Stages</option>
             <option value="saint" selected={filterStage === "saint"}>Saint</option>
             <option value="blessed" selected={filterStage === "blessed"}>Blessed</option>
@@ -112,8 +113,8 @@ function buildUrl(p: number) {
         </div>
 
         <div class="filter-group">
-          <label class="filter-label">Theme</label>
-          <select name="theme" class="filter-select">
+          <label class="filter-label" for="f-theme">Theme</label>
+          <select id="f-theme" name="theme" class="filter-select">
             <option value="">All Themes</option>
             {SAINT_THEMES.map(t => (
               <option value={t} selected={t === filterTheme}>{humanizeSnakeCase(t)}</option>
@@ -122,8 +123,8 @@ function buildUrl(p: number) {
         </div>
 
         <div class="filter-group">
-          <label class="filter-label">Religious Order</label>
-          <select name="religious_order" class="filter-select">
+          <label class="filter-label" for="f-order">Religious Order</label>
+          <select id="f-order" name="religious_order" class="filter-select">
             <option value="">All Orders</option>
             {religiousOrders.map(o => (
               <option value={o} selected={o === filterOrder}>{o}</option>
@@ -132,8 +133,8 @@ function buildUrl(p: number) {
         </div>
 
         <div class="filter-group">
-          <label class="filter-label">Nationality</label>
-          <select name="nationality" class="filter-select">
+          <label class="filter-label" for="f-nationality">Nationality</label>
+          <select id="f-nationality" name="nationality" class="filter-select">
             <option value="">All Nationalities</option>
             {nationalities.map(n => (
               <option value={n} selected={n === filterNationality}>{n}</option>
@@ -153,13 +154,17 @@ function buildUrl(p: number) {
     <div id="saints-grid" class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-x-6 gap-y-10 mt-8">
       {pageSaints.length === 0 ? (
         <p class="empty-state col-span-full">No saints match the selected filters.</p>
-      ) : pageSaints.map((s) => (
+      ) : pageSaints.map((s, i) => (
         <a href={`/saints/${s.slug}`} class="saint-card-link group no-underline">
           <div class="aspect-[3/4] overflow-hidden mb-4" style="background:var(--bg-elevated)">
             {s.image_url ? (
               <img
                 src={s.image_url}
                 alt={s.name}
+                loading={i < 4 ? "eager" : "lazy"}
+                decoding="async"
+                width="300"
+                height="400"
                 class="w-full h-full object-cover object-top saint-img"
               />
             ) : (
@@ -185,19 +190,21 @@ function buildUrl(p: number) {
       ))}
     </div>
 
-    {totalPages > 1 && (
-      <nav id="saints-pagination" class="pagination" aria-label="Page navigation">
-        {page > 1
-          ? <a href={buildUrl(page - 1)} class="pagination-btn">← Previous</a>
-          : <span class="pagination-btn disabled">← Previous</span>
-        }
-        <span class="pagination-info">Page {page} of {totalPages}</span>
-        {page < totalPages
-          ? <a href={buildUrl(page + 1)} class="pagination-btn">Next →</a>
-          : <span class="pagination-btn disabled">Next →</span>
-        }
-      </nav>
-    )}
+    <nav id="saints-pagination" class="pagination" aria-label="Page navigation" hidden={totalPages <= 1}>
+      {totalPages > 1 && (
+        <>
+          {page > 1
+            ? <a href={buildUrl(page - 1)} class="pagination-btn">← Previous</a>
+            : <span class="pagination-btn disabled" aria-disabled="true">← Previous</span>
+          }
+          <span class="pagination-info" aria-current="page">Page {page} of {totalPages}</span>
+          {page < totalPages
+            ? <a href={buildUrl(page + 1)} class="pagination-btn">Next →</a>
+            : <span class="pagination-btn disabled" aria-disabled="true">Next →</span>
+          }
+        </>
+      )}
+    </nav>
   </div>
 
 </Base>
@@ -208,7 +215,11 @@ function buildUrl(p: number) {
   const gridEl = document.getElementById("saints-grid");
   const paginationEl = document.getElementById("saints-pagination");
   const countEl = document.getElementById("saints-count");
-  if (!form || !gridEl || !paginationEl || !countEl) return;
+  const statusEl = document.getElementById("saints-status");
+  const titleEl = document.getElementById("page-title");
+  if (!form || !gridEl || !paginationEl || !countEl || !statusEl) return;
+
+  const reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
 
   function esc(str: string | null | undefined): string {
     return String(str ?? "").replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;").replace(/"/g, "&quot;");
@@ -242,7 +253,7 @@ function buildUrl(p: number) {
   function renderCard(s: any): string {
     const placeholder = `<div style="width:100%;height:100%;display:flex;align-items:center;justify-content:center;font-family:var(--font-display);font-size:3rem;font-weight:300;color:var(--text-4);background:var(--bg-elevated)">${esc(s.name?.charAt(0))}</div>`;
     const img = s.image_url
-      ? `<img src="${esc(s.image_url)}" alt="${esc(s.name)}" style="width:100%;height:100%;object-fit:cover;object-position:top" />`
+      ? `<img src="${esc(s.image_url)}" alt="${esc(s.name)}" loading="lazy" decoding="async" width="300" height="400" style="width:100%;height:100%;object-fit:cover;object-position:top" />`
       : placeholder;
     const stage = s.canonization_stage ?? "";
     const feastDay = s.feast_day ? `<span style="display:block">${esc(s.feast_day)}</span>` : "";
@@ -265,35 +276,42 @@ function buildUrl(p: number) {
     if (totalPages <= 1) return "";
     const hasPrev = page > 1;
     const hasNext = page < totalPages;
-    return `<div style="display:flex;align-items:center;justify-content:center;gap:1.5rem;margin-top:3rem;padding-top:2rem;border-top:1px solid var(--rule-light)">
-      ${hasPrev ? `<a href="${buildPageUrl(fd, page - 1)}" class="pagination-btn js-page" data-page="${page - 1}">← Previous</a>` : `<span class="pagination-btn disabled">← Previous</span>`}
-      <span class="pagination-info">Page ${page} of ${totalPages}</span>
-      ${hasNext ? `<a href="${buildPageUrl(fd, page + 1)}" class="pagination-btn js-page" data-page="${page + 1}">Next →</a>` : `<span class="pagination-btn disabled">Next →</span>`}
+    return `<div style="display:flex;align-items:center;justify-content:center;gap:1.5rem;margin-top:3rem;padding-top:2rem;border-top:1px solid var(--rule)">
+      ${hasPrev ? `<a href="${buildPageUrl(fd, page - 1)}" class="pagination-btn js-page" data-page="${page - 1}">← Previous</a>` : `<span class="pagination-btn disabled" aria-disabled="true">← Previous</span>`}
+      <span class="pagination-info" aria-current="page">Page ${page} of ${totalPages}</span>
+      ${hasNext ? `<a href="${buildPageUrl(fd, page + 1)}" class="pagination-btn js-page" data-page="${page + 1}">Next →</a>` : `<span class="pagination-btn disabled" aria-disabled="true">Next →</span>`}
     </div>`;
   }
 
   async function applyFilters(page: number = 1) {
     const fd = new FormData(form!);
     gridEl!.classList.add("loading");
+    gridEl!.setAttribute("aria-busy", "true");
     try {
       const res = await fetch(buildApiUrl(fd, page));
-      if (!res.ok) return;
+      if (!res.ok) throw new Error(String(res.status));
       const json = await res.json() as any;
       const { data, meta } = json;
 
-      countEl!.textContent = `${meta.total} saint${meta.total !== 1 ? "s" : ""} documented`;
+      const countText = `${meta.total} saint${meta.total !== 1 ? "s" : ""} documented`;
+      countEl!.textContent = countText;
+      const pages = Math.max(1, Math.ceil(meta.total / meta.limit));
+      statusEl!.textContent = pages > 1 ? `${countText}. Page ${meta.page} of ${pages}.` : `${countText}.`;
 
       gridEl!.innerHTML = data.length === 0
         ? `<p class="empty-state col-span-full">No saints match the selected filters.</p>`
         : (data as any[]).map(renderCard).join("");
 
-      paginationEl!.innerHTML = renderPagination(meta, fd);
+      const paginationHtml = renderPagination(meta, fd);
+      paginationEl!.innerHTML = paginationHtml;
+      paginationEl!.hidden = !paginationHtml;
 
       history.pushState(null, "", buildPageUrl(fd, page));
     } catch {
-      // silently fall back to server-rendered state
+      statusEl!.textContent = "Could not update results. Showing the previous results.";
     } finally {
       gridEl!.classList.remove("loading");
+      gridEl!.setAttribute("aria-busy", "false");
     }
   }
 
@@ -309,8 +327,8 @@ function buildUrl(p: number) {
     if (!target) return;
     e.preventDefault();
     const p = parseInt(target.dataset.page ?? "1");
-    applyFilters(p);
-    window.scrollTo({ top: 0, behavior: "smooth" });
+    applyFilters(p).then(() => titleEl?.focus({ preventScroll: true }));
+    window.scrollTo({ top: 0, behavior: reduceMotion ? "auto" : "smooth" });
   });
 })();
 </script>
@@ -318,7 +336,7 @@ function buildUrl(p: number) {
 <style>
   .filter-bar {
     background: var(--bg-elevated);
-    border: 1px solid var(--rule-light);
+    border: 1px solid var(--rule);
     border-radius: 6px;
     padding: 1rem 1.25rem;
   }
@@ -351,7 +369,7 @@ function buildUrl(p: number) {
     font-family: var(--font-sans);
     font-size: 0.8rem;
     color: var(--text-2);
-    background: var(--bg-base);
+    background: var(--bg-surface);
     border: 1px solid var(--rule-mid);
     border-radius: 4px;
     padding: 0.35rem 0.6rem;
@@ -368,7 +386,6 @@ function buildUrl(p: number) {
 
   .filter-select:focus,
   .filter-input:focus {
-    outline: none;
     border-color: var(--color-accent);
   }
 
@@ -378,7 +395,7 @@ function buildUrl(p: number) {
     gap: 1rem;
     margin-top: 0.85rem;
     padding-top: 0.75rem;
-    border-top: 1px solid var(--rule-light);
+    border-top: 1px solid var(--rule);
   }
 
   .filter-apply {
@@ -386,7 +403,7 @@ function buildUrl(p: number) {
     font-size: 0.75rem;
     font-weight: 600;
     letter-spacing: 0.04em;
-    color: var(--bg-base);
+    color: var(--bg-surface);
     background: var(--color-accent);
     border: none;
     border-radius: 4px;
@@ -422,8 +439,9 @@ function buildUrl(p: number) {
     gap: 1.5rem;
     margin-top: 3rem;
     padding-top: 2rem;
-    border-top: 1px solid var(--rule-light);
+    border-top: 1px solid var(--rule);
   }
+  .pagination[hidden] { display: none; }
   .pagination-btn {
     font-family: var(--font-sans);
     font-size: 0.8rem;

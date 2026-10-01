@@ -57,11 +57,11 @@ const jsonLd = [
 
   <div class="max-w-6xl mx-auto px-4 sm:px-6 py-8 sm:py-12">
     <div class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-x-6 gap-y-10">
-      {termSaints.map((s) => (
+      {termSaints.map((s, i) => (
         <a href={`/saints/${s.slug}`} class="saint-card-link group no-underline">
           <div class="aspect-[3/4] overflow-hidden mb-4" style="background:var(--bg-elevated)">
             {s.image_url ? (
-              <img src={s.image_url} alt={s.name} class="w-full h-full object-cover object-top saint-img" />
+              <img src={s.image_url} alt={s.name} loading={i < 4 ? "eager" : "lazy"} decoding="async" width="300" height="400" class="w-full h-full object-cover object-top saint-img" />
             ) : (
               <div class="saint-placeholder w-full h-full">{s.name.charAt(0)}</div>
             )}

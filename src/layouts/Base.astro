@@ -18,6 +18,14 @@ const canonicalUrl = SITE_URL + Astro.url.pathname;
 // Filtered, paginated, search and preview URLs are not separate documents.
 // `noindex` prop: thin browse pages that exist but should not be indexed.
 const noindex = forceNoindex || Astro.url.search !== "";
+// /miracles/timeline is its own nav item, so it must not also mark /miracles current.
+const path = Astro.url.pathname;
+const current = (href: string) => {
+  const active = href === "/miracles"
+    ? path === "/miracles" || (path.startsWith("/miracles/") && path !== "/miracles/timeline")
+    : path === href || path.startsWith(href + "/");
+  return active ? "page" : undefined;
+};
 ---
 
 <html lang="en">
@@ -54,17 +62,18 @@ const noindex = forceNoindex || Astro.url.search !== "";
     <slot name="head" />
   </head>
   <body class="min-h-screen flex flex-col">
+    <a href="#main" class="skip-link">Skip to main content</a>
 
     <header class="site-header sticky top-0 z-10">
       <div class="max-w-6xl mx-auto px-4 sm:px-6 h-16 sm:h-20 flex items-center justify-between">
         <a href="/" class="site-logo">The Miracle Register</a>
-        <nav class="flex items-center gap-5 sm:gap-8">
+        <nav aria-label="Primary" class="flex items-center gap-5 sm:gap-8">
           <!-- Desktop nav links -->
-          <a href="/saints" class="nav-link hidden lg:inline">Saints</a>
-          <a href="/miracles" class="nav-link hidden lg:inline">Miracles</a>
-          <a href="/map" class="nav-link hidden lg:inline">Map</a>
-          <a href="/miracles/timeline" class="nav-link hidden lg:inline">Timeline</a>
-          <a href="/calendar" class="nav-link hidden lg:inline">Calendar</a>
+          <a href="/saints" class="nav-link hidden lg:inline" aria-current={current("/saints")}>Saints</a>
+          <a href="/miracles" class="nav-link hidden lg:inline" aria-current={current("/miracles")}>Miracles</a>
+          <a href="/map" class="nav-link hidden lg:inline" aria-current={current("/map")}>Map</a>
+          <a href="/miracles/timeline" class="nav-link hidden lg:inline" aria-current={current("/miracles/timeline")}>Timeline</a>
+          <a href="/calendar" class="nav-link hidden lg:inline" aria-current={current("/calendar")}>Calendar</a>
 
           <!-- Desktop search input -->
           <form action="/search" method="get" class="search-form hidden md:flex" role="search">
@@ -85,7 +94,7 @@ const noindex = forceNoindex || Astro.url.search !== "";
           </button>
 
           <!-- Mobile hamburger -->
-          <button id="mobile-menu-toggle" aria-label="Open menu" aria-expanded="false" class="mobile-menu-btn flex lg:hidden">
+          <button id="mobile-menu-toggle" aria-label="Menu" aria-controls="mobile-menu" aria-expanded="false" class="mobile-menu-btn flex lg:hidden">
             <svg id="icon-menu" width="18" height="18" viewBox="0 0 18 18" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round">
               <line x1="2" y1="5" x2="16" y2="5"/>
               <line x1="2" y1="9" x2="16" y2="9"/>
@@ -100,18 +109,18 @@ const noindex = forceNoindex || Astro.url.search !== "";
       </div>
 
       <!-- Mobile dropdown menu -->
-      <div id="mobile-menu" class="mobile-menu" hidden>
+      <nav id="mobile-menu" class="mobile-menu" aria-label="Primary mobile" hidden>
         <div class="max-w-6xl mx-auto px-4 py-4 flex flex-col gap-4">
-          <a href="/saints" class="nav-link">Saints</a>
-          <a href="/miracles" class="nav-link">Miracles</a>
-          <a href="/map" class="nav-link">Map</a>
-          <a href="/miracles/timeline" class="nav-link">Timeline</a>
-          <a href="/calendar" class="nav-link">Calendar</a>
+          <a href="/saints" class="nav-link" aria-current={current("/saints")}>Saints</a>
+          <a href="/miracles" class="nav-link" aria-current={current("/miracles")}>Miracles</a>
+          <a href="/map" class="nav-link" aria-current={current("/map")}>Map</a>
+          <a href="/miracles/timeline" class="nav-link" aria-current={current("/miracles/timeline")}>Timeline</a>
+          <a href="/calendar" class="nav-link" aria-current={current("/calendar")}>Calendar</a>
         </div>
-      </div>
+      </nav>
     </header>
 
-    <main class="flex-1">
+    <main id="main" tabindex="-1" class="flex-1">
       <slot />
     </main>
 
@@ -119,20 +128,20 @@ const noindex = forceNoindex || Astro.url.search !== "";
       <div class="max-w-6xl mx-auto px-4 sm:px-6 py-8 sm:py-12 flex flex-col lg:flex-row items-start lg:items-center justify-between gap-6">
         <span class="site-logo">The Miracle Register</span>
         <div class="flex flex-col lg:flex-row lg:items-center gap-4 lg:gap-6 w-full lg:w-auto">
-          <div class="footer-nav-links">
-            <a href="/saints" class="nav-link">Saints</a>
-            <a href="/miracles" class="nav-link">Miracles</a>
-            <a href="/map" class="nav-link">Map</a>
-            <a href="/miracles/timeline" class="nav-link">Timeline</a>
-            <a href="/calendar" class="nav-link">Calendar</a>
-            <a href="/topics" class="nav-link">Topics</a>
-            <a href="/themes" class="nav-link">Themes</a>
-            <a href="/patronage" class="nav-link">Patronage</a>
+          <nav class="footer-nav-links" aria-label="Footer">
+            <a href="/saints" class="nav-link" aria-current={current("/saints")}>Saints</a>
+            <a href="/miracles" class="nav-link" aria-current={current("/miracles")}>Miracles</a>
+            <a href="/map" class="nav-link" aria-current={current("/map")}>Map</a>
+            <a href="/miracles/timeline" class="nav-link" aria-current={current("/miracles/timeline")}>Timeline</a>
+            <a href="/calendar" class="nav-link" aria-current={current("/calendar")}>Calendar</a>
+            <a href="/topics" class="nav-link" aria-current={current("/topics")}>Topics</a>
+            <a href="/themes" class="nav-link" aria-current={current("/themes")}>Themes</a>
+            <a href="/patronage" class="nav-link" aria-current={current("/patronage")}>Patronage</a>
             <a href="/random" class="nav-link">Random</a>
             <a href="/verification" class="nav-link">Verification</a>
             <a href="/contact" class="nav-link">Contact</a>
             <a href="/api/v1/doc" class="nav-link">API</a>
-          </div>
+          </nav>
           <p style="font-family:var(--font-sans);font-size:0.8rem;letter-spacing:0.04em;color:var(--text-4)">
             A structured database of miracles and venerated traditions of the saints
           </p>
@@ -146,12 +155,18 @@ const noindex = forceNoindex || Astro.url.search !== "";
   const mobileMenu = document.getElementById('mobile-menu');
   const iconMenu = document.getElementById('icon-menu');
   const iconClose = document.getElementById('icon-close');
-  mobileToggle?.addEventListener('click', () => {
-    const isOpen = !mobileMenu?.hidden;
-    if (mobileMenu) mobileMenu.hidden = isOpen;
-    if (mobileToggle) mobileToggle.setAttribute('aria-expanded', String(!isOpen));
-    if (iconMenu) iconMenu.style.display = isOpen ? 'block' : 'none';
-    if (iconClose) iconClose.style.display = isOpen ? 'none' : 'block';
+  function setMobileMenu(open: boolean) {
+    if (mobileMenu) mobileMenu.hidden = !open;
+    if (mobileToggle) mobileToggle.setAttribute('aria-expanded', String(open));
+    if (iconMenu) iconMenu.style.display = open ? 'none' : 'block';
+    if (iconClose) iconClose.style.display = open ? 'block' : 'none';
+  }
+  mobileToggle?.addEventListener('click', () => setMobileMenu(!!mobileMenu?.hidden));
+  document.addEventListener('keydown', (e) => {
+    if (e.key === 'Escape' && mobileMenu && !mobileMenu.hidden) {
+      setMobileMenu(false);
+      mobileToggle?.focus();
+    }
   });
 
   document.getElementById('theme-toggle')?.addEventListener('click', () => {
@@ -207,6 +222,11 @@ const noindex = forceNoindex || Astro.url.search !== "";
     transition: color 0.2s;
   }
   .nav-link:hover { color: var(--text-1); }
+  .nav-link[aria-current="page"] {
+    color: var(--text-1);
+    text-decoration: underline;
+    text-underline-offset: 0.35em;
+  }
 
   .search-form { align-items: center; }
 
@@ -220,7 +240,6 @@ const noindex = forceNoindex || Astro.url.search !== "";
     padding: 0.3rem 0.65rem;
     width: 10rem;
     transition: width 0.2s, border-color 0.2s;
-    outline: none;
   }
   .search-nav-input::placeholder { color: var(--text-4); }
   .search-nav-input:focus {

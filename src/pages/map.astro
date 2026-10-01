@@ -1,4 +1,5 @@
 ---
+import { humanizeSnakeCase } from "../lib/format";
 import Base from "../layouts/Base.astro";
 import { createDb } from "../db";
 import { miracles, saints, saintLocations } from "../db/schema";
@@ -63,7 +64,7 @@ const locationData = locationRows.map(l => ({
 }));
 ---
 
-<Base title="Map — The Miracle Register">
+<Base title="Map">
   <link slot="head" rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY=" crossorigin="" />
 
   <div class="page-header">
@@ -74,10 +75,11 @@ const locationData = locationRows.map(l => ({
   </div>
 
   <div class="max-w-6xl mx-auto px-4 sm:px-6 pb-14">
+    <a href="#locations-list" id="skip-map" class="skip-link">Skip map and go to list of locations</a>
     <div class="map-wrapper">
-      <div id="world-map"></div>
+      <div id="world-map" role="region" aria-label="Map of miracle and saint locations"></div>
 
-      <div class="map-panel" id="map-panel">
+      <div class="map-panel" id="map-panel" role="group" aria-label="Map layers">
         <div class="panel-section">
           <label class="panel-parent">
             <input type="checkbox" id="toggle-saints" checked />
@@ -105,6 +107,28 @@ const locationData = locationRows.map(l => ({
         </div>
       </div>
     </div>
+
+    <details id="locations-list" class="locations-list">
+      <summary>List of locations ({locationData.length + miracleData.length})</summary>
+      <h2 class="eyebrow">Saint locations</h2>
+      <ul>
+        {locationData.map((l) => (
+          <li>
+            {l.location_name} <span class="loc-meta">({humanizeSnakeCase(l.location_type)})</span> ·
+            <a href={`/saints/${l.saint_slug}`}>{l.saint_name}</a>
+          </li>
+        ))}
+      </ul>
+      <h2 class="eyebrow">Miracle locations</h2>
+      <ul>
+        {miracleData.map((m) => (
+          <li>
+            <a href={`/miracles/${m.slug}`}>{m.title}</a>
+            {m.label && <span class="loc-meta"> · {m.label}</span>}
+          </li>
+        ))}
+      </ul>
+    </details>
   </div>
 
   <script is:inline src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=" crossorigin=""></script>
@@ -215,9 +239,35 @@ const locationData = locationRows.map(l => ({
       });
     });
   </script>
+  <script is:inline>
+    document.getElementById('skip-map')?.addEventListener('click', function (e) {
+      var d = document.getElementById('locations-list');
+      if (!d) return;
+      e.preventDefault();
+      d.open = true;
+      var sum = d.querySelector('summary');
+      if (sum) sum.focus();
+    });
+  </script>
 </Base>
 
 <style>
+  .locations-list {
+    margin-top: 1.5rem;
+    font-family: var(--font-sans);
+    font-size: 0.85rem;
+    color: var(--text-2);
+  }
+  .locations-list summary {
+    cursor: pointer;
+    font-weight: 600;
+    color: var(--text-1);
+  }
+  .locations-list h2 { margin: 1.25rem 0 0.5rem; }
+  .locations-list ul { list-style: none; padding: 0; margin: 0; columns: 2 18rem; column-gap: 2rem; }
+  .locations-list li { margin-bottom: 0.35rem; break-inside: avoid; }
+  .locations-list a { text-decoration: underline; }
+  .loc-meta { color: var(--text-3); }
   .map-wrapper {
     position: relative;
   }
@@ -235,7 +285,7 @@ const locationData = locationRows.map(l => ({
     top: 10px;
     right: 10px;
     z-index: 1000;
-    background: var(--bg-base);
+    background: var(--bg-surface);
     border: 1px solid var(--rule);
     padding: 0.9rem 1rem;
     min-width: 155px;
