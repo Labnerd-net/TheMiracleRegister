@@ -6,6 +6,7 @@ import { asc, and, eq } from "drizzle-orm";
 import { env } from "cloudflare:workers";
 import { renderMarkdown } from "../../lib/markdown";
 import { humanizeSnakeCase, ogDescription } from "../../lib/format";
+import { redactRecipient } from "../../lib/privacy";
 import { LOCATION_TYPE_COLORS } from "../../lib/mapConstants";
 
 const { slug } = Astro.params;
@@ -35,6 +36,7 @@ const [saintMiracles, relatedRows, sources, locations] = await Promise.all([
     date_precision: miracles.date_precision,
     country: miracles.country,
     recipient_name: miracles.recipient_name,
+    recipient_privacy: miracles.recipient_privacy,
     medical_diagnosis: miracles.medical_diagnosis,
     was_medically_verified: miracles.was_medically_verified,
     approval_authority: miracles.approval_authority,
@@ -233,7 +235,7 @@ const ogDesc = ogDescription(saint.biography_short) || undefined;
                     <span style="font-family:var(--font-sans);font-size:0.7rem;color:var(--text-4)">{m.type}</span>
                     {m.country && <span style="font-family:var(--font-sans);font-size:0.7rem;color:var(--text-4)">{m.country}</span>}
                     {m.date_of_event && <span style="font-family:var(--font-sans);font-size:0.7rem;color:var(--text-4)">{m.date_of_event}</span>}
-                    {m.recipient_name && <span style="font-family:var(--font-sans);font-size:0.7rem;color:var(--text-4);font-style:italic">{m.recipient_name}</span>}
+                    {redactRecipient(m.recipient_name, m.recipient_privacy) && <span style="font-family:var(--font-sans);font-size:0.7rem;color:var(--text-4);font-style:italic">{redactRecipient(m.recipient_name, m.recipient_privacy)}</span>}
                   </div>
 
                   {m.topics && m.topics.length > 0 && (

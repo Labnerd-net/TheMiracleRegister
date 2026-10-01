@@ -6,6 +6,7 @@ import { and, asc, eq, inArray, ne, sql } from "drizzle-orm";
 import { env } from "cloudflare:workers";
 import { renderMarkdown } from "../../lib/markdown";
 import { humanizeSnakeCase, ogDescription, approvalBadge } from "../../lib/format";
+import { redactRecipient } from "../../lib/privacy";
 
 const { slug } = Astro.params;
 const db = createDb(env.DATABASE_URL);
@@ -194,7 +195,7 @@ const ogDesc = ogDescription(miracle.synopsis) || undefined;
               {miracle.recipient_privacy === "confidential" ? (
                 <p style="font-family:var(--font-sans);font-size:0.82rem;color:var(--text-4);font-style:italic">Name withheld</p>
               ) : (
-                <p style="font-family:var(--font-sans);font-size:0.82rem;color:var(--text-2)">{miracle.recipient_name}{miracle.recipient_age_at_event != null ? ` (age ${miracle.recipient_age_at_event})` : ""}</p>
+                <p style="font-family:var(--font-sans);font-size:0.82rem;color:var(--text-2)">{redactRecipient(miracle.recipient_name, miracle.recipient_privacy)}{miracle.recipient_age_at_event != null ? ` (age ${miracle.recipient_age_at_event})` : ""}</p>
               )}
               {miracle.recipient_country && miracle.recipient_country !== miracle.country && (
                 <p style="font-family:var(--font-sans);font-size:0.72rem;color:var(--text-4);margin-top:0.2rem">from {miracle.recipient_country}</p>
