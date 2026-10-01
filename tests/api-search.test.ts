@@ -34,6 +34,14 @@ describe("GET /api/v1/search", () => {
       const { data } = await search("q=lanterns");
       expect(data[0].excerpt).toHaveLength(200);
     });
+    it("treats % and _ literally", async () => {
+      expect((await search("q=%25%25")).data).toEqual([]);
+      expect((await search("q=al_ha")).data).toEqual([]);
+    });
+    it("rejects q longer than 100 characters", async () => {
+      const res = await req(`/api/v1/search?q=${"a".repeat(101)}`);
+      expect(res.status).toBe(400);
+    });
     it("returns an empty result for no matches", async () => {
       const body = await search("q=zzzzqq");
       expect(body.data).toEqual([]);

@@ -40,6 +40,11 @@ describe("GET /api/v1/miracles", () => {
       expect(await slugs("/api/v1/miracles?category=associated")).toEqual(["m-confidential"]);
       expect(await slugs("/api/v1/miracles?category=apparition")).toEqual(["m-apparition"]);
     });
+    it("country treats % and _ literally and is length-limited", async () => {
+      expect(await slugs("/api/v1/miracles?country=%25")).toEqual([]);
+      expect(await slugs("/api/v1/miracles?country=Fr_nce")).toEqual([]);
+      expect((await req(`/api/v1/miracles?country=${"a".repeat(101)}`)).status).toBe(400);
+    });
     it("country is a case-insensitive partial match", async () => {
       expect(await slugs("/api/v1/miracles?country=FRA")).toEqual(["m-confidential", "m-healing-ann"]);
     });

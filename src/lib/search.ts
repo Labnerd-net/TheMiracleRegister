@@ -1,4 +1,5 @@
 import { and, eq, ilike, or, sql } from "drizzle-orm";
+import { likeContains } from "./like";
 import type { createDb } from "../db";
 import { miracles, saints } from "../db/schema";
 
@@ -33,7 +34,7 @@ export async function searchContent(
   };
 
   if (q) {
-    const pattern = `%${q}%`;
+    const pattern = likeContains(q);
     const [matchingSaints, matchingMiracles] = await Promise.all([
       db
         .select({

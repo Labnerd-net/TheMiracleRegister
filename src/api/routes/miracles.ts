@@ -10,6 +10,7 @@ import {
 } from "../schemas";
 import type { ApiEnv } from "../env";
 import { notFound } from "../errors";
+import { likeContains } from "../../lib/like";
 import { redactRecipient } from "../../lib/privacy";
 
 const miraclesRoute = new OpenAPIHono<ApiEnv>();
@@ -66,7 +67,7 @@ miraclesRoute.openapi(
     if (type !== undefined) conditions.push(eq(miracles.type, type));
     if (topic !== undefined) conditions.push(sql`${miracles.topics} @> ARRAY[${topic}]::text[]`);
     if (category !== undefined) conditions.push(eq(miracles.miracle_category, category));
-    if (country !== undefined) conditions.push(ilike(miracles.country, `%${country}%`));
+    if (country !== undefined) conditions.push(ilike(miracles.country, likeContains(country)));
     if (year_from !== undefined)
       conditions.push(gte(sql`EXTRACT(YEAR FROM ${miracles.date_of_event})::int`, year_from));
     if (year_to !== undefined)
