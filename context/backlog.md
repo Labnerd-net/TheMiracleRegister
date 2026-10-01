@@ -56,6 +56,7 @@ _None identified._
 - **#25 Oversized files mixing concerns**: `miracles/index.astro` (637 lines), `miracles/[slug].astro` (547), `saints/index.astro` (444), `Base.astro` (425), `calendar.astro` (396), `saints/[slug].astro` (370). These mix data fetching, markup, inline scripts and per-page styles. Fix: extract `Lightbox`; move inline scripts to `src/scripts`; move shared CSS out of per-page `<style>` blocks.
 - **#26 Duplicated query and filter logic**: API routes and Astro pages each build the same miracle/saint WHERE clauses, and the saint-names-by-miracle Map loop is repeated in `saints.ts`, `miracles/index.astro`, `miracles/[slug].astro`. Pages also re-render cards client-side from the API. Fix: `src/lib/queries/{miracles,saints}.ts`, mirroring the existing `searchContent` extraction.
 - **#29 Playwright documented but absent**: Add a smoke suite (home, saint page, miracle filters, search, preview token) or correct CLAUDE.md/README.
+- **#52 Missing meta descriptions on index pages**: `Base.astro` only emits `<meta name="description">` (and `og:description`, `twitter:description`) when a page passes `description`; `saints/index.astro`, `miracles/index.astro`, `map.astro`, `miracles/timeline.astro` and `search.astro` do not (`404.astro` also, which is fine). Live Lighthouse on `/saints` scored SEO 92 for this one audit, and local runs of the other index pages scored 83 to 85. Fix: pass a short, page-specific `description` to each (about 150 characters, e.g. counts or scope from the same data the page already loads), and consider a default site description in `Base.astro` as a fallback so a new page cannot ship without one.
 
 ### Low
 - **#32 Inline styles** (`404.astro`, public pages): Heavy `style="..."` use despite Tailwind and CSS variables. Fix: move repeated styles to classes in `global.css`; this also enables a stricter CSP.
@@ -90,6 +91,6 @@ _None identified._
 | Security | 0 | 0 | 1 | 1 |
 | Bugs | 0 | 0 | 0 | 0 |
 | Performance | 0 | 0 | 2 | 2 |
-| Improvements & Refactors | 1 | 3 | 5 | 9 |
+| Improvements & Refactors | 1 | 4 | 5 | 10 |
 | Feature Ideas | 0 | 4 | 3 | 7 |
-| **Total** | 1 | 7 | 11 | 19 |
+| **Total** | 1 | 8 | 11 | 20 |
