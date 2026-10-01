@@ -231,7 +231,7 @@ const ogDesc = ogDescription(miracle.synopsis) || undefined;
   {images[0] && (
     <div class="max-w-6xl mx-auto px-4 sm:px-6 pb-8">
       <div class="rounded overflow-hidden" style="background:var(--bg-elevated)">
-        <img src={images[0].url} alt={images[0].caption ?? miracle.title} class="w-full object-cover" style="max-height:480px;object-position:center" />
+        <img src={images[0].url} alt={images[0].caption ?? miracle.title} class="w-full object-contain" style="max-height:480px" />
         {(images[0].caption || images[0].source_attribution) && (
           <div style="padding:0.5rem 0.75rem;font-size:0.75rem;color:var(--text-3)">
             {images[0].caption && <span>{images[0].caption}</span>}
@@ -316,7 +316,7 @@ const ogDesc = ogDescription(miracle.synopsis) || undefined;
             {images.map((img) => (
               <button type="button" class="lb-trigger" data-lightbox-url={img.url} data-lightbox-caption={img.caption ?? ""} data-lightbox-attr={img.source_attribution ?? ""}>
                 <div class="rounded overflow-hidden" style="background:var(--bg-elevated)">
-                  <img src={img.url} alt={img.caption ?? miracle.title} class="w-full object-cover" style="max-height:220px;object-position:center top" />
+                  <img src={img.url} alt={img.caption ?? miracle.title} class="w-full object-contain" style="height:220px" />
                   {(img.caption || img.source_attribution) && (
                     <div style="padding:0.5rem 0.75rem;font-size:0.75rem;color:var(--text-3)">
                       {img.caption && <span>{img.caption}</span>}
