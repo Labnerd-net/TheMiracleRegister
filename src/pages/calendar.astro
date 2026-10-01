@@ -7,8 +7,9 @@ import { env } from "cloudflare:workers";
 import { getMovableFeastsInMonth } from "../lib/feasts";
 import { MONTH_NAMES } from "../lib/format";
 import { FIXED_FEASTS } from "../data/feastDays";
+import { CACHE_DAILY } from "../lib/cache";
 
-Astro.response.headers.set("Cache-Control", "public, max-age=3600, stale-while-revalidate=86400");
+Astro.response.headers.set("Cache-Control", CACHE_DAILY);
 
 const db = createDb(env.DATABASE_URL);
 

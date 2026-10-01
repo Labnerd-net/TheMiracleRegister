@@ -8,6 +8,7 @@ import { renderMarkdown } from "../../lib/markdown";
 import { humanizeSnakeCase, ogDescription, approvalBadge, formatFeastDay } from "../../lib/format";
 import { redactRecipient } from "../../lib/privacy";
 import { isValidPreviewToken } from "../../lib/preview";
+import { CACHE_CONTENT } from "../../lib/cache";
 
 const { slug } = Astro.params;
 const db = createDb(env.DATABASE_URL);
@@ -54,7 +55,7 @@ if (!miracle) return Astro.redirect("/404");
 
 Astro.response.headers.set(
   "Cache-Control",
-  isPreview ? "no-store" : "public, max-age=1800, stale-while-revalidate=86400"
+  isPreview ? "no-store" : CACHE_CONTENT
 );
 
 const hasTopics = miracle.topics && miracle.topics.length > 0;

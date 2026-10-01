@@ -8,6 +8,7 @@ import search from "./routes/search";
 import types from "./routes/types";
 import { isRateLimited } from "../lib/rateLimit";
 import type { ApiEnv } from "./env";
+import { CACHE_CONTENT, CACHE_REFERENCE } from "../lib/cache";
 
 const app = new OpenAPIHono<ApiEnv>().basePath("/api/v1");
 
@@ -29,15 +30,15 @@ app.use("*", async (c: Context<ApiEnv>, next: () => Promise<void>) => {
   await next();
 });
 
-const cache = (maxAge: number) => async (c: Context<ApiEnv>, next: () => Promise<void>) => {
+const cache = (value: string) => async (c: Context<ApiEnv>, next: () => Promise<void>) => {
   await next();
-  c.header("Cache-Control", `public, max-age=${maxAge}, stale-while-revalidate=60`);
+  c.header("Cache-Control", value);
 };
 
-app.use("/saints/*", cache(3600));
-app.use("/miracles/*", cache(1800));
-app.use("/types/*", cache(86400));
-app.use("/metadata/*", cache(86400));
+app.use("/saints/*", cache(CACHE_CONTENT));
+app.use("/miracles/*", cache(CACHE_CONTENT));
+app.use("/types/*", cache(CACHE_REFERENCE));
+app.use("/metadata/*", cache(CACHE_REFERENCE));
 app.use("/search/*", async (c: Context<ApiEnv>, next: () => Promise<void>) => {
   await next();
   c.header("Cache-Control", "no-store");

@@ -1,4 +1,5 @@
 import { describe, expect, it } from "vitest";
+import { CACHE_CONTENT, CACHE_REFERENCE } from "../src/lib/cache";
 import app from "../src/api/index";
 import { createRequester, json } from "./helpers/apiApp";
 import { setupDb } from "./helpers/testDb";
@@ -8,12 +9,12 @@ const req = createRequester();
 
 describe("Cache-Control headers", () => {
   it.each([
-    ["/api/v1/saints", "public, max-age=3600, stale-while-revalidate=60"],
-    ["/api/v1/saints/saint-alpha", "public, max-age=3600, stale-while-revalidate=60"],
-    ["/api/v1/miracles", "public, max-age=1800, stale-while-revalidate=60"],
-    ["/api/v1/miracles/m-healing-ann", "public, max-age=1800, stale-while-revalidate=60"],
-    ["/api/v1/types", "public, max-age=86400, stale-while-revalidate=60"],
-    ["/api/v1/metadata", "public, max-age=86400, stale-while-revalidate=60"],
+    ["/api/v1/saints", CACHE_CONTENT],
+    ["/api/v1/saints/saint-alpha", CACHE_CONTENT],
+    ["/api/v1/miracles", CACHE_CONTENT],
+    ["/api/v1/miracles/m-healing-ann", CACHE_CONTENT],
+    ["/api/v1/types", CACHE_REFERENCE],
+    ["/api/v1/metadata", CACHE_REFERENCE],
     ["/api/v1/search?q=alpha", "no-store"],
   ])("%s", async (path, expected) => {
     expect((await req(path)).headers.get("Cache-Control")).toBe(expected);

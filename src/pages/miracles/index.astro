@@ -8,6 +8,7 @@ import { miracleType, miracleCategory, approvalAuthority } from "../../db/schema
 import { MIRACLE_TOPICS } from "../../db/topics";
 import { and, asc, count, eq, gte, ilike, inArray, isNotNull, lte, sql } from "drizzle-orm";
 import { env } from "cloudflare:workers";
+import { CACHE_CONTENT } from "../../lib/cache";
 
 const PAGE_SIZE = 20;
 
@@ -33,7 +34,7 @@ const rawCategory = sp.get("category") ?? "";
 const filterCategory = (miracleCategory.enumValues as string[]).includes(rawCategory) ? rawCategory as typeof miracleCategory.enumValues[number] : undefined;
 const hasActiveFilters = !!(filterSaintId || filterType || filterTopic || filterCategory || filterCountry || filterYearFrom || filterYearTo || filterBeat || filterCanon || filterApproval);
 
-Astro.response.headers.set("Cache-Control", "public, max-age=1800, stale-while-revalidate=86400");
+Astro.response.headers.set("Cache-Control", CACHE_CONTENT);
 
 const db = createDb(env.DATABASE_URL);
 

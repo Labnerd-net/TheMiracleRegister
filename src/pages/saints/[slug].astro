@@ -9,6 +9,7 @@ import { humanizeSnakeCase, ogDescription } from "../../lib/format";
 import { redactRecipient } from "../../lib/privacy";
 import { isValidPreviewToken } from "../../lib/preview";
 import { LOCATION_TYPE_COLORS } from "../../lib/mapConstants";
+import { CACHE_CONTENT } from "../../lib/cache";
 
 const { slug } = Astro.params;
 const db = createDb(env.DATABASE_URL);
@@ -23,7 +24,7 @@ if (!saint) return Astro.redirect("/404");
 
 Astro.response.headers.set(
   "Cache-Control",
-  isPreview ? "no-store" : "public, max-age=3600, stale-while-revalidate=86400"
+  isPreview ? "no-store" : CACHE_CONTENT
 );
 
 const [saintMiracles, relatedRows, sources, locations] = await Promise.all([
