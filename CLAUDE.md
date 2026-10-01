@@ -256,7 +256,7 @@ All routes under `/api/v1/`. Hono + `@hono/zod-openapi` — OpenAPI spec generat
 - `.github/workflows/ci.yml` runs `npm run types` (generates the gitignored `worker-configuration.d.ts`), `npm run typecheck` (`astro check`), `npm test` and `npm run build` on every pull request and push to `main`. It is check-only and holds no Cloudflare credentials.
 - **Deploys** happen through the Cloudflare Workers Builds connector on push to `main`, not through GitHub Actions.
 - **PR flow:** work on `claude/feature/*` branches and merge via pull request. `main` has branch protection requiring the `check` job to pass, so the connector only deploys code that passed CI. Repo settings (not in code): branch protection on `main` with required status check `check`; repository secret `DATABASE_URL`.
-- Tests currently read the production Neon branch (backlog #22), so the test step fails on PRs from forks (no secrets).
+- Tests need no secrets and never touch Neon: each test file gets its own in-process PGlite database built from the real `drizzle/` migrations and seeded from `tests/helpers/fixtures.ts`. `tests/setup.ts` swaps `createDb` for it, and `vitest.config.ts` sets an unreachable `DATABASE_URL` so anything that bypasses the swap fails fast. Fork PRs therefore pass CI. When adding a table or required column, update the fixtures.
 - Lint (ESLint/Prettier) is not set up yet.
 
 ## Implementation Order

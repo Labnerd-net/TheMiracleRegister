@@ -2,7 +2,7 @@
 
 > Generated: 2026-09-30
 > Focus: Full audit
-> Completed and removed (numbering kept stable): #1, #10, #11, #21, #47
+> Completed and removed (numbering kept stable): #1, #10, #11, #21, #22, #47
 > Obsolete after the admin panel removal: #4, #5, #6, #12, #13, #24, #38 (and #30, replaced by `npm run check:data`)
 
 ---
@@ -57,7 +57,6 @@ _None identified._
 ## Improvements & Refactors
 
 ### High
-- **#22 Tests depend on the production DB** (`vitest.config.ts`, `tests/api.test.ts`): Tests load the real `DATABASE_URL` (the single Neon branch is production) and assert mostly status codes and envelope shape. Untested: filters, `published=false` non-leakage, the 429 path, cache headers, `/api/v1/search`. Fix: per-run Neon branch in CI or a mocked `createDb` with fixtures, and add those assertions.
 - **#23 No structured data or rel=canonical** (`src/layouts/Base.astro`): No JSON-LD anywhere, and `canonicalUrl` is only used for `og:url` (no `<link rel="canonical">`). No default og:image/og:site_name; paginated and filtered URLs are not canonicalized or noindexed; sitemap omits `/verification`, `/contact`. Fix: add a `jsonLd` prop (Person for saints, Article/CreativeWork for miracles, BreadcrumbList, Dataset for home/API), add rel=canonical and a default social card.
 
 ### Medium
