@@ -1,5 +1,6 @@
 ---
 import Base from "../../layouts/Base.astro";
+import { PAGE_DESCRIPTIONS } from "../../lib/seo";
 import { humanizeSnakeCase, approvalBadge } from "../../lib/format";
 import { escapeLike } from "../../lib/like";
 import { createDb } from "../../db";
@@ -123,7 +124,7 @@ function buildUrl(p: number) {
 
 ---
 
-<Base title="Miracles">
+<Base title="Miracles" description={PAGE_DESCRIPTIONS.miracles}>
 
   <div class="page-header">
     <div class="max-w-6xl mx-auto px-4 sm:px-6 py-10 sm:py-16">

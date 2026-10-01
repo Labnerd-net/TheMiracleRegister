@@ -1,5 +1,6 @@
 ---
 import Base from "../layouts/Base.astro";
+import { PAGE_DESCRIPTIONS } from "../lib/seo";
 import { createDb } from "../db";
 import { searchContent, type SearchResult } from "../lib/search";
 import { isRateLimited } from "../lib/rateLimit";
@@ -30,7 +31,7 @@ const hasQuery = q.length >= 2 && !rateLimited;
 const hasResults = total > 0;
 ---
 
-<Base title="Search">
+<Base title="Search" description={PAGE_DESCRIPTIONS.search}>
 
   <div class="page-header">
     <div class="max-w-6xl mx-auto px-4 sm:px-6 py-10 sm:py-16">

@@ -1,5 +1,6 @@
 ---
 import { humanizeSnakeCase } from "../lib/format";
+import { PAGE_DESCRIPTIONS } from "../lib/seo";
 import Base from "../layouts/Base.astro";
 import { createDb } from "../db";
 import { miracles, saints, saintLocations } from "../db/schema";
@@ -64,7 +65,7 @@ const locationData = locationRows.map(l => ({
 }));
 ---
 
-<Base title="Map">
+<Base title="Map" description={PAGE_DESCRIPTIONS.map}>
   <link slot="head" rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY=" crossorigin="" />
 
   <div class="page-header">

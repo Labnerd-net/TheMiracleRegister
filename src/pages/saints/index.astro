@@ -1,5 +1,6 @@
 ---
 import Base from "../../layouts/Base.astro";
+import { PAGE_DESCRIPTIONS } from "../../lib/seo";
 import { createDb } from "../../db";
 import { saints } from "../../db/schema";
 import { canonizationStage } from "../../db/schema/enums";
@@ -85,7 +86,7 @@ function buildUrl(p: number) {
 }
 ---
 
-<Base title="Saints">
+<Base title="Saints" description={PAGE_DESCRIPTIONS.saints}>
 
   <div class="page-header">
     <div class="max-w-6xl mx-auto px-4 sm:px-6 py-10 sm:py-16">
