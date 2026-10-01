@@ -87,7 +87,7 @@ const saintLinks = miracleIds.length > 0
       .select({ miracle_id: miracleSaints.miracle_id, saint_name: saints.name })
       .from(miracleSaints)
       .innerJoin(saints, eq(miracleSaints.saint_id, saints.id))
-      .where(inArray(miracleSaints.miracle_id, miracleIds))
+      .where(and(inArray(miracleSaints.miracle_id, miracleIds), eq(saints.published, true)))
   : [];
 
 const saintNamesByMiracle = new Map<number, string[]>();
