@@ -139,3 +139,5 @@ export const feastScope = pgEnum("feast_scope", [
   "order",
   "diocesan",
 ]);
+
+export const slugEntityType = pgEnum("slug_entity_type", ["saint", "miracle"]);
