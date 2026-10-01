@@ -36,7 +36,7 @@ A data-driven website documenting miracles attributed to Catholic saints. Focuse
 - **Secondary:** Associated miracles for famous cases only (Tilma of Guadalupe, stigmata, incorrupt bodies)
 - **Tertiary:** Feast day calendar as a discovery layer — every published saint is reachable by feast date, with the full liturgical calendar as context. Only canonized saints have universal feast days; Blessed, Venerable, and Servants of God do not appear on the calendar unless a local feast day has been specifically recorded.
 - Public-facing website with REST API from day one
-- Admin panel for data entry (built — password-protected at `/admin/*`)
+- No admin panel — data is edited directly in the database (Neon console or SQL). Unpublished records can be previewed at `/saints/<slug>?preview=<PREVIEW_TOKEN>` and `/miracles/<slug>?preview=<PREVIEW_TOKEN>`.
 
 ---
 
@@ -245,7 +245,7 @@ All routes under `/api/v1/`. Hono + `@hono/zod-openapi` — OpenAPI spec generat
 ## Database
 
 - The single Neon branch is **production** (`br-proud-block-aptdevzb`). `DATABASE_URL` in `.env` points to it directly.
-- Data is managed via the admin panel. There is no seed script — all records are entered and published through the UI.
+- Data is managed directly in the database (Neon console or SQL; the admin panel was removed). There is no seed script. Always run `npm run check:data` after a change — it replaces the validation the admin forms used to do. `updated_at` is bumped by a DB trigger (`drizzle/0030_updated_at_trigger.sql`), so raw edits are safe.
 - Schema changes: `npm run db:generate` → `npm run db:migrate`
 - Data integrity: `npm run check:data` (`scripts/check-data.ts`) is a read-only check — slug format, topics/themes vs `src/db/topics.ts`, published records have sources, intercessory miracles have a published saint, `saint_relations` mirrored, feast field validity, `// [in DB]` feast entries match a saint, URL schemes, and restricted recipient names not leaking into free text. Run it after any data change; exits 1 on errors.
 
@@ -258,7 +258,7 @@ All routes under `/api/v1/`. Hono + `@hono/zod-openapi` — OpenAPI spec generat
 3. Hono API layer wired up with `@hono/zod-openapi`
 4. Static pages rendering from DB
 5. API endpoints + OpenAPI spec (generated, always in sync)
-6. Admin panel for data entry
+6. ~~Admin panel for data entry~~ (built, later removed in favor of direct DB edits + `npm run check:data`)
 7. Vitest unit tests
 8. Playwright e2e tests
 9. GitHub Actions CI/CD

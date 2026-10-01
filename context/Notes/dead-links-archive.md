@@ -1,8 +1,8 @@
 # Dead Links Archive
 
-Ongoing tracker for `miracle_sources` / `saint_sources` rows whose URL was unreachable at time of check. As of 2026-09-29, entries below have been **deleted from the DB** (they were broken on the live site) — this file is now the only record of them. If a URL comes back, re-add it as a new source row via the admin panel and move the entry to Resolved.
+Ongoing tracker for `miracle_sources` / `saint_sources` rows whose URL was unreachable at time of check. As of 2026-09-29, entries below have been **deleted from the DB** (they were broken on the live site) — this file is now the only record of them. If a URL comes back, re-add it as a new source row directly in the database and move the entry to Resolved.
 
-**When re-checking** (see the `verify-sources` skill's recheck mode): fetch the URL again. If it resolves and still documents the record, move the entry to **Resolved** with today's date and a one-line note on what confirmed it — since the DB row was deleted, re-add it as a new source via the admin panel rather than expecting the old `source_id` to still exist. If still dead, leave it under **Active** and bump `Last checked` to today.
+**When re-checking** (see the `verify-sources` skill's recheck mode): fetch the URL again. If it resolves and still documents the record, move the entry to **Resolved** with today's date and a one-line note on what confirmed it — since the DB row was deleted, re-add it as a new source directly in the database rather than expecting the old `source_id` to still exist. If still dead, leave it under **Active** and bump `Last checked` to today.
 
 ## Active (still dead)
 
