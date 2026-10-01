@@ -165,7 +165,7 @@ saintsRoute.openapi(
             })
             .from(miracleSaints)
             .innerJoin(saints, eq(miracleSaints.saint_id, saints.id))
-            .where(inArray(miracleSaints.miracle_id, miracleIds))
+            .where(and(inArray(miracleSaints.miracle_id, miracleIds), eq(saints.published, true)))
         : [];
 
     const saintsByMiracleId = new Map<number, { id: number; slug: string; name: string }[]>();

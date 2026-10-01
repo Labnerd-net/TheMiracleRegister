@@ -38,12 +38,9 @@ jobs:
       - name: Typecheck
         run: npm run typecheck
 
+      # Tests run against an in-process PGlite database; no secrets needed.
       - name: Test
         run: npm test
-        env:
-          # Tests currently read the production Neon branch (backlog #22).
-          # Not available to PRs from forks, so the test step fails for them.
-          DATABASE_URL: ${{ secrets.DATABASE_URL }}
 
       - name: Build
         run: npm run build
