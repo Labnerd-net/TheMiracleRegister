@@ -8,6 +8,7 @@ import { renderMarkdown } from "../../lib/markdown";
 import { humanizeSnakeCase, ogDescription } from "../../lib/format";
 import { redactRecipient } from "../../lib/privacy";
 import { isValidPreviewToken } from "../../lib/preview";
+import { findSlugRedirect, CACHE_REDIRECT } from "../../lib/slugRedirect";
 import { LOCATION_TYPE_COLORS } from "../../lib/mapConstants";
 import { CACHE_CONTENT } from "../../lib/cache";
 import { saintJsonLd, breadcrumbJsonLd } from "../../lib/jsonld";
@@ -21,7 +22,14 @@ const [saint] = await db.select().from(saints).where(
     ? eq(saints.slug, slug!)
     : and(eq(saints.slug, slug!), eq(saints.published, true))
 );
-if (!saint) return Astro.redirect("/404");
+if (!saint) {
+  const renamedTo = isPreview ? null : await findSlugRedirect(db, "saint", slug!);
+  if (!renamedTo) return Astro.redirect("/404");
+  return new Response(null, {
+    status: 301,
+    headers: { Location: `/saints/${renamedTo}`, "Cache-Control": CACHE_REDIRECT },
+  });
+}
 
 Astro.response.headers.set(
   "Cache-Control",

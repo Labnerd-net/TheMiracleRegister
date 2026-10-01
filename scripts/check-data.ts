@@ -37,6 +37,8 @@ const miracleImages = (await sql`select miracle_id, url from miracle_images`) as
 const miracleSaints = (await sql`select miracle_id, saint_id from miracle_saints`) as Rec[];
 const relations = (await sql`select saint_id, related_saint_id, relation_type from saint_relations`) as Rec[];
 
+const slugRedirects = (await sql`select entity_type, old_slug, new_slug from slug_redirects`) as Rec[];
+
 const saintById = new Map(saints.map((s) => [s.id, s]));
 
 // 1. slug format
@@ -158,6 +160,15 @@ const report = (label: string, list: string[]) => {
   console.log(`\n${label} (${list.length})`);
   for (const l of list) console.log(`  ${l}`);
 };
+// 11. slug_redirects (written by the rename triggers): the old slug must not be live again,
+//     and the new slug must resolve to a record of that type
+const liveSlugs = { saint: new Set(saints.map((s) => s.slug)), miracle: new Set(miracles.map((m) => m.slug)) };
+for (const r of slugRedirects) {
+  const live = liveSlugs[r.entity_type as "saint" | "miracle"];
+  if (live.has(r.old_slug)) err("slug-redirect", `${r.entity_type} redirect "${r.old_slug}" shadows a live record`);
+  if (!live.has(r.new_slug)) err("slug-redirect", `${r.entity_type} redirect "${r.old_slug}" -> "${r.new_slug}" has no live target`);
+}
+
 console.log(`Checked ${saints.length} saints, ${miracles.length} miracles.`);
 report("ERRORS", errors);
 report("WARNINGS", warnings);

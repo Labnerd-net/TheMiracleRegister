@@ -7,3 +7,4 @@ export * from "./miracle-sources";
 export * from "./miracle-images";
 export * from "./saint-sources";
 export * from "./saint-locations";
+export * from "./slug-redirects";
