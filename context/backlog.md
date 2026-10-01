@@ -75,6 +75,8 @@ _None identified._
 - **#41 Public source-verification status**: Add `last_verified_at`/`verification_status` to source tables, show a "sources checked on" badge, tie into `/verification`, and optionally run a scheduled Worker cron for dead-link checks.
 - **#42 Discovery on existing data**: Similar miracles (shared topic/diagnosis/type/country), statistics page (by type, decade, country, approval authority), recently canonized/beatified feed, show dispensation fields on saint pages, "On this feast day" block from miracle `feast_*` columns.
 
+- **#53 Unified subject discovery (patronage, themes, topics)**: Today `/topics`, `/themes` and `/patronage` are separate trees, so a reader looking for a subject (e.g. addiction) sees miracles only or saints only. Add a hub and cross-links so one subject lists every saint and miracle that touches it. Keep the three vocabularies and the existing indexed URLs; do not add duplicate tags across fields. Needs: a subject map in `src/db/topics.ts` aliasing equivalent topic/theme/patronage values (`conversion` is in both topics and themes; "Families" is a patronage group), validated by `check:data`; the indexing threshold (`MIN_BROWSE_RECORDS`) applied to the merged count; shared saint and miracle card components first (overlaps #25, #26). Staging: (1) cross-link existing pages where a slug or alias matches, no schema change; (2) hub page with search over subjects; (3) merged subject pages only if (1) and (2) are not enough. Related: thin topics and themes (`addiction`, `veterans`, `marriage`, `martyrs`, `technology`) need content as well as UI.
+
 ### Low
 - **#43 RSS/Atom feed and ICS calendar export** (per-saint "add to calendar"), reusing `updated_at` and Easter logic.
 - **#44 Map and calendar polish**: Map filter by location type, `/map?saint=` deep links, year picker on `/calendar` (`getEaster(year)` already supports it).
@@ -90,5 +92,5 @@ _None identified._
 | Bugs | 0 | 0 | 0 | 0 |
 | Performance | 0 | 0 | 2 | 2 |
 | Improvements & Refactors | 0 | 2 | 5 | 7 |
-| Feature Ideas | 0 | 4 | 3 | 7 |
-| **Total** | 0 | 6 | 11 | 17 |
+| Feature Ideas | 0 | 5 | 3 | 8 |
+| **Total** | 0 | 7 | 11 | 18 |
