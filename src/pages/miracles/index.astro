@@ -2,12 +2,12 @@
 import Base from "../../layouts/Base.astro";
 import { PAGE_DESCRIPTIONS } from "../../lib/seo";
 import { humanizeSnakeCase, approvalBadge } from "../../lib/format";
-import { escapeLike } from "../../lib/like";
+import { fetchSaintsByMiracle, miracleFilterConditions } from "../../lib/queries/miracles";
 import { createDb } from "../../db";
-import { miracles, miracleSaints, saints } from "../../db/schema";
+import { miracles, saints } from "../../db/schema";
 import { miracleType, miracleCategory, approvalAuthority } from "../../db/schema/enums";
 import { MIRACLE_TOPICS } from "../../db/topics";
-import { and, asc, count, eq, gte, ilike, inArray, isNotNull, lte, sql } from "drizzle-orm";
+import { and, asc, count, eq, isNotNull, sql } from "drizzle-orm";
 import { env } from "cloudflare:workers";
 import { CACHE_CONTENT } from "../../lib/cache";
 
@@ -39,22 +39,18 @@ Astro.response.headers.set("Cache-Control", CACHE_CONTENT);
 
 const db = createDb(env.DATABASE_URL);
 
-// Build where conditions
-const conditions = [eq(miracles.published, true)];
-if (filterSaintId) {
-  conditions.push(
-    inArray(miracles.id, db.select({ id: miracleSaints.miracle_id }).from(miracleSaints).where(eq(miracleSaints.saint_id, filterSaintId)))
-  );
-}
-if (filterType) conditions.push(eq(miracles.type, filterType));
-if (filterTopic) conditions.push(sql`${miracles.topics} @> ARRAY[${filterTopic}]::text[]`);
-if (filterCategory) conditions.push(eq(miracles.miracle_category, filterCategory));
-if (filterCountry) conditions.push(ilike(miracles.country, escapeLike(filterCountry)));
-if (filterYearFrom) conditions.push(gte(sql`EXTRACT(YEAR FROM ${miracles.date_of_event})::int`, filterYearFrom));
-if (filterYearTo) conditions.push(lte(sql`EXTRACT(YEAR FROM ${miracles.date_of_event})::int`, filterYearTo));
-if (filterBeat) conditions.push(eq(miracles.used_for_beatification, true));
-if (filterCanon) conditions.push(eq(miracles.used_for_canonization, true));
-if (filterApproval) conditions.push(eq(miracles.approval_authority, filterApproval));
+const conditions = miracleFilterConditions(db, {
+  saint_id: filterSaintId,
+  type: filterType,
+  topic: filterTopic,
+  category: filterCategory,
+  country: filterCountry,
+  year_from: filterYearFrom,
+  year_to: filterYearTo,
+  used_for_beatification: filterBeat,
+  used_for_canonization: filterCanon,
+  approval_authority: filterApproval,
+});
 const where = and(...conditions);
 
 const [[{ total }], pageMiracles, allSaints, countryRows] = await Promise.all([
@@ -84,20 +80,10 @@ const [[{ total }], pageMiracles, allSaints, countryRows] = await Promise.all([
 
 const countries = countryRows.map(r => r.country).filter(Boolean) as string[];
 
-const miracleIds = pageMiracles.map((m) => m.id);
-const saintLinks = miracleIds.length > 0
-  ? await db
-      .select({ miracle_id: miracleSaints.miracle_id, saint_name: saints.name })
-      .from(miracleSaints)
-      .innerJoin(saints, eq(miracleSaints.saint_id, saints.id))
-      .where(and(inArray(miracleSaints.miracle_id, miracleIds), eq(saints.published, true)))
-  : [];
-
-const saintNamesByMiracle = new Map<number, string[]>();
-for (const link of saintLinks) {
-  if (!saintNamesByMiracle.has(link.miracle_id)) saintNamesByMiracle.set(link.miracle_id, []);
-  saintNamesByMiracle.get(link.miracle_id)!.push(link.saint_name);
-}
+const saintsByMiracle = await fetchSaintsByMiracle(db, pageMiracles.map((m) => m.id));
+const saintNamesByMiracle = new Map<number, string[]>(
+  [...saintsByMiracle].map(([id, list]) => [id, list.map((s) => s.name)])
+);
 
 const totalPages = Math.max(1, Math.ceil(total / PAGE_SIZE));
 if (page > totalPages) return Astro.redirect(buildUrl(totalPages));
