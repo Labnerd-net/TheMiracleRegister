@@ -2,13 +2,16 @@
 
 ## Current Feature Spec File
 
-context/specs/github-actions-ci.md
+_None_
 
 ## Current Feature Plan File
 
 _None_
 
 ## History
+
+### GitHub Actions CI
+Added `.github/workflows/ci.yml`: on every PR and push to `main` it generates Worker types, runs `npm run typecheck` (`astro check`), `npm test` and `npm run build`. Check-only; deploys stay with the Cloudflare Workers Builds connector (feature branches get preview URLs via `versions upload`). Fixed all existing type errors (backlog #47): enum helper generics in `src/api/schemas.ts` (which also cleared the two in `routes/miracles.ts`), typed JSON responses in `tests/api.test.ts`, a stray `</div>` in `miracles/[slug].astro` that caused 86 of the 87 `astro check` errors, and `track.prepend` replaced with `insertBefore` in `index.astro` because the Cloudflare types shadow DOM `Element.prepend`. Added `@astrojs/check` and the `typecheck` script. CI gotchas: `worker-configuration.d.ts` is gitignored, and `wrangler types` reads secret names from the gitignored `.dev.vars`, so the workflow writes a placeholder `.dev.vars` (names only), generates types, then deletes it. The test step uses the `DATABASE_URL` repo secret and reads the production Neon branch (backlog #22), so it fails on fork PRs. Branch protection on `main` requires the `check` status check and an up-to-date branch, with no required reviews, admins not enforced, and force pushes and deletion blocked. Verified: a deliberate type error turned `check` red and blocked the merge, and the revert made it green. Work now goes through PRs. Not done: lint (ESLint/Prettier), a scheduled `check:data` job, and an isolated test database (#22).
 
 ### Remove the Admin Panel (keep preview)
 Data is now edited directly in Neon; validation is covered by `npm run check:data` and `updated_at` by the DB trigger. Removed `src/pages/admin/**` (login, logout, miracle/saint list, new, edit, delete), `src/layouts/AdminBase.astro`, `src/components/MiracleForm.astro` and `SaintForm.astro`, `src/lib/{auth,form-schemas,form-utils,slugify}.ts`, `src/db/countries.ts` (admin datalist only), `src/middleware.ts` (only guarded `/admin`), and the `ADMIN_PASSWORD`/`SESSION_SECRET` entries in `src/env.d.ts`. Kept `?preview=<PREVIEW_TOKEN>` on `/saints/[slug]` and `/miracles/[slug]` and the `RATE_LIMIT` KV / `lib/rateLimit.ts` for the public API and search. Updated `CLAUDE.md`, the `verify-sources` skill and the two living trackers in `context/Notes/` to stop referring to the admin panel. Verified against the dev server: public pages and API return 200, `/admin` and `/admin/login` return 404, an unpublished miracle redirects to `/404` without a token (or with a wrong one) and returns 200 with the real token. Build and tests pass. `tsc --noEmit` has pre-existing errors in `src/api/routes/miracles.ts`, `src/api/schemas.ts` and `tests/api.test.ts` (unrelated; they would fail a CI typecheck). Not done: deleting the `ADMIN_PASSWORD` and `SESSION_SECRET` Cloudflare secrets (outside the repo, left to the user).
