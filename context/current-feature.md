@@ -2,25 +2,16 @@
 
 ## Current Feature Spec File
 
-SEO: structured data and canonicalization (backlog #23)
-
-Branch: `claude/feature/seo-structured-data`
-
-Scope:
-- `src/layouts/Base.astro`: emit `<link rel="canonical">`, `og:site_name`, and `<meta name="robots" content="noindex,follow">` on any URL with a query string (filters, pagination, search, calendar month, `?preview=`). Canonical is omitted on noindex pages.
-- `Base.astro` gets a `jsonLd` prop (object or array), serialized with `<` escaped.
-- New `src/lib/jsonld.ts` builders: Person (saints), Article (miracles), BreadcrumbList, WebSite + Dataset (home).
-- Wire into `saints/[slug]`, `miracles/[slug]`, `index`.
-- `sitemap.xml.ts`: add `/verification`, `/contact`.
-- Privacy: miracle JSON-LD must never include `recipient_name`; only fields already shown in og description / page title.
-
-Out of scope / deferred: default og:image (needs a raster social card asset; none exists in `public/`).
+_None_
 
 ## Current Feature Plan File
 
 _None_
 
 ## History
+
+### SEO Canonical and Structured Data (backlog #23, partial)
+`Base.astro` emitted no `<link rel="canonical">` and no JSON-LD, and filtered/paginated URLs were indexable. `Base.astro` now emits `rel=canonical` (pinned to `https://themiracleregister.org`, not the request origin), `og:site_name`, and `noindex,follow` (no canonical) on any URL with a query string, which covers pagination, filters, search, calendar months and `?preview=`. A new `jsonLd` prop writes `application/ld+json` with `<` escaped. New `src/lib/jsonld.ts` builds Person (saints), Article plus BreadcrumbList (miracles; takes no recipient fields so restricted names cannot leak), and WebSite plus Dataset (home). `sitemap.xml.ts` now lists `/verification` and `/contact`. Build, typecheck and 140 tests passed; rendered head output was checked on the local dev server, but not the canonical host after pinning it, and not in a browser or validator. Not done: a default `og:image` (no raster social card exists); #23 remains in the backlog for that only. Trade-off: query-string pages are never indexed, including deep pagination.
 
 ### Miracle Page Image Aspect Ratio
 The miracle page main image was `w-full object-cover` with `max-height:480px`, so at full content width portrait images were cropped to a thin horizontal slice (Lanciano, Tilma of Guadalupe, Padre Pio stigmata, Divine Mercy, Lourdes, Bernadette), and the Images grid used `object-cover` with `max-height:220px`, cropping any image whose shape differed from the tile. This was the same class of bug as the saint header fix (852c739), but on a separate code path. In `src/pages/miracles/[slug].astro` the main image is now `object-contain` (`max-height:480px`) and grid thumbnails are `object-contain` at a fixed `height:220px`, so no image is cropped. Merged in PR #9; build and CI `check` passed. Not checked in a browser by me. Dimensions came from downloading the images: about 14 could not be measured because Wikimedia rate-limited the requests, but the fix does not depend on them. Trade-off: portrait images in the main slot are centered with empty space either side (inherits the `--bg-elevated` background). Not changed: the lightbox already used `object-fit: contain`; the `og:image` is unaffected.

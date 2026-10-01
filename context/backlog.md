@@ -51,7 +51,7 @@ _None identified._
 ## Improvements & Refactors
 
 ### High
-- **#23 No structured data or rel=canonical** (`src/layouts/Base.astro`): No JSON-LD anywhere, and `canonicalUrl` is only used for `og:url` (no `<link rel="canonical">`). No default og:image/og:site_name; paginated and filtered URLs are not canonicalized or noindexed; sitemap omits `/verification`, `/contact`. Fix: add a `jsonLd` prop (Person for saints, Article/CreativeWork for miracles, BreadcrumbList, Dataset for home/API), add rel=canonical and a default social card.
+- **#23 No default og:image** (`src/layouts/Base.astro`): rel=canonical, og:site_name, noindex on query-string URLs, JSON-LD and the sitemap entries are done. Still open: pages without their own image have no `og:image`/`twitter:image`. Needs a 1200x630 PNG social card in `public/`, then a fallback in `Base.astro`.
 
 ### Medium
 - **#25 Oversized files mixing concerns**: `miracles/index.astro` (637 lines), `miracles/[slug].astro` (547), `saints/index.astro` (444), `Base.astro` (425), `calendar.astro` (396), `saints/[slug].astro` (370). These mix data fetching, markup, inline scripts and per-page styles. Fix: extract `Lightbox`; move inline scripts to `src/scripts`; move shared CSS out of per-page `<style>` blocks.
