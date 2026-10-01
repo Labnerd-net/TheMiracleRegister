@@ -2,7 +2,7 @@
 
 > Generated: 2026-09-30
 > Focus: Full audit
-> Completed and removed (numbering kept stable): #1, #2, #10, #11, #21, #22, #47, #48, #50
+> Completed and removed (numbering kept stable): #1, #2, #3, #9, #10, #11, #21, #22, #47, #48, #50
 > Obsolete after the admin panel removal: #4, #5, #6, #12, #13, #24, #38 (and #30, replaced by `npm run check:data`)
 
 ---
@@ -15,10 +15,8 @@ _None identified._
 ### Medium
 
 ### Low
-- **#3 Preview token handling** (`miracles/[slug].astro:13`, `saints/[slug].astro:14`): `PREVIEW_TOKEN` is a never-expiring shared secret in the query string (logs, history, Referer) compared with `===`; an empty `PREVIEW_TOKEN` env value would match `?preview=`. Now only used manually, so lower risk. Fix: constant-time compare, reject an empty token, send `Referrer-Policy: no-referrer` and noindex on preview responses, optionally an HMAC per slug.
-- **#7 No security headers** (no `src/middleware.ts` since the admin removal): No CSP, X-Frame-Options/`frame-ancestors`, Referrer-Policy or X-Content-Type-Options on any page. Matters because `marked` + `xss` HTML is rendered. Fix: add a new middleware (or `public/_headers`) setting them; use `Referrer-Policy: no-referrer` at least on `?preview=` responses.
+- **#7 No Content-Security-Policy** (`src/middleware.ts`): Basic headers (X-Content-Type-Options, X-Frame-Options, `frame-ancestors`, Referrer-Policy) now ship from middleware, but there is no script/style CSP. Matters because `marked` + `xss` HTML is rendered. Fix: a CSP with nonces or hashes for the inline scripts; blocked by inline styles/scripts (#32, #25).
 - **#8 ILIKE wildcards unescaped** (`src/lib/search.ts:36`, `src/api/routes/miracles.ts:68`): `%` and `_` in `q`/`country` are not escaped, so `%` matches everything; `SearchQuerySchema` and `country` lack a max length. Fix: escape `\`, `%`, `_` and add `.max(100)`.
-- **#9 Crawler exclusions** (`public/robots.txt`, preview responses): robots.txt allows everything, and `?preview=` pages carry no noindex. Fix: `Disallow: /random`, `/search?`, and send `X-Robots-Tag: noindex` on `?preview=` responses.
 
 ---
 
@@ -97,9 +95,9 @@ _None identified._
 
 | Category | High | Medium | Low | Total |
 |----------|------|--------|-----|-------|
-| Security | 0 | 0 | 4 | 4 |
+| Security | 0 | 0 | 2 | 2 |
 | Bugs | 0 | 1 | 2 | 3 |
 | Performance | 0 | 3 | 2 | 5 |
 | Improvements & Refactors | 1 | 6 | 5 | 12 |
 | Feature Ideas | 1 | 5 | 3 | 9 |
-| **Total** | 2 | 15 | 16 | 33 |
+| **Total** | 2 | 15 | 14 | 31 |

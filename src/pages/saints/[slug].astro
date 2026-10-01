@@ -7,11 +7,12 @@ import { env } from "cloudflare:workers";
 import { renderMarkdown } from "../../lib/markdown";
 import { humanizeSnakeCase, ogDescription } from "../../lib/format";
 import { redactRecipient } from "../../lib/privacy";
+import { isValidPreviewToken } from "../../lib/preview";
 import { LOCATION_TYPE_COLORS } from "../../lib/mapConstants";
 
 const { slug } = Astro.params;
 const db = createDb(env.DATABASE_URL);
-const isPreview = Astro.url.searchParams.get("preview") === env.PREVIEW_TOKEN;
+const isPreview = isValidPreviewToken(Astro.url.searchParams.get("preview"), env.PREVIEW_TOKEN);
 
 const [saint] = await db.select().from(saints).where(
   isPreview

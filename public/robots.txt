@@ -1,4 +1,6 @@
 User-agent: *
 Allow: /
+Disallow: /random
+Disallow: /search?
 
 Sitemap: https://themiracleregister.org/sitemap.xml
