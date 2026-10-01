@@ -1,4 +1,4 @@
-import { integer, pgTable, primaryKey } from "drizzle-orm/pg-core";
+import { index, integer, pgTable, primaryKey } from "drizzle-orm/pg-core";
 import { miracles } from "./miracles";
 import { saints } from "./saints";
 
@@ -12,5 +12,9 @@ export const miracleSaints = pgTable(
       .notNull()
       .references(() => saints.id, { onDelete: "cascade" }),
   },
-  (t) => [primaryKey({ columns: [t.miracle_id, t.saint_id] })]
+  (t) => [
+    primaryKey({ columns: [t.miracle_id, t.saint_id] }),
+    // The PK leads with miracle_id; this serves lookups and cascade deletes by saint.
+    index("miracle_saints_saint_id_idx").on(t.saint_id),
+  ]
 );

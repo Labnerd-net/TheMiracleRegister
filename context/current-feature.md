@@ -2,7 +2,7 @@
 
 ## Current Feature Spec File
 
-_None_
+`context/specs/missing-indexes.md`
 
 ## Current Feature Plan File
 
