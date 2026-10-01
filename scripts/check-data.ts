@@ -72,6 +72,7 @@ for (const s of saints) {
       err("patronage", `saint "${s.slug}" has a blank or unsluggable patronage "${raw}"`);
       continue;
     }
+    if (raw.charAt(0) !== raw.charAt(0).toUpperCase()) err("patronage", `saint "${s.slug}" patronage "${raw}" must start with a capital letter (sentence case)`);
     const canonical = aliasSpelling.get(key);
     if (canonical !== undefined) {
       if (raw !== canonical) err("patronage", `saint "${s.slug}" patronage "${raw}" should be spelled "${canonical}"`);

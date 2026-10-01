@@ -65,7 +65,7 @@ A data-driven website documenting miracles attributed to Catholic saints. Focuse
 | canonized_by | text | |
 | canonization_type | enum | confessor, martyr, virgin, married_couple, other |
 | canonization_stage | enum | saint, blessed, venerable, servant_of_god — **mutable, not static** |
-| patronage | text[] | GIN indexed |
+| patronage | text[] | GIN indexed — sentence case: first letter capitalized, then lowercase except proper nouns and acronyms ("Unborn children", "Catholic families", "HIV/AIDS"). `check:data` enforces the capital first letter. Equivalent strings are merged into browse pages by `PATRONAGE_GROUPS` in `src/db/topics.ts`. |
 | themes | text[] | GIN indexed — standardized spiritual/devotional tags. Canonical list in `src/db/topics.ts` (`SAINT_THEMES`). |
 | biography_short | text | ~300 words |
 | gender | enum | male, female, group |

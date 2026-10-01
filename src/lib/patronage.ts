@@ -32,7 +32,8 @@ const GROUP_BY_ALIAS = new Map<string, (typeof PATRONAGE_GROUPS)[number]>(
 export function resolvePatronage(raw: string): { slug: string; label: string } {
   const group = GROUP_BY_ALIAS.get(patronageKey(raw));
   if (group) return { slug: group.slug, label: group.label };
-  return { slug: patronageSlug(raw), label: raw.trim() };
+  const label = raw.trim();
+  return { slug: patronageSlug(raw), label: label.charAt(0).toUpperCase() + label.slice(1) };
 }
 
 type SaintRow = PatronageSaint & { patronage: string[] | null };
