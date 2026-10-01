@@ -32,7 +32,7 @@ describe("patronage normalization", () => {
 
   it("maps aliases to their group and leaves other strings as their own term", () => {
     expect(resolvePatronage("Catholic families")).toEqual({ slug: "families", label: "Families" });
-    expect(resolvePatronage("florists")).toEqual({ slug: "florists", label: "florists" });
+    expect(resolvePatronage("florists")).toEqual({ slug: "florists", label: "Florists" });
   });
 
   it("slugifies punctuation and accents", () => {
@@ -68,7 +68,7 @@ describe("buildPatronageTerms", () => {
 
   it("ignores null and unsluggable patronage and sorts alphabetically", () => {
     const terms = buildPatronageTerms([row(1, null), row(2, ["---", "zebras", "Apes"])]);
-    expect(terms.map((t) => t.label)).toEqual(["Apes", "zebras"]);
+    expect(terms.map((t) => t.label)).toEqual(["Apes", "Zebras"]);
   });
 });
 
