@@ -5,6 +5,10 @@ on:
   pull_request:
   push:
     branches: [main]
+    # Docs-only pushes skip CI. pull_request stays unfiltered so the required `check` always reports.
+    paths-ignore:
+      - "context/**"
+      - "**.md"
 
 permissions:
   contents: read
