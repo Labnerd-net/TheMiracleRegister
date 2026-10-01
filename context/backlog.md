@@ -2,7 +2,7 @@
 
 > Generated: 2026-09-30
 > Focus: Full audit
-> Completed and removed (numbering kept stable): #1, #2, #3, #9, #8, #15, #27, #28, #10, #11, #21, #22, #47, #48, #50
+> Completed and removed (numbering kept stable): #1, #2, #3, #9, #8, #14, #15, #18, #27, #28, #10, #11, #21, #22, #47, #48, #50
 > Obsolete after the admin panel removal: #4, #5, #6, #12, #13, #24, #38 (and #30, replaced by `npm run check:data`)
 
 ---
@@ -28,7 +28,6 @@ _None identified._
 - **#49 Published miracle without sources** (`healing-of-native-american-boy`): `npm run check:data` flags it as having no sources. Fix: add sources (data edit in Neon), then re-run the check.
 
 ### Low
-- **#14 Stale "Today's Feast" from cache** (`src/pages/index.astro:9`, `calendar.astro:10`): 1h `s-maxage` plus 24h SWR can show yesterday's feast for up to a day after midnight UTC. Fix: shorter `s-maxage`, drop SWR on this section, or fetch the feast client-side.
 
 ---
 
@@ -40,7 +39,6 @@ _None identified._
 ### Medium
 - **#16 KV rate limiter** (`src/lib/rateLimit.ts`; used in `src/api/index.ts` 20-30 and `src/pages/search.astro:19`): Every API request/search does a KV read plus write on the same key. KV limits writes to ~1/s per key and bills them, errors are uncaught (public 500s), and read-then-write is non-atomic. Fix: use the Workers Rate Limiting binding or WAF rate-limit rules; keep KV only for login lockout; at minimum try/catch and fail open.
 - **#17 Missing indexes** (`src/db/schema/*`): `miracle_saints` has only the composite PK, so lookups by `saint_id` cannot use it. No indexes on `miracle_sources.miracle_id`, `miracle_images.miracle_id`, `saint_sources.saint_id`, `saint_locations.saint_id`, `saint_relations.saint_id`, `published` on saints/miracles, or `miracles.date_of_event`. Fix: add them (partial indexes `WHERE published`), then `db:generate` and `db:migrate`.
-- **#18 Cache-Control and invalidation** (`saints/[slug].astro:23`, `miracles/[slug].astro:54`, API): Edge caches stay stale 30-60 min after data edits, and `public, max-age` lets browsers cache for the full TTL. Edits now happen in Neon, so there is no save hook to purge from. Fix: shorter `s-maxage` with SWR, a lower browser `max-age`, or a manual purge step after bulk edits; confirm the preview branch is `no-store`.
 
 ### Low
 - **#19 Search has no index** (`src/lib/search.ts` 46-63; `src/api/routes/search.ts` 31-34): ILIKE `%q%` across `biography_short`, `synopsis`, `cure_details` forces sequential scans, and the API fetches up to 200 rows then slices in memory. Fix: `pg_trgm` GIN indexes or a `tsvector` column (consider `unaccent` for names like André/Zélie) and push limit/offset into SQL.
@@ -92,8 +90,8 @@ _None identified._
 | Category | High | Medium | Low | Total |
 |----------|------|--------|-----|-------|
 | Security | 0 | 0 | 1 | 1 |
-| Bugs | 0 | 1 | 1 | 2 |
-| Performance | 0 | 3 | 2 | 5 |
+| Bugs | 0 | 1 | 0 | 1 |
+| Performance | 0 | 2 | 2 | 4 |
 | Improvements & Refactors | 1 | 4 | 5 | 10 |
 | Feature Ideas | 1 | 5 | 3 | 9 |
-| **Total** | 2 | 13 | 12 | 27 |
+| **Total** | 2 | 12 | 11 | 25 |

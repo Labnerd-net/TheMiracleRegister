@@ -7,6 +7,7 @@ import { SAINT_THEMES } from "../../db/topics";
 import { humanizeSnakeCase } from "../../lib/format";
 import { asc, count, eq, and, sql, isNotNull, ilike } from "drizzle-orm";
 import { env } from "cloudflare:workers";
+import { CACHE_CONTENT } from "../../lib/cache";
 
 const PAGE_SIZE = 20;
 const sp = Astro.url.searchParams;
@@ -24,7 +25,7 @@ const filterOrder = sp.get("religious_order") || undefined;
 const filterNationality = sp.get("nationality") || undefined;
 const hasActiveFilters = !!(filterStage || filterTheme || filterOrder || filterNationality);
 
-Astro.response.headers.set("Cache-Control", "public, max-age=1800, stale-while-revalidate=86400");
+Astro.response.headers.set("Cache-Control", CACHE_CONTENT);
 
 const db = createDb(env.DATABASE_URL);
 
