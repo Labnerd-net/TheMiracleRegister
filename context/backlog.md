@@ -2,7 +2,7 @@
 
 > Generated: 2026-09-30
 > Focus: Full audit
-> Completed and removed (numbering kept stable): #1, #2, #3, #9, #8, #14, #15, #18, #27, #28, #10, #11, #21, #22, #47, #48, #50
+> Completed and removed (numbering kept stable): #1, #2, #3, #9, #8, #14, #15, #18, #27, #28, #10, #11, #21, #22, #45, #47, #48, #50
 > Obsolete after the admin panel removal: #4, #5, #6, #12, #13, #24, #38 (and #30, replaced by `npm run check:data`)
 
 ---
@@ -78,7 +78,6 @@ _None identified._
 - **#40 API expansion**: Expose saint sources, locations and related miracles; add `?fields=`, `?published_since=`, `ETag`/`Last-Modified` from `updated_at`, and bulk JSON/CSV export (`/api/v1/export`).
 - **#41 Public source-verification status**: Add `last_verified_at`/`verification_status` to source tables, show a "sources checked on" badge, tie into `/verification`, and optionally run a scheduled Worker cron for dead-link checks.
 - **#42 Discovery on existing data**: Similar miracles (shared topic/diagnosis/type/country), statistics page (by type, decade, country, approval authority), recently canonized/beatified feed, show dispensation fields on saint pages, "On this feast day" block from miracle `feast_*` columns.
-- **#45 Backup and rename safety**: With the admin gone, all edits are direct SQL against the single production branch, and a slug rename silently breaks public URLs and SEO. Fix: set a Neon snapshot schedule (`set_snapshot_schedule`), and add a slug redirect table checked on 404 for `/saints/[slug]` and `/miracles/[slug]`.
 
 ### Low
 - **#43 RSS/Atom feed and ICS calendar export** (per-saint "add to calendar"), reusing `updated_at` and Easter logic.
@@ -95,5 +94,5 @@ _None identified._
 | Bugs | 0 | 1 | 0 | 1 |
 | Performance | 0 | 2 | 2 | 4 |
 | Improvements & Refactors | 1 | 4 | 5 | 10 |
-| Feature Ideas | 1 | 5 | 3 | 9 |
-| **Total** | 2 | 12 | 11 | 25 |
+| Feature Ideas | 1 | 4 | 3 | 8 |
+| **Total** | 2 | 11 | 11 | 24 |

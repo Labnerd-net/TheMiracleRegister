@@ -2,13 +2,16 @@
 
 ## Current Feature Spec File
 
-`context/specs/slug-redirects.md`
+_None_
 
 ## Current Feature Plan File
 
 _None_
 
 ## History
+
+### Slug Redirects and Snapshot Schedule (backlog #45)
+All edits are raw SQL against the single production Neon branch, so a slug rename silently broke the old public URL and nothing recorded the old slug, and the branch had no snapshots (point-in-time history is 6 hours). Added the `slug_redirects` table (`entity_type`, `old_slug`, `new_slug`, unique on type + old slug; migrations 0031 and 0032) and `AFTER UPDATE OF slug` triggers on `saints` and `miracles` that record a redirect on any rename, from the app or raw SQL. Chains stay one hop and renaming back removes the old redirect so it cannot loop. `/saints/[slug]` and `/miracles/[slug]` now return a 301 to the new slug on a miss (`src/lib/slugRedirect.ts`, 60s `Cache-Control`), skipped when a valid preview token is present; unknown slugs still redirect to `/404`. `npm run check:data` flags a redirect whose old slug is live again or whose target does not exist. Set outside the code: Neon snapshot schedule on `br-proud-block-aptdevzb`, daily 08:00 UTC with 14 day retention, plus a manual snapshot `pre-slug-redirects-migration` (`snap-soft-pond-ap6ydc11`, expires 2026-10-31) taken before the migration. Migrations were applied to production before the merge, because the pages query the table on every slug miss. Verified: typecheck, build and tests (146, 6 new, on PGlite) pass; on production, a rename-twice inside a rolled-back transaction gave a one-hop chain and persisted nothing; on the dev server, temporary redirect rows (deleted) gave 301s with the right `Location` and `Cache-Control` for a saint and a miracle, and unknown slugs went to `/404`; `check:data` after migrating showed only #49; CI `check` passed on PR #12. Not verified: a valid preview token against a redirecting slug, mutation checks on the new tests, the Neon HTTP driver in the tests, the deployed site, and restoring from a snapshot. Not done: redirects for slugs renamed before the migration (no history exists), API redirects (`/api/v1/*/:slug` still 404s), keeping `?preview=` across a redirect. Trade-off: a 301 is cached for up to 60s at browsers and the edge, so a rename-back can briefly redirect to the wrong place.
 
 ### SEO Canonical and Structured Data (backlog #23, partial)
 `Base.astro` emitted no `<link rel="canonical">` and no JSON-LD, and filtered/paginated URLs were indexable. `Base.astro` now emits `rel=canonical` (pinned to `https://themiracleregister.org`, not the request origin), `og:site_name`, and `noindex,follow` (no canonical) on any URL with a query string, which covers pagination, filters, search, calendar months and `?preview=`. A new `jsonLd` prop writes `application/ld+json` with `<` escaped. New `src/lib/jsonld.ts` builds Person (saints), Article plus BreadcrumbList (miracles; takes no recipient fields so restricted names cannot leak), and WebSite plus Dataset (home). `sitemap.xml.ts` now lists `/verification` and `/contact`. Build, typecheck and 140 tests passed; rendered head output was checked on the local dev server, but not the canonical host after pinning it, and not in a browser or validator. Not done: a default `og:image` (no raster social card exists); #23 remains in the backlog for that only. Trade-off: query-string pages are never indexed, including deep pagination.
