@@ -2,7 +2,7 @@
 
 > Generated: 2026-09-30
 > Focus: Full audit
-> Completed and removed (numbering kept stable): #1, #2, #10, #11, #21, #22, #47
+> Completed and removed (numbering kept stable): #1, #2, #10, #11, #21, #22, #47, #50
 > Obsolete after the admin panel removal: #4, #5, #6, #12, #13, #24, #38 (and #30, replaced by `npm run check:data`)
 
 ---
@@ -19,7 +19,6 @@ _None identified._
 - **#7 No security headers** (no `src/middleware.ts` since the admin removal): No CSP, X-Frame-Options/`frame-ancestors`, Referrer-Policy or X-Content-Type-Options on any page. Matters because `marked` + `xss` HTML is rendered. Fix: add a new middleware (or `public/_headers`) setting them; use `Referrer-Policy: no-referrer` at least on `?preview=` responses.
 - **#8 ILIKE wildcards unescaped** (`src/lib/search.ts:36`, `src/api/routes/miracles.ts:68`): `%` and `_` in `q`/`country` are not escaped, so `%` matches everything; `SearchQuerySchema` and `country` lack a max length. Fix: escape `\`, `%`, `_` and add `.max(100)`.
 - **#9 Crawler exclusions** (`public/robots.txt`, preview responses): robots.txt allows everything, and `?preview=` pages carry no noindex. Fix: `Disallow: /random`, `/search?`, and send `X-Robots-Tag: noindex` on `?preview=` responses.
-- **#50 Unused Cloudflare secrets**: `ADMIN_PASSWORD` and `SESSION_SECRET` are still set on the Worker after the admin removal. Fix: `npx wrangler secret delete ADMIN_PASSWORD` and `npx wrangler secret delete SESSION_SECRET`.
 
 ---
 
@@ -98,9 +97,9 @@ _None identified._
 
 | Category | High | Medium | Low | Total |
 |----------|------|--------|-----|-------|
-| Security | 0 | 0 | 5 | 5 |
+| Security | 0 | 0 | 4 | 4 |
 | Bugs | 1 | 1 | 2 | 4 |
 | Performance | 0 | 3 | 2 | 5 |
 | Improvements & Refactors | 1 | 6 | 5 | 12 |
 | Feature Ideas | 1 | 5 | 3 | 9 |
-| **Total** | 3 | 15 | 17 | 35 |
+| **Total** | 3 | 15 | 16 | 34 |
