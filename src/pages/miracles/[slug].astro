@@ -6,6 +6,7 @@ import { and, asc, eq, inArray, ne, sql } from "drizzle-orm";
 import { env } from "cloudflare:workers";
 import { renderMarkdown } from "../../lib/markdown";
 import { humanizeSnakeCase, ogDescription, approvalBadge, formatFeastDay } from "../../lib/format";
+import { thumbUrl } from "../../lib/image";
 import { redactRecipient } from "../../lib/privacy";
 import { isValidPreviewToken } from "../../lib/preview";
 import { findSlugRedirect, CACHE_REDIRECT } from "../../lib/slugRedirect";
@@ -154,7 +155,7 @@ const jsonLd = [
     slug: slug!,
     title: miracle.title,
     description: ogDesc,
-    image: images[0]?.url ?? undefined,
+    image: thumbUrl(images[0]?.url, 1280) ?? undefined,
     saints: miracleSaintRows,
   }),
   breadcrumbJsonLd([
@@ -164,7 +165,7 @@ const jsonLd = [
 ];
 ---
 
-<Base title={miracle.title} description={ogDesc} ogImage={images[0]?.url ?? undefined} ogType="article" jsonLd={jsonLd}>
+<Base title={miracle.title} description={ogDesc} ogImage={thumbUrl(images[0]?.url, 1280) ?? undefined} ogType="article" jsonLd={jsonLd}>
   {miracle.location_lat && miracle.location_lng && (
     <link slot="head" rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY=" crossorigin="" />
   )}
@@ -189,7 +190,7 @@ const jsonLd = [
               <a href={`/saints/${saint.slug}`} class="inline-flex items-center gap-2.5 no-underline group">
                 {saint.image_url && (
                   <div class="w-8 h-8 rounded-full overflow-hidden shrink-0" style="background:var(--bg-elevated)">
-                    <img src={saint.image_url} alt={saint.name} class="w-full h-full object-cover object-top" />
+                    <img src={thumbUrl(saint.image_url, 330)!} alt={saint.name} class="w-full h-full object-cover object-top" />
                   </div>
                 )}
                 <span style="font-family:var(--font-sans);font-size:0.82rem;font-weight:500;color:var(--color-accent)" class="group-hover:underline">{saint.name}</span>
@@ -253,7 +254,7 @@ const jsonLd = [
   {images[0] && (
     <div class="max-w-6xl mx-auto px-4 sm:px-6 pb-8">
       <div class="rounded overflow-hidden" style="background:var(--bg-elevated)">
-        <img src={images[0].url} alt="" class="w-full object-contain" style="aspect-ratio:4/3;max-height:480px" />
+        <img src={thumbUrl(images[0].url, 960)!} alt="" class="w-full object-contain" style="aspect-ratio:4/3;max-height:480px" />
         {(images[0].caption || images[0].source_attribution) && (
           <div style="padding:0.5rem 0.75rem;font-size:0.75rem;color:var(--text-3)">
             {images[0].caption && <span>{images[0].caption}</span>}
@@ -338,7 +339,7 @@ const jsonLd = [
             {images.map((img) => (
               <button type="button" class="lb-trigger" aria-haspopup="dialog" aria-label={`View larger: ${img.caption ?? miracle.title}`} data-lightbox-url={img.url} data-lightbox-caption={img.caption ?? ""} data-lightbox-attr={img.source_attribution ?? ""}>
                 <div class="rounded overflow-hidden" style="background:var(--bg-elevated)">
-                  <img src={img.url} alt={img.caption ?? miracle.title} loading="lazy" decoding="async" class="w-full object-contain" style="height:220px" />
+                  <img src={thumbUrl(img.url, 500)!} alt={img.caption ?? miracle.title} loading="lazy" decoding="async" class="w-full object-contain" style="height:220px" />
                   {(img.caption || img.source_attribution) && (
                     <div style="padding:0.5rem 0.75rem;font-size:0.75rem;color:var(--text-3)">
                       {img.caption && <span>{img.caption}</span>}

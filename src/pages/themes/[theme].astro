@@ -8,6 +8,7 @@ import { env } from "cloudflare:workers";
 import { CACHE_CONTENT } from "../../lib/cache";
 import { isIndexable } from "../../lib/browse";
 import { humanizeSlug } from "../../lib/format";
+import { thumbUrl } from "../../lib/image";
 import { collectionJsonLd, breadcrumbJsonLd } from "../../lib/jsonld";
 
 const { theme } = Astro.params;
@@ -62,7 +63,7 @@ const jsonLd = [
         <a href={`/saints/${s.slug}`} class="saint-card-link group no-underline">
           <div class="aspect-[3/4] overflow-hidden mb-4" style="background:var(--bg-elevated)">
             {s.image_url ? (
-              <img src={s.image_url} alt={s.name} loading={i < 4 ? "eager" : "lazy"} decoding="async" width="300" height="400" class="w-full h-full object-cover object-top saint-img" />
+              <img src={thumbUrl(s.image_url, 500)!} alt={s.name} loading={i < 4 ? "eager" : "lazy"} decoding="async" width="300" height="400" class="w-full h-full object-cover object-top saint-img" />
             ) : (
               <div class="saint-placeholder w-full h-full">{s.name.charAt(0)}</div>
             )}
