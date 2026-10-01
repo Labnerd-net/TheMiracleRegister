@@ -190,19 +190,21 @@ function buildUrl(p: number) {
       ))}
     </div>
 
-    {totalPages > 1 && (
-      <nav id="saints-pagination" class="pagination" aria-label="Page navigation">
-        {page > 1
-          ? <a href={buildUrl(page - 1)} class="pagination-btn">← Previous</a>
-          : <span class="pagination-btn disabled">← Previous</span>
-        }
-        <span class="pagination-info">Page {page} of {totalPages}</span>
-        {page < totalPages
-          ? <a href={buildUrl(page + 1)} class="pagination-btn">Next →</a>
-          : <span class="pagination-btn disabled">Next →</span>
-        }
-      </nav>
-    )}
+    <nav id="saints-pagination" class="pagination" aria-label="Page navigation" hidden={totalPages <= 1}>
+      {totalPages > 1 && (
+        <>
+          {page > 1
+            ? <a href={buildUrl(page - 1)} class="pagination-btn">← Previous</a>
+            : <span class="pagination-btn disabled" aria-disabled="true">← Previous</span>
+          }
+          <span class="pagination-info" aria-current="page">Page {page} of {totalPages}</span>
+          {page < totalPages
+            ? <a href={buildUrl(page + 1)} class="pagination-btn">Next →</a>
+            : <span class="pagination-btn disabled" aria-disabled="true">Next →</span>
+          }
+        </>
+      )}
+    </nav>
   </div>
 
 </Base>
@@ -275,9 +277,9 @@ function buildUrl(p: number) {
     const hasPrev = page > 1;
     const hasNext = page < totalPages;
     return `<div style="display:flex;align-items:center;justify-content:center;gap:1.5rem;margin-top:3rem;padding-top:2rem;border-top:1px solid var(--rule)">
-      ${hasPrev ? `<a href="${buildPageUrl(fd, page - 1)}" class="pagination-btn js-page" data-page="${page - 1}">← Previous</a>` : `<span class="pagination-btn disabled">← Previous</span>`}
-      <span class="pagination-info">Page ${page} of ${totalPages}</span>
-      ${hasNext ? `<a href="${buildPageUrl(fd, page + 1)}" class="pagination-btn js-page" data-page="${page + 1}">Next →</a>` : `<span class="pagination-btn disabled">Next →</span>`}
+      ${hasPrev ? `<a href="${buildPageUrl(fd, page - 1)}" class="pagination-btn js-page" data-page="${page - 1}">← Previous</a>` : `<span class="pagination-btn disabled" aria-disabled="true">← Previous</span>`}
+      <span class="pagination-info" aria-current="page">Page ${page} of ${totalPages}</span>
+      ${hasNext ? `<a href="${buildPageUrl(fd, page + 1)}" class="pagination-btn js-page" data-page="${page + 1}">Next →</a>` : `<span class="pagination-btn disabled" aria-disabled="true">Next →</span>`}
     </div>`;
   }
 
@@ -300,7 +302,9 @@ function buildUrl(p: number) {
         ? `<p class="empty-state col-span-full">No saints match the selected filters.</p>`
         : (data as any[]).map(renderCard).join("");
 
-      paginationEl!.innerHTML = renderPagination(meta, fd);
+      const paginationHtml = renderPagination(meta, fd);
+      paginationEl!.innerHTML = paginationHtml;
+      paginationEl!.hidden = !paginationHtml;
 
       history.pushState(null, "", buildPageUrl(fd, page));
     } catch {
@@ -437,6 +441,7 @@ function buildUrl(p: number) {
     padding-top: 2rem;
     border-top: 1px solid var(--rule);
   }
+  .pagination[hidden] { display: none; }
   .pagination-btn {
     font-family: var(--font-sans);
     font-size: 0.8rem;

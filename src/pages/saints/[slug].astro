@@ -300,6 +300,14 @@ const jsonLd = [
               </span>
             ))}
           </div>
+          <details class="mt-4" style="font-family:var(--font-sans);font-size:0.85rem;color:var(--text-2)">
+            <summary style="cursor:pointer;font-weight:600;color:var(--text-1)">List of locations ({mappableLocations.length})</summary>
+            <ul style="list-style:none;padding:0;margin:0.75rem 0 0">
+              {mappableLocations.map((l) => (
+                <li style="margin-bottom:0.35rem">{l.location_name} <span style="color:var(--text-3)">({humanizeSnakeCase(l.location_type)})</span></li>
+              ))}
+            </ul>
+          </details>
         </div>
       )}
 

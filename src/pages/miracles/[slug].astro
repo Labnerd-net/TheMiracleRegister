@@ -429,15 +429,16 @@ const jsonLd = [
   <dialog id="lb" aria-label="Image viewer">
     <button id="lb-close" aria-label="Close">✕</button>
     <img id="lb-img" src="" alt="" />
-    <div id="lb-meta" aria-live="polite">
+    <div id="lb-meta">
       <p id="lb-caption"></p>
       <p id="lb-attr"></p>
     </div>
     <div id="lb-nav">
       <button id="lb-prev" aria-label="Previous image">&#8592;</button>
-      <span id="lb-counter" aria-live="polite"></span>
+      <span id="lb-counter" aria-hidden="true"></span>
       <button id="lb-next" aria-label="Next image">&#8594;</button>
     </div>
+    <p id="lb-status" class="sr-only" role="status"></p>
   </dialog>
 
   <script is:inline define:vars={{ lbImages: images, miracleTitle: miracle.title }}>
@@ -447,21 +448,38 @@ const jsonLd = [
     const lbAttr = document.getElementById('lb-attr');
     const lbCounter = document.getElementById('lb-counter');
     const lbNav = document.getElementById('lb-nav');
+    const lbStatus = document.getElementById('lb-status');
 
     let currentIndex = 0;
+    let opener = null;
 
-    function showImage(index) {
+    function showImage(index, announce) {
       const img = lbImages[index];
+      const position = lbImages.length > 1 ? `Image ${index + 1} of ${lbImages.length}` : 'Image';
       lbImg.src = img.url;
       lbImg.alt = img.caption || miracleTitle;
       lbCaption.textContent = img.caption || '';
       lbAttr.textContent = img.source_attribution || '';
       lbCounter.textContent = `${index + 1} / ${lbImages.length}`;
+      // The dialog name is read on open; prev/next write one polite status instead.
+      lb.setAttribute('aria-label', `Image viewer, ${position.toLowerCase()}`);
+      if (announce) lbStatus.textContent = img.caption ? `${position}. ${img.caption}` : position;
       currentIndex = index;
     }
 
+    function step(delta) {
+      if (lbImages.length < 2) return;
+      showImage((currentIndex + delta + lbImages.length) % lbImages.length, true);
+    }
+
+    lbImg.addEventListener('error', () => {
+      lbCaption.textContent = 'This image could not be loaded.';
+      lbStatus.textContent = 'This image could not be loaded.';
+    });
+
     function openLightbox(index) {
-      showImage(index);
+      lbStatus.textContent = '';
+      showImage(index, false);
       lbNav.style.display = lbImages.length > 1 ? 'flex' : 'none';
       const scrollY = window.scrollY;
       lb.showModal();
@@ -469,18 +487,20 @@ const jsonLd = [
     }
 
     document.querySelectorAll('.lb-trigger').forEach((btn, i) => {
-      btn.addEventListener('click', () => openLightbox(i));
+      btn.addEventListener('click', () => { opener = btn; openLightbox(i); });
     });
 
     document.getElementById('lb-close').addEventListener('click', () => lb.close());
-    document.getElementById('lb-prev').addEventListener('click', () => showImage((currentIndex - 1 + lbImages.length) % lbImages.length));
-    document.getElementById('lb-next').addEventListener('click', () => showImage((currentIndex + 1) % lbImages.length));
+    document.getElementById('lb-prev').addEventListener('click', () => step(-1));
+    document.getElementById('lb-next').addEventListener('click', () => step(1));
+
+    lb.addEventListener('close', () => { if (opener) opener.focus(); });
 
     lb.addEventListener('click', (e) => { if (e.target === lb) lb.close(); });
 
     lb.addEventListener('keydown', (e) => {
-      if (e.key === 'ArrowRight') showImage((currentIndex + 1) % lbImages.length);
-      if (e.key === 'ArrowLeft') showImage((currentIndex - 1 + lbImages.length) % lbImages.length);
+      if (e.key === 'ArrowRight') step(1);
+      if (e.key === 'ArrowLeft') step(-1);
     });
   </script>
 
@@ -530,6 +550,10 @@ const jsonLd = [
       cursor: pointer;
       font-size: 1rem;
       line-height: 2rem;
+    }
+    #lb :focus-visible {
+      outline: 2px solid #fff;
+      outline-offset: 2px;
     }
     #lb-meta {
       text-align: center;
