@@ -338,7 +338,7 @@ const jsonLd = [
             {images.map((img) => (
               <button type="button" class="lb-trigger" aria-haspopup="dialog" aria-label={`View larger: ${img.caption ?? miracle.title}`} data-lightbox-url={img.url} data-lightbox-caption={img.caption ?? ""} data-lightbox-attr={img.source_attribution ?? ""}>
                 <div class="rounded overflow-hidden" style="background:var(--bg-elevated)">
-                  <img src={img.url} alt={img.caption ?? miracle.title} class="w-full object-contain" style="height:220px" />
+                  <img src={img.url} alt={img.caption ?? miracle.title} loading="lazy" decoding="async" class="w-full object-contain" style="height:220px" />
                   {(img.caption || img.source_attribution) && (
                     <div style="padding:0.5rem 0.75rem;font-size:0.75rem;color:var(--text-3)">
                       {img.caption && <span>{img.caption}</span>}
