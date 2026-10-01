@@ -7,6 +7,7 @@ import { env } from "cloudflare:workers";
 import { easterOffsetForDate } from "../lib/feasts";
 import { CACHE_DAILY } from "../lib/cache";
 import { siteJsonLd } from "../lib/jsonld";
+import { thumbUrl } from "../lib/image";
 
 Astro.response.headers.set("Cache-Control", CACHE_DAILY);
 
@@ -104,7 +105,7 @@ const [[{ saintCount }], [{ miracleCount }], [{ apparitionCount }], featuredSain
             <a href={`/saints/${s.slug}`} class="feast-card no-underline group">
               <div class="feast-img-wrap">
                 {s.image_url ? (
-                  <img src={s.image_url} alt={s.name} class="feast-img saint-img" />
+                  <img src={thumbUrl(s.image_url, 330)!} alt={s.name} class="feast-img saint-img" />
                 ) : (
                   <div class="saint-placeholder w-full h-full">{s.name.charAt(0)}</div>
                 )}
@@ -139,7 +140,7 @@ const [[{ saintCount }], [{ miracleCount }], [{ apparitionCount }], featuredSain
             <div class="aspect-[3/4] overflow-hidden mb-4" style="background:var(--bg-elevated)">
               {s.image_url ? (
                 <img
-                  src={s.image_url}
+                  src={thumbUrl(s.image_url, 500)!}
                   alt={s.name}
                   decoding="async"
                   width="300"

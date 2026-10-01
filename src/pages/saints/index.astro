@@ -8,6 +8,7 @@ import { humanizeSnakeCase } from "../../lib/format";
 import { asc, count, eq, and, sql, isNotNull, ilike } from "drizzle-orm";
 import { env } from "cloudflare:workers";
 import { CACHE_CONTENT } from "../../lib/cache";
+import { thumbUrl } from "../../lib/image";
 
 const PAGE_SIZE = 20;
 const sp = Astro.url.searchParams;
@@ -159,7 +160,7 @@ function buildUrl(p: number) {
           <div class="aspect-[3/4] overflow-hidden mb-4" style="background:var(--bg-elevated)">
             {s.image_url ? (
               <img
-                src={s.image_url}
+                src={thumbUrl(s.image_url, 500)!}
                 alt={s.name}
                 loading={i < 4 ? "eager" : "lazy"}
                 decoding="async"
@@ -210,6 +211,8 @@ function buildUrl(p: number) {
 </Base>
 
 <script>
+import { thumbUrl } from "../../lib/image";
+
 (function () {
   const form = document.getElementById("filter-form") as HTMLFormElement | null;
   const gridEl = document.getElementById("saints-grid");
@@ -253,7 +256,7 @@ function buildUrl(p: number) {
   function renderCard(s: any): string {
     const placeholder = `<div style="width:100%;height:100%;display:flex;align-items:center;justify-content:center;font-family:var(--font-display);font-size:3rem;font-weight:300;color:var(--text-4);background:var(--bg-elevated)">${esc(s.name?.charAt(0))}</div>`;
     const img = s.image_url
-      ? `<img src="${esc(s.image_url)}" alt="${esc(s.name)}" loading="lazy" decoding="async" width="300" height="400" style="width:100%;height:100%;object-fit:cover;object-position:top" />`
+      ? `<img src="${esc(thumbUrl(s.image_url, 500))}" alt="${esc(s.name)}" loading="lazy" decoding="async" width="300" height="400" style="width:100%;height:100%;object-fit:cover;object-position:top" />`
       : placeholder;
     const stage = s.canonization_stage ?? "";
     const feastDay = s.feast_day ? `<span style="display:block">${esc(s.feast_day)}</span>` : "";
