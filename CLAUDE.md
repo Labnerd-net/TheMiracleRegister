@@ -1,4 +1,4 @@
-# The Miracles Register — Claude Code Reference
+# The Miracle Register — Claude Code Reference
 
 ## Project Overview
 

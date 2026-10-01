@@ -1,4 +1,4 @@
-# The Miracles Register
+# The Miracle Register
 
 A data-driven website documenting miracles attributed to Catholic saints — canonization miracles with medical documentation, narrative synopses, source trails, and a public REST API.
 
