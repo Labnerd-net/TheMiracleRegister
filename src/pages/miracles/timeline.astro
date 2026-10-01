@@ -1,5 +1,6 @@
 ---
 import Base from "../../layouts/Base.astro";
+import { PAGE_DESCRIPTIONS } from "../../lib/seo";
 import { humanizeSnakeCase } from "../../lib/format";
 import { createDb } from "../../db";
 import { miracles } from "../../db/schema";
@@ -53,7 +54,7 @@ function categoryDot(category: string): string {
 }
 ---
 
-<Base title="Timeline">
+<Base title="Timeline" description={PAGE_DESCRIPTIONS.timeline}>
   <div class="page-header">
     <div class="max-w-4xl mx-auto px-4 sm:px-6 py-8 sm:py-10">
       <a href="/miracles" style="font-family:var(--font-sans);font-size:0.68rem;font-weight:500;letter-spacing:0.08em;text-transform:uppercase;color:var(--text-4);text-decoration:none">← Miracles</a>

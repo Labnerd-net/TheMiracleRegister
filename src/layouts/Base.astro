@@ -1,6 +1,7 @@
 ---
 import "../styles/global.css";
 import { SITE_NAME, SITE_URL, serializeJsonLd } from "../lib/jsonld";
+import { DEFAULT_DESCRIPTION } from "../lib/seo";
 
 interface Props {
   title: string;
@@ -10,7 +11,8 @@ interface Props {
   jsonLd?: Record<string, unknown> | Record<string, unknown>[];
   noindex?: boolean;
 }
-const { title, description, ogImage, ogType, jsonLd, noindex: forceNoindex } = Astro.props;
+const { title, description: pageDescription, ogImage, ogType, jsonLd, noindex: forceNoindex } = Astro.props;
+const description = pageDescription || DEFAULT_DESCRIPTION;
 const fullTitle = title === "Home"
   ? "The Miracle Register"
   : `${title} — The Miracle Register`;
@@ -35,7 +37,7 @@ const current = (href: string) => {
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
     <script defer src="https://umami.labnerd.net/script.js" data-website-id="c0613999-ec84-4770-83ec-3c33c0e52a7b"></script>
     <title>{fullTitle}</title>
-    {description && <meta name="description" content={description} />}
+    <meta name="description" content={description} />
     {noindex
       ? <meta name="robots" content="noindex,follow" />
       : <link rel="canonical" href={canonicalUrl} />}
@@ -43,11 +45,11 @@ const current = (href: string) => {
     <meta property="og:title" content={fullTitle} />
     <meta property="og:type" content={ogType ?? "website"} />
     <meta property="og:url" content={canonicalUrl} />
-    {description && <meta property="og:description" content={description} />}
+    <meta property="og:description" content={description} />
     {ogImage && <meta property="og:image" content={ogImage} />}
     <meta name="twitter:card" content="summary_large_image" />
     <meta name="twitter:title" content={fullTitle} />
-    {description && <meta name="twitter:description" content={description} />}
+    <meta name="twitter:description" content={description} />
     {ogImage && <meta name="twitter:image" content={ogImage} />}
     <script is:inline>
       (function() {
