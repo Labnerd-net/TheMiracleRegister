@@ -2,7 +2,7 @@
 
 > Generated: 2026-09-30
 > Focus: Full audit
-> Completed and removed (numbering kept stable): #1, #2, #3, #9, #8, #14, #15, #18, #27, #28, #10, #11, #21, #22, #45, #47, #48, #50
+> Completed and removed (numbering kept stable): #1, #2, #3, #9, #8, #14, #15, #18, #27, #28, #10, #11, #17, #21, #22, #45, #47, #48, #50
 > Obsolete after the admin panel removal: #4, #5, #6, #12, #13, #24, #38 (and #30, replaced by `npm run check:data`)
 
 ---
@@ -40,7 +40,6 @@ _None identified._
 
 ### Medium
 - **#16 KV rate limiter** (`src/lib/rateLimit.ts`; used in `src/api/index.ts` 20-30 and `src/pages/search.astro:19`): Every API request/search does a KV read plus write on the same key. KV limits writes to ~1/s per key and bills them, errors are uncaught (public 500s), and read-then-write is non-atomic. Fix: use the Workers Rate Limiting binding or WAF rate-limit rules; keep KV only for login lockout; at minimum try/catch and fail open.
-- **#17 Missing indexes** (`src/db/schema/*`): `miracle_saints` has only the composite PK, so lookups by `saint_id` cannot use it. No indexes on `miracle_sources.miracle_id`, `miracle_images.miracle_id`, `saint_sources.saint_id`, `saint_locations.saint_id`, `saint_relations.saint_id`, `published` on saints/miracles, or `miracles.date_of_event`. Fix: add them (partial indexes `WHERE published`), then `db:generate` and `db:migrate`.
 
 ### Low
 - **#19 Search has no index** (`src/lib/search.ts` 46-63; `src/api/routes/search.ts` 31-34): ILIKE `%q%` across `biography_short`, `synopsis`, `cure_details` forces sequential scans, and the API fetches up to 200 rows then slices in memory. Fix: `pg_trgm` GIN indexes or a `tsvector` column (consider `unaccent` for names like André/Zélie) and push limit/offset into SQL.
@@ -92,7 +91,7 @@ _None identified._
 |----------|------|--------|-----|-------|
 | Security | 0 | 0 | 1 | 1 |
 | Bugs | 0 | 1 | 0 | 1 |
-| Performance | 0 | 2 | 2 | 4 |
+| Performance | 0 | 1 | 2 | 3 |
 | Improvements & Refactors | 1 | 4 | 5 | 10 |
 | Feature Ideas | 1 | 4 | 3 | 8 |
-| **Total** | 2 | 11 | 11 | 24 |
+| **Total** | 2 | 10 | 11 | 23 |
