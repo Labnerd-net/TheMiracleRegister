@@ -13,6 +13,7 @@
 _None identified._
 
 ### Medium
+_None identified._
 
 ### Low
 - **#7 No Content-Security-Policy** (`src/middleware.ts`): Basic headers (X-Content-Type-Options, X-Frame-Options, `frame-ancestors`, Referrer-Policy) now ship from middleware, but there is no script/style CSP. Matters because `marked` + `xss` HTML is rendered. Fix: a CSP with nonces or hashes for the inline scripts; blocked by inline styles/scripts (#32, #25).
@@ -28,6 +29,7 @@ _None identified._
 - **#49 Published miracle without sources** (`healing-of-native-american-boy`): `npm run check:data` flags it as having no sources. Fix: add sources (data edit in Neon), then re-run the check.
 
 ### Low
+_None identified._
 
 ---
 
