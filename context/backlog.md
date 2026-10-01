@@ -2,7 +2,7 @@
 
 > Generated: 2026-09-30
 > Focus: Full audit
-> Completed and removed (numbering kept stable): #1, #2, #3, #9, #8, #14, #15, #18, #27, #28, #10, #11, #16, #17, #21, #22, #45, #47, #48, #50, #49, #37, #51, #31, #52, #23
+> Completed and removed (numbering kept stable): #1, #2, #3, #9, #8, #14, #15, #18, #27, #28, #10, #11, #16, #17, #21, #22, #45, #47, #48, #50, #49, #37, #51, #31, #52, #23, #26
 > Obsolete after the admin panel removal: #4, #5, #6, #12, #13, #24, #38 (and #30, replaced by `npm run check:data`)
 
 ---
@@ -54,7 +54,6 @@ _None identified._
 
 ### Medium
 - **#25 Oversized files mixing concerns**: `miracles/index.astro` (637 lines), `miracles/[slug].astro` (547), `saints/index.astro` (444), `Base.astro` (425), `calendar.astro` (396), `saints/[slug].astro` (370). These mix data fetching, markup, inline scripts and per-page styles. Fix: extract `Lightbox`; move inline scripts to `src/scripts`; move shared CSS out of per-page `<style>` blocks.
-- **#26 Duplicated query and filter logic**: API routes and Astro pages each build the same miracle/saint WHERE clauses, and the saint-names-by-miracle Map loop is repeated in `saints.ts`, `miracles/index.astro`, `miracles/[slug].astro`. Pages also re-render cards client-side from the API. Fix: `src/lib/queries/{miracles,saints}.ts`, mirroring the existing `searchContent` extraction.
 - **#29 Playwright documented but absent**: Add a smoke suite (home, saint page, miracle filters, search, preview token) or correct CLAUDE.md/README.
 
 ### Low
@@ -90,6 +89,6 @@ _None identified._
 | Security | 0 | 0 | 1 | 1 |
 | Bugs | 0 | 0 | 0 | 0 |
 | Performance | 0 | 0 | 2 | 2 |
-| Improvements & Refactors | 0 | 3 | 5 | 8 |
+| Improvements & Refactors | 0 | 2 | 5 | 7 |
 | Feature Ideas | 0 | 4 | 3 | 7 |
-| **Total** | 0 | 7 | 11 | 18 |
+| **Total** | 0 | 6 | 11 | 17 |

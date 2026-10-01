@@ -2,13 +2,16 @@
 
 ## Current Feature Spec File
 
-context/specs/shared-queries.md
+_None_
 
 ## Current Feature Plan File
 
 _None_
 
 ## History
+
+### Shared Query and Filter Logic (backlog #26)
+The miracle and saint filter WHERE clauses were built twice (API routes and Astro index pages) and the saints-by-miracle lookup was copied in five places. New `src/lib/queries/miracles.ts` has `miracleFilterConditions(db, filters)` and `fetchSaintsByMiracle(db, ids, { includeUnpublished })`; `src/lib/queries/saints.ts` has `saintFilterConditions(filters)`. Both API routes and the `/miracles`, `/saints`, `/topics/[topic]` and `/miracles/[slug]` (related-miracle names, preview-aware) pages use them; callers keep their own parsing, selects, ordering and pagination. The two copies had drifted: `country` and `religious_order` matched by substring in the API but exactly on the pages, so a URL could differ between first load and a client-side filter change. Decision: substring everywhere. Verified: typecheck, build, 185 tests (10 new, `tests/queries.test.ts`) and `check:data` pass; on the dev server `/miracles`, `/saints?theme=hope`, `/topics/children` and a miracle page matched pre-change counts, and `/miracles?country=ital` went from 0 to 14 results; CI `check` and the Workers Builds branch build passed on PR #22. Not verified: a valid preview token against an unpublished saint (only a bad token was tried), `/saints` in a browser, the production deploy of `main` (`14776ae`), and mutation checks on the new tests. Behaviour change: `/miracles?country=` and `/saints?religious_order=` on the pages now match substrings; the dropdowns send full values, so it only shows when one value contains another (e.g. Niger and Nigeria). Not done: client-side card re-rendering from the API (second half of #26, overlaps #25); `saints/[slug].astro` still builds its own miracle list query.
 
 ### Default og:image (backlog #23)
 Pages without their own image emitted no `og:image` or `twitter:image`, so links to the home, index, calendar, map and search pages had no social preview image. New `public/og-default.png` (1200x630, 43 KB) is a text-only card in the site's own colors and fonts: maroon side bar, gold cross, "The Miracle Register" in Cormorant Garamond, the tagline "A searchable database of miracles attributed to Catholic saints", and `themiracleregister.org`. `Base.astro` now always emits `og:image` and `twitter:image`: a page's own `ogImage` wins, otherwise the default, as an absolute URL on the pinned `SITE_URL`. `og:image:width` and `og:image:height` (1200, 630) are emitted only for the default, since the size of a page-supplied Wikimedia image is unknown. Verified: typecheck, build and 175 tests pass; on the dev server `/`, `/saints` and `/miracles/timeline` each emitted the default image tags once. Not verified: the card in a real preview (Facebook debugger, LinkedIn Post Inspector, Slack), which needs the deployed URL; that a saint or miracle page still emits its own image; that the dev server serves `/og-default.png` (the curl check did not return). Trade-offs: the PNG was rendered once with headless Chrome from a throwaway HTML file that is not in the repo, so changing the card means editing the PNG in an image tool or re-creating the layout; the card is the same for every page, with no per-saint or per-miracle cards.
