@@ -98,7 +98,7 @@ const [[{ saintCount }], [{ miracleCount }], [{ apparitionCount }], featuredSain
   {feastSaints.length > 0 && (
     <section class="feast-section">
       <div class="max-w-6xl mx-auto px-4 sm:px-6 py-10 sm:py-14">
-        <p class="eyebrow mb-8">Today's Feast</p>
+        <h2 class="eyebrow mb-8">Today's Feast</h2>
         <div class="feast-grid">
           {feastSaints.map(s => (
             <a href={`/saints/${s.slug}`} class="feast-card no-underline group">
@@ -125,7 +125,7 @@ const [[{ saintCount }], [{ miracleCount }], [{ apparitionCount }], featuredSain
   <section class="py-14 sm:py-20" style="overflow:hidden">
     <div class="max-w-6xl mx-auto px-4 sm:px-6">
       <div class="flex items-baseline justify-between mb-10">
-        <p class="eyebrow">Featured Saints</p>
+        <h2 class="eyebrow">Featured Saints</h2>
         <a href="/saints" style="font-family:var(--font-sans);font-size:0.7rem;font-weight:500;color:var(--color-accent);text-decoration:none;letter-spacing:0.05em">View all →</a>
       </div>
     </div>
@@ -161,7 +161,7 @@ const [[{ saintCount }], [{ miracleCount }], [{ apparitionCount }], featuredSain
   <section style="border-top:1px solid var(--rule);background:var(--bg-page)">
     <div class="max-w-6xl mx-auto px-4 sm:px-6 py-14 sm:py-20 lg:grid lg:grid-cols-2 lg:gap-20">
       <div>
-        <p class="eyebrow mb-6">About this Register</p>
+        <h2 class="eyebrow mb-6">About this Register</h2>
         <h2 style="font-family:var(--font-display);font-size:clamp(2rem,4vw,3rem);font-weight:300;line-height:1.2;color:var(--text-1)">
           Documented, sourced,<br/>and structured for research
         </h2>

@@ -26,7 +26,7 @@
   --color-accent:        #7c2d3e;
   --color-accent-hover:  #5e1f2d;
   --color-accent-light:  #fdf4f5;
-  --color-gold:          #b08a4a;
+  --color-gold:          #876727;
 
   --bg-page:     #fafaf8;
   --bg-surface:  #ffffff;
@@ -35,9 +35,9 @@
 
   --text-1: #121210;
   --text-2: #4a4a48;
-  --text-3: #6b6b69;
-  --text-4: #9a9a98;
-  --text-5: #b8b4b0;
+  --text-3: #585856;
+  --text-4: #666664;
+  --text-5: #6c6c6a;
 
   --rule:      #ede9e4;
   --rule-mid:  #d4d0cb;
@@ -60,9 +60,9 @@
 
     --text-1: #f0e6e8;
     --text-2: #c8b0b6;
-    --text-3: #987080;
-    --text-4: #6a4852;
-    --text-5: #4a2e38;
+    --text-3: #b49aa3;
+    --text-4: #a58290;
+    --text-5: #a07e8c;
 
     --rule:      #2e1820;
     --rule-mid:  #3e2030;
@@ -95,3 +95,36 @@ body {
 .prose li { margin-bottom: 0.25em; }
 .prose sup { font-size: 0.75em; vertical-align: super; }
 .prose sub { font-size: 0.75em; vertical-align: sub; }
+
+/* ── Accessibility ──────────────────────────────────────────────────── */
+html { scroll-padding-top: 6rem; }
+
+:focus-visible {
+  outline: 2px solid var(--color-accent);
+  outline-offset: 2px;
+}
+
+.skip-link {
+  position: absolute;
+  left: -9999px;
+  top: 0;
+  z-index: 100;
+  padding: 0.6rem 1rem;
+  background: var(--bg-surface);
+  color: var(--color-accent);
+  font-family: var(--font-sans);
+  font-size: 0.85rem;
+  border: 2px solid var(--color-accent);
+}
+.skip-link:focus { left: 1rem; top: 1rem; }
+
+main:focus { outline: none; }
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}

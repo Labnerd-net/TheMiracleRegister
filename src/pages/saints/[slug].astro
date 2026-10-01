@@ -197,7 +197,7 @@ const jsonLd = [
         )}
 
         <div class="card p-5 mt-4 lg:hidden">
-          <p class="eyebrow mb-5">Record</p>
+          <h2 class="eyebrow mb-5">Record</h2>
           <dl class="meta-grid">
             {saint.birth_date && (
               <><dt>Born</dt><dd>{saint.birth_date}{birthLocation ? <><br/><span style="color:var(--text-4)">{birthLocation.location_name}</span></> : ""}</dd></>
@@ -222,7 +222,7 @@ const jsonLd = [
     <div>
       {saint.patronage && saint.patronage.length > 0 && (
         <div class="mb-9 pb-9 section-rule">
-          <p class="eyebrow mb-3">Patronage</p>
+          <h2 class="eyebrow mb-3">Patronage</h2>
           <p style="font-family:var(--font-sans);font-size:0.875rem;color:var(--text-3);line-height:1.8">
             {patronageLinks.map((p, i) => (<>{i > 0 && " · "}{p.href ? <a href={p.href} style="color:inherit">{p.label}</a> : p.label}</>))}
           </p>
@@ -231,13 +231,13 @@ const jsonLd = [
 
       {saint.biography_short && (
         <div class="mb-11 pb-11 section-rule">
-          <p class="eyebrow mb-5">Biography</p>
+          <h2 class="eyebrow mb-5">Biography</h2>
           <div class="prose" set:html={renderMarkdown(saint.biography_short)} />
         </div>
       )}
 
       <div>
-        <p class="eyebrow mb-6">Miracles <span style="color:var(--text-5);font-weight:400">({saintMiracles.length})</span></p>
+        <h2 class="eyebrow mb-6">Miracles <span style="color:var(--text-5);font-weight:400">({saintMiracles.length})</span></h2>
         {saintMiracles.length === 0 ? (
           <p style="font-family:var(--font-sans);font-size:0.875rem;color:var(--text-4)">No miracles recorded.</p>
         ) : (
@@ -282,7 +282,7 @@ const jsonLd = [
 
       {mappableLocations.length > 0 && (
         <div class="mt-9 pt-9 section-rule">
-          <p class="eyebrow mb-4">Locations</p>
+          <h2 class="eyebrow mb-4">Locations</h2>
           <div id="saint-map" style="height:360px;width:100%;background:var(--bg-elevated)"></div>
           <div class="flex flex-wrap gap-x-5 gap-y-2 mt-4">
             {[
@@ -305,7 +305,7 @@ const jsonLd = [
 
       {(sources.length > 0 || saint.wikipedia_url) && (
         <div class="mt-9 pt-9 section-rule">
-          <p class="eyebrow mb-4">Sources</p>
+          <h2 class="eyebrow mb-4">Sources</h2>
           <ul style="list-style:none;padding:0;margin:0;display:flex;flex-direction:column;gap:0.6rem">
             {saint.wikipedia_url && (
               <li style="display:flex;align-items:baseline;gap:0.6rem">
@@ -330,7 +330,7 @@ const jsonLd = [
 
     <aside class="hidden lg:block">
       <div class="card p-5 lg:sticky lg:top-24">
-        <p class="eyebrow mb-5">Record</p>
+        <h2 class="eyebrow mb-5">Record</h2>
         <dl class="meta-grid">
           {saint.birth_date && (
             <><dt>Born</dt><dd>{saint.birth_date}{birthLocation ? <><br/><span style="color:var(--text-4)">{birthLocation.location_name}</span></> : ""}</dd></>

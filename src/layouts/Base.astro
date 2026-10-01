@@ -54,11 +54,12 @@ const noindex = forceNoindex || Astro.url.search !== "";
     <slot name="head" />
   </head>
   <body class="min-h-screen flex flex-col">
+    <a href="#main" class="skip-link">Skip to main content</a>
 
     <header class="site-header sticky top-0 z-10">
       <div class="max-w-6xl mx-auto px-4 sm:px-6 h-16 sm:h-20 flex items-center justify-between">
         <a href="/" class="site-logo">The Miracle Register</a>
-        <nav class="flex items-center gap-5 sm:gap-8">
+        <nav aria-label="Primary" class="flex items-center gap-5 sm:gap-8">
           <!-- Desktop nav links -->
           <a href="/saints" class="nav-link hidden lg:inline">Saints</a>
           <a href="/miracles" class="nav-link hidden lg:inline">Miracles</a>
@@ -100,7 +101,7 @@ const noindex = forceNoindex || Astro.url.search !== "";
       </div>
 
       <!-- Mobile dropdown menu -->
-      <div id="mobile-menu" class="mobile-menu" hidden>
+      <nav id="mobile-menu" class="mobile-menu" aria-label="Primary mobile" hidden>
         <div class="max-w-6xl mx-auto px-4 py-4 flex flex-col gap-4">
           <a href="/saints" class="nav-link">Saints</a>
           <a href="/miracles" class="nav-link">Miracles</a>
@@ -108,10 +109,10 @@ const noindex = forceNoindex || Astro.url.search !== "";
           <a href="/miracles/timeline" class="nav-link">Timeline</a>
           <a href="/calendar" class="nav-link">Calendar</a>
         </div>
-      </div>
+      </nav>
     </header>
 
-    <main class="flex-1">
+    <main id="main" tabindex="-1" class="flex-1">
       <slot />
     </main>
 
@@ -119,7 +120,7 @@ const noindex = forceNoindex || Astro.url.search !== "";
       <div class="max-w-6xl mx-auto px-4 sm:px-6 py-8 sm:py-12 flex flex-col lg:flex-row items-start lg:items-center justify-between gap-6">
         <span class="site-logo">The Miracle Register</span>
         <div class="flex flex-col lg:flex-row lg:items-center gap-4 lg:gap-6 w-full lg:w-auto">
-          <div class="footer-nav-links">
+          <nav class="footer-nav-links" aria-label="Footer">
             <a href="/saints" class="nav-link">Saints</a>
             <a href="/miracles" class="nav-link">Miracles</a>
             <a href="/map" class="nav-link">Map</a>
@@ -132,7 +133,7 @@ const noindex = forceNoindex || Astro.url.search !== "";
             <a href="/verification" class="nav-link">Verification</a>
             <a href="/contact" class="nav-link">Contact</a>
             <a href="/api/v1/doc" class="nav-link">API</a>
-          </div>
+          </nav>
           <p style="font-family:var(--font-sans);font-size:0.8rem;letter-spacing:0.04em;color:var(--text-4)">
             A structured database of miracles and venerated traditions of the saints
           </p>
@@ -220,7 +221,6 @@ const noindex = forceNoindex || Astro.url.search !== "";
     padding: 0.3rem 0.65rem;
     width: 10rem;
     transition: width 0.2s, border-color 0.2s;
-    outline: none;
   }
   .search-nav-input::placeholder { color: var(--text-4); }
   .search-nav-input:focus {

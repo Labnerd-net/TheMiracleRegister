@@ -240,7 +240,7 @@ const jsonLd = [
       <div class="mt-8 lg:mt-0">
         {miracle.topics && miracle.topics.length > 0 && (
           <>
-            <p class="eyebrow mb-4">Topics</p>
+            <h2 class="eyebrow mb-4">Topics</h2>
             <div class="flex flex-wrap gap-1.5">
               {miracle.topics.map((t) => <a href={`/topics/${encodeURIComponent(t)}`} class="tag" style="text-decoration:none">{t}</a>)}
             </div>
@@ -269,7 +269,7 @@ const jsonLd = [
 
     <aside class="mb-8 lg:mb-0 lg:col-start-2 lg:row-start-1">
       <div class="card p-5 lg:sticky lg:top-24">
-        <p class="eyebrow mb-5">Full Record</p>
+        <h2 class="eyebrow mb-5">Full Record</h2>
         <dl class="meta-grid">
           <dt>Category</dt><dd>{fmt(miracle.miracle_category)}</dd>
           <dt>Type</dt><dd>{fmt(miracle.type)}</dd>
@@ -312,28 +312,28 @@ const jsonLd = [
 
       {miracle.medical_diagnosis && (
         <section class="mb-9 pb-9 section-rule">
-          <p class="eyebrow mb-4">Medical Diagnosis</p>
+          <h2 class="eyebrow mb-4">Medical Diagnosis</h2>
           <p style="font-family:var(--font-sans);font-size:0.875rem;color:var(--text-3);line-height:1.8">{miracle.medical_diagnosis}</p>
         </section>
       )}
 
       {miracle.cure_details && (
         <section class="mb-9 pb-9 section-rule">
-          <p class="eyebrow mb-4">Cure Details</p>
+          <h2 class="eyebrow mb-4">Cure Details</h2>
           <div class="prose" set:html={renderMarkdown(miracle.cure_details)} />
         </section>
       )}
 
       {miracle.synopsis && (
         <section class="mb-9 pb-9 section-rule">
-          <p class="eyebrow mb-5">Synopsis</p>
+          <h2 class="eyebrow mb-5">Synopsis</h2>
           <div class="prose" set:html={renderMarkdown(miracle.synopsis)} />
         </section>
       )}
 
       {images.length > 0 && (
         <section class="mb-9 pb-9 section-rule">
-          <p class="eyebrow mb-5">Images</p>
+          <h2 class="eyebrow mb-5">Images</h2>
           <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
             {images.map((img) => (
               <button type="button" class="lb-trigger" data-lightbox-url={img.url} data-lightbox-caption={img.caption ?? ""} data-lightbox-attr={img.source_attribution ?? ""}>
@@ -355,14 +355,14 @@ const jsonLd = [
 
       {miracle.location_lat && miracle.location_lng && (
         <section class="mb-9 pb-9 section-rule">
-          <p class="eyebrow mb-4">Location</p>
+          <h2 class="eyebrow mb-4">Location</h2>
           <div id="miracle-map" style="height:320px;width:100%;background:var(--bg-elevated)"></div>
         </section>
       )}
 
       {relatedMiracles.length > 0 && (
         <section class="mb-9 pb-9 section-rule">
-          <p class="eyebrow mb-5">Related Miracles</p>
+          <h2 class="eyebrow mb-5">Related Miracles</h2>
           <ul class="space-y-2">
             {relatedMiracles.map((r) => (
               <li>
@@ -379,7 +379,7 @@ const jsonLd = [
 
       {sources.length > 0 && (
         <section>
-          <p class="eyebrow mb-5">Sources</p>
+          <h2 class="eyebrow mb-5">Sources</h2>
           <ul class="space-y-3" style="margin-bottom:1.5rem">
             {sources.map((s) => (
               <li class="flex flex-col sm:flex-row sm:items-baseline gap-1 sm:gap-4">
