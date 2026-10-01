@@ -223,3 +223,6 @@ export const PaginationQuerySchema = z.object({
   page: z.coerce.number().int().positive().default(1),
   limit: z.coerce.number().int().positive().max(100).default(20),
 });
+
+// TEMP: deliberate CI failure test
+export const __ciFailTest: number = "not a number";
