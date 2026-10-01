@@ -253,7 +253,7 @@ const jsonLd = [
   {images[0] && (
     <div class="max-w-6xl mx-auto px-4 sm:px-6 pb-8">
       <div class="rounded overflow-hidden" style="background:var(--bg-elevated)">
-        <img src={images[0].url} alt={images[0].caption ?? miracle.title} class="w-full object-contain" style="max-height:480px" />
+        <img src={images[0].url} alt="" class="w-full object-contain" style="max-height:480px" />
         {(images[0].caption || images[0].source_attribution) && (
           <div style="padding:0.5rem 0.75rem;font-size:0.75rem;color:var(--text-3)">
             {images[0].caption && <span>{images[0].caption}</span>}
@@ -336,7 +336,7 @@ const jsonLd = [
           <h2 class="eyebrow mb-5">Images</h2>
           <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
             {images.map((img) => (
-              <button type="button" class="lb-trigger" data-lightbox-url={img.url} data-lightbox-caption={img.caption ?? ""} data-lightbox-attr={img.source_attribution ?? ""}>
+              <button type="button" class="lb-trigger" aria-haspopup="dialog" aria-label={`View larger: ${img.caption ?? miracle.title}`} data-lightbox-url={img.url} data-lightbox-caption={img.caption ?? ""} data-lightbox-attr={img.source_attribution ?? ""}>
                 <div class="rounded overflow-hidden" style="background:var(--bg-elevated)">
                   <img src={img.url} alt={img.caption ?? miracle.title} class="w-full object-contain" style="height:220px" />
                   {(img.caption || img.source_attribution) && (
@@ -356,7 +356,7 @@ const jsonLd = [
       {miracle.location_lat && miracle.location_lng && (
         <section class="mb-9 pb-9 section-rule">
           <h2 class="eyebrow mb-4">Location</h2>
-          <div id="miracle-map" style="height:320px;width:100%;background:var(--bg-elevated)"></div>
+          <div id="miracle-map" role="region" aria-label={`Map of ${miracle.location_name ?? "the miracle location"}`} style="height:320px;width:100%;background:var(--bg-elevated)"></div>
         </section>
       )}
 
@@ -426,21 +426,21 @@ const jsonLd = [
     </>
   )}
 
-  <dialog id="lb">
+  <dialog id="lb" aria-label="Image viewer">
     <button id="lb-close" aria-label="Close">✕</button>
     <img id="lb-img" src="" alt="" />
-    <div id="lb-meta">
+    <div id="lb-meta" aria-live="polite">
       <p id="lb-caption"></p>
       <p id="lb-attr"></p>
     </div>
     <div id="lb-nav">
       <button id="lb-prev" aria-label="Previous image">&#8592;</button>
-      <span id="lb-counter"></span>
+      <span id="lb-counter" aria-live="polite"></span>
       <button id="lb-next" aria-label="Next image">&#8594;</button>
     </div>
   </dialog>
 
-  <script is:inline define:vars={{ lbImages: images }}>
+  <script is:inline define:vars={{ lbImages: images, miracleTitle: miracle.title }}>
     const lb = document.getElementById('lb');
     const lbImg = document.getElementById('lb-img');
     const lbCaption = document.getElementById('lb-caption');
@@ -453,7 +453,7 @@ const jsonLd = [
     function showImage(index) {
       const img = lbImages[index];
       lbImg.src = img.url;
-      lbImg.alt = img.caption || '';
+      lbImg.alt = img.caption || miracleTitle;
       lbCaption.textContent = img.caption || '';
       lbAttr.textContent = img.source_attribution || '';
       lbCounter.textContent = `${index + 1} / ${lbImages.length}`;

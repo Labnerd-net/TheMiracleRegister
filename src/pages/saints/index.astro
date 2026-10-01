@@ -89,8 +89,9 @@ function buildUrl(p: number) {
   <div class="page-header">
     <div class="max-w-6xl mx-auto px-4 sm:px-6 py-10 sm:py-16">
       <p class="eyebrow mb-4">The Register</p>
-      <h1 style="font-family:var(--font-display);font-size:clamp(2.5rem,5vw,4rem);font-weight:300;color:var(--text-1);line-height:1.05;letter-spacing:-0.01em">Saints</h1>
+      <h1 style="font-family:var(--font-display);font-size:clamp(2.5rem,5vw,4rem);font-weight:300;color:var(--text-1);line-height:1.05;letter-spacing:-0.01em" id="page-title" tabindex="-1">Saints</h1>
       <p id="saints-count" style="font-family:var(--font-sans);font-size:0.8rem;color:var(--text-4);margin-top:0.6rem;letter-spacing:0.02em">{total} saints documented</p>
+      <p id="saints-status" class="sr-only" role="status" aria-live="polite" aria-atomic="true"></p>
     </div>
   </div>
 
@@ -101,8 +102,8 @@ function buildUrl(p: number) {
       <div class="filter-controls">
 
         <div class="filter-group">
-          <label class="filter-label">Stage</label>
-          <select name="canonization_stage" class="filter-select">
+          <label class="filter-label" for="f-stage">Stage</label>
+          <select id="f-stage" name="canonization_stage" class="filter-select">
             <option value="">All Stages</option>
             <option value="saint" selected={filterStage === "saint"}>Saint</option>
             <option value="blessed" selected={filterStage === "blessed"}>Blessed</option>
@@ -112,8 +113,8 @@ function buildUrl(p: number) {
         </div>
 
         <div class="filter-group">
-          <label class="filter-label">Theme</label>
-          <select name="theme" class="filter-select">
+          <label class="filter-label" for="f-theme">Theme</label>
+          <select id="f-theme" name="theme" class="filter-select">
             <option value="">All Themes</option>
             {SAINT_THEMES.map(t => (
               <option value={t} selected={t === filterTheme}>{humanizeSnakeCase(t)}</option>
@@ -122,8 +123,8 @@ function buildUrl(p: number) {
         </div>
 
         <div class="filter-group">
-          <label class="filter-label">Religious Order</label>
-          <select name="religious_order" class="filter-select">
+          <label class="filter-label" for="f-order">Religious Order</label>
+          <select id="f-order" name="religious_order" class="filter-select">
             <option value="">All Orders</option>
             {religiousOrders.map(o => (
               <option value={o} selected={o === filterOrder}>{o}</option>
@@ -132,8 +133,8 @@ function buildUrl(p: number) {
         </div>
 
         <div class="filter-group">
-          <label class="filter-label">Nationality</label>
-          <select name="nationality" class="filter-select">
+          <label class="filter-label" for="f-nationality">Nationality</label>
+          <select id="f-nationality" name="nationality" class="filter-select">
             <option value="">All Nationalities</option>
             {nationalities.map(n => (
               <option value={n} selected={n === filterNationality}>{n}</option>
@@ -208,7 +209,11 @@ function buildUrl(p: number) {
   const gridEl = document.getElementById("saints-grid");
   const paginationEl = document.getElementById("saints-pagination");
   const countEl = document.getElementById("saints-count");
-  if (!form || !gridEl || !paginationEl || !countEl) return;
+  const statusEl = document.getElementById("saints-status");
+  const titleEl = document.getElementById("page-title");
+  if (!form || !gridEl || !paginationEl || !countEl || !statusEl) return;
+
+  const reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
 
   function esc(str: string | null | undefined): string {
     return String(str ?? "").replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;").replace(/"/g, "&quot;");
@@ -275,13 +280,17 @@ function buildUrl(p: number) {
   async function applyFilters(page: number = 1) {
     const fd = new FormData(form!);
     gridEl!.classList.add("loading");
+    gridEl!.setAttribute("aria-busy", "true");
     try {
       const res = await fetch(buildApiUrl(fd, page));
-      if (!res.ok) return;
+      if (!res.ok) throw new Error(String(res.status));
       const json = await res.json() as any;
       const { data, meta } = json;
 
-      countEl!.textContent = `${meta.total} saint${meta.total !== 1 ? "s" : ""} documented`;
+      const countText = `${meta.total} saint${meta.total !== 1 ? "s" : ""} documented`;
+      countEl!.textContent = countText;
+      const pages = Math.max(1, Math.ceil(meta.total / meta.limit));
+      statusEl!.textContent = pages > 1 ? `${countText}. Page ${meta.page} of ${pages}.` : `${countText}.`;
 
       gridEl!.innerHTML = data.length === 0
         ? `<p class="empty-state col-span-full">No saints match the selected filters.</p>`
@@ -291,9 +300,10 @@ function buildUrl(p: number) {
 
       history.pushState(null, "", buildPageUrl(fd, page));
     } catch {
-      // silently fall back to server-rendered state
+      statusEl!.textContent = "Could not update results. Showing the previous results.";
     } finally {
       gridEl!.classList.remove("loading");
+      gridEl!.setAttribute("aria-busy", "false");
     }
   }
 
@@ -309,8 +319,8 @@ function buildUrl(p: number) {
     if (!target) return;
     e.preventDefault();
     const p = parseInt(target.dataset.page ?? "1");
-    applyFilters(p);
-    window.scrollTo({ top: 0, behavior: "smooth" });
+    applyFilters(p).then(() => titleEl?.focus({ preventScroll: true }));
+    window.scrollTo({ top: 0, behavior: reduceMotion ? "auto" : "smooth" });
   });
 })();
 </script>

@@ -283,7 +283,7 @@ const jsonLd = [
       {mappableLocations.length > 0 && (
         <div class="mt-9 pt-9 section-rule">
           <h2 class="eyebrow mb-4">Locations</h2>
-          <div id="saint-map" style="height:360px;width:100%;background:var(--bg-elevated)"></div>
+          <div id="saint-map" role="region" aria-label="Map of locations associated with this saint" style="height:360px;width:100%;background:var(--bg-elevated)"></div>
           <div class="flex flex-wrap gap-x-5 gap-y-2 mt-4">
             {[
               { type: "tomb", color: "#c9a84c", label: "Tomb" },

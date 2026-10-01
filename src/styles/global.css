@@ -105,7 +105,7 @@ html { scroll-padding-top: 6rem; }
 }
 
 .skip-link {
-  position: absolute;
+  position: fixed;
   left: -9999px;
   top: 0;
   z-index: 100;
@@ -128,3 +128,11 @@ main:focus { outline: none; }
     scroll-behavior: auto !important;
   }
 }
+
+/* Stretched card link: the title link covers the whole card; nested links sit above it */
+.card-link { color: inherit; text-decoration: none; }
+.card-link::after { content: ""; position: absolute; inset: 0; }
+.card-link:focus-visible { outline: none; }
+.card-link:focus-visible::after { outline: 2px solid var(--color-accent); outline-offset: 2px; }
+.tag--link { position: relative; z-index: 1; cursor: pointer; }
+.tag--link:hover { opacity: 0.75; }

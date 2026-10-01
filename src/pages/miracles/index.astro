@@ -128,8 +128,9 @@ function buildUrl(p: number) {
   <div class="page-header">
     <div class="max-w-6xl mx-auto px-4 sm:px-6 py-10 sm:py-16">
       <p class="eyebrow mb-4">The Register</p>
-      <h1 style="font-family:var(--font-display);font-size:clamp(2.5rem,5vw,4rem);font-weight:300;color:var(--text-1);line-height:1.05;letter-spacing:-0.01em">Miracles</h1>
+      <h1 id="page-title" tabindex="-1" style="font-family:var(--font-display);font-size:clamp(2.5rem,5vw,4rem);font-weight:300;color:var(--text-1);line-height:1.05;letter-spacing:-0.01em">Miracles</h1>
       <p id="miracles-count" style="font-family:var(--font-sans);font-size:0.8rem;color:var(--text-4);margin-top:0.6rem;letter-spacing:0.02em">{total} miracles recorded</p>
+      <p id="miracles-status" class="sr-only" role="status" aria-live="polite" aria-atomic="true"></p>
     </div>
   </div>
 
@@ -140,8 +141,8 @@ function buildUrl(p: number) {
       <div class="filter-controls">
 
         <div class="filter-group">
-          <label class="filter-label">Saint</label>
-          <select name="saint_id" class="filter-select">
+          <label class="filter-label" for="f-saint">Saint</label>
+          <select id="f-saint" name="saint_id" class="filter-select">
             <option value="">All Saints</option>
             {allSaints.map(s => (
               <option value={s.id} selected={s.id === filterSaintId}>{s.name}</option>
@@ -150,8 +151,8 @@ function buildUrl(p: number) {
         </div>
 
         <div class="filter-group">
-          <label class="filter-label">Type</label>
-          <select name="type" class="filter-select">
+          <label class="filter-label" for="f-type">Type</label>
+          <select id="f-type" name="type" class="filter-select">
             <option value="">All Types</option>
             {miracleType.enumValues.map(t => (
               <option value={t} selected={t === filterType}>{humanizeSnakeCase(t)}</option>
@@ -160,8 +161,8 @@ function buildUrl(p: number) {
         </div>
 
         <div class="filter-group">
-          <label class="filter-label">Topic</label>
-          <select name="topic" class="filter-select">
+          <label class="filter-label" for="f-topic">Topic</label>
+          <select id="f-topic" name="topic" class="filter-select">
             <option value="">All Topics</option>
             {MIRACLE_TOPICS.map(t => (
               <option value={t} selected={t === filterTopic}>{humanizeSnakeCase(t)}</option>
@@ -170,8 +171,8 @@ function buildUrl(p: number) {
         </div>
 
         <div class="filter-group">
-          <label class="filter-label">Category</label>
-          <select name="category" class="filter-select">
+          <label class="filter-label" for="f-category">Category</label>
+          <select id="f-category" name="category" class="filter-select">
             <option value="">All Categories</option>
             {miracleCategory.enumValues.map(c => (
               <option value={c} selected={c === filterCategory}>{humanizeSnakeCase(c)}</option>
@@ -180,8 +181,8 @@ function buildUrl(p: number) {
         </div>
 
         <div class="filter-group">
-          <label class="filter-label">Country</label>
-          <select name="country" class="filter-select">
+          <label class="filter-label" for="f-country">Country</label>
+          <select id="f-country" name="country" class="filter-select">
             <option value="">All Countries</option>
             {countries.map(c => (
               <option value={c} selected={c === filterCountry}>{c}</option>
@@ -190,17 +191,17 @@ function buildUrl(p: number) {
         </div>
 
         <div class="filter-group filter-group--year">
-          <label class="filter-label">Year</label>
-          <div class="year-range">
-            <input type="number" name="year_from" value={filterYearFrom ?? ""} placeholder="From" min="1000" max="2100" class="filter-input filter-input--year" />
+          <span class="filter-label" id="f-year-label">Year</span>
+          <div class="year-range" role="group" aria-labelledby="f-year-label">
+            <input type="number" name="year_from" value={filterYearFrom ?? ""} placeholder="From" aria-label="Year from" min="1000" max="2100" class="filter-input filter-input--year" />
             <span class="year-sep">–</span>
-            <input type="number" name="year_to" value={filterYearTo ?? ""} placeholder="To" min="1000" max="2100" class="filter-input filter-input--year" />
+            <input type="number" name="year_to" value={filterYearTo ?? ""} placeholder="To" aria-label="Year to" min="1000" max="2100" class="filter-input filter-input--year" />
           </div>
         </div>
 
         <div class="filter-group">
-          <label class="filter-label">Approval</label>
-          <select name="approval_authority" class="filter-select">
+          <label class="filter-label" for="f-approval">Approval</label>
+          <select id="f-approval" name="approval_authority" class="filter-select">
             <option value="">All Approvals</option>
             <option value="vatican_dicastery" selected={filterApproval === "vatican_dicastery"}>Vatican Approved</option>
             <option value="lourdes_bureau" selected={filterApproval === "lourdes_bureau"}>Lourdes Bureau</option>
@@ -210,8 +211,8 @@ function buildUrl(p: number) {
         </div>
 
         <div class="filter-group filter-group--checks">
-          <label class="filter-label">Used for</label>
-          <div class="check-row">
+          <span class="filter-label" id="f-used-label">Used for</span>
+          <div class="check-row" role="group" aria-labelledby="f-used-label">
             <label class="check-label">
               <input type="checkbox" name="beatification" value="1" checked={filterBeat} class="filter-check" />
               Beatification
@@ -236,7 +237,7 @@ function buildUrl(p: number) {
       {pageMiracles.length === 0 ? (
         <p class="empty-state">No miracles match the selected filters.</p>
       ) : pageMiracles.map((m) => (
-        <a href={`/miracles/${m.slug}`} class="block no-underline group">
+        <div class="block group relative">
           <div class="card px-6 py-5">
             <div class="flex items-start justify-between gap-6">
               <div class="flex-1 min-w-0">
@@ -249,7 +250,7 @@ function buildUrl(p: number) {
                 </div>
 
                 <h2 style="font-family:var(--font-display);font-size:1.25rem;font-weight:400;color:var(--text-1);line-height:1.3;margin-bottom:0.5rem;transition:color 0.2s" class="group-hover:text-[--color-accent]">
-                  {m.title}
+                  <a href={`/miracles/${m.slug}`} class="card-link">{m.title}</a>
                 </h2>
 
                 {m.cure_details && (
@@ -260,7 +261,7 @@ function buildUrl(p: number) {
 
                 {m.topics && m.topics.length > 0 && (
                   <div class="flex flex-wrap gap-1">
-                    {m.topics.slice(0, 5).map((t) => <span class="tag tag--link" onclick={`event.stopPropagation();window.location='/topics/${encodeURIComponent(t)}'`}>{t}</span>)}
+                    {m.topics.slice(0, 5).map((t) => <a href={`/topics/${encodeURIComponent(t)}`} class="tag tag--link">{t}</a>)}
                     {m.topics.length > 5 && <span class="tag">+{m.topics.length - 5}</span>}
                   </div>
                 )}
@@ -273,7 +274,7 @@ function buildUrl(p: number) {
               </div>
             </div>
           </div>
-        </a>
+        </div>
       ))}
     </div>
 
@@ -302,7 +303,11 @@ function buildUrl(p: number) {
   const listEl = document.getElementById("miracles-list");
   const paginationEl = document.getElementById("miracles-pagination");
   const countEl = document.getElementById("miracles-count");
-  if (!form || !listEl || !paginationEl || !countEl) return;
+  const statusEl = document.getElementById("miracles-status");
+  const titleEl = document.getElementById("page-title");
+  if (!form || !listEl || !paginationEl || !countEl || !statusEl) return;
+
+  const reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
 
   let debounceTimer = 0;
   let currentPage = 1;
@@ -365,7 +370,7 @@ function buildUrl(p: number) {
 
     const topics = (m.topics ?? []) as string[];
     const topicHtml = topics.length > 0
-      ? `<div class="flex flex-wrap gap-1">${topics.slice(0, 5).map((t) => `<span class="tag tag--link" onclick="event.stopPropagation();window.location='/topics/${encodeURIComponent(t)}'">${esc(t)}</span>`).join("")}${topics.length > 5 ? `<span class="tag">+${topics.length - 5}</span>` : ""}</div>`
+      ? `<div class="flex flex-wrap gap-1">${topics.slice(0, 5).map((t) => `<a href="/topics/${encodeURIComponent(t)}" class="tag tag--link">${esc(t)}</a>`).join("")}${topics.length > 5 ? `<span class="tag">+${topics.length - 5}</span>` : ""}</div>`
       : "";
 
     const approvalMap: Record<string, { cls: string; label: string }> = {
@@ -381,18 +386,18 @@ function buildUrl(p: number) {
       m.used_for_canonization ? `<span class="used-badge">Canonization</span>` : "",
     ].filter(Boolean).join("");
 
-    return `<a href="/miracles/${esc(m.slug)}" class="block no-underline group">
+    return `<div class="block group relative">
       <div class="card px-6 py-5">
         <div class="flex items-start justify-between gap-6">
           <div class="flex-1 min-w-0">
             <div class="flex flex-wrap items-center gap-x-3 gap-y-1 mb-2">${meta}</div>
-            <h2 style="font-family:var(--font-display);font-size:1.25rem;font-weight:400;color:var(--text-1);line-height:1.3;margin-bottom:0.5rem;transition:color 0.2s" class="group-hover:text-[--color-accent]">${esc(m.title)}</h2>
+            <h2 style="font-family:var(--font-display);font-size:1.25rem;font-weight:400;color:var(--text-1);line-height:1.3;margin-bottom:0.5rem;transition:color 0.2s" class="group-hover:text-[--color-accent]"><a href="/miracles/${esc(m.slug)}" class="card-link">${esc(m.title)}</a></h2>
             ${excerpt}${topicHtml}
           </div>
           ${badges ? `<div class="shrink-0 flex flex-col gap-1 items-end">${badges}</div>` : ""}
         </div>
       </div>
-    </a>`;
+    </div>`;
   }
 
   function renderPagination(meta: any, fd: FormData): string {
@@ -412,13 +417,17 @@ function buildUrl(p: number) {
     const fd = new FormData(form!);
     currentPage = page;
     listEl!.classList.add("loading");
+    listEl!.setAttribute("aria-busy", "true");
     try {
       const res = await fetch(buildApiUrl(fd, page));
-      if (!res.ok) return;
+      if (!res.ok) throw new Error(String(res.status));
       const json = await res.json() as any;
       const { data, meta } = json;
 
-      countEl!.textContent = `${meta.total} miracle${meta.total !== 1 ? "s" : ""} recorded`;
+      const countText = `${meta.total} miracle${meta.total !== 1 ? "s" : ""} recorded`;
+      countEl!.textContent = countText;
+      const pages = Math.max(1, Math.ceil(meta.total / meta.limit));
+      statusEl!.textContent = pages > 1 ? `${countText}. Page ${meta.page} of ${pages}.` : `${countText}.`;
 
       listEl!.innerHTML = data.length === 0
         ? `<p class="empty-state">No miracles match the selected filters.</p>`
@@ -428,9 +437,10 @@ function buildUrl(p: number) {
 
       history.pushState(null, "", buildPageUrl(fd, page));
     } catch {
-      // silently fall back — user still has the server-rendered state
+      statusEl!.textContent = "Could not update results. Showing the previous results.";
     } finally {
       listEl!.classList.remove("loading");
+      listEl!.setAttribute("aria-busy", "false");
     }
   }
 
@@ -457,8 +467,8 @@ function buildUrl(p: number) {
     if (!target) return;
     e.preventDefault();
     const p = parseInt(target.dataset.page ?? "1");
-    applyFilters(p);
-    window.scrollTo({ top: 0, behavior: "smooth" });
+    applyFilters(p).then(() => titleEl?.focus({ preventScroll: true }));
+    window.scrollTo({ top: 0, behavior: reduceMotion ? "auto" : "smooth" });
   });
 })();
 </script>
@@ -591,8 +601,6 @@ function buildUrl(p: number) {
 
   .filter-clear:hover { color: var(--text-2); }
 
-  .tag--link { cursor: pointer; }
-  .tag--link:hover { opacity: 0.75; }
 
   #miracles-list.loading { opacity: 0.4; pointer-events: none; transition: opacity 0.15s; }
 

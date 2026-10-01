@@ -122,11 +122,14 @@ const [[{ saintCount }], [{ miracleCount }], [{ apparitionCount }], featuredSain
   )}
 
   <!-- Featured saints carousel -->
-  <section class="py-14 sm:py-20" style="overflow:hidden">
+  <section class="py-14 sm:py-20" style="overflow:hidden" aria-labelledby="featured-heading">
     <div class="max-w-6xl mx-auto px-4 sm:px-6">
       <div class="flex items-baseline justify-between mb-10">
-        <h2 class="eyebrow">Featured Saints</h2>
-        <a href="/saints" style="font-family:var(--font-sans);font-size:0.7rem;font-weight:500;color:var(--color-accent);text-decoration:none;letter-spacing:0.05em">View all →</a>
+        <h2 class="eyebrow" id="featured-heading">Featured Saints</h2>
+        <div class="flex items-baseline gap-5">
+          <button type="button" id="carousel-toggle" class="carousel-toggle" aria-controls="saints-track">Pause</button>
+          <a href="/saints" style="font-family:var(--font-sans);font-size:0.7rem;font-weight:500;color:var(--color-accent);text-decoration:none;letter-spacing:0.05em">View all →</a>
+        </div>
       </div>
     </div>
     <div class="carousel-viewport">
@@ -313,6 +316,20 @@ const [[{ saintCount }], [{ miracleCount }], [{ apparitionCount }], featuredSain
     will-change: transform;
   }
 
+  .carousel-toggle {
+    font-family: var(--font-sans);
+    font-size: 0.7rem;
+    font-weight: 500;
+    letter-spacing: 0.05em;
+    text-transform: uppercase;
+    color: var(--text-3);
+    background: none;
+    border: none;
+    padding: 0;
+    cursor: pointer;
+  }
+  .carousel-toggle:hover { color: var(--text-1); }
+
   .carousel-card {
     flex: 0 0 calc(25% - 1.125rem);
     min-width: 200px;
@@ -325,28 +342,48 @@ const [[{ saintCount }], [{ miracleCount }], [{ apparitionCount }], featuredSain
 
 <script>
   const track = document.getElementById('saints-track') as HTMLElement;
-  if (track) {
+  const viewport = track?.parentElement as HTMLElement | null;
+  const toggle = document.getElementById('carousel-toggle') as HTMLButtonElement | null;
+  if (track && viewport) {
     const originals = Array.from(track.children) as HTMLElement[];
     const count = originals.length;
 
-    // Prepend AND append clones so there is always content on both sides
+    // Prepend AND append clones so there is always content on both sides.
+    // Clones are visual only: hidden from assistive tech and out of the tab order.
     // Track layout: [pre-clones 0..N-1] [originals 0..N-1] [post-clones 0..N-1]
-    originals.forEach(card => track.appendChild(card.cloneNode(true)));
-    originals.slice().reverse().forEach(card => track.insertBefore(card.cloneNode(true), track.firstChild));
+    function makeClone(card: HTMLElement): HTMLElement {
+      const clone = card.cloneNode(true) as HTMLElement;
+      clone.setAttribute('aria-hidden', 'true');
+      clone.setAttribute('tabindex', '-1');
+      return clone;
+    }
+    originals.forEach(card => track.appendChild(makeClone(card)));
+    originals.slice().reverse().forEach(card => track.insertBefore(makeClone(card), track.firstChild));
 
     // Start at position N so originals are visible
     let current = count;
     track.style.transition = 'none';
     track.style.transform = `translateX(-${current * (originals[0].offsetWidth + 24)}px)`;
 
-    let paused = false;
+    // Autoplay stops for any of: the user pressing Pause, hover, or keyboard focus inside.
+    // Reduced motion starts paused; the user can still press Play.
+    const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    let userPaused = reduceMotion;
+    let hovering = false;
+    let hasFocus = false;
+
+    function syncToggle() {
+      if (toggle) toggle.textContent = userPaused ? 'Play' : 'Pause';
+    }
+    syncToggle();
+    toggle?.addEventListener('click', () => { userPaused = !userPaused; syncToggle(); });
 
     function getCardWidth(): number {
       return originals[0].offsetWidth + 24;
     }
 
     function advance() {
-      if (paused) return;
+      if (userPaused || hovering || hasFocus) return;
       current++;
       track.style.transition = 'transform 0.6s cubic-bezier(0.25, 0.46, 0.45, 0.94)';
       track.style.transform = `translateX(-${current * getCardWidth()}px)`;
@@ -362,8 +399,26 @@ const [[{ saintCount }], [{ miracleCount }], [{ apparitionCount }], featuredSain
       }
     }
 
-    track.addEventListener('mouseenter', () => { paused = true; });
-    track.addEventListener('mouseleave', () => { paused = false; });
+    track.addEventListener('mouseenter', () => { hovering = true; });
+    track.addEventListener('mouseleave', () => { hovering = false; });
+
+    // Keyboard focus: stop autoplay and slide the focused card into view
+    track.addEventListener('focusin', (e) => {
+      hasFocus = true;
+      const card = (e.target as HTMLElement).closest('.carousel-card') as HTMLElement | null;
+      const idx = card ? Array.from(track.children).indexOf(card) : -1;
+      if (idx >= 0) {
+        current = idx;
+        track.style.transition = 'transform 0.3s ease';
+        track.style.transform = `translateX(-${current * getCardWidth()}px)`;
+      }
+      viewport.scrollLeft = 0;
+    });
+    track.addEventListener('focusout', (e) => {
+      if (!track.contains((e as FocusEvent).relatedTarget as Node | null)) hasFocus = false;
+    });
+    // The browser may scroll the overflow:hidden viewport to reveal a focused link; the transform handles position instead
+    viewport.addEventListener('scroll', () => { viewport.scrollLeft = 0; });
 
     setInterval(advance, 3000);
   }
