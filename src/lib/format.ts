@@ -53,3 +53,9 @@ export function ogDescription(text: string | null | undefined): string {
   const lastSpace = cut.lastIndexOf(" ");
   return (lastSpace > 0 ? cut.slice(0, lastSpace) : cut) + "…";
 }
+
+/** "pregnancy-and-childbirth" -> "Pregnancy and childbirth" */
+export function humanizeSlug(s: string): string {
+  const spaced = s.replace(/-/g, " ");
+  return spaced.charAt(0).toUpperCase() + spaced.slice(1);
+}

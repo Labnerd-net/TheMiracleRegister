@@ -117,3 +117,14 @@ export function siteJsonLd(): JsonLd[] {
     },
   ];
 }
+
+export function collectionJsonLd(page: { name: string; description: string; path: string }): JsonLd {
+  return {
+    "@context": "https://schema.org",
+    "@type": "CollectionPage",
+    name: page.name,
+    description: page.description,
+    url: `${SITE_URL}${page.path}`,
+    isPartOf: { "@type": "WebSite", name: SITE_NAME, url: SITE_URL },
+  };
+}

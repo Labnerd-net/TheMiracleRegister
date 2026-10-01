@@ -242,7 +242,7 @@ const jsonLd = [
           <>
             <p class="eyebrow mb-4">Topics</p>
             <div class="flex flex-wrap gap-1.5">
-              {miracle.topics.map((t) => <a href={`/search?q=${encodeURIComponent(t)}`} class="tag" style="text-decoration:none">{t}</a>)}
+              {miracle.topics.map((t) => <a href={`/topics/${encodeURIComponent(t)}`} class="tag" style="text-decoration:none">{t}</a>)}
             </div>
           </>
         )}

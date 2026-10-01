@@ -2,6 +2,7 @@ import type { APIRoute } from "astro";
 import { createDb } from "../db";
 import { saints, miracles } from "../db/schema";
 import { eq, asc } from "drizzle-orm";
+import { getTopicCounts, getThemeCounts, isIndexable } from "../lib/browse";
 import { env } from "cloudflare:workers";
 
 const SITE = "https://themiracleregister.org";
@@ -16,7 +17,7 @@ function url(path: string, lastmod?: Date | string | null): string {
 export const GET: APIRoute = async () => {
   const db = createDb(env.DATABASE_URL);
 
-  const [saintRows, miracleRows] = await Promise.all([
+  const [saintRows, miracleRows, topicCounts, themeCounts] = await Promise.all([
     db
       .select({ slug: saints.slug, updated_at: saints.updated_at })
       .from(saints)
@@ -27,6 +28,8 @@ export const GET: APIRoute = async () => {
       .from(miracles)
       .where(eq(miracles.published, true))
       .orderBy(asc(miracles.slug)),
+    getTopicCounts(db),
+    getThemeCounts(db),
   ]);
 
   const entries = [
@@ -39,6 +42,10 @@ export const GET: APIRoute = async () => {
     url("/calendar"),
     url("/verification"),
     url("/contact"),
+    url("/topics"),
+    url("/themes"),
+    ...topicCounts.filter((t) => isIndexable(t.count)).map((t) => url(`/topics/${t.value}`)),
+    ...themeCounts.filter((t) => isIndexable(t.count)).map((t) => url(`/themes/${t.value}`)),
     ...saintRows.map((s) => url(`/saints/${s.slug}`, s.updated_at)),
     ...miracleRows.map((m) => url(`/miracles/${m.slug}`, m.updated_at)),
   ].join("\n");

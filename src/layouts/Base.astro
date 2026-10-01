@@ -8,14 +8,16 @@ interface Props {
   ogImage?: string;
   ogType?: string;
   jsonLd?: Record<string, unknown> | Record<string, unknown>[];
+  noindex?: boolean;
 }
-const { title, description, ogImage, ogType, jsonLd } = Astro.props;
+const { title, description, ogImage, ogType, jsonLd, noindex: forceNoindex } = Astro.props;
 const fullTitle = title === "Home"
   ? "The Miracle Register"
   : `${title} — The Miracle Register`;
 const canonicalUrl = SITE_URL + Astro.url.pathname;
 // Filtered, paginated, search and preview URLs are not separate documents.
-const noindex = Astro.url.search !== "";
+// `noindex` prop: thin browse pages that exist but should not be indexed.
+const noindex = forceNoindex || Astro.url.search !== "";
 ---
 
 <html lang="en">
@@ -123,6 +125,8 @@ const noindex = Astro.url.search !== "";
             <a href="/map" class="nav-link">Map</a>
             <a href="/miracles/timeline" class="nav-link">Timeline</a>
             <a href="/calendar" class="nav-link">Calendar</a>
+            <a href="/topics" class="nav-link">Topics</a>
+            <a href="/themes" class="nav-link">Themes</a>
             <a href="/random" class="nav-link">Random</a>
             <a href="/verification" class="nav-link">Verification</a>
             <a href="/contact" class="nav-link">Contact</a>
