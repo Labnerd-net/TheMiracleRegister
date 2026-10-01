@@ -16,11 +16,11 @@ answer different questions:
 2. **Coverage mode** — no fetching at all, pure structural check against the
    fields already in the DB (`content_tier`, `approval_authority`,
    `used_for_beatification`/`canonization`, source_type mix). Cheap enough to
-   run after every batch of admin-panel data entry, or whenever asked whether
+   run after every batch of data entry, or whenever asked whether
    something is "properly sourced" / "has enough sources."
 
 This never edits the database. Both modes produce output for manual review;
-the user fixes flagged rows or gaps by hand in the admin panel (source rows
+the user fixes flagged rows or gaps by hand in the database (source rows
 are edited on the miracle/saint edit page — add/delete pattern).
 
 ## Step 0 — parse scope and mode from `$ARGUMENTS`
@@ -141,7 +141,7 @@ expected — flag borderline cases rather than silently deciding either way.
 
 Unlike content-match mode, coverage gaps don't decay with time — a record
 either has adequate sourcing or it doesn't, and it stays that way until
-someone fixes it in the admin panel. So this is a **living file**, updated in
+someone fixes it in the database. So this is a **living file**, updated in
 place, not a new dated snapshot per run:
 
 - Create the file with `## Open` and `## Resolved` headings if it doesn't
@@ -304,12 +304,12 @@ Then write a markdown report to `context/Notes/source-verification-<YYYY-MM-DD>.
    `needs_review` in full, same as before. Skip `ok` rows entirely — they're
    already covered by the summary count.
 3. Nothing else — no "ok" listing, no recommendations beyond what's in the
-   notes. This is a checklist for the user to work through in the admin
-   panel, not a narrative report.
+   notes. This is a checklist for the user to work through directly in the
+   database, not a narrative report.
 
 ### Tell the user
 
 Report the file path, the headline counts (e.g. "212 ok, 9 flagged: 3 dead
 links, 4 mismatches, 2 wikipedia duplicates"), mention the dead-links archive
 was updated (N new / M still active / K resolved), and remind them nothing
-was changed in the database — every fix happens by hand in the admin panel.
+was changed in the database — every fix happens by hand in the database.

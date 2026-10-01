@@ -1,6 +1,6 @@
 # Source Coverage Gaps
 
-Living tracker for records whose sourcing doesn't yet meet the standard defined in the `verify-sources` skill's coverage mode (`.claude/skills/verify-sources/SKILL.md`). Unlike `dead-links-archive.md`, gaps here don't decay with time — a record stays open until someone adds the missing source in the admin panel. Consolidates and supersedes the now-deleted `Missing Primary Sources.md` and `Source Requirements Audit - 2026-09-29.md`; their content is folded in below.
+Living tracker for records whose sourcing doesn't yet meet the standard defined in the `verify-sources` skill's coverage mode (`.claude/skills/verify-sources/SKILL.md`). Unlike `dead-links-archive.md`, gaps here don't decay with time — a record stays open until someone adds the missing source in the database. Consolidates and supersedes the now-deleted `Missing Primary Sources.md` and `Source Requirements Audit - 2026-09-29.md`; their content is folded in below.
 
 **When re-running coverage mode:** anything below no longer reproducing moves to `## Resolved` with today's date. Anything new gets added under the relevant heading with today's date as "first flagged." Don't re-open a `## Resolved` entry unless it's genuinely regressed (note why, if apparent).
 
