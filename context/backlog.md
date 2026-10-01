@@ -2,6 +2,7 @@
 
 > Generated: 2026-09-30
 > Focus: Full audit
+> Completed and removed (numbering kept stable): #10, #11
 
 ---
 
@@ -27,8 +28,7 @@
 ## Bugs
 
 ### High
-- **#10 `db.transaction()` unsupported on neon-http** (`src/pages/admin/miracles/[slug]/edit.astro:140`; verified in `node_modules/drizzle-orm/neon-http/session.js:151-158`): The driver throws "No transactions support in neon-http driver". The miracle UPDATE runs, then the saint-link replacement throws, so editing which saints a miracle belongs to silently fails. Fix: use `db.batch([...])` (atomic over HTTP) for the update plus link delete/insert, or switch admin writes to the `neon-serverless` Pool driver.
-- **#11 Today's Feast off-by-one** (`src/pages/index.astro:17`): `Math.round((now - getEaster(year)) / 86400000)` rounds up after 12:00 UTC, so movable feasts (e.g. Divine Mercy) are missed or shown a day late for half of each day. Fix: compute from the UTC date only: `Math.floor((Date.UTC(y, m - 1, d) - getEaster(y).getTime()) / 86_400_000)`.
+_None identified._
 
 ### Medium
 - **#12 Create handlers drop form fields** (`src/pages/admin/miracles/new.astro` 36-66; `src/pages/admin/saints/new.astro` 26-56): Miracle create ignores `location_lat/lng`, `recipient_gender`, `recipient_country`, `content_tier`, `feast_month`, `feast_day_of_month`, `feast_easter_offset`; saint create ignores the three feast fields. Edit saves them, so data entered on create is silently lost. Fix: shared `buildMiracleValues`/`buildSaintValues` used by both create and edit (see #24).
@@ -68,8 +68,8 @@ _None identified._
 - **#25 Oversized files mixing concerns**: `miracles/index.astro` (637 lines), `miracles/[slug].astro` (547), `saints/index.astro` (444), `Base.astro` (425), `calendar.astro` (396), `saints/[slug].astro` (370), `admin/saints/[slug]/edit.astro` (356). Admin edit pages run 5-7 actions in one if/else chain with copy-pasted source/location/image markup. Fix: extract `SourcesEditor`, `ImagesEditor`, `LocationsEditor`, `Lightbox`; move inline scripts to `src/scripts`; split actions into `src/lib/admin/` handlers.
 - **#26 Duplicated query and filter logic**: API routes and Astro pages each build the same miracle/saint WHERE clauses, and the saint-names-by-miracle Map loop is repeated in `saints.ts`, `miracles/index.astro`, `admin/miracles/index.astro`, `miracles/[slug].astro`. Pages also re-render cards client-side from the API. Fix: `src/lib/queries/{miracles,saints}.ts`, mirroring the existing `searchContent` extraction.
 - **#27 Duplicated feast-day logic** (`index.astro`, `calendar.astro`, `miracles/[slug].astro` MONTHS/`formatFeastDay`): Fix: `src/lib/feasts.ts` (`getFeastsForDate/Month`) plus month names in `lib/format`, with unit tests.
-- **#28 Pure logic has no unit tests**: `src/lib/easter.ts`, `slugify.ts`, `form-utils.ts`, `form-schemas.ts`, `auth.ts` (expiry/tamper), `rateLimit.ts`, `feastDays.ts` invariants. `tests/schema.test.ts` only asserts exports exist. Fix: add targeted tests (known Easter dates would have caught #11).
-- **#29 Playwright documented but absent**: Add a smoke suite (home, saint page, miracle filters, search, admin login and save) or correct CLAUDE.md/README. It would have caught #10.
+- **#28 Pure logic has no unit tests**: `src/lib/easter.ts`, `slugify.ts`, `form-utils.ts`, `form-schemas.ts`, `auth.ts` (expiry/tamper), `rateLimit.ts`, `feastDays.ts` invariants. `tests/schema.test.ts` only asserts exports exist. Fix: add targeted tests (known Easter dates would have caught the old Today's Feast off-by-one).
+- **#29 Playwright documented but absent**: Add a smoke suite (home, saint page, miracle filters, search, admin login and save) or correct CLAUDE.md/README. It would have caught the old `db.transaction()` failure on miracle edit.
 - **#30 Data-integrity checks only by convention**: Add a script/CI check that `// [in DB]` entries in `FIXED_FEASTS` match real saints, published records have at least one source, and topics/themes belong to `src/db/topics.ts`.
 - **#31 Accessibility gaps**: Few or no `aria-*` attributes on saint page, index pages, map, timeline, forms; no skip link or `<main id>`; lightbox and map lack `role="dialog"`/`aria-modal`/Escape/focus trap; no `aria-live` for client-fetched results; no `prefers-reduced-motion` or `focus-visible` handling; images lack `loading="lazy"` and `width`/`height`; fonts not preloaded. Fix: pass with the `a11y-reviewer` agent and Lighthouse, then address findings.
 
@@ -107,8 +107,8 @@ _None identified._
 | Category | High | Medium | Low | Total |
 |----------|------|--------|-----|-------|
 | Security | 1 | 3 | 5 | 9 |
-| Bugs | 2 | 2 | 2 | 6 |
+| Bugs | 0 | 2 | 2 | 4 |
 | Performance | 0 | 3 | 2 | 5 |
 | Improvements & Refactors | 3 | 8 | 5 | 16 |
 | Feature Ideas | 2 | 4 | 4 | 10 |
-| **Total** | 8 | 20 | 18 | 46 |
+| **Total** | 6 | 20 | 18 | 44 |
