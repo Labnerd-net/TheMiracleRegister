@@ -330,7 +330,7 @@ const [[{ saintCount }], [{ miracleCount }], [{ apparitionCount }], featuredSain
     // Prepend AND append clones so there is always content on both sides
     // Track layout: [pre-clones 0..N-1] [originals 0..N-1] [post-clones 0..N-1]
     originals.forEach(card => track.appendChild(card.cloneNode(true)));
-    originals.slice().reverse().forEach(card => track.prepend(card.cloneNode(true)));
+    originals.slice().reverse().forEach(card => track.insertBefore(card.cloneNode(true), track.firstChild));
 
     // Start at position N so originals are visible
     let current = count;

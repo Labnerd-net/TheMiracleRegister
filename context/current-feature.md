@@ -2,7 +2,7 @@
 
 ## Current Feature Spec File
 
-_None_
+context/specs/github-actions-ci.md
 
 ## Current Feature Plan File
 
