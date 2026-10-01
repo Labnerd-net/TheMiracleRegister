@@ -6,6 +6,7 @@ import { sql, asc, eq, ne, and, or, isNotNull } from "drizzle-orm";
 import { env } from "cloudflare:workers";
 import { easterOffsetForDate } from "../lib/feasts";
 import { CACHE_DAILY } from "../lib/cache";
+import { siteJsonLd } from "../lib/jsonld";
 
 Astro.response.headers.set("Cache-Control", CACHE_DAILY);
 
@@ -54,7 +55,7 @@ const [[{ saintCount }], [{ miracleCount }], [{ apparitionCount }], featuredSain
 ]);
 ---
 
-<Base title="Home" description="A structured database of Catholic miracles, Marian apparitions, and extraordinary phenomena — drawn from Vatican decrees, medical board verdicts, and primary sources.">
+<Base title="Home" description="A structured database of Catholic miracles, Marian apparitions, and extraordinary phenomena — drawn from Vatican decrees, medical board verdicts, and primary sources." jsonLd={siteJsonLd()}>
 
   <!-- Hero -->
   <section class="page-header">

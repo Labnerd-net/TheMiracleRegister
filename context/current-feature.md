@@ -2,7 +2,19 @@
 
 ## Current Feature Spec File
 
-_None_
+SEO: structured data and canonicalization (backlog #23)
+
+Branch: `claude/feature/seo-structured-data`
+
+Scope:
+- `src/layouts/Base.astro`: emit `<link rel="canonical">`, `og:site_name`, and `<meta name="robots" content="noindex,follow">` on any URL with a query string (filters, pagination, search, calendar month, `?preview=`). Canonical is omitted on noindex pages.
+- `Base.astro` gets a `jsonLd` prop (object or array), serialized with `<` escaped.
+- New `src/lib/jsonld.ts` builders: Person (saints), Article (miracles), BreadcrumbList, WebSite + Dataset (home).
+- Wire into `saints/[slug]`, `miracles/[slug]`, `index`.
+- `sitemap.xml.ts`: add `/verification`, `/contact`.
+- Privacy: miracle JSON-LD must never include `recipient_name`; only fields already shown in og description / page title.
+
+Out of scope / deferred: default og:image (needs a raster social card asset; none exists in `public/`).
 
 ## Current Feature Plan File
 
