@@ -4,8 +4,9 @@ import { createDb } from "../db";
 import { saints } from "../db/schema";
 import { and, eq, inArray, isNotNull, or, asc } from "drizzle-orm";
 import { env } from "cloudflare:workers";
-import { getEaster, resolveMovableFeast } from "../lib/easter";
-import { FIXED_FEASTS, MOVABLE_FEASTS } from "../data/feastDays";
+import { getMovableFeastsInMonth } from "../lib/feasts";
+import { MONTH_NAMES } from "../lib/format";
+import { FIXED_FEASTS } from "../data/feastDays";
 
 Astro.response.headers.set("Cache-Control", "public, max-age=3600, stale-while-revalidate=86400");
 
@@ -30,10 +31,6 @@ const prevYear = month === 1 ? year - 1 : year;
 const nextMonth = month === 12 ? 1 : month + 1;
 const nextYear = month === 12 ? year + 1 : year;
 
-const MONTH_NAMES = [
-  "January", "February", "March", "April", "May", "June",
-  "July", "August", "September", "October", "November", "December",
-];
 const monthName = MONTH_NAMES[month - 1];
 
 // Days in month and first weekday offset
@@ -41,15 +38,7 @@ const daysInMonth = new Date(Date.UTC(year, month, 0)).getUTCDate();
 const firstDayOfWeek = new Date(Date.UTC(year, month - 1, 1)).getUTCDay(); // 0=Sun
 
 // Resolve movable feasts that fall in this month
-const easterDate = getEaster(year);
-type MovableResolved = { day: number; name: string; easterOffset: number };
-const movableThisMonth: MovableResolved[] = [];
-for (const feast of MOVABLE_FEASTS) {
-  const feastDate = resolveMovableFeast(feast.easterOffset, year);
-  if (feastDate.getUTCMonth() + 1 === month) {
-    movableThisMonth.push({ day: feastDate.getUTCDate(), name: feast.name, easterOffset: feast.easterOffset });
-  }
-}
+const movableThisMonth = getMovableFeastsInMonth(year, month);
 const movableOffsets = movableThisMonth.map((f) => f.easterOffset);
 
 // DB query: saints with fixed feast in this month OR movable feast in this month

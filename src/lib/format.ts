@@ -1,3 +1,13 @@
+export const MONTH_NAMES = [
+  "January", "February", "March", "April", "May", "June",
+  "July", "August", "September", "October", "November", "December",
+];
+
+export function formatFeastDay(month: number | null, day: number | null): string | null {
+  if (!month || !day) return null;
+  return `${MONTH_NAMES[month - 1]} ${day}`;
+}
+
 export function humanizeSnakeCase(s: string): string {
   return s.replace(/_/g, " ").replace(/\b\w/g, c => c.toUpperCase());
 }
