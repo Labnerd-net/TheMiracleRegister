@@ -27,9 +27,13 @@ jobs:
 
       - run: npm ci
 
-      # worker-configuration.d.ts is gitignored; generate it for typechecking.
+      # worker-configuration.d.ts is gitignored and `wrangler types` takes secret names
+      # from .dev.vars, so write a placeholder (names only, no real values) and remove it.
       - name: Generate Worker types
-        run: npm run types
+        run: |
+          printf 'DATABASE_URL=placeholder\nPREVIEW_TOKEN=placeholder\n' > .dev.vars
+          npm run types
+          rm .dev.vars
 
       - name: Typecheck
         run: npm run typecheck
