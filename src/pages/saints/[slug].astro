@@ -54,7 +54,9 @@ const [saintMiracles, relatedRows, sources, locations] = await Promise.all([
   })
   .from(saintRelations)
   .innerJoin(saints, eq(saintRelations.related_saint_id, saints.id))
-  .where(eq(saintRelations.saint_id, saint.id)),
+  .where(isPreview
+    ? eq(saintRelations.saint_id, saint.id)
+    : and(eq(saintRelations.saint_id, saint.id), eq(saints.published, true))),
   db.select({
     url: saintSources.url,
     title: saintSources.title,

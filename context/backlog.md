@@ -2,7 +2,7 @@
 
 > Generated: 2026-09-30
 > Focus: Full audit
-> Completed and removed (numbering kept stable): #1, #10, #11, #21, #22, #47
+> Completed and removed (numbering kept stable): #1, #2, #10, #11, #21, #22, #47
 > Obsolete after the admin panel removal: #4, #5, #6, #12, #13, #24, #38 (and #30, replaced by `npm run check:data`)
 
 ---
@@ -13,7 +13,6 @@
 _None identified._
 
 ### Medium
-- **#2 Unpublished saints exposed** (`src/pages/miracles/[slug].astro` ~69-94; `src/pages/saints/[slug].astro` ~49-55; `src/api/routes/saints.ts` ~155-167; `src/pages/miracles/index.astro` ~85): Linked and related saint queries do not filter on `saints.published`, so unpublished saint name, slug, image and stage appear publicly. Fix: add `eq(saints.published, true)` to these joins, keeping unpublished rows only in preview mode.
 
 ### Low
 - **#3 Preview token handling** (`miracles/[slug].astro:13`, `saints/[slug].astro:14`): `PREVIEW_TOKEN` is a never-expiring shared secret in the query string (logs, history, Referer) compared with `===`; an empty `PREVIEW_TOKEN` env value would match `?preview=`. Now only used manually, so lower risk. Fix: constant-time compare, reject an empty token, send `Referrer-Policy: no-referrer` and noindex on preview responses, optionally an HMAC per slug.
