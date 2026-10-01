@@ -10,6 +10,9 @@ _None_
 
 ## History
 
+### Fix Today's Feast Off-by-One for Movable Feasts (backlog #11)
+`src/pages/index.astro` computed `easterOffset` by subtracting Easter (UTC midnight) from `now` (with time of day) and rounding, so from 12:00 UTC onward the offset was one too high and movable feasts like Divine Mercy (offset 7) were missed for half of each day. The offset is now computed from the UTC calendar date via `Date.UTC(year, month - 1, day)`. `calendar.astro` was checked and is unaffected. Verified numerically against the real `getEaster()`: at 18:00 UTC on 2026-04-12 the old formula gave 8, the new gives 7; before-noon values are unchanged. Not browser-tested (widget only shows on a feast day). Build passes.
+
 ### Fix Miracle Edit Saint-Link Save on neon-http (backlog #10)
 `src/pages/admin/miracles/[slug]/edit.astro` wrapped the `miracle_saints` delete/re-insert in `db.transaction()`, which `drizzle-orm/neon-http` does not support (throws "No transactions support in neon-http driver"). The miracle `UPDATE` ran first, then the transaction threw, so saint-link edits silently never applied. Replaced the update, link delete and link insert with a single `db.batch([...])`, which neon-http runs as one atomic HTTP transaction. Scope limited to this call site; other multi-statement admin writes remain backlog #13. Verified in a real browser against the admin page: a no-op save shows "Saved successfully." with no error, and a fresh reload still shows the linked saint. A save that changes the saint selection was not tested, to avoid editing production data. Build passes.
 

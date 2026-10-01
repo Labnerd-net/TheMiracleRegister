@@ -14,7 +14,7 @@ const now = new Date();
 const todayMonth = now.getUTCMonth() + 1;
 const todayDay = now.getUTCDate();
 const todayYear = now.getUTCFullYear();
-const easterOffset = Math.round((now.getTime() - getEaster(todayYear).getTime()) / 86_400_000);
+const easterOffset = Math.round((Date.UTC(todayYear, todayMonth - 1, todayDay) - getEaster(todayYear).getTime()) / 86_400_000);
 
 const [[{ saintCount }], [{ miracleCount }], [{ apparitionCount }], featuredSaints, feastSaints] = await Promise.all([
   db.select({ saintCount: sql<number>`count(*)::int` }).from(saints).where(eq(saints.published, true)),
