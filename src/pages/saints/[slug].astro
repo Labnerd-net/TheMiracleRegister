@@ -10,6 +10,7 @@ import { redactRecipient } from "../../lib/privacy";
 import { isValidPreviewToken } from "../../lib/preview";
 import { LOCATION_TYPE_COLORS } from "../../lib/mapConstants";
 import { CACHE_CONTENT } from "../../lib/cache";
+import { saintJsonLd, breadcrumbJsonLd } from "../../lib/jsonld";
 
 const { slug } = Astro.params;
 const db = createDb(env.DATABASE_URL);
@@ -93,9 +94,16 @@ const relationTypeLabel: Record<string, string> = {
 };
 
 const ogDesc = ogDescription(saint.biography_short) || undefined;
+const jsonLd = [
+  saintJsonLd({ ...saint, description: ogDesc }),
+  breadcrumbJsonLd([
+    { name: "Saints", path: "/saints" },
+    { name: saint.name, path: `/saints/${saint.slug}` },
+  ]),
+];
 ---
 
-<Base title={saint.name} description={ogDesc} ogImage={saint.image_url ?? undefined} ogType="profile">
+<Base title={saint.name} description={ogDesc} ogImage={saint.image_url ?? undefined} ogType="profile" jsonLd={jsonLd}>
   {mappableLocations.length > 0 && (
     <link slot="head" rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY=" crossorigin="" />
   )}
