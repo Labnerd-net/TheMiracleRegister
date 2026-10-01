@@ -13,6 +13,7 @@ import {
 } from "../schemas";
 import type { ApiEnv } from "../env";
 import { notFound } from "../errors";
+import { redactRecipient } from "../../lib/privacy";
 
 const SaintsQuerySchema = z.object({
   page: z.coerce.number().int().positive().default(1),
@@ -132,6 +133,7 @@ saintsRoute.openapi(
           date_of_event: miracles.date_of_event,
           date_precision: miracles.date_precision,
           recipient_name: miracles.recipient_name,
+          recipient_privacy: miracles.recipient_privacy,
           was_medically_verified: miracles.was_medically_verified,
           approval_authority: miracles.approval_authority,
         })
@@ -175,7 +177,11 @@ saintsRoute.openapi(
     const data = {
       ...saint,
       related_saints: relatedRows,
-      miracles: saintMiracles.map((m) => ({ ...m, saints: saintsByMiracleId.get(m.id) ?? [] })),
+      miracles: saintMiracles.map(({ recipient_privacy, ...m }) => ({
+        ...m,
+        recipient_name: redactRecipient(m.recipient_name, recipient_privacy),
+        saints: saintsByMiracleId.get(m.id) ?? [],
+      })),
     };
 
     // cast needed: Hono can't reconcile 200/404 response union types at compile time

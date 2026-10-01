@@ -10,6 +10,9 @@ _None_
 
 ## History
 
+### Enforce recipient_privacy on All Public Surfaces (backlog #1)
+The public API returned `recipient_name` unconditionally (miracle list, miracle detail, saint-detail miracles), the miracle page hid it only for `confidential`, and the saint page never checked privacy at all, so `first_name_only` and `confidential` recipients could leak. Added `redactRecipient(name, privacy)` in `src/lib/privacy.ts` (confidential -> null, first_name_only -> first token, otherwise unchanged) and applied it in `src/api/routes/miracles.ts`, `src/api/routes/saints.ts`, `src/pages/miracles/[slug].astro` and `src/pages/saints/[slug].astro`. List and saint API responses select `recipient_privacy` internally but strip it from the output, so response shape is unchanged. Verified against the only published restricted record (`healing-of-matheus`, first_name_only, "Matheus Vianna"): all five surfaces (miracle detail API, miracle list API, saint API, miracle page, saint page) now show "Matheus". The two published `confidential` records have no stored recipient name, so that branch is code-verified only. Known remaining gap, out of scope: the free-text synopsis for `healing-of-matheus` still contains the full name; needs a content edit in admin. Build and tests pass.
+
 ### Fix Today's Feast Off-by-One for Movable Feasts (backlog #11)
 `src/pages/index.astro` computed `easterOffset` by subtracting Easter (UTC midnight) from `now` (with time of day) and rounding, so from 12:00 UTC onward the offset was one too high and movable feasts like Divine Mercy (offset 7) were missed for half of each day. The offset is now computed from the UTC calendar date via `Date.UTC(year, month - 1, day)`. `calendar.astro` was checked and is unaffected. Verified numerically against the real `getEaster()`: at 18:00 UTC on 2026-04-12 the old formula gave 8, the new gives 7; before-noon values are unchanged. Not browser-tested (widget only shows on a feast day). Build passes.
 

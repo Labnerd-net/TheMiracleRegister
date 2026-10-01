@@ -10,6 +10,7 @@ import {
 } from "../schemas";
 import type { ApiEnv } from "../env";
 import { notFound } from "../errors";
+import { redactRecipient } from "../../lib/privacy";
 
 const miraclesRoute = new OpenAPIHono<ApiEnv>();
 
@@ -88,6 +89,7 @@ miraclesRoute.openapi(
           date_of_event: miracles.date_of_event,
           date_precision: miracles.date_precision,
           recipient_name: miracles.recipient_name,
+          recipient_privacy: miracles.recipient_privacy,
           was_medically_verified: miracles.was_medically_verified,
           approval_authority: miracles.approval_authority,
           cure_details: miracles.cure_details,
@@ -103,7 +105,11 @@ miraclesRoute.openapi(
     ]);
 
     const saintsByMiracleId = await fetchSaintsForMiracles(db, rows.map((r) => r.id));
-    const data = rows.map((r) => ({ ...r, saints: saintsByMiracleId.get(r.id) ?? [] }));
+    const data = rows.map(({ recipient_privacy, ...r }) => ({
+      ...r,
+      recipient_name: redactRecipient(r.recipient_name, recipient_privacy),
+      saints: saintsByMiracleId.get(r.id) ?? [],
+    }));
 
     return c.json({ data, meta: { page, limit, total }, error: null }, 200);
   }
@@ -190,7 +196,7 @@ miraclesRoute.openapi(
         .orderBy(asc(miracleImages.display_order)),
     ]);
 
-    const data = { ...miracle, saints: saintsByMiracleId.get(miracle.id) ?? [], sources, images };
+    const data = { ...miracle, recipient_name: redactRecipient(miracle.recipient_name, miracle.recipient_privacy), saints: saintsByMiracleId.get(miracle.id) ?? [], sources, images };
 
     // cast needed: Hono can't reconcile 200/404 response union types at compile time
     return c.json({ data: data as z.infer<typeof MiracleDetailSchema>, meta: null, error: null }, 200);
