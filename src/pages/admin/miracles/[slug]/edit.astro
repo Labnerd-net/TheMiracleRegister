@@ -96,7 +96,9 @@ if (Astro.request.method === "POST") {
     if (!validation.success) {
       error = formatZodErrors(validation);
     } else try {
-      await db.update(miracles).set({
+      // neon-http has no db.transaction(); db.batch() runs as one atomic HTTP transaction
+      await db.batch([
+        db.update(miracles).set({
         slug: get("slug").trim() || miracle.slug,
         title: get("title") || miracle.title,
         miracle_category: parseEnum(get("miracle_category"), miracleCategory.enumValues) ?? miracle.miracle_category,
@@ -134,15 +136,12 @@ if (Astro.request.method === "POST") {
         feast_day_of_month: (() => { const n = parseInt(get("feast_day_of_month")); return isNaN(n) ? null : n; })(),
         feast_easter_offset: (() => { const n = parseInt(get("feast_easter_offset")); return isNaN(n) ? null : n; })(),
         published: getBool("published"),
-      }).where(eq(miracles.slug, slug!));
-
-      // Replace saint links atomically
-      await db.transaction(async (tx) => {
-        await tx.delete(miracleSaints).where(eq(miracleSaints.miracle_id, miracle.id));
-        await tx.insert(miracleSaints).values(
+      }).where(eq(miracles.slug, slug!)),
+        db.delete(miracleSaints).where(eq(miracleSaints.miracle_id, miracle.id)),
+        db.insert(miracleSaints).values(
           saintIds.map((id) => ({ miracle_id: miracle.id, saint_id: parseInt(id) }))
-        );
-      });
+        ),
+      ]);
 
       selectedSaintIds = saintIds.map(Number);
       success = true;
