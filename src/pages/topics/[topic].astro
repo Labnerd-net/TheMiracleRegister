@@ -1,12 +1,13 @@
 ---
 import Base from "../../layouts/Base.astro";
 import { createDb } from "../../db";
-import { miracles, miracleSaints, saints } from "../../db/schema";
+import { miracles } from "../../db/schema";
 import { MIRACLE_TOPICS } from "../../db/topics";
-import { and, eq, inArray, sql } from "drizzle-orm";
+import { and, sql } from "drizzle-orm";
 import { env } from "cloudflare:workers";
 import { CACHE_CONTENT } from "../../lib/cache";
 import { isIndexable } from "../../lib/browse";
+import { fetchSaintsByMiracle, miracleFilterConditions } from "../../lib/queries/miracles";
 import { humanizeSlug, humanizeSnakeCase, approvalBadge } from "../../lib/format";
 import { collectionJsonLd, breadcrumbJsonLd } from "../../lib/jsonld";
 
@@ -31,23 +32,13 @@ const topicMiracles = await db
     approval_authority: miracles.approval_authority,
   })
   .from(miracles)
-  .where(and(eq(miracles.published, true), sql`${miracles.topics} @> ARRAY[${topic}]::text[]`))
+  .where(and(...miracleFilterConditions(db, { topic })))
   .orderBy(sql`${miracles.date_of_event} asc nulls last`);
 
-const miracleIds = topicMiracles.map((m) => m.id);
-const saintLinks = miracleIds.length > 0
-  ? await db
-      .select({ miracle_id: miracleSaints.miracle_id, saint_name: saints.name })
-      .from(miracleSaints)
-      .innerJoin(saints, eq(miracleSaints.saint_id, saints.id))
-      .where(and(inArray(miracleSaints.miracle_id, miracleIds), eq(saints.published, true)))
-  : [];
-
-const saintNamesByMiracle = new Map<number, string[]>();
-for (const link of saintLinks) {
-  if (!saintNamesByMiracle.has(link.miracle_id)) saintNamesByMiracle.set(link.miracle_id, []);
-  saintNamesByMiracle.get(link.miracle_id)!.push(link.saint_name);
-}
+const saintsByMiracle = await fetchSaintsByMiracle(db, topicMiracles.map((m) => m.id));
+const saintNamesByMiracle = new Map<number, string[]>(
+  [...saintsByMiracle].map(([id, list]) => [id, list.map((s) => s.name)])
+);
 
 const label = humanizeSlug(topic);
 const total = topicMiracles.length;

@@ -2,7 +2,7 @@
 
 ## Current Feature Spec File
 
-_None_
+context/specs/shared-queries.md
 
 ## Current Feature Plan File
 

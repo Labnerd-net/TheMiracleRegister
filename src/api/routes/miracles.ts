@@ -1,7 +1,7 @@
 import { OpenAPIHono, createRoute, z } from "@hono/zod-openapi";
-import { and, asc, eq, gte, ilike, inArray, lte, sql } from "drizzle-orm";
+import { and, asc, eq, sql } from "drizzle-orm";
 import { createDb } from "../../db";
-import { miracleImages, miracleSaints, miracleSources, miracles, saints } from "../../db/schema";
+import { miracleImages, miracleSources, miracles } from "../../db/schema";
 import {
   MiracleDetailSchema,
   MiracleListItemSchema,
@@ -10,33 +10,10 @@ import {
 } from "../schemas";
 import type { ApiEnv } from "../env";
 import { notFound } from "../errors";
-import { likeContains } from "../../lib/like";
+import { fetchSaintsByMiracle, miracleFilterConditions } from "../../lib/queries/miracles";
 import { redactRecipient } from "../../lib/privacy";
 
 const miraclesRoute = new OpenAPIHono<ApiEnv>();
-
-async function fetchSaintsForMiracles(
-  db: ReturnType<typeof createDb>,
-  miracleIds: number[]
-): Promise<Map<number, { id: number; slug: string; name: string }[]>> {
-  const map = new Map<number, { id: number; slug: string; name: string }[]>();
-  if (miracleIds.length === 0) return map;
-  const links = await db
-    .select({
-      miracle_id: miracleSaints.miracle_id,
-      id: saints.id,
-      slug: saints.slug,
-      name: saints.name,
-    })
-    .from(miracleSaints)
-    .innerJoin(saints, eq(miracleSaints.saint_id, saints.id))
-    .where(and(inArray(miracleSaints.miracle_id, miracleIds), eq(saints.published, true)));
-  for (const link of links) {
-    if (!map.has(link.miracle_id)) map.set(link.miracle_id, []);
-    map.get(link.miracle_id)!.push({ id: link.id, slug: link.slug, name: link.name });
-  }
-  return map;
-}
 
 miraclesRoute.openapi(
   createRoute({
@@ -55,28 +32,14 @@ miraclesRoute.openapi(
     const offset = (page - 1) * limit;
     const db = createDb(c.env.DATABASE_URL);
 
-    const conditions = [eq(miracles.published, true)];
-    if (saint_id !== undefined) {
-      conditions.push(
-        inArray(
-          miracles.id,
-          db.select({ id: miracleSaints.miracle_id }).from(miracleSaints).where(eq(miracleSaints.saint_id, saint_id))
-        )
-      );
-    }
-    if (type !== undefined) conditions.push(eq(miracles.type, type));
-    if (topic !== undefined) conditions.push(sql`${miracles.topics} @> ARRAY[${topic}]::text[]`);
-    if (category !== undefined) conditions.push(eq(miracles.miracle_category, category));
-    if (country !== undefined) conditions.push(ilike(miracles.country, likeContains(country)));
-    if (year_from !== undefined)
-      conditions.push(gte(sql`EXTRACT(YEAR FROM ${miracles.date_of_event})::int`, year_from));
-    if (year_to !== undefined)
-      conditions.push(lte(sql`EXTRACT(YEAR FROM ${miracles.date_of_event})::int`, year_to));
-    if (used_for_beatification === "1") conditions.push(eq(miracles.used_for_beatification, true));
-    if (used_for_canonization === "1") conditions.push(eq(miracles.used_for_canonization, true));
-    if (approval_authority !== undefined) conditions.push(eq(miracles.approval_authority, approval_authority));
+    const conditions = miracleFilterConditions(db, {
+      saint_id, type, topic, category, country, year_from, year_to,
+      used_for_beatification: used_for_beatification === "1",
+      used_for_canonization: used_for_canonization === "1",
+      approval_authority,
+    });
 
-    const where = conditions.length > 0 ? and(...conditions) : undefined;
+    const where = and(...conditions);
 
     const [rows, [{ total }]] = await Promise.all([
       db
@@ -105,7 +68,7 @@ miraclesRoute.openapi(
       db.select({ total: sql<number>`count(*)::int` }).from(miracles).where(where),
     ]);
 
-    const saintsByMiracleId = await fetchSaintsForMiracles(db, rows.map((r) => r.id));
+    const saintsByMiracleId = await fetchSaintsByMiracle(db, rows.map((r) => r.id));
     const data = rows.map(({ recipient_privacy, ...r }) => ({
       ...r,
       recipient_name: redactRecipient(r.recipient_name, recipient_privacy),
@@ -183,7 +146,7 @@ miraclesRoute.openapi(
         })
         .from(miracleSources)
         .where(eq(miracleSources.miracle_id, miracle.id)),
-      fetchSaintsForMiracles(db, [miracle.id]),
+      fetchSaintsByMiracle(db, [miracle.id]),
       db
         .select({
           id: miracleImages.id,

@@ -6,10 +6,11 @@ import { saints } from "../../db/schema";
 import { canonizationStage } from "../../db/schema/enums";
 import { SAINT_THEMES } from "../../db/topics";
 import { humanizeSnakeCase } from "../../lib/format";
-import { asc, count, eq, and, sql, isNotNull, ilike } from "drizzle-orm";
+import { asc, count, eq, and, isNotNull } from "drizzle-orm";
 import { env } from "cloudflare:workers";
 import { CACHE_CONTENT } from "../../lib/cache";
 import { thumbUrl } from "../../lib/image";
+import { saintFilterConditions } from "../../lib/queries/saints";
 
 const PAGE_SIZE = 20;
 const sp = Astro.url.searchParams;
@@ -31,11 +32,12 @@ Astro.response.headers.set("Cache-Control", CACHE_CONTENT);
 
 const db = createDb(env.DATABASE_URL);
 
-const conditions = [eq(saints.published, true)];
-if (filterStage) conditions.push(eq(saints.canonization_stage, filterStage));
-if (filterTheme) conditions.push(sql`${saints.themes} @> ARRAY[${filterTheme}]::text[]`);
-if (filterOrder) conditions.push(eq(saints.religious_order, filterOrder));
-if (filterNationality) conditions.push(eq(saints.nationality, filterNationality));
+const conditions = saintFilterConditions({
+  canonization_stage: filterStage,
+  theme: filterTheme,
+  religious_order: filterOrder,
+  nationality: filterNationality,
+});
 const where = and(...conditions);
 
 const [[{ total }], pageSaints, orderRows, nationalityRows] = await Promise.all([

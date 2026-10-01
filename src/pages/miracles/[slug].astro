@@ -12,6 +12,7 @@ import { isValidPreviewToken } from "../../lib/preview";
 import { findSlugRedirect, CACHE_REDIRECT } from "../../lib/slugRedirect";
 import { CACHE_CONTENT } from "../../lib/cache";
 import { miracleJsonLd, breadcrumbJsonLd } from "../../lib/jsonld";
+import { fetchSaintsByMiracle } from "../../lib/queries/miracles";
 
 const { slug } = Astro.params;
 const db = createDb(env.DATABASE_URL);
@@ -129,20 +130,10 @@ for (const m of [...saintLinked, ...topicLinked]) {
   }
 }
 
-const relatedSaintsMap = new Map<number, string[]>();
-if (relatedMiracles.length > 0) {
-  const links = await db
-    .select({ miracle_id: miracleSaints.miracle_id, name: saints.name })
-    .from(miracleSaints)
-    .innerJoin(saints, eq(miracleSaints.saint_id, saints.id))
-    .where(isPreview
-      ? inArray(miracleSaints.miracle_id, relatedMiracles.map((r) => r.id))
-      : and(inArray(miracleSaints.miracle_id, relatedMiracles.map((r) => r.id)), eq(saints.published, true)));
-  for (const link of links) {
-    if (!relatedSaintsMap.has(link.miracle_id)) relatedSaintsMap.set(link.miracle_id, []);
-    relatedSaintsMap.get(link.miracle_id)!.push(link.name);
-  }
-}
+const relatedSaintsMap = new Map<number, string[]>(
+  [...await fetchSaintsByMiracle(db, relatedMiracles.map((r) => r.id), { includeUnpublished: isPreview })]
+    .map(([id, list]) => [id, list.map((s) => s.name)])
+);
 
 const fmt = humanizeSnakeCase;
 

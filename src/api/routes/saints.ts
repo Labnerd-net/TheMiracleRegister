@@ -1,5 +1,5 @@
 import { OpenAPIHono, createRoute, z } from "@hono/zod-openapi";
-import { asc, eq, sql, and, inArray, ilike } from "drizzle-orm";
+import { asc, eq, sql, and } from "drizzle-orm";
 import { createDb } from "../../db";
 import { miracleSaints, miracles, saintRelations, saints } from "../../db/schema";
 import { canonizationStage } from "../../db/schema/enums";
@@ -14,7 +14,8 @@ import {
 } from "../schemas";
 import type { ApiEnv } from "../env";
 import { notFound } from "../errors";
-import { likeContains } from "../../lib/like";
+import { fetchSaintsByMiracle } from "../../lib/queries/miracles";
+import { saintFilterConditions } from "../../lib/queries/saints";
 import { redactRecipient } from "../../lib/privacy";
 
 const SaintsQuerySchema = PaginationQuerySchema.extend({
@@ -43,11 +44,7 @@ saintsRoute.openapi(
     const offset = (page - 1) * limit;
     const db = createDb(c.env.DATABASE_URL);
 
-    const conditions = [eq(saints.published, true)];
-    if (canonization_stage) conditions.push(eq(saints.canonization_stage, canonization_stage));
-    if (theme) conditions.push(sql`${saints.themes} @> ARRAY[${theme}]::text[]`);
-    if (religious_order) conditions.push(ilike(saints.religious_order, likeContains(religious_order)));
-    if (nationality) conditions.push(eq(saints.nationality, nationality));
+    const conditions = saintFilterConditions({ canonization_stage, theme, religious_order, nationality });
     const where = and(...conditions);
 
     const [rows, [{ total }]] = await Promise.all([
@@ -152,27 +149,7 @@ saintsRoute.openapi(
         .where(and(eq(saintRelations.saint_id, saint.id), eq(saints.published, true))),
     ]);
 
-    // Fetch all linked saints for these miracles (needed for MiracleListItemSchema.saints)
-    const miracleIds = saintMiracles.map((m) => m.id);
-    const saintLinks =
-      miracleIds.length > 0
-        ? await db
-            .select({
-              miracle_id: miracleSaints.miracle_id,
-              id: saints.id,
-              slug: saints.slug,
-              name: saints.name,
-            })
-            .from(miracleSaints)
-            .innerJoin(saints, eq(miracleSaints.saint_id, saints.id))
-            .where(and(inArray(miracleSaints.miracle_id, miracleIds), eq(saints.published, true)))
-        : [];
-
-    const saintsByMiracleId = new Map<number, { id: number; slug: string; name: string }[]>();
-    for (const link of saintLinks) {
-      if (!saintsByMiracleId.has(link.miracle_id)) saintsByMiracleId.set(link.miracle_id, []);
-      saintsByMiracleId.get(link.miracle_id)!.push({ id: link.id, slug: link.slug, name: link.name });
-    }
+    const saintsByMiracleId = await fetchSaintsByMiracle(db, saintMiracles.map((m) => m.id));
 
     const data = {
       ...saint,
