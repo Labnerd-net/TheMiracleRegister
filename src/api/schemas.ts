@@ -201,7 +201,7 @@ export const MiraclesQuerySchema = z.object({
   type: e(miracleType.enumValues).optional(),
   topic: z.enum([...MIRACLE_TOPICS]).optional(),
   category: e(miracleCategory.enumValues).optional(),
-  country: z.string().optional(),
+  country: z.string().max(100).optional(),
   year_from: z.coerce.number().int().optional(),
   year_to: z.coerce.number().int().optional(),
   used_for_beatification: z.string().optional(),
@@ -213,7 +213,7 @@ export const MiraclesQuerySchema = z.object({
 });
 
 export const SearchQuerySchema = z.object({
-  q: z.string().min(2).optional(),
+  q: z.string().min(2).max(100).optional(),
   topic: z.enum([...MIRACLE_TOPICS, ...SAINT_THEMES]).optional(),
   page: z.coerce.number().int().positive().default(1),
   limit: z.coerce.number().int().positive().max(100).default(20),

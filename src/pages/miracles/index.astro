@@ -1,6 +1,7 @@
 ---
 import Base from "../../layouts/Base.astro";
 import { humanizeSnakeCase, approvalBadge } from "../../lib/format";
+import { escapeLike } from "../../lib/like";
 import { createDb } from "../../db";
 import { miracles, miracleSaints, saints } from "../../db/schema";
 import { miracleType, miracleCategory, approvalAuthority } from "../../db/schema/enums";
@@ -46,7 +47,7 @@ if (filterSaintId) {
 if (filterType) conditions.push(eq(miracles.type, filterType));
 if (filterTopic) conditions.push(sql`${miracles.topics} @> ARRAY[${filterTopic}]::text[]`);
 if (filterCategory) conditions.push(eq(miracles.miracle_category, filterCategory));
-if (filterCountry) conditions.push(ilike(miracles.country, filterCountry));
+if (filterCountry) conditions.push(ilike(miracles.country, escapeLike(filterCountry)));
 if (filterYearFrom) conditions.push(gte(sql`EXTRACT(YEAR FROM ${miracles.date_of_event})::int`, filterYearFrom));
 if (filterYearTo) conditions.push(lte(sql`EXTRACT(YEAR FROM ${miracles.date_of_event})::int`, filterYearTo));
 if (filterBeat) conditions.push(eq(miracles.used_for_beatification, true));

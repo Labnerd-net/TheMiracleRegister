@@ -2,7 +2,7 @@
 
 > Generated: 2026-09-30
 > Focus: Full audit
-> Completed and removed (numbering kept stable): #1, #2, #3, #9, #27, #28, #10, #11, #21, #22, #47, #48, #50
+> Completed and removed (numbering kept stable): #1, #2, #3, #9, #8, #15, #27, #28, #10, #11, #21, #22, #47, #48, #50
 > Obsolete after the admin panel removal: #4, #5, #6, #12, #13, #24, #38 (and #30, replaced by `npm run check:data`)
 
 ---
@@ -16,7 +16,6 @@ _None identified._
 
 ### Low
 - **#7 No Content-Security-Policy** (`src/middleware.ts`): Basic headers (X-Content-Type-Options, X-Frame-Options, `frame-ancestors`, Referrer-Policy) now ship from middleware, but there is no script/style CSP. Matters because `marked` + `xss` HTML is rendered. Fix: a CSP with nonces or hashes for the inline scripts; blocked by inline styles/scripts (#32, #25).
-- **#8 ILIKE wildcards unescaped** (`src/lib/search.ts:36`, `src/api/routes/miracles.ts:68`): `%` and `_` in `q`/`country` are not escaped, so `%` matches everything; `SearchQuerySchema` and `country` lack a max length. Fix: escape `\`, `%`, `_` and add `.max(100)`.
 
 ---
 
@@ -30,7 +29,6 @@ _None identified._
 
 ### Low
 - **#14 Stale "Today's Feast" from cache** (`src/pages/index.astro:9`, `calendar.astro:10`): 1h `s-maxage` plus 24h SWR can show yesterday's feast for up to a day after midnight UTC. Fix: shorter `s-maxage`, drop SWR on this section, or fetch the feast client-side.
-- **#15 Timezone-fragile year extraction** (`src/pages/miracles/timeline.astro:33`): `new Date(date).getFullYear()` parses UTC but reads local time. Fix: `getUTCFullYear()`.
 
 ---
 
@@ -63,7 +61,7 @@ _None identified._
 
 ### Low
 - **#32 Inline styles** (`404.astro`, public pages): Heavy `style="..."` use despite Tailwind and CSS variables. Fix: move repeated styles to classes in `global.css`; this also enables a stricter CSP.
-- **#33 Minor cleanup**: `any` hits in `miracles/index.astro`, `saints/index.astro`, `verification.astro`; `used_for_*` typed as string compared to `"1"`; `SaintsQuerySchema` defined inline and duplicating `PaginationQuerySchema`; `escHtml` re-implemented in inline scripts; `@types/marked` is a stale stub (marked ships types); `resolveMovableFeast` imported but apparently unused in `index.astro:7`; README/CLAUDE.md list only some `/api/v1/miracles` params.
+- **#33 Minor cleanup**: `any` hits in `miracles/index.astro` and `saints/index.astro` (inline scripts); `used_for_*` typed as string compared to `"1"`; `escHtml` re-implemented in inline scripts; README/CLAUDE.md list only some `/api/v1/miracles` params.
 - **#34 Unused or write-only fields**: `content_tier` is not used by any page; miracle `feast_*` columns are write-only. Fix: wire them up or drop them.
 - **#35 Dev environment safety**: `npm run db:migrate` runs against production (single Neon branch); no `.nvmrc`/`engines`; Docker Compose is absent. Fix: add a Neon dev branch or a pre-migrate confirmation, and `.env.example` guidance.
 - **#36 `createDb()` boilerplate**: Called per request in most pages. Fix: set `Astro.locals.db` in a new `src/middleware.ts`.
@@ -93,9 +91,9 @@ _None identified._
 
 | Category | High | Medium | Low | Total |
 |----------|------|--------|-----|-------|
-| Security | 0 | 0 | 2 | 2 |
-| Bugs | 0 | 1 | 2 | 3 |
+| Security | 0 | 0 | 1 | 1 |
+| Bugs | 0 | 1 | 1 | 2 |
 | Performance | 0 | 3 | 2 | 5 |
 | Improvements & Refactors | 1 | 4 | 5 | 10 |
 | Feature Ideas | 1 | 5 | 3 | 9 |
-| **Total** | 2 | 13 | 14 | 29 |
+| **Total** | 2 | 13 | 12 | 27 |

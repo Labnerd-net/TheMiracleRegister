@@ -30,7 +30,7 @@ type Row = typeof rows[number];
 
 const byDecade = new Map<number, Row[]>();
 for (const row of rows) {
-  const year = new Date(row.date_of_event!).getFullYear();
+  const year = new Date(row.date_of_event!).getUTCFullYear();
   const decade = Math.floor(year / 10) * 10;
   if (!byDecade.has(decade)) byDecade.set(decade, []);
   byDecade.get(decade)!.push(row);

@@ -8,16 +8,16 @@ import {
   MiracleListItemSchema,
   RelatedSaintSchema,
   SaintDetailSchema,
+  PaginationQuerySchema,
   SaintListItemSchema,
   envelopeSchema,
 } from "../schemas";
 import type { ApiEnv } from "../env";
 import { notFound } from "../errors";
+import { likeContains } from "../../lib/like";
 import { redactRecipient } from "../../lib/privacy";
 
-const SaintsQuerySchema = z.object({
-  page: z.coerce.number().int().positive().default(1),
-  limit: z.coerce.number().int().positive().max(100).default(20),
+const SaintsQuerySchema = PaginationQuerySchema.extend({
   canonization_stage: z.enum(canonizationStage.enumValues).optional(),
   theme: z.enum(SAINT_THEMES).optional(),
   religious_order: z.string().max(100).optional(),
@@ -46,7 +46,7 @@ saintsRoute.openapi(
     const conditions = [eq(saints.published, true)];
     if (canonization_stage) conditions.push(eq(saints.canonization_stage, canonization_stage));
     if (theme) conditions.push(sql`${saints.themes} @> ARRAY[${theme}]::text[]`);
-    if (religious_order) conditions.push(ilike(saints.religious_order, `%${religious_order}%`));
+    if (religious_order) conditions.push(ilike(saints.religious_order, likeContains(religious_order)));
     if (nationality) conditions.push(eq(saints.nationality, nationality));
     const where = and(...conditions);
 
