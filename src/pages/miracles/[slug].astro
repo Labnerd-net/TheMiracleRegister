@@ -7,10 +7,11 @@ import { env } from "cloudflare:workers";
 import { renderMarkdown } from "../../lib/markdown";
 import { humanizeSnakeCase, ogDescription, approvalBadge } from "../../lib/format";
 import { redactRecipient } from "../../lib/privacy";
+import { isValidPreviewToken } from "../../lib/preview";
 
 const { slug } = Astro.params;
 const db = createDb(env.DATABASE_URL);
-const isPreview = Astro.url.searchParams.get("preview") === env.PREVIEW_TOKEN;
+const isPreview = isValidPreviewToken(Astro.url.searchParams.get("preview"), env.PREVIEW_TOKEN);
 
 const [miracle] = await db.select({
   id: miracles.id,
