@@ -5,9 +5,6 @@ import { searchContent, type SearchResult } from "../lib/search";
 import { isRateLimited } from "../lib/rateLimit";
 import { env } from "cloudflare:workers";
 
-const SEARCH_RATE_LIMIT_MAX = 30;
-const SEARCH_RATE_LIMIT_WINDOW_SECONDS = 60;
-
 const q = (Astro.url.searchParams.get("q")?.trim() ?? "").slice(0, 100);
 
 let saintResults: SearchResult[] = [];
@@ -16,10 +13,7 @@ let rateLimited = false;
 
 if (q.length >= 2) {
   const ip = Astro.clientAddress ?? "unknown";
-  rateLimited = await isRateLimited(env.RATE_LIMIT, `search:${ip}`, {
-    max: SEARCH_RATE_LIMIT_MAX,
-    windowSeconds: SEARCH_RATE_LIMIT_WINDOW_SECONDS,
-  });
+  rateLimited = await isRateLimited(env.SEARCH_RATE_LIMITER, ip);
 
   if (!rateLimited) {
     const db = createDb(env.DATABASE_URL);

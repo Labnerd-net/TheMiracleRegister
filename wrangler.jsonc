@@ -13,10 +13,17 @@
   "cache": {
     "enabled": true
   },
-  "kv_namespaces": [
+  // Limits are per Cloudflare location and eventually consistent. Period must be 10 or 60.
+  "ratelimits": [
     {
-      "binding": "RATE_LIMIT",
-      "id": "d7ad4bf2b80f497e95b58860f8c0384f"
+      "name": "API_RATE_LIMITER",
+      "namespace_id": "16001",
+      "simple": { "limit": 60, "period": 60 }
+    },
+    {
+      "name": "SEARCH_RATE_LIMITER",
+      "namespace_id": "16002",
+      "simple": { "limit": 30, "period": 60 }
     }
   ]
 }
