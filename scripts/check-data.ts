@@ -3,7 +3,8 @@
 import "dotenv/config";
 import { readFileSync } from "node:fs";
 import { neon } from "@neondatabase/serverless";
-import { MIRACLE_TOPICS, SAINT_THEMES } from "../src/db/topics";
+import { MIRACLE_TOPICS, SAINT_THEMES, PATRONAGE_GROUPS } from "../src/db/topics";
+import { patronageKey, patronageSlug } from "../src/lib/patronage";
 
 const url = process.env.DATABASE_URL;
 if (!url) {
@@ -23,7 +24,7 @@ const DAYS_IN_MONTH = [31, 29, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31];
 
 type Rec = Record<string, any>;
 const saints = (await sql`
-  select id, slug, themes, published, image_url, wikipedia_url,
+  select id, slug, themes, patronage, published, image_url, wikipedia_url,
          feast_month, feast_day_of_month, feast_easter_offset
   from saints`) as Rec[];
 const miracles = (await sql`
@@ -56,6 +57,31 @@ for (const m of miracles) {
 }
 for (const s of saints) {
   for (const t of s.themes ?? []) if (!themeSet.has(t)) err("themes", `saint "${s.slug}" has unknown theme "${t}"`);
+}
+
+// 2b. patronage strings: group aliases are matched case-insensitively, so a stray variant of
+// an alias is harmless but should be normalized; two different strings must not share a slug
+const groupSlugs = new Set<string>(PATRONAGE_GROUPS.map((g) => g.slug));
+const aliasSpelling = new Map<string, string>(PATRONAGE_GROUPS.flatMap((g) => g.aliases.map((a) => [patronageKey(a), a] as const)));
+const keyBySlug = new Map<string, string>();
+for (const s of saints) {
+  for (const raw of s.patronage ?? []) {
+    const key = patronageKey(raw);
+    const slug = patronageSlug(raw);
+    if (!slug) {
+      err("patronage", `saint "${s.slug}" has a blank or unsluggable patronage "${raw}"`);
+      continue;
+    }
+    const canonical = aliasSpelling.get(key);
+    if (canonical !== undefined) {
+      if (raw !== canonical) err("patronage", `saint "${s.slug}" patronage "${raw}" should be spelled "${canonical}"`);
+      continue;
+    }
+    if (groupSlugs.has(slug)) err("patronage", `saint "${s.slug}" patronage "${raw}" collides with group slug "${slug}"; add it to that group`);
+    const other = keyBySlug.get(slug);
+    if (other !== undefined && other !== key) err("patronage", `patronage "${raw}" (saint "${s.slug}") and "${other}" share slug "${slug}"`);
+    keyBySlug.set(slug, key);
+  }
 }
 
 // 3. published records have at least one source

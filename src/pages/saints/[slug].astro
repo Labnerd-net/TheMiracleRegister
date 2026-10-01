@@ -11,6 +11,7 @@ import { isValidPreviewToken } from "../../lib/preview";
 import { findSlugRedirect, CACHE_REDIRECT } from "../../lib/slugRedirect";
 import { LOCATION_TYPE_COLORS } from "../../lib/mapConstants";
 import { CACHE_CONTENT } from "../../lib/cache";
+import { getPatronageTerms, hasPatronagePage, resolvePatronage } from "../../lib/patronage";
 import { saintJsonLd, breadcrumbJsonLd } from "../../lib/jsonld";
 
 const { slug } = Astro.params;
@@ -36,7 +37,7 @@ Astro.response.headers.set(
   isPreview ? "no-store" : CACHE_CONTENT
 );
 
-const [saintMiracles, relatedRows, sources, locations] = await Promise.all([
+const [saintMiracles, relatedRows, sources, locations, patronageTerms] = await Promise.all([
   db.select({
     slug: miracles.slug,
     title: miracles.title,
@@ -81,7 +82,14 @@ const [saintMiracles, relatedRows, sources, locations] = await Promise.all([
     lng: saintLocations.lng,
     location_type: saintLocations.location_type,
   }).from(saintLocations).where(eq(saintLocations.saint_id, saint.id)),
+  saint.patronage?.length ? getPatronageTerms(db) : Promise.resolve([]),
 ]);
+
+const linkedPatronage = new Set(patronageTerms.filter(hasPatronagePage).map((t) => t.slug));
+const patronageLinks = (saint.patronage ?? []).map((raw) => {
+  const { slug } = resolvePatronage(raw);
+  return { label: raw, href: linkedPatronage.has(slug) ? `/patronage/${slug}` : null };
+});
 
 const mappableLocations = locations.filter(l => l.lat && l.lng);
 const birthLocation = locations.find(l => l.location_type === "birthplace");
@@ -215,7 +223,9 @@ const jsonLd = [
       {saint.patronage && saint.patronage.length > 0 && (
         <div class="mb-9 pb-9 section-rule">
           <p class="eyebrow mb-3">Patronage</p>
-          <p style="font-family:var(--font-sans);font-size:0.875rem;color:var(--text-3);line-height:1.8">{saint.patronage.join(" · ")}</p>
+          <p style="font-family:var(--font-sans);font-size:0.875rem;color:var(--text-3);line-height:1.8">
+            {patronageLinks.map((p, i) => (<>{i > 0 && " · "}{p.href ? <a href={p.href} style="color:inherit">{p.label}</a> : p.label}</>))}
+          </p>
         </div>
       )}
 
