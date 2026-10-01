@@ -12,7 +12,8 @@
     "db:migrate": "drizzle-kit migrate",
     "deploy": "astro build && wrangler deploy -c dist/server/wrangler.json",
     "db:studio": "drizzle-kit studio",
-    "types": "wrangler types"
+    "types": "wrangler types",
+    "check:data": "tsx scripts/check-data.ts"
   },
   "dependencies": {
     "@astrojs/cloudflare": "^13.6.0",

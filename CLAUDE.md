@@ -247,6 +247,7 @@ All routes under `/api/v1/`. Hono + `@hono/zod-openapi` — OpenAPI spec generat
 - The single Neon branch is **production** (`br-proud-block-aptdevzb`). `DATABASE_URL` in `.env` points to it directly.
 - Data is managed via the admin panel. There is no seed script — all records are entered and published through the UI.
 - Schema changes: `npm run db:generate` → `npm run db:migrate`
+- Data integrity: `npm run check:data` (`scripts/check-data.ts`) is a read-only check — slug format, topics/themes vs `src/db/topics.ts`, published records have sources, intercessory miracles have a published saint, `saint_relations` mirrored, feast field validity, `// [in DB]` feast entries match a saint, URL schemes, and restricted recipient names not leaking into free text. Run it after any data change; exits 1 on errors.
 
 ---
 
