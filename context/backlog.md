@@ -2,7 +2,7 @@
 
 > Generated: 2026-09-30
 > Focus: Full audit
-> Completed and removed (numbering kept stable): #1, #2, #3, #9, #8, #14, #15, #18, #27, #28, #10, #11, #16, #17, #21, #22, #45, #47, #48, #50
+> Completed and removed (numbering kept stable): #1, #2, #3, #9, #8, #14, #15, #18, #27, #28, #10, #11, #16, #17, #21, #22, #45, #47, #48, #50, #49, #37
 > Obsolete after the admin panel removal: #4, #5, #6, #12, #13, #24, #38 (and #30, replaced by `npm run check:data`)
 
 ---
@@ -70,7 +70,6 @@ _None identified._
 ## Feature Ideas
 
 ### High
-- **#37 Topic and theme browse pages** (patronage split out to #51): `/topics/[topic]` and `/themes/[theme]` using the existing GIN indexes, no migration needed. Strong long-tail SEO landing pages. Spec: `context/specs/browse-pages.md`.
 - **#51 Patronage browse pages**: `patronage` is free text (70 distinct terms, 55 on a single saint, near-duplicates such as families / catholic families / parents, plus places and organizations). Fix: add a curated `PATRONAGE_GROUPS` const in `src/db/topics.ts` (group slug -> label + aliases), have `check:data` flag patronage strings matching no group, then add `/patronage/[group]` with the same thin-content threshold as #37. Draft the groups for review first. Places and organizations stay out of scope.
 
 ### Medium
@@ -91,8 +90,8 @@ _None identified._
 | Category | High | Medium | Low | Total |
 |----------|------|--------|-----|-------|
 | Security | 0 | 0 | 1 | 1 |
-| Bugs | 0 | 1 | 0 | 1 |
+| Bugs | 0 | 0 | 0 | 0 |
 | Performance | 0 | 0 | 2 | 2 |
 | Improvements & Refactors | 1 | 4 | 5 | 10 |
 | Feature Ideas | 1 | 4 | 3 | 8 |
-| **Total** | 2 | 9 | 11 | 22 |
+| **Total** | 2 | 8 | 11 | 21 |
