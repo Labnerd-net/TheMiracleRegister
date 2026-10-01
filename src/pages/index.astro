@@ -4,7 +4,7 @@ import { createDb } from "../db";
 import { saints, miracles } from "../db/schema";
 import { sql, asc, eq, ne, and, or, isNotNull } from "drizzle-orm";
 import { env } from "cloudflare:workers";
-import { getEaster, resolveMovableFeast } from "../lib/easter";
+import { easterOffsetForDate } from "../lib/feasts";
 
 Astro.response.headers.set("Cache-Control", "public, max-age=3600, stale-while-revalidate=86400");
 
@@ -14,7 +14,7 @@ const now = new Date();
 const todayMonth = now.getUTCMonth() + 1;
 const todayDay = now.getUTCDate();
 const todayYear = now.getUTCFullYear();
-const easterOffset = Math.round((Date.UTC(todayYear, todayMonth - 1, todayDay) - getEaster(todayYear).getTime()) / 86_400_000);
+const easterOffset = easterOffsetForDate(todayYear, todayMonth, todayDay);
 
 const [[{ saintCount }], [{ miracleCount }], [{ apparitionCount }], featuredSaints, feastSaints] = await Promise.all([
   db.select({ saintCount: sql<number>`count(*)::int` }).from(saints).where(eq(saints.published, true)),

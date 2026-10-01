@@ -5,7 +5,7 @@ import { miracles, saints, miracleSaints, miracleSources, miracleImages } from "
 import { and, asc, eq, inArray, ne, sql } from "drizzle-orm";
 import { env } from "cloudflare:workers";
 import { renderMarkdown } from "../../lib/markdown";
-import { humanizeSnakeCase, ogDescription, approvalBadge } from "../../lib/format";
+import { humanizeSnakeCase, ogDescription, approvalBadge, formatFeastDay } from "../../lib/format";
 import { redactRecipient } from "../../lib/privacy";
 import { isValidPreviewToken } from "../../lib/preview";
 
@@ -136,11 +136,6 @@ if (relatedMiracles.length > 0) {
 const fmt = humanizeSnakeCase;
 
 
-const MONTHS = ["January","February","March","April","May","June","July","August","September","October","November","December"];
-function formatFeastDay(month: number | null, day: number | null): string | null {
-  if (!month || !day) return null;
-  return `${MONTHS[month - 1]} ${day}`;
-}
 const feastDay = formatFeastDay(miracle.feast_month, miracle.feast_day_of_month);
 
 const ogDesc = ogDescription(miracle.synopsis) || undefined;
