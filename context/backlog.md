@@ -26,7 +26,7 @@ _None identified._
 _None identified._
 
 ### Medium
-- **#49 Published miracle without sources** (`healing-of-native-american-boy`): `npm run check:data` flags it as having no sources. Fix: add sources (data edit in Neon), then re-run the check.
+_None identified._
 
 ### Low
 _None identified._
@@ -70,7 +70,8 @@ _None identified._
 ## Feature Ideas
 
 ### High
-- **#37 Patronage and topic/theme browse pages**: `/patronage/[term]` and `/topics/[topic]` using the existing GIN indexes, no migration needed. Strong long-tail SEO landing pages.
+- **#37 Topic and theme browse pages** (patronage split out to #51): `/topics/[topic]` and `/themes/[theme]` using the existing GIN indexes, no migration needed. Strong long-tail SEO landing pages. Spec: `context/specs/browse-pages.md`.
+- **#51 Patronage browse pages**: `patronage` is free text (70 distinct terms, 55 on a single saint, near-duplicates such as families / catholic families / parents, plus places and organizations). Fix: add a curated `PATRONAGE_GROUPS` const in `src/db/topics.ts` (group slug -> label + aliases), have `check:data` flag patronage strings matching no group, then add `/patronage/[group]` with the same thin-content threshold as #37. Draft the groups for review first. Places and organizations stay out of scope.
 
 ### Medium
 - **#39 Human-readable API docs**: Scalar or Swagger UI at `/api/v1/docs`, plus an API usage page and a "Cite this record" button (APA/Chicago with permalink and access date).

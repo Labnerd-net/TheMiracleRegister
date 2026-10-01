@@ -2,7 +2,7 @@
 
 ## Current Feature Spec File
 
-_None_
+`context/specs/browse-pages.md`
 
 ## Current Feature Plan File
 
