@@ -2,7 +2,7 @@
 
 > Generated: 2026-09-30
 > Focus: Full audit
-> Completed and removed (numbering kept stable): #1, #10, #11
+> Completed and removed (numbering kept stable): #1, #10, #11, #21, #47
 > Obsolete after the admin panel removal: #4, #5, #6, #12, #13, #24, #38 (and #30, replaced by `npm run check:data`)
 
 ---
@@ -57,7 +57,6 @@ _None identified._
 ## Improvements & Refactors
 
 ### High
-- **#21 No CI** (`.github/workflows` missing): CLAUDE.md specifies GitHub Actions (typecheck, lint, test, deploy) but none exists, `@astrojs/check`, ESLint and Prettier are not installed, and there is no `typecheck` or `lint` script. Fix: add a workflow running `astro check`, `npm test`, `astro build`, then `wrangler deploy` on main; add the scripts; fix existing type errors first (#47); optionally run `npm run check:data` as a scheduled job.
 - **#22 Tests depend on the production DB** (`vitest.config.ts`, `tests/api.test.ts`): Tests load the real `DATABASE_URL` (the single Neon branch is production) and assert mostly status codes and envelope shape. Untested: filters, `published=false` non-leakage, the 429 path, cache headers, `/api/v1/search`. Fix: per-run Neon branch in CI or a mocked `createDb` with fixtures, and add those assertions.
 - **#23 No structured data or rel=canonical** (`src/layouts/Base.astro`): No JSON-LD anywhere, and `canonicalUrl` is only used for `og:url` (no `<link rel="canonical">`). No default og:image/og:site_name; paginated and filtered URLs are not canonicalized or noindexed; sitemap omits `/verification`, `/contact`. Fix: add a `jsonLd` prop (Person for saints, Article/CreativeWork for miracles, BreadcrumbList, Dataset for home/API), add rel=canonical and a default social card.
 
@@ -68,7 +67,6 @@ _None identified._
 - **#28 Pure logic has no unit tests**: `src/lib/easter.ts`, `rateLimit.ts`, `feastDays.ts` invariants, `src/lib/privacy.ts` (`redactRecipient`), and the pure parts of `scripts/check-data.ts`. `tests/schema.test.ts` only asserts exports exist. Fix: add targeted tests (known Easter dates would have caught the old Today's Feast off-by-one).
 - **#29 Playwright documented but absent**: Add a smoke suite (home, saint page, miracle filters, search, preview token) or correct CLAUDE.md/README.
 - **#31 Accessibility gaps**: Few or no `aria-*` attributes on saint page, index pages, map, timeline; no skip link or `<main id>`; lightbox and map lack `role="dialog"`/`aria-modal`/Escape/focus trap; no `aria-live` for client-fetched results; no `prefers-reduced-motion` or `focus-visible` handling; images lack `loading="lazy"` and `width`/`height`; fonts not preloaded. Fix: pass with the `a11y-reviewer` agent and Lighthouse, then address findings.
-- **#47 Existing type errors** (`src/api/routes/miracles.ts` 66 and 68, `src/api/schemas.ts` 20-21, `tests/api.test.ts` ~10 `TS18046` on `res.json()`): `tsc --noEmit` fails today, which would break a CI typecheck (#21). Fix: type the `type`/enum filter params and the schema generics, and type the test JSON responses.
 
 ### Low
 - **#32 Inline styles** (`404.astro`, public pages): Heavy `style="..."` use despite Tailwind and CSS variables. Fix: move repeated styles to classes in `global.css`; this also enables a stricter CSP.

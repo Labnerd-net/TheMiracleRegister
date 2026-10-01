@@ -17,8 +17,7 @@ import {
   timingRelativeToSaintDeath,
 } from "../db/schema/enums";
 
-const e = <T extends string>(vals: readonly T[]): z.ZodEnum<[T, ...T[]]> =>
-  z.enum(vals as [T, ...T[]]);
+const e = <const T extends readonly [string, ...string[]]>(vals: T) => z.enum(vals);
 
 // --- Shared ---
 

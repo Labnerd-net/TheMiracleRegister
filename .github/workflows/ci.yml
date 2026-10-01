@@ -1,0 +1,49 @@
+name: CI
+
+# Check-only. Deploys are handled by the Cloudflare Workers Builds connector on push to main.
+on:
+  pull_request:
+  push:
+    branches: [main]
+
+permissions:
+  contents: read
+
+concurrency:
+  group: ci-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  check:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 24
+          cache: npm
+
+      - run: npm ci
+
+      # worker-configuration.d.ts is gitignored and `wrangler types` takes secret names
+      # from .dev.vars, so write a placeholder (names only, no real values) and remove it.
+      - name: Generate Worker types
+        run: |
+          printf 'DATABASE_URL=placeholder\nPREVIEW_TOKEN=placeholder\n' > .dev.vars
+          npm run types
+          rm .dev.vars
+
+      - name: Typecheck
+        run: npm run typecheck
+
+      - name: Test
+        run: npm test
+        env:
+          # Tests currently read the production Neon branch (backlog #22).
+          # Not available to PRs from forks, so the test step fails for them.
+          DATABASE_URL: ${{ secrets.DATABASE_URL }}
+
+      - name: Build
+        run: npm run build
