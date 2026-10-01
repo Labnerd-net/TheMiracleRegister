@@ -15,16 +15,9 @@ const app = new OpenAPIHono<ApiEnv>().basePath("/api/v1");
 // Public read-only API — open CORS is intentional. Admin endpoints must never be added under /api/v1/.
 app.use("*", cors({ origin: "*" }));
 
-const RATE_LIMIT_MAX = 60;
-const RATE_LIMIT_WINDOW_SECONDS = 60;
-
 app.use("*", async (c: Context<ApiEnv>, next: () => Promise<void>) => {
   const ip = c.req.header("CF-Connecting-IP") ?? "unknown";
-  const limited = await isRateLimited(c.env.RATE_LIMIT, `api:${ip}`, {
-    max: RATE_LIMIT_MAX,
-    windowSeconds: RATE_LIMIT_WINDOW_SECONDS,
-  });
-  if (limited) {
+  if (await isRateLimited(c.env.API_RATE_LIMITER, ip)) {
     return c.json({ data: null, meta: null, error: "Too many requests" }, 429);
   }
   await next();
