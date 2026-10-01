@@ -2,7 +2,7 @@
 
 > Generated: 2026-09-30
 > Focus: Full audit
-> Completed and removed (numbering kept stable): #1, #2, #10, #11, #21, #22, #47, #50
+> Completed and removed (numbering kept stable): #1, #2, #10, #11, #21, #22, #47, #48, #50
 > Obsolete after the admin panel removal: #4, #5, #6, #12, #13, #24, #38 (and #30, replaced by `npm run check:data`)
 
 ---
@@ -25,7 +25,7 @@ _None identified._
 ## Bugs
 
 ### High
-- **#48 Full recipient name in synopsis** (`healing-of-matheus`): recipient_privacy is `first_name_only`, but the synopsis contains "Matheus Vianna" and is served by the page and the API. `npm run check:data` flags it. Fix: edit the synopsis to first name only (data edit in Neon), then re-run the check.
+_None identified._
 
 ### Medium
 - **#49 Published miracle without sources** (`healing-of-native-american-boy`): `npm run check:data` flags it as having no sources. Fix: add sources (data edit in Neon), then re-run the check.
@@ -98,8 +98,8 @@ _None identified._
 | Category | High | Medium | Low | Total |
 |----------|------|--------|-----|-------|
 | Security | 0 | 0 | 4 | 4 |
-| Bugs | 1 | 1 | 2 | 4 |
+| Bugs | 0 | 1 | 2 | 3 |
 | Performance | 0 | 3 | 2 | 5 |
 | Improvements & Refactors | 1 | 6 | 5 | 12 |
 | Feature Ideas | 1 | 5 | 3 | 9 |
-| **Total** | 3 | 15 | 16 | 34 |
+| **Total** | 2 | 15 | 16 | 33 |
