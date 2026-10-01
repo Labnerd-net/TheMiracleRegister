@@ -2,14 +2,14 @@
 
 > Generated: 2026-09-30
 > Focus: Full audit
-> Completed and removed (numbering kept stable): #10, #11
+> Completed and removed (numbering kept stable): #1, #10, #11
 
 ---
 
 ## Security
 
 ### High
-- **#1 recipient_privacy not enforced** (`src/api/routes/miracles.ts` ~90,147; `src/api/routes/saints.ts` ~134; `src/pages/saints/[slug].astro` ~37,236; `src/pages/miracles/[slug].astro` ~197): The public API returns `recipient_name` unconditionally. The miracle page hides it only for `confidential`, and the saint page does not check at all. `first_name_only` and `confidential` records leak full names. Fix: add a `redactRecipient(name, privacy)` helper (null for confidential, first token for first_name_only), select `recipient_privacy` wherever `recipient_name` is selected, and apply it in the API and all three pages.
+_None identified._
 
 ### Medium
 - **#2 Unpublished saints exposed** (`src/pages/miracles/[slug].astro` ~69-94; `src/pages/saints/[slug].astro` ~49-55; `src/api/routes/saints.ts` ~155-167; `src/pages/miracles/index.astro` ~85): Linked and related saint queries do not filter on `saints.published`, so unpublished saint name, slug, image and stage appear publicly. Fix: add `eq(saints.published, true)` to these joins, keeping unpublished rows only in preview mode.
@@ -106,9 +106,9 @@ _None identified._
 
 | Category | High | Medium | Low | Total |
 |----------|------|--------|-----|-------|
-| Security | 1 | 3 | 5 | 9 |
+| Security | 0 | 3 | 5 | 8 |
 | Bugs | 0 | 2 | 2 | 4 |
 | Performance | 0 | 3 | 2 | 5 |
 | Improvements & Refactors | 3 | 8 | 5 | 16 |
 | Feature Ideas | 2 | 4 | 4 | 10 |
-| **Total** | 6 | 20 | 18 | 44 |
+| **Total** | 5 | 20 | 18 | 43 |
