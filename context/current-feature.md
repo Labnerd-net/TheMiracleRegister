@@ -10,6 +10,9 @@ _None_
 
 ## History
 
+### Fix Miracle Edit Saint-Link Save on neon-http (backlog #10)
+`src/pages/admin/miracles/[slug]/edit.astro` wrapped the `miracle_saints` delete/re-insert in `db.transaction()`, which `drizzle-orm/neon-http` does not support (throws "No transactions support in neon-http driver"). The miracle `UPDATE` ran first, then the transaction threw, so saint-link edits silently never applied. Replaced the update, link delete and link insert with a single `db.batch([...])`, which neon-http runs as one atomic HTTP transaction. Scope limited to this call site; other multi-statement admin writes remain backlog #13. Verified in a real browser against the admin page: a no-op save shows "Saved successfully." with no error, and a fresh reload still shows the linked saint. A save that changes the saint selection was not tested, to avoid editing production data. Build passes.
+
 ### Dedupe Client-Side Filter URL Builders on List Pages (backlog #10)
 `src/pages/miracles/index.astro` and `src/pages/saints/index.astro` each defined `buildApiUrl()` and `buildPageUrl()` in their client `<script>` block — two near-byte-identical ~12-line functions per page independently re-encoding the same filter form fields into query params. Scoped the fix to the client script only (left server-side `buildUrl()`/WHERE-clause code alone — not actually duplicated, and `buildUrl()` sits on the SSR redirect path where an accidental behavior change carries more risk than the duplication it isn't). Each page now defines one declarative filter-field list and a single `buildParams()` helper that both URL builders call. Verified in a real browser (Playwright): multi-filter combos on both `/miracles` and `/saints` produce correct page URLs, correct underlying API param names (e.g. `beatification` on the page URL vs `used_for_beatification` sent to the API), and correct result counts. Build and test suite pass.
 
