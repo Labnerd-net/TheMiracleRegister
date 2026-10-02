@@ -25,12 +25,14 @@ const DAYS_IN_MONTH = [31, 29, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31];
 type Rec = Record<string, any>;
 const saints = (await sql`
   select id, slug, themes, patronage, published, image_url, wikipedia_url,
-         feast_month, feast_day_of_month, feast_easter_offset
+         feast_month, feast_day_of_month, feast_easter_offset,
+         biography_short, religious_order
   from saints`) as Rec[];
 const miracles = (await sql`
   select id, slug, title, topics, published, miracle_category, approval_authority, synopsis, cure_details,
          recipient_name, recipient_privacy,
-         feast_month, feast_day_of_month, feast_easter_offset
+         feast_month, feast_day_of_month, feast_easter_offset,
+         medical_diagnosis, vatican_medical_board_verdict
   from miracles`) as Rec[];
 const miracleSources = (await sql`select miracle_id, url from miracle_sources`) as Rec[];
 const saintSources = (await sql`select saint_id, url from saint_sources`) as Rec[];
@@ -194,6 +196,19 @@ for (const r of slugRedirects) {
   const live = liveSlugs[r.entity_type as "saint" | "miracle"];
   if (live.has(r.old_slug)) err("slug-redirect", `${r.entity_type} redirect "${r.old_slug}" shadows a live record`);
   if (!live.has(r.new_slug)) err("slug-redirect", `${r.entity_type} redirect "${r.old_slug}" -> "${r.new_slug}" has no live target`);
+}
+
+// 12. em dashes are not used in free text (site style is plain hyphens)
+const EM_DASH = "—";
+for (const s of saints) {
+  if (s.biography_short?.includes(EM_DASH)) err("em-dash", `saint "${s.slug}" biography_short contains an em dash`);
+  if (s.religious_order?.includes(EM_DASH)) err("em-dash", `saint "${s.slug}" religious_order contains an em dash`);
+}
+for (const m of miracles) {
+  if (m.synopsis?.includes(EM_DASH)) err("em-dash", `miracle "${m.slug}" synopsis contains an em dash`);
+  if (m.cure_details?.includes(EM_DASH)) err("em-dash", `miracle "${m.slug}" cure_details contains an em dash`);
+  if (m.medical_diagnosis?.includes(EM_DASH)) err("em-dash", `miracle "${m.slug}" medical_diagnosis contains an em dash`);
+  if (m.vatican_medical_board_verdict?.includes(EM_DASH)) err("em-dash", `miracle "${m.slug}" vatican_medical_board_verdict contains an em dash`);
 }
 
 console.log(`Checked ${saints.length} saints, ${miracles.length} miracles.`);
