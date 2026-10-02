@@ -49,7 +49,7 @@ Relation Type:       canonized_together
 SAINT LOCATIONS (saint_locations table)
 =======================================================================
 1. Location: Ciudad Barrios, El Salvador | Lat: 13.767 | Lng: -88.267 | Type: birthplace
-2. Location: Capilla Martirial San Óscar Romero, Hospital de la Divina Providencia, San Salvador | Lat: 13.711 | Lng: -89.224 | Type: death_place — NOTE: the coordinate search for this specific chapel returned a value nearly identical to the Metropolitan Cathedral's coordinates below, which is suspicious (likely a generic "San Salvador city center" fallback rather than a true geocode of this specific site). Treat as approximate/city-level only; a tighter geocode of the hospital compound should be verified before publishing.
-3. Location: Metropolitan Cathedral of the Holy Savior (crypt/tomb), San Salvador | Lat: 13.711307 | Lng: -89.223136 | Type: tomb
+2. Location: Capilla Martirial San Óscar Romero, Hospital de la Divina Providencia, San Salvador | Lat: 13.711272 | Lng: -89.223516 | Type: death_place — corrected via OpenStreetMap/Nominatim geocode of "Hospital Divina Providencia" (2026-10-02). The original value was suspiciously close to the cathedral's; investigation found the *cathedral* entry had actually been geocoded to this hospital's location, not the reverse.
+3. Location: Metropolitan Cathedral of the Holy Savior (crypt/tomb), San Salvador | Lat: 13.698300 | Lng: -89.190800 | Type: tomb — corrected (2026-10-02); previous value (13.711307, -89.223136) was actually the hospital's coordinates, not the cathedral's. New value sourced from Wikipedia's Metropolitan Cathedral of San Salvador infobox (13.6983°N, 89.1908°W), consistent with Plaza Barrios/Centro Histórico.
 
 =======================================================================
