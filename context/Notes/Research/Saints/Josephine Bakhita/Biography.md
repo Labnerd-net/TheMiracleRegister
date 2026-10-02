@@ -4,8 +4,8 @@ Josephine Bakhita was born around 1869 in the village of Olgossa in the Darfur r
 
 Sources:
 - https://www.causesanti.va/it/santi-e-beati/giuseppina-bakhita.html
-- https://www.vatican.va/content/john-paul-ii/en/homilies/1992/documents/hf_jp-ii_hom_19920517_beatifications.html
+- https://www.vatican.va/content/john-paul-ii/it/homilies/1992/documents/hf_jp-ii_hom_19920517_beatifications.html
 - https://www.vatican.va/content/john-paul-ii/en/homilies/2000/documents/hf_jp-ii_hom_20001001_canonization.html
 - https://www.ewtnnews.com/world/africa/survivor-of-human-trafficking-st-josephine-bakhita-discovered-god-s-infinite-love
 - https://www.famigliacristiana.it/chiesa/giuseppina-bakhita-la-schiava-vittima-di-tratta-divenuta-santa-ahkyd0gs
-- http://www.canossian.org/blog/2020/09/30/20-anni-canonizzazione-bakhita/
+- https://www.vatican.va/content/john-paul-ii/en/homilies/1993/documents/hf_jp-ii_hom_19930210_khartoum.html
