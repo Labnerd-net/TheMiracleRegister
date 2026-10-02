@@ -113,6 +113,30 @@ REFERENCE WEBSITES
       See `Source Requirements Standard.md` and
       `.claude/skills/verify-sources/SKILL.md` for the full rule.
 
+11. Wikipedia — List of patron saints by occupation and activity
+    URL: https://en.wikipedia.org/wiki/List_of_patron_saints_by_occupation_and_activity
+    Content: The most structured/exhaustive patronage list — organized by
+      occupation, illness, place, and cause, each entry individually sourced
+    Use: Primary reference when deciding what to put in a saint's
+      `patronage` field (CLAUDE.md's `saints` table)
+
+12. Catholic.com Encyclopedia — Patron Saints
+    URL: https://www.catholic.com/encyclopedia/patron-saints
+    Content: Secondary cross-check list of patronages by category
+    Use: Verify a patronage found on Wikipedia against a second source
+
+13. EWTN — Roman Catholic Patron Saints
+    URL: https://www.ewtn.com/catholicism/library/roman-catholic-patron-saints-5730
+    Content: Another quick-lookup patronage list
+    Use: Tertiary cross-check / alternate phrasing for a patronage
+    Note: There is no single official Vatican-sanctioned master list of
+      patronages — they accumulate through tradition and popular devotion
+      rather than formal decree, so these compiled lists are the best
+      available reference, not a canonical source. `patronage` is modeled
+      as free text (not an enum); keep new entries in sentence case and
+      check `PATRONAGE_GROUPS` in `src/db/topics.ts` for an existing
+      equivalent string before adding a new one.
+
 =======================================================================
 IMAGE SOURCES
 =======================================================================
