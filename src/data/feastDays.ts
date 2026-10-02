@@ -62,7 +62,7 @@ export const FIXED_FEASTS: FixedFeastEntry[] = [
   { month: 2, day: 4, name: 'Saint Joseph of Leonissa', scope: 'martyrologium' },
   { month: 2, day: 5, name: 'Saint Agatha' },
   { month: 2, day: 6, name: 'Saint Paul Miki and Companions' },
-  { month: 2, day: 8, name: 'Saint Josephine Bakhita' },
+  // { month: 2, day: 8, name: 'Saint Josephine Bakhita' }, // [in DB]
   { month: 2, day: 8, name: 'Saint Jerome Emiliani' },
   { month: 2, day: 9, name: 'Saint Apollonia', scope: 'martyrologium' },
   { month: 2, day: 10, name: 'Saint Scholastica' },

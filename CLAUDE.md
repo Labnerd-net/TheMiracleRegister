@@ -51,7 +51,8 @@ A data-driven website documenting miracles attributed to Catholic saints. Focuse
 | name | text | Common/recognizable devotional name — e.g. "Mother Teresa", "Padre Pio", "Brother Andre". This is the primary display name. |
 | birth_name | text | Legal name given at birth — e.g. "Anjezë Gonxhe Bojaxhiu" |
 | saint_name | text | Formal Vatican/devotional title — e.g. "Saint Teresa of Calcutta", "Saint André of Montreal". Nullable. Shown where the formal title is appropriate. |
-| birth_date, death_date | date | |
+| birth_date, death_date | date | Both use a placeholder (YYYY-01-01) when only the year/decade/century is known — see `birth_date_precision`/`death_date_precision`. Convention mirrors `miracles.date_of_event`. |
+| birth_date_precision, death_date_precision | enum | exact_day, month, year, decade, century, unknown — same `date_precision` enum as `miracles`. Default `exact_day`. Govern how `birth_date`/`death_date` are displayed (`formatApproxDate` in `src/lib/format.ts`) and whether they're emitted in JSON-LD (`saintJsonLd` only asserts `birthDate`/`deathDate` at `exact_day` precision) and the public API (`SaintDetailSchema`); when `unknown`, no date is shown even if the underlying date happens to be set. |
 | feast_day | text | |
 | feast_month | integer | nullable — numeric month (1–12) for structured feast day queries |
 | feast_day_of_month | integer | nullable — day of month; null for movable feasts |

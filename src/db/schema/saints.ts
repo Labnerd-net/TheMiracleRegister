@@ -8,7 +8,7 @@ import {
   text,
   timestamp,
 } from "drizzle-orm/pg-core";
-import { canonizationStage, canonizationType, dispensationReason, feastScope, gender } from "./enums";
+import { canonizationStage, canonizationType, datePrecision, dispensationReason, feastScope, gender } from "./enums";
 
 export const saints = pgTable(
   "saints",
@@ -19,7 +19,9 @@ export const saints = pgTable(
     saint_name: text("saint_name"),
     birth_name: text("birth_name"),
     birth_date: date("birth_date"),
+    birth_date_precision: datePrecision("birth_date_precision").notNull().default("exact_day"),
     death_date: date("death_date"),
+    death_date_precision: datePrecision("death_date_precision").notNull().default("exact_day"),
     feast_day: text("feast_day"),
     feast_month: integer("feast_month"),
     feast_day_of_month: integer("feast_day_of_month"),

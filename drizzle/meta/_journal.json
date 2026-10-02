@@ -239,6 +239,20 @@
       "when": 1790833709941,
       "tag": "0033_peaceful_unicorn",
       "breakpoints": true
+    },
+    {
+      "idx": 34,
+      "version": "7",
+      "when": 1790917687018,
+      "tag": "0034_lumpy_golden_guardian",
+      "breakpoints": true
+    },
+    {
+      "idx": 35,
+      "version": "7",
+      "when": 1790918229838,
+      "tag": "0035_easy_mandarin",
+      "breakpoints": true
     }
   ]
 }
