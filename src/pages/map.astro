@@ -133,7 +133,7 @@ const locationData = locationRows.map(l => ({
   </div>
 
   <script is:inline src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=" crossorigin=""></script>
-  <script is:inline define:vars={{ miracleData, locationData, typeColors: LOCATION_TYPE_COLORS }}>
+  <script is:inline define:vars={{ miracleData, locationData, typeColors: LOCATION_TYPE_COLORS, maptilerKey: env.MAPTILER_API_KEY }}>
     function escHtml(s) {
       return String(s ?? "").replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;").replace(/"/g,"&quot;");
     }
@@ -145,8 +145,8 @@ const locationData = locationRows.map(l => ({
     };
 
     const map = L.map('world-map').setView([30, 10], 2);
-    L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
-      attribution: '© <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors',
+    L.tileLayer(`https://api.maptiler.com/maps/basic-v2/{z}/{x}/{y}.png?key=${maptilerKey}`, {
+      attribution: '© <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors © <a href="https://www.maptiler.com/copyright/">MapTiler</a>',
       maxZoom: 19,
     }).addTo(map);
 
