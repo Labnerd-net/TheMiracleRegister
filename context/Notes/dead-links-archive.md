@@ -32,6 +32,15 @@ Ongoing tracker for `miracle_sources` / `saint_sources` rows whose URL was unrea
 
 ## Resolved
 
+- **`josephine-bakhita`** (saint) — source_id 782, deleted from DB 2026-10-02
+  `http://www.canossian.org/blog/2020/09/30/20-anni-canonizzazione-bakhita/`
+  First flagged 2026-10-02 — HTTP 404 on the live site; an archive.org snapshot was confirmed reachable, but the user opted to delete the row outright rather than replace it with the Wayback Machine URL.
+
+- **`josephine-bakhita`** (saint) — source_id 778, and `healing-of-sister-mari-silla-knee-synovitis` (miracle) — source_id 460, both updated in place 2026-10-02
+  Old URL: `https://www.vatican.va/content/john-paul-ii/en/homilies/1992/documents/hf_jp-ii_hom_19920517_beatifications.html`
+  Not a classic dead link — HTTP 200, but the page body contains no homily text, only navigation chrome and a "PDF generation in progress....." placeholder. This appears to be a vatican.va translation gap (the English page for this 1992 beatification homily was never populated), not a transient outage.
+  New URL: `https://www.vatican.va/content/john-paul-ii/it/homilies/1992/documents/hf_jp-ii_hom_19920517_beatifications.html` — the Italian version of the same page, confirmed to have the full homily text (and names "Beata Giuseppina Bakhita" directly). Swapped both DB rows to it, keeping existing `source_type` (`vatican_decree` on the saint record, `other` on the miracle record — unchanged, since it still doesn't name the specific miracle/recipient). The sibling canonization homily (source_id 777, year 2000) was checked and is fine — full English text present.
+
 - **`padre-pio`** (saint) — old source_id 668 (deleted 2026-09-29), replacement added as source_id 756 on 2026-09-29
   Old dead URL: `https://www.santuariopadrepio.it/` (TLS certificate mismatch — cert is issued for `162.logovia.it`, not this hostname)
   New URL: `https://www.conventosantuariopadrepio.it/`
