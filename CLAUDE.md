@@ -282,10 +282,7 @@ Claude handles both coding and research for this project — there are no separa
 
 ## Research Sources
 
-- **Vatican:** vatican.va for canonization decrees (primary)
-- **Catholic press:** Catholic News Agency, EWTN, National Catholic Register
-- **Reference:** Wikipedia (verify against Vatican sources), Miracle Hunter (miraclehunter.com — dated but useful)
-- **Vatican medical board:** Consulta Medica — their verdicts are primary sources
+Full source list, tiering, and per-category research links: `context/Notes/Research Resources.md`. Sourcing standard (what counts as Tier 1/Tier 2, minimum bar per `content_tier`): `.claude/skills/verify-sources/SKILL.md`.
 
 ---
 
@@ -300,5 +297,5 @@ Claude handles both coding and research for this project — there are no separa
 - **Neon dev branch:** Separate dev and prod database branches to avoid schema accidents
 - **`MIRACLE_TOPICS` vs `SAINT_THEMES`:** Topics tag miracle records with any descriptive dimension of the event — recipient role, vocation, life circumstance, or context (e.g. `religious-life`, `veterans`, `mothers`, `conversion`). Themes tag saint records with spiritual/devotional character. Medical conditions belong in `medical_diagnosis`; miracle phenomena belong in the `type` enum.
 - **`noted_for` removed:** Was redundant with `themes` (structured) and `biography_short` (narrative). Saints have two tag fields: `patronage` (formal Catholic designation) and `themes` (standardized spiritual tags).
-- **Carlo Acutis' Eucharistic miracle site** (miracolieucaristici.org) is out of scope — different focus entirely
+- **Carlo Acutis' Eucharistic miracle exhibition** (miracolieucaristici.org) is the primary source for individual Eucharistic miracle records (`type: eucharistic`) — but replicating its full 153-case catalog as original core content is out of scope. Cite it as a source; don't rebuild it.
 - **Easter calculation:** `src/lib/easter.ts` implements Meeus/Jones/Butcher algorithm. `getEaster(year)` returns Easter Sunday UTC; `resolveMovableFeast(offset, year)` adds the offset. Used by the homepage Today's Feast widget to resolve `feast_easter_offset` values against the current year.

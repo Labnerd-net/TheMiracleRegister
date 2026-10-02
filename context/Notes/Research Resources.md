@@ -9,11 +9,18 @@ PRIMARY RESEARCH SOURCES - Vatican Documentation
    Content: Papal decrees of canonization (Apostolic Letters), official Positio documents
    Use: Primary source for canonization miracles, Vatican medical board verdicts
    Language: Latin (official), Italian, English translations available
+   IMPORTANT: This is the only domain that counts as `vatican_decree` /
+     Tier 1 sourcing (hostname `vatican.va` or ending `.vatican.va`).
+     `vaticannews.va` (entry 2 below) is a *different domain* — press
+     coverage of a decree, not the decree itself. See
+     `.claude/skills/verify-sources/SKILL.md` for the full standard.
 
 2. Vatican News (Vatican News website)
    URL: https://www.vaticannews.va
    Content: News coverage of canonizations, beatifications, miracle recognitions
    Use: Current events, recent miracle confirmations
+   Note: Despite the name, this is `news_article` tier, not `vatican_decree`
+     — it's a distinct domain from vatican.va. Don't cite it as the decree.
 
 3. Dicastery for the Causes of Saints
    URL: https://www.vatican.va/roman_curia/congregations/csaints/
@@ -24,6 +31,19 @@ PRIMARY RESEARCH SOURCES - Vatican Documentation
    URL: https://www.vatican.va/news_services/liturgy/photogallery/
    Content: Official Vatican photographs of canonization ceremonies
    Use: Canonization photos, papal ceremony images
+
+5. Consulta Medica (Vatican medical board)
+   URL: No public standalone site — verdicts are referenced within the
+     dicastery's Positio documents and canonization decrees on vatican.va
+   Content: The Vatican's own medical board, which reviews healing
+     miracles for scientific inexplicability as part of the adjudication
+     chain: diocesan tribunal -> Consulta Medica -> dicastery decree
+   Use: Their verdicts are primary sources for the medical-verification
+     side of a canonization miracle; look for them cited within the
+     vatican.va decree/Positio rather than as a separate URL
+   Note: For non-dicastery healings, the equivalent body is the Lourdes
+     Bureau des Constatations Medicales / CMIL (see entry 20 below) —
+     not Consulta Medica, which is specific to the canonization process.
 
 =======================================================================
 SECONDARY RESEARCH SOURCES - Catholic News
@@ -70,6 +90,28 @@ REFERENCE WEBSITES
    - https://en.wikipedia.org/wiki/Juan_Diego
    Use: Initial overview, date verification, biographical outline
    Note: Always verify against Vatican sources for official details
+   IMPORTANT: Wikipedia is background research only — never add it as a
+     `saint_sources` or `miracle_sources` DB row. The saint's own
+     `wikipedia_url` field already surfaces it on the page; a duplicate
+     source row renders twice. It also doesn't count toward either leg
+     (status or biography) of the saint sourcing standard.
+
+10. Official shrine / diocesan / custodial-organization sites
+    URL: Varies by case (e.g. lourdes-france.org, setonshrine.org,
+      virgendeguadalupe.mx)
+    Content: The shrine, diocese, religious order, or custodial
+      organization's own account of a saint or miracle
+    Use: For miracles with no dicastery decree (most apparitions,
+      stigmata, incorruptibles), this is Tier 1 evidence under the
+      bundle rule: an official shrine/diocesan account plus at least
+      one independent Tier 2 source (Catholic press, book, academic).
+      Also satisfies the biography leg on a saint record when no
+      scholarly biography is readily available. Before falling back to
+      the bundle, check whether the local ordinary issued an actual
+      declaration on the case (e.g. Bishop Ito's 1988 declaration on
+      Akita) — that's stronger evidence than the bundle when it exists.
+      See `Source Requirements Standard.md` and
+      `.claude/skills/verify-sources/SKILL.md` for the full rule.
 
 =======================================================================
 IMAGE SOURCES
@@ -466,8 +508,8 @@ EXPANDED MIRACLE CATEGORIES — RESEARCH SOURCES
 =======================================================================
 
 These are the primary research sources for the Tier 2 (catalog) miracle
-categories. See Project Direction — Tiered Miracle Data for the content
-strategy behind these categories.
+categories — see the `content_tier` field (CLAUDE.md's `miracles` table)
+for the `core` / `catalog` / `stub` distinction these categories map to.
 
 -----------------------------------------------------------------------
 Marian Apparitions

@@ -103,6 +103,18 @@ only, doesn't count toward the standard: Wikipedia, devotional/apologetics/
 advocacy blogs (these are fine as `other` but shouldn't be the only source on
 a `core` record).
 
+**Don't task coverage or content-match work with finding "the primary medical
+record."** It isn't published, for any case, by either adjudicating body: the
+Vatican's Consulta Medica findings are sealed inside the cause's Positio
+(Dicastery for the Causes of Saints' own archive, Rome); Lourdes' Bureau des
+Constatations Médicales / CMIL hold their files at the Sanctuary, accessible
+only with special episcopal authorization (confirmed via the one academic
+retrospective that got in — see `Source Requirements Standard.md`). This is
+also why no Vatican decree or homily ever names a miracle's recipient — the
+document that would is exactly the sealed one. Tier 2 corroboration is
+accepted as the standard's ceiling, not a stand-in for a primary record that
+future work should keep hunting for.
+
 Minimum bar by `content_tier`:
 - `core` + (`used_for_beatification` or `used_for_canonization`): must have
   the Tier 1 source for its `approval_authority` (or the bundle, for `none`).

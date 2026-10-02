@@ -20,6 +20,12 @@ Considered requiring a scholarly biography (book/academic press) be tracked down
 
 **Chose the latter.** Reasoning: a religious order's or diocese's own archive has real editorial accountability and is usually easier to verify than chasing down out-of-print biographies for saints who may not have a widely available scholarly treatment (e.g. lesser-known 20th-century beatifications). Reserve the extra research effort for cases where a scholarly source is genuinely easy to find, rather than making it a blocking requirement everywhere.
 
+## Decision: primary medical records are permanently unlinkable, not a gap to chase
+
+Checked directly (2026-09-29) where the actual medical evidence behind a cause lives: for Vatican causes, the *Consulta Medica*'s findings are folded into the cause's **Positio**, held in the Dicastery for the Causes of Saints' own archive in Rome — never published. For Lourdes, the **Bureau des Constatations Médicales** and **CMIL** hold case files at the Sanctuary itself; the one peer-reviewed academic retrospective that got inside them (Francois & Sternberg, "The Lourdes Medical Cures Revisited," PMC/NIH) only did so with special authorization from the local bishop, and still couldn't get full detail on some recent cases.
+
+**Decision:** treat this as a permanent structural fact, not an open sourcing gap. Don't task future work with "find the primary medical file" for any miracle — it isn't published, by design, for privacy and process reasons on both the Vatican and Lourdes sides. This is also *why* the Vatican's own decree bulletins and homilies (see `source-coverage-gaps.md`'s 41-item Tier 1 bucket) never name a specific miracle recipient: the document type that would identify the patient is exactly the sealed one. The site's sourcing standard already reflects this — Tier 2 corroboration (Catholic press, academic retrospectives, the shrine's own account) is accepted specifically because it's the best obtainable evidence, not a placeholder for something better that just hasn't been found yet.
+
 ## Open gaps against this standard
 
 Tracked as a living list in [`source-coverage-gaps.md`](./source-coverage-gaps.md), not here — that file gets updated in place each time coverage mode runs, rather than accumulating a new dated snapshot per audit.
