@@ -402,14 +402,14 @@ const jsonLd = [
         lng: miracle.location_lng,
         locationName: miracle.location_name,
         country: miracle.country,
+        maptilerKey: env.MAPTILER_API_KEY,
       }}>
         function escHtml(s) {
           return String(s ?? "").replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;").replace(/"/g,"&quot;");
         }
         const map = L.map('miracle-map').setView([Number(lat), Number(lng)], 7);
-        L.tileLayer('https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}.png', {
-          attribution: '© <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors © <a href="https://carto.com/attributions">CARTO</a>',
-          subdomains: 'abcd',
+        L.tileLayer(`https://api.maptiler.com/maps/basic-v2/{z}/{x}/{y}.png?key=${maptilerKey}`, {
+          attribution: '© <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors © <a href="https://www.maptiler.com/copyright/">MapTiler</a>',
           maxZoom: 19,
         }).addTo(map);
         const label = [locationName, country].filter(Boolean).map(escHtml).join(', ');
