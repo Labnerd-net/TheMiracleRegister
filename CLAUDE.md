@@ -37,6 +37,7 @@ A data-driven website documenting miracles attributed to Catholic saints. Focuse
 - **Tertiary:** Feast day calendar as a discovery layer — every published saint is reachable by feast date, with the full liturgical calendar as context. Only canonized saints have universal feast days; Blessed, Venerable, and Servants of God do not appear on the calendar unless a local feast day has been specifically recorded.
 - Public-facing website with REST API from day one
 - No admin panel — data is edited directly in the database (Neon console or SQL). Unpublished records can be previewed at `/saints/<slug>?preview=<PREVIEW_TOKEN>` and `/miracles/<slug>?preview=<PREVIEW_TOKEN>`.
+- **Style:** use plain hyphens (`-`), never em dashes (`—`), in page copy, UI strings, and any text written into the database (biographies, synopses, cure details, etc.). `check:data` flags em dashes in DB free-text columns, but it can't catch source files — check your own output before writing copy or SQL.
 
 ---
 
@@ -248,7 +249,7 @@ All routes under `/api/v1/`. Hono + `@hono/zod-openapi` — OpenAPI spec generat
 - The single Neon branch is **production** (`br-proud-block-aptdevzb`). `DATABASE_URL` in `.env` points to it directly.
 - Data is managed directly in the database (Neon console or SQL; the admin panel was removed). There is no seed script. Always run `npm run check:data` after a change — it replaces the validation the admin forms used to do. `updated_at` is bumped by a DB trigger (`drizzle/0030_updated_at_trigger.sql`), so raw edits are safe.
 - Schema changes: `npm run db:generate` → `npm run db:migrate`
-- Data integrity: `npm run check:data` (`scripts/check-data.ts`) is a read-only check — slug format, topics/themes vs `src/db/topics.ts`, published records have sources, intercessory miracles have a published saint, `saint_relations` mirrored, feast field validity, `// [in DB]` feast entries match a saint, URL schemes, and restricted recipient names not leaking into free text. Run it after any data change; exits 1 on errors.
+- Data integrity: `npm run check:data` (`scripts/check-data.ts`) is a read-only check — slug format, topics/themes vs `src/db/topics.ts`, published records have sources, intercessory miracles have a published saint, `saint_relations` mirrored, feast field validity, `// [in DB]` feast entries match a saint, URL schemes, restricted recipient names not leaking into free text, and no em dashes in free-text columns (biography_short, synopsis, cure_details, etc. — see style note below). Run it after any data change; exits 1 on errors.
 
 ---
 

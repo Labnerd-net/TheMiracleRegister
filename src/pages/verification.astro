@@ -4,7 +4,7 @@ import Base from "../layouts/Base.astro";
 
 <Base
   title="Verification Standards"
-  description="How the Catholic Church investigates and verifies a miracle — the medical board, the Lambertini criteria, and what each approval badge on this site means."
+  description="How the Catholic Church investigates and verifies a miracle - the medical board, the Lambertini criteria, and what each approval badge on this site means."
 >
 
   <div class="page-header">
@@ -12,7 +12,7 @@ import Base from "../layouts/Base.astro";
       <p class="eyebrow mb-4">The Register</p>
       <h1 style="font-family:var(--font-display);font-size:clamp(2.5rem,5vw,4rem);font-weight:300;color:var(--text-1);line-height:1.05;letter-spacing:-0.01em">Verification Standards</h1>
       <p style="font-family:var(--font-sans);font-size:0.95rem;color:var(--text-3);line-height:1.7;margin-top:1.25rem;max-width:42rem">
-        How a claimed miracle is medically and theologically investigated before the Church will recognize it —
+        How a claimed miracle is medically and theologically investigated before the Church will recognize it -
         and what the approval badges on this site actually mean.
       </p>
     </div>
@@ -26,7 +26,7 @@ import Base from "../layouts/Base.astro";
         <div class="prose">
           <p>
             Canon law requires evidence of a miracle worked through a candidate's intercession before the
-            Church will beatify or canonize them — one miracle for beatification, a second for canonization
+            Church will beatify or canonize them - one miracle for beatification, a second for canonization
             (martyrs are typically dispensed from the beatification miracle). The logic is theological, not
             evidentiary in the scientific sense: a miracle is treated as God's own confirmation that the
             candidate is in heaven and capable of interceding. The investigation exists to rule out every
@@ -34,7 +34,7 @@ import Base from "../layouts/Base.astro";
           </p>
           <p>
             The overwhelming majority of miracles submitted for canonization causes are physical healings,
-            because a medical cure is the type of claim most amenable to rigorous, document-based scrutiny —
+            because a medical cure is the type of claim most amenable to rigorous, document-based scrutiny -
             there is a diagnosis, a treatment history, and a verifiable outcome. This is also why this site's
             data skews heavily toward healing miracles: they are simply the best-documented category.
           </p>
@@ -47,18 +47,18 @@ import Base from "../layouts/Base.astro";
           <p>
             Cases originating in Rome are reviewed by the <strong>Consulta Medica</strong>, a standing panel
             of physicians attached to the Dicastery for the Causes of Saints. Its members are specialists
-            across relevant fields — oncology, neurology, cardiology, and others — and are not required to
+            across relevant fields - oncology, neurology, cardiology, and others - and are not required to
             be Catholic or even religious; their job is strictly clinical. Given a claimed cure, the board
             works from medical records, diagnostic imaging, and physician testimony gathered by the
             postulator (the official who manages the cause) to answer one narrow question: is there a
             natural or medical explanation for this outcome? The board does not rule on whether a miracle
-            occurred — only on whether science can account for the cure. A "no" sends the case forward to
+            occurred - only on whether science can account for the cure. A "no" sends the case forward to
             theological review; a plausible natural explanation ends it.
           </p>
           <p>
             Lourdes runs a parallel but separate process. Cures claimed at the shrine are first screened by
             the <strong>Bureau Médical de Lourdes</strong>, an independent international panel of physicians,
-            and — if a cure survives that review — referred to the <strong>Comité Médical International de
+            and - if a cure survives that review - referred to the <strong>Comité Médical International de
             Lourdes</strong> for a second, stricter pass. Only a small number of Lourdes cures ultimately
             reach a bishop for formal diocesan recognition as miraculous; this site tracks that distinction
             because a Lourdes-verified cure is not automatically a Vatican-recognized canonization miracle.
@@ -75,17 +75,17 @@ import Base from "../layouts/Base.astro";
             healing to count as medically inexplicable are still applied essentially unchanged:
           </p>
           <ul>
-            <li>The illness must be serious, and — ideally — impossible to cure by any known medical means, or at minimum very difficult to cure.</li>
+            <li>The illness must be serious, and - ideally - impossible to cure by any known medical means, or at minimum very difficult to cure.</li>
             <li>The diagnosis must be certain, confirmed by objective medical evidence rather than the patient's own account.</li>
             <li>No treatment was given that could plausibly explain the cure, or any treatment given had already been tried and failed.</li>
-            <li>The cure must be <strong>instantaneous</strong> — not a gradual improvement that could reflect a delayed treatment response.</li>
+            <li>The cure must be <strong>instantaneous</strong> - not a gradual improvement that could reflect a delayed treatment response.</li>
             <li>The cure must be <strong>complete</strong>, not partial.</li>
-            <li>The cure must be <strong>durable</strong> — it does not relapse. The Church typically waits years before a case is finalized specifically to confirm this.</li>
+            <li>The cure must be <strong>durable</strong> - it does not relapse. The Church typically waits years before a case is finalized specifically to confirm this.</li>
             <li>The cure occurred with no surgical or medical intervention that could account for it.</li>
           </ul>
           <p>
             These map directly to the <code>cure_characteristics</code> field on miracle records in this
-            register (<em>instant/gradual</em> × <em>complete/partial</em>) — a cure classified as anything
+            register (<em>instant/gradual</em> × <em>complete/partial</em>) - a cure classified as anything
             other than instant and complete would not, on its own, satisfy Lambertini's standard, though it
             may still be recorded here as a documented healing attributed to a saint's intercession.
           </p>
@@ -96,9 +96,9 @@ import Base from "../layouts/Base.astro";
         <p class="eyebrow mb-5">After the Medical Board: Theological Review</p>
         <div class="prose">
           <p>
-            A cure the doctors cannot explain is not yet a miracle in the Church's eyes — it is simply an
+            A cure the doctors cannot explain is not yet a miracle in the Church's eyes - it is simply an
             unexplained cure. The case then passes to a panel of theologians, who weigh whether the cure
-            occurred specifically in connection with prayer or intercession invoking the candidate — timing,
+            occurred specifically in connection with prayer or intercession invoking the candidate - timing,
             the nature of the prayer, and the absence of intercession to any other figure all matter here.
             If the theologians concur, the case goes to the cardinals and bishops of the Dicastery for the
             Causes of Saints, and finally to the Pope, who alone issues the decree recognizing the event as
@@ -113,14 +113,14 @@ import Base from "../layouts/Base.astro";
         <div class="prose">
           <p>
             Every miracle record here carries an <code>approval_authority</code> value reflecting how far
-            through this process the case actually went — not every documented healing was formally decreed
+            through this process the case actually went - not every documented healing was formally decreed
             miraculous, and this register includes cases at every stage for historical completeness.
           </p>
           <table style="width:100%;border-collapse:collapse;margin:1.5em 0;font-size:0.9rem">
             <tbody>
               <tr style="border-bottom:1px solid var(--rule)">
                 <td style="padding:0.6rem 0.75rem 0.6rem 0;vertical-align:top;white-space:nowrap"><span class="approval-badge vatican">Vatican Approved</span></td>
-                <td style="padding:0.6rem 0;color:var(--text-2)">Formally decreed miraculous by the Dicastery for the Causes of Saints and the Pope — used as the miracle for a beatification or canonization.</td>
+                <td style="padding:0.6rem 0;color:var(--text-2)">Formally decreed miraculous by the Dicastery for the Causes of Saints and the Pope - used as the miracle for a beatification or canonization.</td>
               </tr>
               <tr style="border-bottom:1px solid var(--rule)">
                 <td style="padding:0.6rem 0.75rem 0.6rem 0;vertical-align:top;white-space:nowrap"><span class="approval-badge lourdes">Lourdes Bureau</span></td>
@@ -132,7 +132,7 @@ import Base from "../layouts/Base.astro";
               </tr>
               <tr style="border-bottom:1px solid var(--rule)">
                 <td style="padding:0.6rem 0.75rem 0.6rem 0;vertical-align:top;white-space:nowrap"><span class="approval-badge nihil">Nihil Obstat</span></td>
-                <td style="padding:0.6rem 0;color:var(--text-2)">Church authorities found "nothing standing in the way" of belief in the account, without a formal declaration that it is miraculous — the lightest form of recognition tracked here.</td>
+                <td style="padding:0.6rem 0;color:var(--text-2)">Church authorities found "nothing standing in the way" of belief in the account, without a formal declaration that it is miraculous - the lightest form of recognition tracked here.</td>
               </tr>
               <tr>
                 <td style="padding:0.6rem 0.75rem 0.6rem 0;vertical-align:top;white-space:nowrap;color:var(--text-4);font-family:var(--font-sans);font-size:0.7rem;font-weight:600;letter-spacing:0.08em;text-transform:uppercase">No badge</td>
@@ -142,7 +142,7 @@ import Base from "../layouts/Base.astro";
           </table>
           <p>
             A miracle's <code>used_for_beatification</code> or <code>used_for_canonization</code> flag on
-            this site marks the specific case the Church relied on for that step — a saint's record may
+            this site marks the specific case the Church relied on for that step - a saint's record may
             include several documented cures, but usually only one or two were ever formally decreed.
           </p>
         </div>
@@ -154,8 +154,8 @@ import Base from "../layouts/Base.astro";
           <p>
             The miracle requirement can be waived. Martyrs are usually dispensed from the beatification
             miracle on the theory that dying for the faith is itself sufficient testimony. Popes have also
-            occasionally exercised an <em>equipollent</em> ("equivalent") canonization — extending existing,
-            longstanding veneration into formal sainthood by decree, without a new miracle process at all —
+            occasionally exercised an <em>equipollent</em> ("equivalent") canonization - extending existing,
+            longstanding veneration into formal sainthood by decree, without a new miracle process at all -
             or granted a direct papal exception. Saint records on this register that carry a dispensation
             reason rather than a canonization miracle were sainted through one of these routes, not because
             no cures were ever attributed to them.
