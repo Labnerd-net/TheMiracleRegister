@@ -407,8 +407,9 @@ const jsonLd = [
           return String(s ?? "").replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;").replace(/"/g,"&quot;");
         }
         const map = L.map('miracle-map').setView([Number(lat), Number(lng)], 7);
-        L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
-          attribution: '© <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors',
+        L.tileLayer('https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}.png', {
+          attribution: '© <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors © <a href="https://carto.com/attributions">CARTO</a>',
+          subdomains: 'abcd',
           maxZoom: 19,
         }).addTo(map);
         const label = [locationName, country].filter(Boolean).map(escHtml).join(', ');
