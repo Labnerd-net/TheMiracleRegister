@@ -1,0 +1,1 @@
+ALTER TABLE "saints" ADD COLUMN "birth_date_precision" date_precision DEFAULT 'exact_day' NOT NULL;

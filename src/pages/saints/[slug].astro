@@ -5,7 +5,7 @@ import { saints, miracles, miracleSaints, saintRelations, saintSources, saintLoc
 import { asc, and, eq } from "drizzle-orm";
 import { env } from "cloudflare:workers";
 import { renderMarkdown } from "../../lib/markdown";
-import { humanizeSnakeCase, ogDescription } from "../../lib/format";
+import { humanizeSnakeCase, ogDescription, formatApproxDate } from "../../lib/format";
 import { redactRecipient } from "../../lib/privacy";
 import { isValidPreviewToken } from "../../lib/preview";
 import { findSlugRedirect, CACHE_REDIRECT } from "../../lib/slugRedirect";
@@ -95,6 +95,8 @@ const patronageLinks = (saint.patronage ?? []).map((raw) => {
 const mappableLocations = locations.filter(l => l.lat && l.lng);
 const birthLocation = locations.find(l => l.location_type === "birthplace");
 const deathLocation = locations.find(l => l.location_type === "death_place");
+const bornDisplay = formatApproxDate(saint.birth_date, saint.birth_date_precision);
+const diedDisplay = formatApproxDate(saint.death_date, saint.death_date_precision);
 
 const sourceTypeLabel: Record<string, string> = {
   vatican_decree: "Vatican",
@@ -200,11 +202,11 @@ const jsonLd = [
         <div class="card p-5 mt-4 lg:hidden">
           <h2 class="eyebrow mb-5">Record</h2>
           <dl class="meta-grid">
-            {saint.birth_date && (
-              <><dt>Born</dt><dd>{saint.birth_date}{birthLocation ? <><br/><span style="color:var(--text-4)">{birthLocation.location_name}</span></> : ""}</dd></>
+            {(bornDisplay || birthLocation) && (
+              <><dt>Born</dt><dd>{bornDisplay}{birthLocation ? <><br/><span style="color:var(--text-4)">{birthLocation.location_name}</span></> : ""}</dd></>
             )}
-            {saint.death_date && (
-              <><dt>Died</dt><dd>{saint.death_date}{deathLocation ? <><br/><span style="color:var(--text-4)">{deathLocation.location_name}</span></> : ""}</dd></>
+            {(diedDisplay || deathLocation) && (
+              <><dt>Died</dt><dd>{diedDisplay}{deathLocation ? <><br/><span style="color:var(--text-4)">{deathLocation.location_name}</span></> : ""}</dd></>
             )}
             {saint.beatification_date && (
               <><dt>Beatified</dt><dd>{saint.beatification_date}{saint.beatified_by ? <><br/><span style="color:var(--text-4)">{saint.beatified_by}</span></> : ""}</dd></>
@@ -341,11 +343,11 @@ const jsonLd = [
       <div class="card p-5 lg:sticky lg:top-24">
         <h2 class="eyebrow mb-5">Record</h2>
         <dl class="meta-grid">
-          {saint.birth_date && (
-            <><dt>Born</dt><dd>{saint.birth_date}{birthLocation ? <><br/><span style="color:var(--text-4)">{birthLocation.location_name}</span></> : ""}</dd></>
+          {(bornDisplay || birthLocation) && (
+            <><dt>Born</dt><dd>{bornDisplay}{birthLocation ? <><br/><span style="color:var(--text-4)">{birthLocation.location_name}</span></> : ""}</dd></>
           )}
-          {saint.death_date && (
-            <><dt>Died</dt><dd>{saint.death_date}{deathLocation ? <><br/><span style="color:var(--text-4)">{deathLocation.location_name}</span></> : ""}</dd></>
+          {(diedDisplay || deathLocation) && (
+            <><dt>Died</dt><dd>{diedDisplay}{deathLocation ? <><br/><span style="color:var(--text-4)">{deathLocation.location_name}</span></> : ""}</dd></>
           )}
           {saint.beatification_date && (
             <><dt>Beatified</dt><dd>{saint.beatification_date}{saint.beatified_by ? <><br/><span style="color:var(--text-4)">{saint.beatified_by}</span></> : ""}</dd></>

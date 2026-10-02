@@ -39,7 +39,9 @@ export function saintJsonLd(saint: {
   name: string;
   saint_name: string | null;
   birth_date: string | null;
+  birth_date_precision: string;
   death_date: string | null;
+  death_date_precision: string;
   nationality: string | null;
   image_url: string | null;
   wikipedia_url: string | null;
@@ -52,8 +54,10 @@ export function saintJsonLd(saint: {
     url: `${SITE_URL}/saints/${saint.slug}`,
     name: saint.name,
     alternateName: saint.saint_name && saint.saint_name !== saint.name ? saint.saint_name : undefined,
-    birthDate: isoDate(saint.birth_date),
-    deathDate: isoDate(saint.death_date),
+    // Only assert a date to search engines when it's actually known to the day —
+    // an approximate year/century shouldn't be published as a precise birthDate/deathDate.
+    birthDate: saint.birth_date_precision === "exact_day" ? isoDate(saint.birth_date) : undefined,
+    deathDate: saint.death_date_precision === "exact_day" ? isoDate(saint.death_date) : undefined,
     nationality: saint.nationality,
     image: saint.image_url,
     description: saint.description,

@@ -5,7 +5,8 @@ Slug:                josephine-bakhita
 Name:                Josephine Bakhita
 Saint Name:          Saint Josephine Bakhita
 Birth Name:          [Unknown — Bakhita forgot her given birth name as a result of the trauma of her childhood abduction. "Bakhita" ("fortunate" in Arabic) was a name given to her by her captors, not her birth name. No source recovers her original name.]
-Birth Date:          c. 1869 [APPROXIMATE — Bakhita never knew her own birth date or exact age; sources give the year as anywhere from 1868 to 1869. Treat as an estimate, not a verified date.]
+Birth Date:          1869-01-01 [stored per the `birth_date`/`birth_date_precision` placeholder convention — Bakhita never knew her own birth date or exact age; sources give the year as anywhere from 1868 to 1869. Precision: year. Displays as "c. 1869" via `formatApproxDate`.]
+Birth Date Precision:year
 Death Date:          February 8, 1947
 Feast Day:           February 8
 Feast Scope:         universal [optional memorial — entered the universal Roman Calendar with the third typical edition of the Roman Missal; also designated by Pope Francis in 2015 as the International Day of Prayer and Awareness against Human Trafficking]
@@ -50,15 +51,17 @@ RELATIONS (saint_relations table)
 =======================================================================
 SAINT LOCATIONS (saint_locations table)
 =======================================================================
-1. Location: Olgossa, Darfur, Sudan | Lat: [TO BE RESEARCHED — approximate village location could not be reliably geocoded] | Lng: | Type: birthplace
+1. Location: Olgossa (near Nyala), Darfur, Sudan | Lat: 12.048900 | Lng: 24.887800 | Type: birthplace [approximate — coordinates are Nyala city's own, used as a regional stand-in. English Wikipedia's main text places Olgossa "west of Nyala," but its own footnote (citing the source map) says a different page of the same source places it "about 40 km north-east of Nyala" — the two cited descriptions disagree on direction, and the only other landmark given, the 785m Jebel Agilerei, has no locatable coordinates of its own. Resolved 2026-10-02 per user decision to accept this imprecision rather than leave the birthplace unpinned.]
 2. Location: Venice, Italy | Lat: 45.4408 | Lng: 12.3155 | Type: other [where Bakhita first encountered the Canossian Sisters, was baptized, and entered religious life]
 3. Location: Church of the Holy Family, Schio, Italy | Lat: 45.7167 | Lng: 11.3667 | Type: death_place
 4. Location: Church of the Holy Family, Schio, Italy | Lat: 45.7167 | Lng: 11.3667 | Type: shrine [her relics are preserved in a glass-panelled urn beneath the main altar]
 
 =======================================================================
 
+Status (2026-10-02): Published. `published: true` in the DB, plus the May 18, 1992 pilgrims' address (vatican.va) added to saint_sources as a second beatification-related primary source. The canonization miracle (Eva da Costa Onishi) was published alongside it; the beatification miracle (Sister Silla) remains unpublished — see that miracle's note for why.
+
 Open questions before this can move past stub status:
 - Canonization Type of "virgin" vs. "confessor": the Church's own liturgical title for her is "Santa Giuseppina Bakhita, vergine," but the only two other female non-martyr saints drafted so far in this research set (Marguerite d'Youville) used "confessor." Confirm which convention this DB wants before final entry — d'Youville was a widow/mother so "virgin" would not fit her, but it may be that "confessor" was simply used there as a default rather than a deliberate choice.
 - Patronage: "Sudan" and "victims of human trafficking" are reported consistently across Catholic press and advocacy sources, but no single vatican.va document formally declaring these patronages was located — flagging in case the project wants a stricter sourcing bar for the `patronage` field than for biography text.
-- Birthplace coordinates for Olgossa, Darfur could not be confidently geocoded (the village is small and its exact modern location is disputed/unclear in available sources) — may need to leave lat/lng blank or use a Darfur regional centroid instead.
+- ~~Birthplace coordinates for Olgossa, Darfur could not be confidently geocoded~~ — resolved 2026-10-02, see saint_locations entry above.
 - Image is a period photograph of unknown authorship/date per Wikimedia Commons' own public-domain rationale (pre-1931 anonymous work) — worth a second look to confirm no better-attributed image exists before final entry.
