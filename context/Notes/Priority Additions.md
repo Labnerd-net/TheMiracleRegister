@@ -11,7 +11,7 @@ Research notes for in-progress cases live directly under the relevant `context/N
 |---|---|---|---|---|---|
 | 3  | Marguerite d'Youville | Oct 16 | 1990 | Founder of Grey Nuns; 2 miracles | Yes (stubs only) |
 | 4  | Katharine Drexel | Mar 3 | 2000 | Founder of Sisters of the Blessed Sacrament; 2 miracles | No |
-| 5  | Oscar Romero | Mar 24 | 2018 | Martyr, El Salvador; 1 miracle (beatification) | No |
+| 5  | Oscar Romero | Mar 24 | 2018 | Martyr, El Salvador; 1 miracle (canonization — beatification miracle dispensed) | Yes |
 | 6  | Frances Xavier Cabrini | Nov 13 | 1946 | First American citizen canonized; 2 miracles | No |
 | 7  | Justino Russolillo | — | 2011 | Founder of Vocationists; 1 miracle | Yes (stubs only) |
 | 8  | John of the Cross | Dec 14 | 1726 | Doctor of the Church; older canonization — documentation thinner | No |

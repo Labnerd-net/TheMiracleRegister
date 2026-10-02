@@ -106,7 +106,7 @@ export const FIXED_FEASTS: FixedFeastEntry[] = [
   { month: 3, day: 21, name: 'Saint Nicholas of Flüe', scope: 'martyrologium' },
   { month: 3, day: 22, name: 'Saint Nicholas Owen', scope: 'martyrologium' },
   { month: 3, day: 23, name: 'Saint Turibius of Mongrovejo' },
-  { month: 3, day: 24, name: 'Saint Oscar Arnulfo Romero' },
+  // { month: 3, day: 24, name: 'Saint Oscar Arnulfo Romero' }, // [in DB]
   { month: 3, day: 25, name: 'Annunciation of the Lord' },
   { month: 3, day: 30, name: 'Saint Ludovico of Casoria', scope: 'martyrologium' },
   { month: 3, day: 31, name: 'Saint Stephen of Mar Saba', scope: 'martyrologium' },

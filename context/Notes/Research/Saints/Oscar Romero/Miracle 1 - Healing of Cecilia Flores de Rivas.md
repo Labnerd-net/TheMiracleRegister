@@ -32,8 +32,8 @@ Timing Relative to Saint Death:        posthumous
 Location Name:       Hospital de Maternidad / Instituto Salvadoreño del Seguro Social (ISSS) general hospital
 Country:             El Salvador
 Region:               San Salvador (department)
-Latitude:            13.698
-Longitude:           -89.191
+Latitude:            13.703245
+Longitude:           -89.203654
 Recipient Name:      Cecilia Maribel Flores de Rivas
 Recipient Privacy:   public
 Recipient Age at Event: 35
@@ -67,5 +67,5 @@ Open questions before this can move past stub status:
 - **Exact date of the medical crisis and discharge** (September 4 and September 10, 2015 respectively) comes from secondary press (Telemetro, El Mundo) summarizing what appears to be a 2018 Church press presentation of Flores's case, not from a primary/official document. Treated here at "month" precision for that reason; could be tightened to exact_day if a more authoritative source is found.
 - **"Scientifically inexplicable" quote.** This phrase, widely repeated in English-language coverage of the March 2018 decree, was not found verbatim in the primary vatican.va/press.vatican.va bulletin text fetched during this research (which contains only the standard formulaic language naming the beatus, with no medical-board language at all). It may be a standard translation convention for the Latin/Italian decree formula used across many such decrees, or it may be from a Vatican press conference/briefing not captured in the bulletin itself. Needs a primary citation before being used as a direct quote on the site.
 - **Consulta Medica proceedings are not published**, consistent with the Vatican's practice for every canonization miracle (see `context/Notes/Source Requirements Standard.md`) — this is a permanent structural gap, not something to keep chasing.
-- **Hospital name/location precision.** Press accounts name both a "Hospital de Maternidad" (site of the cesarean) and the ISSS general hospital (where she was placed in an induced coma) — likely two different facilities in San Salvador involved at different stages of her treatment, but this wasn't fully disambiguated. The Latitude/Longitude given above is a San Salvador-area approximation, not a verified geocode of either specific facility.
+- **Hospital name/location precision.** Press accounts name both a "Hospital de Maternidad" (site of the cesarean, now renamed Hospital Nacional de la Mujer "Dra. María Isabel Rodríguez," ~13.6907/-89.2044) and the ISSS general hospital (where she was placed in an induced coma and recovered, ~13.7032/-89.2037) — two different facilities in San Salvador involved at different stages of treatment. The coordinates above (updated 2026-10-02 via OSM/Nominatim) now point to Hospital General ISSS, since that's where the organ-failure crisis and recovery took place; the original stored value had been a city-center fallback that coincidentally matched the cathedral's coordinates rather than either hospital.
 - Her husband's name is consistently given as Alejandro Rivas across sources; her son born during the crisis is named Luis Carlos; one source additionally names two older children (Emiliano and Rebeca) — not independently cross-checked.
