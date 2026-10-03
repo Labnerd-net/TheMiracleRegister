@@ -133,6 +133,16 @@ matter has coverage, the structured/searchable/filterable treatment doesn't.
   stories, founding/shrine legends, "meta-legends" about how a cultus forms
 - `Pillar 2 - Catholic Folk Traditions.md` — feast-day customs, liturgical-object traditions,
   food traditions, regional patronal festivals, naming traditions, weather folklore
+- `Pillar 4 - Mystical Phenomena from Saints' Lives.md` — bilocation, levitation, inedia,
+  luminosity, odor of sanctity. Confirmed 2026-10-03, prompted by a question about whether
+  Padre Pio's bilocation stories belong here rather than on the Register. Resolved as
+  **dual-site, not either/or**: `bilocation-of-padre-pio` is now published on the Register
+  (with a closing paragraph noting the evidence is eyewitness testimony only, unlike his
+  medically-examined stigmata) and will also get a narrative-voice version on the lore site.
+  General rule going forward: a mystical phenomenon can live on both sites if the Register's
+  write-up is explicit about testimony-only evidence rather than implying stigmata/
+  incorruptibility-level documentation. Flags weeping/bleeding statues and formally-recognized
+  private revelations as separate borderline cases still needing their own per-case decision.
 
 ## Possible future pillars (not started — need their own scope conversations)
 
