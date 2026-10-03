@@ -133,6 +133,9 @@ matter has coverage, the structured/searchable/filterable treatment doesn't.
   stories, founding/shrine legends, "meta-legends" about how a cultus forms
 - `Pillar 2 - Catholic Folk Traditions.md` — feast-day customs, liturgical-object traditions,
   food traditions, regional patronal festivals, naming traditions, weather folklore
+- **Pillar 3 — UNDECIDED, not started.** Biblical artifacts and legendary relics. See
+  "Possible future pillars" below for why it's not approved yet; skipped here deliberately,
+  not an oversight.
 - `Pillar 4 - Mystical Phenomena from Saints' Lives.md` — bilocation, levitation, inedia,
   luminosity, odor of sanctity. Confirmed 2026-10-03, prompted by a question about whether
   Padre Pio's bilocation stories belong here rather than on the Register. Resolved as
@@ -168,5 +171,21 @@ matter has coverage, the structured/searchable/filterable treatment doesn't.
 - How much, if any, overlap in tech stack / reused code vs. the Register (see prior
   conversation: Astro/Hono/Drizzle stack and saints-table shape are plausibly reusable; the
   sourcing/verification schema is not).
-- Name/branding — needs to read as clearly distinct from "The Miracle Register" so readers
-  don't confuse the two projects' credibility bars.
+
+## Name/branding (decided 2026-10-03)
+
+**Hallowed Tales** — domain `hallowedtales.com` registered 2026-10-03. Chosen over "The Halo
+Archive" (both `.com` variants of that name were already taken) and reads as clearly distinct
+from "The Miracle Register," avoiding credibility-bar confusion between the two sites.
+`.com` chosen deliberately over `.org`: `.org` signals institutional/reference authority, which
+fits the Register's evidentiary positioning but would work against this site's explicit
+non-skeptic, cultural-storytelling posture (see "Positioning & audience" above).
+
+## Repo (decided 2026-10-03)
+
+Separate repo, not a monorepo with TMR — keeps deploys, CI, and credibility-bar perception
+cleanly split. Reusable scaffolding (Astro/Hono/Drizzle setup, saints-table shape) gets copied
+over as a starting point when the repo is bootstrapped, then allowed to diverge, rather than
+shared live via a workspace.
+
+Repo: https://github.com/Labnerd-net/HallowedTales.git
