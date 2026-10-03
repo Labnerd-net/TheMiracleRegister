@@ -19,6 +19,9 @@ const [miracleRows, locationRows] = await Promise.all([
     location_lat: miracles.location_lat,
     location_lng: miracles.location_lng,
     location_name: miracles.location_name,
+    location_2_lat: miracles.location_2_lat,
+    location_2_lng: miracles.location_2_lng,
+    location_2_name: miracles.location_2_name,
     country: miracles.country,
   }).from(miracles).where(
     and(
@@ -53,6 +56,9 @@ const miracleData = miracleRows.map(m => ({
   lat: Number(m.location_lat),
   lng: Number(m.location_lng),
   label: m.location_name ?? m.country ?? "",
+  lat2: m.location_2_lat != null ? Number(m.location_2_lat) : null,
+  lng2: m.location_2_lng != null ? Number(m.location_2_lng) : null,
+  label2: m.location_2_name,
 }));
 
 const locationData = locationRows.map(l => ({
@@ -126,6 +132,7 @@ const locationData = locationRows.map(l => ({
           <li>
             <a href={`/miracles/${m.slug}`}>{m.title}</a>
             {m.label && <span class="loc-meta"> · {m.label}</span>}
+            {m.label2 && <span class="loc-meta"> and {m.label2}</span>}
           </li>
         ))}
       </ul>
@@ -177,15 +184,16 @@ const locationData = locationRows.map(l => ({
     miracleData.forEach(m => {
       const color = categoryColors[m.category] || "#8b4513";
       const isApparition = m.category === "apparition";
-      const marker = L.circleMarker([m.lat, m.lng], {
+      const typeLabel = m.type.replace(/_/g, " ");
+      const markerOpts = {
         radius: isApparition ? 8 : 6,
         fillColor: color,
         color: "#fff",
         weight: 2,
         opacity: 1,
         fillOpacity: 0.85,
-      });
-      const typeLabel = m.type.replace(/_/g, " ");
+      };
+      const marker = L.circleMarker([m.lat, m.lng], markerOpts);
       marker.bindPopup(
         `<strong><a href="/miracles/${escHtml(m.slug)}" style="color:inherit">${escHtml(m.title)}</a></strong><br>` +
         `<span style="font-size:0.75rem;color:#666">${escHtml(typeLabel)}${m.label ? " · " + escHtml(m.label) : ""}</span>`
@@ -193,6 +201,23 @@ const locationData = locationRows.map(l => ({
       marker.addTo(map);
       if (!miracleMarkersByCategory[m.category]) miracleMarkersByCategory[m.category] = [];
       miracleMarkersByCategory[m.category].push(marker);
+
+      if (m.lat2 != null && m.lng2 != null) {
+        const marker2 = L.circleMarker([m.lat2, m.lng2], markerOpts);
+        marker2.bindPopup(
+          `<strong><a href="/miracles/${escHtml(m.slug)}" style="color:inherit">${escHtml(m.title)}</a></strong><br>` +
+          `<span style="font-size:0.75rem;color:#666">${escHtml(typeLabel)}${m.label2 ? " · " + escHtml(m.label2) : ""}</span>`
+        );
+        marker2.addTo(map);
+        const link = L.polyline([[m.lat, m.lng], [m.lat2, m.lng2]], {
+          color,
+          weight: 2,
+          dashArray: "6,6",
+          opacity: 0.7,
+        });
+        link.addTo(map);
+        miracleMarkersByCategory[m.category].push(marker2, link);
+      }
     });
 
     function setVisible(markers, visible) {

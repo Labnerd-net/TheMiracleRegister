@@ -352,6 +352,10 @@ const jsonLd = [
         <section class="mb-9 pb-9 section-rule">
           <h2 class="eyebrow mb-4">{miracle.location_2_lat && miracle.location_2_lng ? "Locations" : "Location"}</h2>
           <div id="miracle-map" role="region" aria-label={`Map of ${[miracle.location_name, miracle.location_2_name].filter(Boolean).join(" and ") || "the miracle location"}`} style="height:320px;width:100%;background:var(--bg-elevated)"></div>
+          <ul style="margin-top:0.6rem;list-style:none;padding:0;font-family:var(--font-sans);font-size:0.78rem;color:var(--text-3)">
+            <li>{[miracle.location_name, miracle.country].filter(Boolean).join(", ")}</li>
+            {miracle.location_2_name && <li>{miracle.location_2_name}</li>}
+          </ul>
         </section>
       )}
 
@@ -425,6 +429,12 @@ const jsonLd = [
           const label2 = (locationName2 ? escHtml(locationName2) : null);
           const marker2 = L.marker([Number(lat2), Number(lng2)]).addTo(map);
           if (label2) marker2.bindPopup(label2);
+          L.polyline([[Number(lat), Number(lng)], [Number(lat2), Number(lng2)]], {
+            color: "#8b4513",
+            weight: 2,
+            dashArray: "6,6",
+            opacity: 0.7,
+          }).addTo(map);
           map.fitBounds([[Number(lat), Number(lng)], [Number(lat2), Number(lng2)]], { padding: [40, 40] });
         } else if (label) {
           marker.openPopup();
