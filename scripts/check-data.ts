@@ -41,6 +41,7 @@ const miracleSaints = (await sql`select miracle_id, saint_id from miracle_saints
 const relations = (await sql`select saint_id, related_saint_id, relation_type from saint_relations`) as Rec[];
 
 const slugRedirects = (await sql`select entity_type, old_slug, new_slug from slug_redirects`) as Rec[];
+const saintLocations = (await sql`select id, saint_id, location_name, lat, lng from saint_locations where lat is not null and lng is not null`) as Rec[];
 
 const saintById = new Map(saints.map((s) => [s.id, s]));
 
@@ -181,6 +182,29 @@ for (const m of miracles) {
     if (word.length > 1 && new RegExp(`\\b${word.replace(/[.*+?^${}()|[\]\\]/g, "\\$&")}\\b`, "i").test(text)) {
       err("privacy", `miracle "${m.slug}" (${m.recipient_privacy}) mentions "${word}" from the recipient name in title/synopsis/cure_details`);
     }
+  }
+}
+
+// 13. saint_locations: exact duplicate rows, and different landmarks sharing identical coordinates
+//     (the latter usually means a coordinate was copy-pasted instead of independently geocoded)
+const locKey = (r: Rec) => `${r.saint_id}:${r.location_name}:${r.lat}:${r.lng}`;
+const seenLocKeys = new Set<string>();
+const coordsBySaint = new Map<number, Map<string, string[]>>();
+for (const r of saintLocations) {
+  const key = locKey(r);
+  if (seenLocKeys.has(key)) err("saint-locations", `saint "${saintSlugById.get(r.saint_id)}" has a duplicate location row "${r.location_name}" (${r.lat}, ${r.lng})`);
+  seenLocKeys.add(key);
+
+  const coordKey = `${r.lat},${r.lng}`;
+  const byCoord = coordsBySaint.get(r.saint_id) ?? new Map<string, string[]>();
+  coordsBySaint.set(r.saint_id, byCoord);
+  const names = byCoord.get(coordKey) ?? [];
+  byCoord.set(coordKey, [...names, r.location_name]);
+}
+for (const [saintId, byCoord] of coordsBySaint) {
+  for (const [coordKey, names] of byCoord) {
+    const distinctNames = new Set(names);
+    if (distinctNames.size > 1) warn("saint-locations", `saint "${saintSlugById.get(saintId)}" has distinct locations (${[...distinctNames].join(", ")}) sharing identical coordinates (${coordKey}) - verify these weren't copy-pasted`);
   }
 }
 
