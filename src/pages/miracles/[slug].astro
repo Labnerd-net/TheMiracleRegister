@@ -28,6 +28,9 @@ const [miracle] = await db.select({
   location_name: miracles.location_name,
   location_lat: miracles.location_lat,
   location_lng: miracles.location_lng,
+  location_2_name: miracles.location_2_name,
+  location_2_lat: miracles.location_2_lat,
+  location_2_lng: miracles.location_2_lng,
   country: miracles.country,
   recipient_privacy: miracles.recipient_privacy,
   recipient_name: miracles.recipient_name,
@@ -347,8 +350,8 @@ const jsonLd = [
 
       {miracle.location_lat && miracle.location_lng && (
         <section class="mb-9 pb-9 section-rule">
-          <h2 class="eyebrow mb-4">Location</h2>
-          <div id="miracle-map" role="region" aria-label={`Map of ${miracle.location_name ?? "the miracle location"}`} style="height:320px;width:100%;background:var(--bg-elevated)"></div>
+          <h2 class="eyebrow mb-4">{miracle.location_2_lat && miracle.location_2_lng ? "Locations" : "Location"}</h2>
+          <div id="miracle-map" role="region" aria-label={`Map of ${[miracle.location_name, miracle.location_2_name].filter(Boolean).join(" and ") || "the miracle location"}`} style="height:320px;width:100%;background:var(--bg-elevated)"></div>
         </section>
       )}
 
@@ -401,6 +404,9 @@ const jsonLd = [
         lat: miracle.location_lat,
         lng: miracle.location_lng,
         locationName: miracle.location_name,
+        lat2: miracle.location_2_lat,
+        lng2: miracle.location_2_lng,
+        locationName2: miracle.location_2_name,
         country: miracle.country,
         maptilerKey: env.MAPTILER_API_KEY,
       }}>
@@ -414,7 +420,15 @@ const jsonLd = [
         }).addTo(map);
         const label = [locationName, country].filter(Boolean).map(escHtml).join(', ');
         const marker = L.marker([Number(lat), Number(lng)]).addTo(map);
-        if (label) marker.bindPopup(label).openPopup();
+        if (label) marker.bindPopup(label);
+        if (lat2 != null && lng2 != null) {
+          const label2 = (locationName2 ? escHtml(locationName2) : null);
+          const marker2 = L.marker([Number(lat2), Number(lng2)]).addTo(map);
+          if (label2) marker2.bindPopup(label2);
+          map.fitBounds([[Number(lat), Number(lng)], [Number(lat2), Number(lng2)]], { padding: [40, 40] });
+        } else if (label) {
+          marker.openPopup();
+        }
       </script>
     </>
   )}
