@@ -216,12 +216,19 @@ Mother Teresa
 == Saints Without Free-License Portrait on Commons ==
 
 Carlo Acutis
-  Status: No free-license portrait available on Wikimedia Commons
-  Options:
-  - Contact Associazione Amici di Carlo Acutis (www.carloacutis.com) for usage permission
-  - Use Vatican Media photos if available
-  - Use artistic depictions / icons (must verify copyright)
-  - Consider AI-generated saint icon in public domain style (US Copyright Office, 2025 ruling)
+  Status: RESOLVED (2026-10-03) - no free-license portrait exists on Wikimedia Commons or
+    elsewhere (Wikipedia's own infobox photo is a non-free fair-use file sourced from Crux,
+    author unknown, restricted to Wikipedia-only use - not reusable). Associazione Amici di
+    Carlo Acutis never replied to a direct permission request.
+  Decision: Used a photo from the Associazione's own public "download" gallery
+    (carloacutis.com/en/association/download), which hosts personal/family photos of Carlo
+    for public use. image_url set to a specific file from that gallery
+    (public/img/materiale/foto/prev/foto_017.jpg); saints.carlo-acutis also has a
+    saint_sources row (source_type: other) crediting the Associazione and linking to the
+    gallery page, so provenance is documented if a takedown is ever requested.
+  Note: this is an exception to the usual Commons-only convention for saint image_url -
+    acceptable here because the image is hosted directly by the rights-holding Associazione
+    on their own public gallery, not a third party.
 
 =======================================================================
 PUBLIC DOMAIN ART MUSEUM COLLECTIONS
