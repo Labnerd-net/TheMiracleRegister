@@ -138,7 +138,8 @@ saintsRoute.openapi(
         })
         .from(miracles)
         .innerJoin(miracleSaints, eq(miracles.id, miracleSaints.miracle_id))
-        .where(and(eq(miracleSaints.saint_id, saint.id), eq(miracles.published, true))),
+        .where(and(eq(miracleSaints.saint_id, saint.id), eq(miracles.published, true)))
+        .orderBy(asc(miracles.date_of_event)),
       db
         .select({
           id: saints.id,

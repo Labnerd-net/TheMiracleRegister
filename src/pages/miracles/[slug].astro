@@ -5,7 +5,7 @@ import { miracles, saints, miracleSaints, miracleSources, miracleImages } from "
 import { and, asc, eq, inArray, ne, sql } from "drizzle-orm";
 import { env } from "cloudflare:workers";
 import { renderMarkdown } from "../../lib/markdown";
-import { humanizeSnakeCase, ogDescription, approvalBadge, formatFeastDay } from "../../lib/format";
+import { humanizeSnakeCase, ogDescription, approvalBadge, formatFeastDay, sortSources } from "../../lib/format";
 import { thumbUrl } from "../../lib/image";
 import { redactRecipient } from "../../lib/privacy";
 import { isValidPreviewToken } from "../../lib/preview";
@@ -95,7 +95,7 @@ const [miracleSaintRows, sources, images, saintLinked, topicLinked] = await Prom
     source_type: miracleSources.source_type,
     accessed_date: miracleSources.accessed_date,
   }).from(miracleSources).where(eq(miracleSources.miracle_id, miracle.id))
-    .then(rows => [...rows].sort((a, b) => (a.source_type === "vatican_decree" ? -1 : b.source_type === "vatican_decree" ? 1 : 0))),
+    .then(sortSources),
   db.select({
     id: miracleImages.id,
     url: miracleImages.url,

@@ -12,6 +12,15 @@ export function humanizeSnakeCase(s: string): string {
   return s.replace(/_/g, " ").replace(/\b\w/g, c => c.toUpperCase());
 }
 
+const SOURCE_TYPE_ORDER = ["vatican_decree", "news_article", "book", "academic", "other"];
+
+/** Sorts sources by tier: Vatican decree, then news, then book/academic, then other. Stable within each type. */
+export function sortSources<T extends { source_type: string }>(sources: T[]): T[] {
+  return [...sources].sort((a, b) =>
+    SOURCE_TYPE_ORDER.indexOf(a.source_type) - SOURCE_TYPE_ORDER.indexOf(b.source_type)
+  );
+}
+
 export function escHtml(s: string | null | undefined): string {
   return String(s ?? "")
     .replace(/&/g, "&amp;")

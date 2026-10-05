@@ -5,7 +5,7 @@ import { saints, miracles, miracleSaints, saintRelations, saintSources, saintLoc
 import { asc, and, eq } from "drizzle-orm";
 import { env } from "cloudflare:workers";
 import { renderMarkdown } from "../../lib/markdown";
-import { humanizeSnakeCase, ogDescription, formatApproxDate } from "../../lib/format";
+import { humanizeSnakeCase, ogDescription, formatApproxDate, sortSources } from "../../lib/format";
 import { redactRecipient } from "../../lib/privacy";
 import { isValidPreviewToken } from "../../lib/preview";
 import { findSlugRedirect, CACHE_REDIRECT } from "../../lib/slugRedirect";
@@ -38,7 +38,7 @@ Astro.response.headers.set(
   isPreview ? "no-store" : CACHE_CONTENT
 );
 
-const [saintMiracles, relatedRows, sources, locations, patronageTerms] = await Promise.all([
+const [saintMiracles, relatedRows, rawSources, locations, patronageTerms] = await Promise.all([
   db.select({
     slug: miracles.slug,
     title: miracles.title,
@@ -60,7 +60,8 @@ const [saintMiracles, relatedRows, sources, locations, patronageTerms] = await P
     .innerJoin(miracleSaints, eq(miracles.id, miracleSaints.miracle_id))
     .where(isPreview
       ? eq(miracleSaints.saint_id, saint.id)
-      : and(eq(miracleSaints.saint_id, saint.id), eq(miracles.published, true))),
+      : and(eq(miracleSaints.saint_id, saint.id), eq(miracles.published, true)))
+    .orderBy(asc(miracles.date_of_event)),
   db.select({
     id: saints.id, slug: saints.slug, name: saints.name,
     relation_type: saintRelations.relation_type,
@@ -85,6 +86,8 @@ const [saintMiracles, relatedRows, sources, locations, patronageTerms] = await P
   }).from(saintLocations).where(eq(saintLocations.saint_id, saint.id)),
   saint.patronage?.length ? getPatronageTerms(db) : Promise.resolve([]),
 ]);
+
+const sources = sortSources(rawSources);
 
 const linkedPatronage = new Set(patronageTerms.filter(hasPatronagePage).map((t) => t.slug));
 const patronageLinks = (saint.patronage ?? []).map((raw) => {
