@@ -238,7 +238,7 @@ export const FIXED_FEASTS: FixedFeastEntry[] = [
   { month: 7, day: 24, name: 'Saint Sharbel Makhluf' },
   { month: 7, day: 25, name: 'Saint James, Apostle' },
   { month: 7, day: 26, name: 'Saints Joachim and Anne' },
-  { month: 7, day: 27, name: 'Saint Titus Brandsma', scope: 'martyrologium' },
+  // { month: 7, day: 27, name: 'Saint Titus Brandsma', scope: 'martyrologium' }, // [in DB]
   { month: 7, day: 28, name: 'Blessed Stanley Rother', scope: 'us' },
   { month: 7, day: 29, name: 'Saints Martha, Mary and Lazarus' },
   { month: 7, day: 30, name: 'Saint Peter Chrysologus' },
