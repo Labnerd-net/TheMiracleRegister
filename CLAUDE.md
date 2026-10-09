@@ -230,11 +230,13 @@ Multiple geocoded locations per saint for map display. Managed via the saint edi
 
 Static TypeScript arrays covering all fixed and movable Catholic feast days for the `/calendar` page. Not in the DB — this is a build-time reference layer.
 
-- **`FIXED_FEASTS`** — 280+ fixed-date entries with `month`, `day`, `name`, and optional `scope` (`universal`, `us`, `national`, `martyrologium`, `diocesan`, `observance`) and `scopeDetail`.
-- **`MOVABLE_FEASTS`** — 8 Easter-relative entries with `easterOffset` matching the values used in `saints.feast_easter_offset` and `src/lib/easter.ts`.
+**This file is generated — do not edit it by hand.** The master list is `../catholic-research/Shared/feast-days.json` (prose research in `Shared/Catholic Feast Day Reference.md`). From `../catholic-research`, run `npm run feasts:sync -- tmr` and commit the result here via PR; `-- tmr --check` reports drift. It is a vendored copy, not a runtime dependency.
+
+- **`FIXED_FEASTS`** — 360+ fixed-date entries with `month`, `day`, `name`, and optional `scope` (`universal`, `us`, `national`, `martyrologium`, `diocesan`, `observance`) and `scopeDetail`.
+- **`MOVABLE_FEASTS`** — 9 Easter-relative entries with `easterOffset` matching the values used in `saints.feast_easter_offset` and `src/lib/easter.ts`.
 - Helper functions: `getFixedFeasts(month, day)` and `getMovableFeast(easterOffset)`.
 
-**`// [in DB]` convention:** When a saint is added to the DB, their corresponding entry in `FIXED_FEASTS` must be commented out with a `// [in DB]` marker. This prevents the calendar from showing both a linked saint card (from the DB) and a duplicate plain-text feast entry (from the static array). When a saint is removed from the DB, uncomment their entry. Do not delete `// [in DB]` entries — they preserve the feast day data for future use.
+**`// [in DB]` convention:** When a saint is added to the DB, their corresponding entry in `FIXED_FEASTS` must be commented out with a `// [in DB]` marker so the calendar doesn't show both a linked saint card and a duplicate plain-text feast. This is now driven by the overlay `../catholic-research/Shared/overlays/tmr-in-db.json`, **not** by editing this file: add or remove the entry in the overlay, then re-run the sync. Entries stay in the master list either way. After publishing or unpublishing saints, run `npm run -s feasts:check-overlay` in `../catholic-research` (read-only; reports missing, stale and near-duplicate entries).
 
 ---
 
