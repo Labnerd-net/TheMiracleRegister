@@ -10,6 +10,9 @@ _None_
 
 ## History
 
+### Lint Setup (backlog #28, lint half)
+Added ESLint 9 (flat config, typescript-eslint, eslint-plugin-astro), `npm run lint` and a CI Lint step after Typecheck. Fixed the trivial findings: two unused imports in `src/api/routes/saints.ts`, a dead `currentPage` variable in `miracles/index.astro`, two `var`s in `map.astro`. `no-explicit-any` is an error in `src/` and a warning in `scripts/`, `tests/` and the browse-page client scripts (15 warnings, tracked by #24). Prettier was deliberately not added: the code is not Prettier-formatted and a mass reformat would conflict with the planned refactors (#21, #23-#25); revisit after they land. Verified: lint (0 errors), tests, build; confirmed the rule errors on `any` in `src/`.
+
 ### Test Coverage Gaps (backlog #22)
 Added tests for the untested guard modules: `src/middleware.ts` (security headers, preview noindex/no-referrer), `src/pages/sitemap.xml.ts` (unpublished excluded, thin topic/theme pages omitted), `src/lib/format.ts` (`formatApproxDate` at every precision, helpers), and every `check-data` rule. To make the last one testable, the rules moved from `scripts/check-data.ts` into `scripts/check-data-core.ts` (`runChecks(sql, opts)`); the CLI is a thin wrapper and the rule logic is unchanged. Tests run `runChecks` against a per-file PGlite database through a small tagged-template adapter. Verified: 236 tests and build pass; mutating two rules made their tests fail. Not verified: `npm run check:data` against Neon (no `DATABASE_URL` in the session); `npm run typecheck` has errors in untouched files from missing local `Env` vars. Not done: page-level published-filter tests (need Playwright, #29); the `[in DB]` check against the real `feastDays.ts` and `slug-redirect` against real rename triggers use synthetic input.
 

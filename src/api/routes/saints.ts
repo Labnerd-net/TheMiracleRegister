@@ -5,8 +5,6 @@ import { miracleSaints, miracles, saintRelations, saints } from "../../db/schema
 import { canonizationStage } from "../../db/schema/enums";
 import { SAINT_THEMES } from "../../db/topics";
 import {
-  MiracleListItemSchema,
-  RelatedSaintSchema,
   SaintDetailSchema,
   PaginationQuerySchema,
   SaintListItemSchema,

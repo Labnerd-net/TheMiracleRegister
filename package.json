@@ -15,7 +15,8 @@
     "types": "wrangler types",
     "check:data": "tsx scripts/check-data.ts",
     "list:content": "tsx scripts/list-content.ts",
-    "typecheck": "astro check"
+    "typecheck": "astro check",
+    "lint": "eslint ."
   },
   "dependencies": {
     "@astrojs/cloudflare": "^13.6.0",
@@ -36,10 +37,15 @@
   "devDependencies": {
     "@astrojs/check": "^0.9.10",
     "@electric-sql/pglite": "^0.5.8",
+    "@eslint/js": "^10.0.1",
     "dotenv": "^16.5.0",
     "drizzle-kit": "^0.31.1",
+    "eslint": "^10.12.0",
+    "eslint-plugin-astro": "^3.2.1",
+    "globals": "^17.13.0",
     "tsx": "^4.19.3",
     "typescript": "^5.8.3",
+    "typescript-eslint": "^8.71.1",
     "vitest": "^3.2.2"
   }
 }
