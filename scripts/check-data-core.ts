@@ -4,16 +4,18 @@ import { readFileSync } from "node:fs";
 import { MIRACLE_TOPICS, SAINT_THEMES, PATRONAGE_GROUPS } from "../src/db/topics";
 import { patronageKey, patronageSlug } from "../src/lib/patronage";
 
+// A database row: columns are read dynamically across many rules, so values stay untyped.
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+export type Rec = Record<string, any>;
+
 // A tagged-template query runner that resolves to rows (the shape of neon()).
-export type Sql = (strings: TemplateStringsArray, ...values: unknown[]) => Promise<Record<string, any>[]>;
+export type Sql = (strings: TemplateStringsArray, ...values: unknown[]) => Promise<Rec[]>;
 
 export type CheckResult = { errors: string[]; warnings: string[]; saintCount: number; miracleCount: number };
 
 const SLUG_RE = /^[a-z0-9]+(-[a-z0-9]+)*$/;
 const HTTP_RE = /^https?:\/\//i;
 const DAYS_IN_MONTH = [31, 29, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31];
-
-type Rec = Record<string, any>;
 
 export async function runChecks(sql: Sql, opts: { feastSrc?: string } = {}): Promise<CheckResult> {
 const errors: string[] = [];

@@ -1,6 +1,7 @@
 import app from "../../src/api/index";
 
 // Loose shape for asserting on JSON responses
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
 export type Body = Record<string, any>;
 export const json = async (res: Response) => (await res.json()) as Body;
 

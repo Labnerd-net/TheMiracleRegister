@@ -285,6 +285,8 @@ function buildUrl(p: number) {
 </Base>
 
 <script>
+import type { Meta, MiracleListItem } from "../../api/schemas";
+
 (function () {
   const form = document.getElementById("filter-form") as HTMLFormElement | null;
   const listEl = document.getElementById("miracles-list");
@@ -340,8 +342,8 @@ function buildUrl(p: number) {
     return qs ? `/miracles?${qs}` : "/miracles";
   }
 
-  function renderCard(m: any): string {
-    const saintNames = (m.saints as any[]).map((s) => esc(s.name)).join(", ");
+  function renderCard(m: MiracleListItem): string {
+    const saintNames = m.saints.map((s) => esc(s.name)).join(", ");
     const typeLabel = esc(m.type?.replace(/_/g, " "));
     const meta = [
       saintNames ? `<span style="font-family:var(--font-sans);font-size:0.68rem;font-weight:600;color:var(--color-accent)">${saintNames}</span>` : "",
@@ -386,7 +388,7 @@ function buildUrl(p: number) {
     </div>`;
   }
 
-  function renderPagination(meta: any, fd: FormData): string {
+  function renderPagination(meta: Meta, fd: FormData): string {
     const { page, limit, total } = meta;
     const totalPages = Math.max(1, Math.ceil(total / limit));
     if (totalPages <= 1) return "";
@@ -406,7 +408,7 @@ function buildUrl(p: number) {
     try {
       const res = await fetch(buildApiUrl(fd, page));
       if (!res.ok) throw new Error(String(res.status));
-      const json = await res.json() as any;
+      const json = await res.json() as { data: MiracleListItem[]; meta: Meta };
       const { data, meta } = json;
 
       const countText = `${meta.total} miracle${meta.total !== 1 ? "s" : ""} recorded`;
@@ -416,7 +418,7 @@ function buildUrl(p: number) {
 
       listEl!.innerHTML = data.length === 0
         ? `<p class="empty-state">No miracles match the selected filters.</p>`
-        : (data as any[]).map(renderCard).join("");
+        : data.map(renderCard).join("");
 
       const paginationHtml = renderPagination(meta, fd);
       paginationEl!.innerHTML = paginationHtml;

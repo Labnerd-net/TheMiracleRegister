@@ -1,7 +1,8 @@
 import { afterAll, beforeAll, beforeEach, describe, expect, it } from "vitest";
 import { sql as dsql } from "drizzle-orm";
 import * as schema from "../src/db/schema";
-import { runChecks, type Sql } from "../scripts/check-data-core";
+import type { PGlite } from "@electric-sql/pglite";
+import { runChecks, type Rec, type Sql } from "../scripts/check-data-core";
 import { createTestDb, type TestDb } from "./helpers/testDb";
 
 let db: TestDb;
@@ -14,7 +15,7 @@ const FEAST_SRC = "";
 
 // Adapts PGlite to the tagged-template runner the checks expect (the queries have no parameters).
 const runner: Sql = async (strings) =>
-  ((await (db as any).$client.query(strings.join(""))).rows as Record<string, any>[]);
+  (await (db as unknown as { $client: PGlite }).$client.query<Rec>(strings.join(""))).rows;
 const check = () => runChecks(runner, { feastSrc: FEAST_SRC });
 
 beforeAll(async () => {

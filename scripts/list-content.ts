@@ -13,6 +13,8 @@ const sql = neon(url);
 
 const unpublishedOnly = process.argv.includes("--unpublished");
 
+// Database row with dynamically read columns.
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
 type Rec = Record<string, any>;
 const saints = (await sql`select slug, name, published from saints order by name`) as Rec[];
 const miracles = (await sql`select slug, title, published from miracles order by title`) as Rec[];

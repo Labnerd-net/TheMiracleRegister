@@ -10,6 +10,9 @@ _None_
 
 ## History
 
+### Fix no-explicit-any warnings (follow-up to backlog #28)
+Cleared all 15 `no-explicit-any` warnings and removed the warn-level overrides from `eslint.config.js`, so the rule is an error everywhere. The two browse-page client scripts (`miracles/index.astro`, `saints/index.astro`) now type API payloads with `MiracleListItem`/`SaintListItem`/`Meta`, new `z.infer` type exports in `src/api/schemas.ts` imported type-only (this was the typing half of backlog #24; the duplicated render logic is still there). Three loose row/body types (`Rec` in `check-data-core.ts` and `list-content.ts`, `Body` in `tests/helpers/apiApp.ts`) keep `any` with a justified `eslint-disable-next-line`; `tests/check-data.test.ts` now types the PGlite client instead. Verified: lint 0 problems, typecheck 0 errors (run with the CI placeholder `.dev.vars`), 236 tests, build. Not verified: the `/miracles` and `/saints` client-side filtering in a browser.
+
 ### Lint Setup (backlog #28, lint half)
 Added ESLint 9 (flat config, typescript-eslint, eslint-plugin-astro), `npm run lint` and a CI Lint step after Typecheck. Fixed the trivial findings: two unused imports in `src/api/routes/saints.ts`, a dead `currentPage` variable in `miracles/index.astro`, two `var`s in `map.astro`. `no-explicit-any` is an error in `src/` and a warning in `scripts/`, `tests/` and the browse-page client scripts (15 warnings, tracked by #24). Prettier was deliberately not added: the code is not Prettier-formatted and a mass reformat would conflict with the planned refactors (#21, #23-#25); revisit after they land. Verified: lint (0 errors), tests, build; confirmed the rule errors on `any` in `src/`.
 
