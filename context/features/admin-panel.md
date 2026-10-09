@@ -1,3 +1,5 @@
+> **OBSOLETE:** The admin panel was built and later removed. Data is now edited directly in the database (see CLAUDE.md, Database). Kept for history only.
+
 # Plan: Admin Panel
 
 ## Context

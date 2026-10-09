@@ -71,7 +71,6 @@ _None identified._
 - **#28 Prettier**: ESLint is set up (`npm run lint`, CI step). Prettier is not; the code is not Prettier-formatted, so adding it means a repo-wide reformat. Fix: add Prettier and reformat once the refactors (#21, #23-#25) land, to avoid merge conflicts.
 - **#29 Playwright**: CLAUDE.md lists Playwright but none exists. Fix: build a smoke suite (home, saint page, miracle filters with and without JS, search, preview token, redirects, lightbox) or update the docs.
 - **#30 SEO structured data**: Add `BreadcrumbList` on detail/browse pages, `WebSite` + `SearchAction` on home, `ItemList` on browse pages. Paginated `?page=N` URLs are noindex via the query-string rule; make sure page 1 links reach the content.
-- **#31 Migration and environment safety**: The only Neon branch is production and `npm run db:migrate` hits it directly. Fix: confirmation wrapper or a dev branch; add `.nvmrc`/`engines` (CI uses Node 24).
 - **#32 Browse and search UX**: Add clear-filters and active-filter chips, sort options (event date, recently added) and per-facet counts on miracles/index.astro; confirm filters work fully without JS. On search.astro add result highlighting, saint/miracle grouping, and a notice when `meta.capped` is true.
 
 ### Low
@@ -81,7 +80,6 @@ _None identified._
 - **#38 src/pages/404.astro**: All-inline styles, no search box or random-saint link. Fix: restyle, add both, ensure 404 status and `noindex`.
 - **#39 External images**: Wikimedia URLs are stored directly (`thumbUrl` in `src/lib/image.ts`). Fix: optional HEAD check for `image_url`/`miracle_images.url` in `check:data` and an `onerror` placeholder.
 - **#40 Print and share**: Add a `@media print` stylesheet and a copy-permalink button on miracle pages.
-- **#41 Documentation drift**: CLAUDE.md still mentions admin-form editing of saint_locations/sources, Docker Compose (does not exist), a lint step (does not exist), and an incomplete endpoint table (`/types`, filters). `context/features/admin-panel.md` is obsolete. Fix: refresh the docs and archive the file.
 - **#42 Scheduled data check**: Run `check:data` on a schedule. It needs a read-only DB credential, which conflicts with the "CI holds no secrets" design; alternatively run it from the sibling `catholic-research` repo.
 
 ---
@@ -115,6 +113,6 @@ _None identified._
 | Security | 0 | 2 | 3 | 5 |
 | Bugs | 3 | 1 | 4 | 8 |
 | Performance | 0 | 2 | 5 | 7 |
-| Improvements & Refactors | 1 | 8 | 8 | 17 |
+| Improvements & Refactors | 1 | 7 | 7 | 15 |
 | Feature Ideas | 2 | 5 | 5 | 12 |
-| **Total** | **6** | **18** | **25** | **49** |
+| **Total** | **6** | **17** | **24** | **47** |
