@@ -109,7 +109,8 @@ Vatican's Consulta Medica findings are sealed inside the cause's Positio
 (Dicastery for the Causes of Saints' own archive, Rome); Lourdes' Bureau des
 Constatations Médicales / CMIL hold their files at the Sanctuary, accessible
 only with special episcopal authorization (confirmed via the one academic
-retrospective that got in — see `Source Requirements Standard.md`). This is
+retrospective that got in — see
+`../catholic-research/TheMiracleRegister/Notes/Source Requirements Standard.md`). This is
 also why no Vatican decree or homily ever names a miracle's recipient — the
 document that would is exactly the sealed one. Tier 2 corroboration is
 accepted as the standard's ceiling, not a stand-in for a primary record that

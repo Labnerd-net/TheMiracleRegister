@@ -263,7 +263,9 @@ All routes under `/api/v1/`. Hono + `@hono/zod-openapi` — OpenAPI spec generat
 - Schema changes: `npm run db:generate` → `npm run db:migrate`
 - Data integrity: `npm run check:data` (`scripts/check-data.ts`) is a read-only check — slug format, topics/themes vs `src/db/topics.ts`, published records have sources, intercessory miracles have a published saint, `saint_relations` mirrored, feast field validity, `// [in DB]` feast entries match a saint, URL schemes, restricted recipient names not leaking into free text, duplicate/copy-pasted `saint_locations` coordinates, and no em dashes in free-text columns (biography_short, synopsis, cure_details, etc. — see style note below). Run it after any data change; exits 1 on errors.
 - **Publishing workflow (decided 2026-10-09):** research and drafting happens in the sibling
-  `catholic-research` repo (`../catholic-research/TheMiracleRegister/Notes/`), not here. Claude
+  `catholic-research` repo (`../catholic-research/TheMiracleRegister/Notes/`,
+  `github.com/Labnerd-net/catholic-research` — if the sibling-directory path doesn't resolve,
+  clone from there), not here. Claude
   writes finished saint/miracle records directly into the production Neon DB from that research
   — no file hand-off step, no admin panel in between. New records are always inserted with
   `published: false`. `npm run check:data` must run immediately after every write, before the
@@ -303,15 +305,20 @@ All routes under `/api/v1/`. Hono + `@hono/zod-openapi` — OpenAPI spec generat
 ## Research Notes
 
 Claude handles both coding and research for this project — there are no separate AI handoffs.
-As of 2026-10-09, in-progress research and drafting happens in the sibling `catholic-research`
-repo (see Database → Publishing workflow), not here — `context/Notes/` is a reference snapshot
-of research already incorporated, not the live drafting location going forward.
+As of 2026-10-09, research and drafting happens in the sibling `catholic-research` repo (see
+Database → Publishing workflow), not here. This repo's own `context/Notes/` no longer holds
+research content — it was removed (2026-10-09) now that `catholic-research` is the single
+source of truth and can be kept private, unlike this repo (public, for portfolio/resume
+purposes). `context/Notes/` still holds this repo's own QA output (`proofreading-*.md`,
+`source-verification-*.md`, `source-coverage-gaps.md`, `dead-links-archive.md`, written by the
+`proofread`/`verify-sources` skills auditing already-*live* DB content) — that stays here since
+it's a report on this repo's own data, not drafting material.
 
 ---
 
 ## Research Sources
 
-Full source list, tiering, and per-category research links: `context/Notes/Research Resources.md`. Sourcing standard (what counts as Tier 1/Tier 2, minimum bar per `content_tier`): `.claude/skills/verify-sources/SKILL.md`.
+Full source list, tiering, and per-category research links: `../catholic-research/TheMiracleRegister/Notes/Research Resources.md`. Sourcing standard (what counts as Tier 1/Tier 2, minimum bar per `content_tier`): `.claude/skills/verify-sources/SKILL.md`, which cites specifics from `../catholic-research/TheMiracleRegister/Notes/Source Requirements Standard.md`.
 
 ---
 
