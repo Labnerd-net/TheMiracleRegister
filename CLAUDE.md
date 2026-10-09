@@ -38,6 +38,18 @@ A data-driven website documenting miracles attributed to Catholic saints. Focuse
 - Public-facing website with REST API from day one
 - No admin panel — data is edited directly in the database (Neon console or SQL). Unpublished records can be previewed at `/saints/<slug>?preview=<PREVIEW_TOKEN>` and `/miracles/<slug>?preview=<PREVIEW_TOKEN>`.
 - **Style:** use plain hyphens (`-`), never em dashes (`—`), in page copy, UI strings, and any text written into the database (biographies, synopses, cure details, etc.). `check:data` flags em dashes in DB free-text columns, but it can't catch source files — check your own output before writing copy or SQL.
+- **No self-reference (decided):** free-text DB fields that read as narrative content —
+  `saints.biography_short`, `miracles.synopsis`, `miracles.cure_details`,
+  `miracles.medical_diagnosis`, `miracles.vatican_medical_board_verdict` — must never refer to
+  "this site," "this database," "this register," "this page," or any other site-structure
+  framing. A saint or miracle record gets quoted, screenshotted, or cited out of context (a
+  journalist pulling one case, a shared link), and anything that only makes sense next to the
+  site around it breaks on the way out. Referencing *other* records (another saint, another
+  miracle by slug/name) or naming a sibling site (HallowedTales, UnhallowedTales) is fine — the
+  rule is about not leaning on this site's own scaffolding to make sense. Same rule as
+  HallowedTales' "Stories stand alone" and UnhallowedTales' "No site self-reference." Audited
+  2026-10-09: no violations found in current data. UI copy/static pages (About, Verification
+  methodology) are exempt — those pages are inherently about the site.
 
 ---
 

@@ -235,6 +235,32 @@ for (const m of miracles) {
   if (m.vatican_medical_board_verdict?.includes(EM_DASH)) err("em-dash", `miracle "${m.slug}" vatican_medical_board_verdict contains an em dash`);
 }
 
+// 13. no self-reference in narrative free text (records must stand alone if quoted/shared out of context)
+const SELF_REF_PATTERNS = [
+  /this site/i,
+  /this page/i,
+  /this (database|register|catalog)/i,
+  /on this (site|register|page)/i,
+  /our (site|database|register)/i,
+  /the register(?!ed|ation|ing)/i,
+  /themiracleregister/i,
+];
+const findSelfRef = (text: string | null | undefined) => {
+  if (!text) return null;
+  for (const p of SELF_REF_PATTERNS) if (p.test(text)) return p;
+  return null;
+};
+for (const s of saints) {
+  const hit = findSelfRef(s.biography_short);
+  if (hit) err("self-reference", `saint "${s.slug}" biography_short matches ${hit}`);
+}
+for (const m of miracles) {
+  for (const field of ["synopsis", "cure_details", "medical_diagnosis", "vatican_medical_board_verdict"] as const) {
+    const hit = findSelfRef(m[field]);
+    if (hit) err("self-reference", `miracle "${m.slug}" ${field} matches ${hit}`);
+  }
+}
+
 console.log(`Checked ${saints.length} saints, ${miracles.length} miracles.`);
 report("ERRORS", errors);
 report("WARNINGS", warnings);
