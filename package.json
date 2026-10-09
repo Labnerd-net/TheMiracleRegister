@@ -3,13 +3,16 @@
   "version": "0.0.1",
   "private": true,
   "type": "module",
+  "engines": {
+    "node": ">=22.13.0"
+  },
   "scripts": {
     "dev": "astro dev",
     "build": "astro build",
     "preview": "astro preview",
     "test": "vitest run",
     "db:generate": "drizzle-kit generate",
-    "db:migrate": "drizzle-kit migrate",
+    "db:migrate": "tsx scripts/db-migrate.ts",
     "deploy": "astro build && wrangler deploy -c dist/server/wrangler.json",
     "db:studio": "drizzle-kit studio",
     "types": "wrangler types",

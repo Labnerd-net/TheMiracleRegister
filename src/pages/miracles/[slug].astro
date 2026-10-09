@@ -248,7 +248,7 @@ const jsonLd = [
   {images[0] && (
     <div class="max-w-6xl mx-auto px-4 sm:px-6 pb-8">
       <div class="rounded overflow-hidden" style="background:var(--bg-elevated)">
-        <img src={thumbUrl(images[0].url, 960)!} alt="" class="w-full object-contain" style="aspect-ratio:4/3;max-height:480px" />
+        <img src={thumbUrl(images[0].url, 960)!} alt={images[0].caption ?? miracle.title} class="w-full object-contain" style="aspect-ratio:4/3;max-height:480px" />
         {(images[0].caption || images[0].source_attribution) && (
           <div style="padding:0.5rem 0.75rem;font-size:0.75rem;color:var(--text-3)">
             {images[0].caption && <span>{images[0].caption}</span>}

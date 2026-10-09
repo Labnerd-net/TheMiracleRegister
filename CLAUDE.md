@@ -16,12 +16,12 @@ A data-driven website documenting miracles attributed to Catholic saints. Focuse
 | Frontend | Astro with Cloudflare adapter |
 | API layer | Hono (mounted as Cloudflare Worker at `/api/v1/*`) |
 | Hosting | Cloudflare Workers (with static assets) |
-| Database | Neon (serverless Postgres) — dev branch for local, prod branch for production |
+| Database | Neon (serverless Postgres) — a single branch, which is production (see Database) |
 | ORM | Drizzle (`drizzle-orm/neon-http`) |
 | Validation + types + OpenAPI | Zod schemas via `@hono/zod-openapi` — single source of truth |
-| Testing | Vitest (unit), Playwright (e2e) |
-| CI/CD | GitHub Actions (typecheck → lint → test → deploy) |
-| Local dev | Docker Compose (Astro + Postgres + Wrangler) |
+| Testing | Vitest (unit); Playwright (e2e) is planned, not set up |
+| CI/CD | GitHub Actions check (types → typecheck → lint → test → build); deploys via Cloudflare Workers Builds |
+| Local dev | `npm run dev` (Astro) against the Neon database in `.env`; Docker Compose was planned but never built. Node version in `.nvmrc` |
 
 **Architecture split:**
 - Astro renders all public-facing pages (SSR)
@@ -217,7 +217,7 @@ Mirrors `miracle_sources` for saint biography sources.
 
 ### `saint_locations`
 
-Multiple geocoded locations per saint for map display. Managed via the saint edit page (add/delete pattern matching sources).
+Multiple geocoded locations per saint for map display. Managed directly in the database, like all other data.
 
 | Column | Type | Notes |
 |---|---|---|
@@ -247,13 +247,14 @@ All routes under `/api/v1/`. Hono + `@hono/zod-openapi` — OpenAPI spec generat
 
 | Method | Path | Description |
 |---|---|---|
-| GET | `/api/v1/saints` | List all saints |
+| GET | `/api/v1/saints` | List saints (params: canonization_stage, theme, religious_order, nationality, page, limit) |
 | GET | `/api/v1/saints/:slug` | Single saint with related saints and linked miracles |
-| GET | `/api/v1/miracles` | Search/filter (params: saint_id, type, country, year_from, year_to, page, limit) |
-| GET | `/api/v1/miracles/:slug` | Single miracle with full details and sources |
+| GET | `/api/v1/miracles` | Search/filter (params: saint_id, type, topic, category, country, year_from, year_to, used_for_beatification, used_for_canonization, approval_authority, page, limit) |
+| GET | `/api/v1/miracles/:slug` | Single miracle with full details, sources and images |
 | GET | `/api/v1/types` | List miracle types |
 | GET | `/api/v1/metadata` | Canonical filter options: types, categories, approval authorities, topics, themes |
-| GET | `/api/v1/search` | Full-text search |
+| GET | `/api/v1/search` | Text search (params: q, topic, page, limit) |
+| GET | `/api/v1/doc` | Generated OpenAPI spec |
 
 **Response envelope:** `{ data, meta (pagination), error }`
 
@@ -263,7 +264,7 @@ All routes under `/api/v1/`. Hono + `@hono/zod-openapi` — OpenAPI spec generat
 
 - The single Neon branch is **production** (`br-proud-block-aptdevzb`). `DATABASE_URL` in `.env` points to it directly.
 - Data is managed directly in the database (Neon console or SQL; the admin panel was removed). There is no seed script. Always run `npm run check:data` after a change — it replaces the validation the admin forms used to do. `updated_at` is bumped by a DB trigger (`drizzle/0030_updated_at_trigger.sql`), so raw edits are safe.
-- Schema changes: `npm run db:generate` → `npm run db:migrate`
+- Schema changes: `npm run db:generate` → `npm run db:migrate`. Because the only branch is production, `db:migrate` (`scripts/db-migrate.ts`) prints the target host and database and asks for confirmation before applying; pass `-- --yes` to skip the prompt in scripted use.
 - Data integrity: `npm run check:data` (`scripts/check-data.ts`) is a read-only check — slug format, topics/themes vs `src/db/topics.ts`, published records have sources, intercessory miracles have a published saint, `saint_relations` mirrored, feast field validity, `// [in DB]` feast entries match a saint, URL schemes, restricted recipient names not leaking into free text, duplicate/copy-pasted `saint_locations` coordinates, and no em dashes in free-text columns (biography_short, synopsis, cure_details, etc. — see style note below). Run it after any data change; exits 1 on errors.
 - **Publishing workflow (decided 2026-10-09):** research and drafting happens in the sibling
   `catholic-research` repo (`../catholic-research/TheMiracleRegister/Notes/`,
@@ -292,7 +293,7 @@ All routes under `/api/v1/`. Hono + `@hono/zod-openapi` — OpenAPI spec generat
 
 ## Implementation Order
 
-1. Drizzle schema + Neon setup (dev branch + prod branch)
+1. Drizzle schema + Neon setup
 2. Astro + Cloudflare Workers base
 3. Hono API layer wired up with `@hono/zod-openapi`
 4. Static pages rendering from DB
@@ -301,7 +302,7 @@ All routes under `/api/v1/`. Hono + `@hono/zod-openapi` — OpenAPI spec generat
 7. Vitest unit tests
 8. Playwright e2e tests
 9. GitHub Actions CI/CD
-10. Docker Compose for local dev (last — only after everything works)
+10. ~~Docker Compose for local dev~~ (never built; `npm run dev` against the Neon database is the local workflow)
 
 ---
 
@@ -333,7 +334,7 @@ Full source list, tiering, and per-category research links: `../catholic-researc
 - **`miracle_sources` table over JSON blob:** Enables filtering and full-text search on sources
 - **`saint_relations` join table over self-FK:** Handles pairs and groups, extensible
 - **Zod as single source of truth:** Drives runtime validation, TypeScript types, and OpenAPI spec
-- **Neon dev branch:** Separate dev and prod database branches to avoid schema accidents
+- **Neon branches:** A separate dev branch was planned to avoid schema accidents but only the production branch exists; `npm run db:migrate` confirms the target instead. Creating a dev branch and pointing local `.env` at it would remove the risk entirely.
 - **`MIRACLE_TOPICS` vs `SAINT_THEMES`:** Topics tag miracle records with any descriptive dimension of the event — recipient role, vocation, life circumstance, or context (e.g. `religious-life`, `veterans`, `mothers`, `conversion`). Themes tag saint records with spiritual/devotional character. Medical conditions belong in `medical_diagnosis`; miracle phenomena belong in the `type` enum.
 - **`noted_for` removed:** Was redundant with `themes` (structured) and `biography_short` (narrative). Saints have two tag fields: `patronage` (formal Catholic designation) and `themes` (standardized spiritual tags).
 - **Carlo Acutis' Eucharistic miracle exhibition** (miracolieucaristici.org) is the primary source for individual Eucharistic miracle records (`type: eucharistic`) — but replicating its full 153-case catalog as original core content is out of scope. Cite it as a source; don't rebuild it.

@@ -93,7 +93,7 @@ const current = (href: string) => {
             </svg>
           </a>
 
-          <button id="theme-toggle" aria-label="Toggle dark mode" class="theme-toggle">
+          <button id="theme-toggle" aria-label="Dark mode" aria-pressed="false" class="theme-toggle">
             <span class="theme-icon-light">☀</span>
             <span class="theme-icon-dark">☽</span>
           </button>
@@ -174,7 +174,12 @@ const current = (href: string) => {
     }
   });
 
-  document.getElementById('theme-toggle')?.addEventListener('click', () => {
+  const themeToggle = document.getElementById('theme-toggle');
+  const syncThemeToggle = () => {
+    themeToggle?.setAttribute('aria-pressed', String(document.documentElement.getAttribute('data-theme') === 'dark'));
+  };
+  syncThemeToggle();
+  themeToggle?.addEventListener('click', () => {
     const html = document.documentElement;
     const isDark = html.getAttribute('data-theme') === 'dark';
     if (isDark) {
@@ -184,6 +189,7 @@ const current = (href: string) => {
       html.setAttribute('data-theme', 'dark');
       localStorage.setItem('theme', 'dark');
     }
+    syncThemeToggle();
   });
 </script>
 </html>

@@ -201,7 +201,7 @@ function buildUrl(p: number) {
             ? <a href={buildUrl(page - 1)} class="pagination-btn">← Previous</a>
             : <span class="pagination-btn disabled" aria-disabled="true">← Previous</span>
           }
-          <span class="pagination-info" aria-current="page">Page {page} of {totalPages}</span>
+          <span class="pagination-info">Page {page} of {totalPages}</span>
           {page < totalPages
             ? <a href={buildUrl(page + 1)} class="pagination-btn">Next →</a>
             : <span class="pagination-btn disabled" aria-disabled="true">Next →</span>

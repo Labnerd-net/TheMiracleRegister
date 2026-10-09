@@ -31,10 +31,10 @@ _None identified._
 - **#8 src/api/schemas.ts (205-228), miracles/index.astro (22-27)**: Numeric params have no upper bounds (`saint_id=99999999999`, `year_from=1e12`, `page=1e19`); Postgres overflow produces an unhandled 500. The page uses `parseInt(...) || undefined` with the same flaw. Fix: add `.max()` bounds (years, page, saint_id) and clamp in the page; reject `year_from > year_to`.
 
 ### Medium
-- **#9 src/api/index.ts**: No `app.onError`; DB errors return Hono's plain-text 500, breaking the `{data, meta, error}` envelope. Fix: add `onError` returning the JSON envelope plus a zod `defaultHook` for 400s; use or remove the unused `invalid` in `src/api/errors.ts`.
+- **#9 src/api/index.ts**: No `app.onError`; DB errors return Hono's plain-text 500, breaking the `{data, meta, error}` envelope. Fix: add `onError` returning the JSON envelope plus a zod `defaultHook` for 400s; use the same 400 helper as #10.
 
 ### Low
-- **#10 src/api/routes/search.ts (26-28)**: Missing `q` and `topic` returns 200 with `error: "Provide q or topic"`. Fix: return 400 via `invalid`.
+- **#10 src/api/routes/search.ts (26-28)**: Missing `q` and `topic` returns 200 with `error: "Provide q or topic"`. Fix: return 400 (add a 400 helper next to `notFound` in `src/api/errors.ts`).
 - **#11 src/api/schemas.ts (212-213)**: `used_for_beatification`/`used_for_canonization` are free strings where only `"1"` counts as true; other values silently mean no filter. Fix: `z.enum(["1"])` or boolean coercion, and document it.
 - **#12 src/api/routes/saints.ts (19)**: `nationality` uses exact `eq`, `religious_order` uses `ilike '%..%'`. Fix: pick one and document it.
 - **#13 src/api/routes/search.ts (31-36), src/lib/search.ts**: Pagination is in memory over up to 100 saints + 100 miracles with no `ORDER BY`; `meta.total` caps at 200 and results are arbitrary. With both `q` and `topic` results are unioned, not intersected (uncertain if intended). Fix: add deterministic ordering, push limit/offset and a true count into SQL, decide union vs AND.
@@ -66,26 +66,20 @@ _None identified._
 
 ### Medium
 - **#23 createDb repetition**: `createDb(env.DATABASE_URL)` is repeated in 17 page files plus API routes. Fix: set `context.locals.db` in `src/middleware.ts` and type it in `src/env.d.ts`.
-- **#24 miracles/index.astro (637 lines), saints/index.astro (469 lines)**: Client scripts hand-build HTML strings (`escHtml`/`esc` re-implemented, `any` payloads at miracles/index 344, 345, 390, 411, 421 and saints/index 259, 279, 299, 309), duplicating server rendering. Pagination HTML is also duplicated (~lines 397-399). Fix: type payloads with `z.infer` from `src/api/schemas.ts`, share one render path (HTML fragment endpoint or shared module in `src/scripts/`). Prerequisite for a strict CSP.
+- **#24 miracles/index.astro (637 lines), saints/index.astro (469 lines)**: Client scripts hand-build HTML strings (`escHtml`/`esc` re-implemented; payloads are now typed via `z.infer`), duplicating server rendering. Pagination HTML is also duplicated (~lines 397-399). Fix: share one render path (HTML fragment endpoint or shared module in `src/scripts/`). Prerequisite for a strict CSP.
 - **#25 miracles/[slug].astro (611 lines)**: Mixes ~9 queries with Leaflet and lightbox inline scripts. Leaflet bootstrap, `escHtml` and tile setup are copied into saints/[slug] and map.astro; the Leaflet version and SRI hash appear in 6 places. Fix: extract `getMiracleDetail(db, slug, isPreview)` into `src/lib/queries/miracles.ts`, a `MiracleMap`/`LeafletMap` component or `src/scripts/map.ts`, and one version/SRI constant.
-- **#26 Accessibility items**: miracles/[slug].astro:251 hero image has `alt=""` (use `images[0].caption ?? miracle.title`); pagination puts `aria-current="page"` on a non-link span; lightbox (`#lb-img`) needs verification of `role="dialog"`, `aria-modal`, focus trap, Esc and focus return; theme toggle should expose its state. Run the existing `context/specs/accessibility-pass.md`.
-- **#27 Color contrast**: `--text-4: #666664` and `--text-5: #6c6c6a` used at 0.65-0.7rem on tinted backgrounds are borderline. Fix: axe/Lighthouse pass in both themes.
 - **#28 Prettier**: ESLint is set up (`npm run lint`, CI step). Prettier is not; the code is not Prettier-formatted, so adding it means a repo-wide reformat. Fix: add Prettier and reformat once the refactors (#21, #23-#25) land, to avoid merge conflicts.
 - **#29 Playwright**: CLAUDE.md lists Playwright but none exists. Fix: build a smoke suite (home, saint page, miracle filters with and without JS, search, preview token, redirects, lightbox) or update the docs.
 - **#30 SEO structured data**: Add `BreadcrumbList` on detail/browse pages, `WebSite` + `SearchAction` on home, `ItemList` on browse pages. Paginated `?page=N` URLs are noindex via the query-string rule; make sure page 1 links reach the content.
-- **#31 Migration and environment safety**: The only Neon branch is production and `npm run db:migrate` hits it directly. Fix: confirmation wrapper or a dev branch; add `.nvmrc`/`engines` (CI uses Node 24).
 - **#32 Browse and search UX**: Add clear-filters and active-filter chips, sort options (event date, recently added) and per-facet counts on miracles/index.astro; confirm filters work fully without JS. On search.astro add result highlighting, saint/miracle grouping, and a notice when `meta.capped` is true.
 
 ### Low
-- **#33 Dead code**: `RelatedSaintSchema` imported but unused in src/api/routes/saints.ts (9); `invalid` in src/api/errors.ts unused (unless #9/#10 use it).
-- **#34 src/api/routes/miracles.ts (168-169), saints.ts (167-168)**: `data as z.infer<...>` casts bypass type checking and can hide drift (`recipient_age_approximate` is not exposed). Fix: type the 404 helper return so the casts are unnecessary.
 - **#35 Inline styles**: Widespread `style="..."` (miracles/[slug].astro, 404.astro and others) despite Tailwind/global.css. Fix: shared classes or components for eyebrow labels and repeated font combos.
 - **#36 Page cleanup**: `slug!` assertions repeated, `fmt` is a pointless alias for `humanizeSnakeCase`, stray blank lines at miracles/[slug].astro 142-143. Fix: guard once, use the helper directly.
 - **#37 saints/[slug].astro (104-116)**: `sourceTypeLabel` and `relationTypeLabel` are local constants. Fix: move to `src/lib/format.ts` keyed by the enums in `src/db/schema/enums.ts`.
 - **#38 src/pages/404.astro**: All-inline styles, no search box or random-saint link. Fix: restyle, add both, ensure 404 status and `noindex`.
 - **#39 External images**: Wikimedia URLs are stored directly (`thumbUrl` in `src/lib/image.ts`). Fix: optional HEAD check for `image_url`/`miracle_images.url` in `check:data` and an `onerror` placeholder.
 - **#40 Print and share**: Add a `@media print` stylesheet and a copy-permalink button on miracle pages.
-- **#41 Documentation drift**: CLAUDE.md still mentions admin-form editing of saint_locations/sources, Docker Compose (does not exist), a lint step (does not exist), and an incomplete endpoint table (`/types`, filters). `context/features/admin-panel.md` is obsolete. Fix: refresh the docs and archive the file.
 - **#42 Scheduled data check**: Run `check:data` on a schedule. It needs a read-only DB credential, which conflicts with the "CI holds no secrets" design; alternatively run it from the sibling `catholic-research` repo.
 
 ---
@@ -119,6 +113,6 @@ _None identified._
 | Security | 0 | 2 | 3 | 5 |
 | Bugs | 3 | 1 | 4 | 8 |
 | Performance | 0 | 2 | 5 | 7 |
-| Improvements & Refactors | 1 | 10 | 10 | 21 |
+| Improvements & Refactors | 1 | 7 | 7 | 15 |
 | Feature Ideas | 2 | 5 | 5 | 12 |
-| **Total** | **6** | **20** | **27** | **53** |
+| **Total** | **6** | **17** | **24** | **47** |
