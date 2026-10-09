@@ -31,10 +31,10 @@ _None identified._
 - **#8 src/api/schemas.ts (205-228), miracles/index.astro (22-27)**: Numeric params have no upper bounds (`saint_id=99999999999`, `year_from=1e12`, `page=1e19`); Postgres overflow produces an unhandled 500. The page uses `parseInt(...) || undefined` with the same flaw. Fix: add `.max()` bounds (years, page, saint_id) and clamp in the page; reject `year_from > year_to`.
 
 ### Medium
-- **#9 src/api/index.ts**: No `app.onError`; DB errors return Hono's plain-text 500, breaking the `{data, meta, error}` envelope. Fix: add `onError` returning the JSON envelope plus a zod `defaultHook` for 400s; use or remove the unused `invalid` in `src/api/errors.ts`.
+- **#9 src/api/index.ts**: No `app.onError`; DB errors return Hono's plain-text 500, breaking the `{data, meta, error}` envelope. Fix: add `onError` returning the JSON envelope plus a zod `defaultHook` for 400s; use the same 400 helper as #10.
 
 ### Low
-- **#10 src/api/routes/search.ts (26-28)**: Missing `q` and `topic` returns 200 with `error: "Provide q or topic"`. Fix: return 400 via `invalid`.
+- **#10 src/api/routes/search.ts (26-28)**: Missing `q` and `topic` returns 200 with `error: "Provide q or topic"`. Fix: return 400 (add a 400 helper next to `notFound` in `src/api/errors.ts`).
 - **#11 src/api/schemas.ts (212-213)**: `used_for_beatification`/`used_for_canonization` are free strings where only `"1"` counts as true; other values silently mean no filter. Fix: `z.enum(["1"])` or boolean coercion, and document it.
 - **#12 src/api/routes/saints.ts (19)**: `nationality` uses exact `eq`, `religious_order` uses `ilike '%..%'`. Fix: pick one and document it.
 - **#13 src/api/routes/search.ts (31-36), src/lib/search.ts**: Pagination is in memory over up to 100 saints + 100 miracles with no `ORDER BY`; `meta.total` caps at 200 and results are arbitrary. With both `q` and `topic` results are unioned, not intersected (uncertain if intended). Fix: add deterministic ordering, push limit/offset and a true count into SQL, decide union vs AND.
@@ -75,8 +75,6 @@ _None identified._
 - **#32 Browse and search UX**: Add clear-filters and active-filter chips, sort options (event date, recently added) and per-facet counts on miracles/index.astro; confirm filters work fully without JS. On search.astro add result highlighting, saint/miracle grouping, and a notice when `meta.capped` is true.
 
 ### Low
-- **#33 Dead code**: `RelatedSaintSchema` imported but unused in src/api/routes/saints.ts (9); `invalid` in src/api/errors.ts unused (unless #9/#10 use it).
-- **#34 src/api/routes/miracles.ts (168-169), saints.ts (167-168)**: `data as z.infer<...>` casts bypass type checking and can hide drift (`recipient_age_approximate` is not exposed). Fix: type the 404 helper return so the casts are unnecessary.
 - **#35 Inline styles**: Widespread `style="..."` (miracles/[slug].astro, 404.astro and others) despite Tailwind/global.css. Fix: shared classes or components for eyebrow labels and repeated font combos.
 - **#36 Page cleanup**: `slug!` assertions repeated, `fmt` is a pointless alias for `humanizeSnakeCase`, stray blank lines at miracles/[slug].astro 142-143. Fix: guard once, use the helper directly.
 - **#37 saints/[slug].astro (104-116)**: `sourceTypeLabel` and `relationTypeLabel` are local constants. Fix: move to `src/lib/format.ts` keyed by the enums in `src/db/schema/enums.ts`.
@@ -117,6 +115,6 @@ _None identified._
 | Security | 0 | 2 | 3 | 5 |
 | Bugs | 3 | 1 | 4 | 8 |
 | Performance | 0 | 2 | 5 | 7 |
-| Improvements & Refactors | 1 | 8 | 10 | 19 |
+| Improvements & Refactors | 1 | 8 | 8 | 17 |
 | Feature Ideas | 2 | 5 | 5 | 12 |
-| **Total** | **6** | **18** | **27** | **51** |
+| **Total** | **6** | **18** | **25** | **49** |

@@ -165,8 +165,7 @@ miraclesRoute.openapi(
 
     const data = { ...miracle, recipient_name: redactRecipient(miracle.recipient_name, miracle.recipient_privacy), saints: saintsByMiracleId.get(miracle.id) ?? [], sources, images };
 
-    // cast needed: Hono can't reconcile 200/404 response union types at compile time
-    return c.json({ data: data as z.infer<typeof MiracleDetailSchema>, meta: null, error: null }, 200);
+    return c.json({ data, meta: null, error: null }, 200);
   }
 );
 

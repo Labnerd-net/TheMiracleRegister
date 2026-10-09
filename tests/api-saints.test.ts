@@ -1,4 +1,5 @@
 import { describe, expect, it } from "vitest";
+import { MiracleListItemSchema } from "../src/api/schemas";
 import { createRequester, json } from "./helpers/apiApp";
 import { setupDb } from "./helpers/testDb";
 
@@ -50,6 +51,11 @@ describe("GET /api/v1/saints/:slug", () => {
     expect(error).toBeNull();
     expect(data).toMatchObject({ slug: "saint-alpha", name: "Saint Alpha", canonization_stage: "saint" });
     expect(data.miracles.map((m: { slug: string }) => m.slug).sort()).toEqual(["m-first-name", "m-healing-ann"]);
+  });
+
+  it("returns miracles in the shape the OpenAPI schema declares", async () => {
+    const { data } = await json(await req("/api/v1/saints/saint-alpha"));
+    for (const m of data.miracles) expect(MiracleListItemSchema.safeParse(m).success, m.slug).toBe(true);
   });
 
   it("lists related saints but not unpublished ones", async () => {

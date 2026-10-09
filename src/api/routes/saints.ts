@@ -133,6 +133,9 @@ saintsRoute.openapi(
           recipient_privacy: miracles.recipient_privacy,
           was_medically_verified: miracles.was_medically_verified,
           approval_authority: miracles.approval_authority,
+          cure_details: miracles.cure_details,
+          used_for_beatification: miracles.used_for_beatification,
+          used_for_canonization: miracles.used_for_canonization,
         })
         .from(miracles)
         .innerJoin(miracleSaints, eq(miracles.id, miracleSaints.miracle_id))
@@ -162,8 +165,7 @@ saintsRoute.openapi(
       })),
     };
 
-    // cast needed: Hono can't reconcile 200/404 response union types at compile time
-    return c.json({ data: data as z.infer<typeof SaintDetailSchema>, meta: null, error: null }, 200);
+    return c.json({ data, meta: null, error: null }, 200);
   }
 );
 
