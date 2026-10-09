@@ -10,6 +10,9 @@ _None_
 
 ## History
 
+### Accessibility and contrast fixes (backlog #26, #27)
+Re-audited before changing anything. Already fine: the lightbox is a native `<dialog>` opened with `showModal()` (role, modal, focus trap, Esc, focus return to the opener). Fixed: the miracle hero image had `alt=""` and now uses the caption or the miracle title; the client-rendered pagination in `miracles/index.astro` and `saints/index.astro` no longer puts `aria-current="page"` on a non-link span; the theme toggle is now "Dark mode" with `aria-pressed` kept in sync. Contrast (#27): computed WCAG ratios for every text token against every background token in both themes; the lowest is 4.67:1 (gold and text-5 on tinted backgrounds), so nothing is below AA and no CSS changed. Added `tests/contrast.test.ts` (parses `global.css`, asserts >= 4.5:1; mutating `--text-5` made it fail) so the palette can't regress. Verified: lint, 309 tests, build. Not verified: a screen reader pass or Lighthouse/axe (no browser run), and text over images or the map tiles.
+
 ### Fix no-explicit-any warnings (follow-up to backlog #28)
 Cleared all 15 `no-explicit-any` warnings and removed the warn-level overrides from `eslint.config.js`, so the rule is an error everywhere. The two browse-page client scripts (`miracles/index.astro`, `saints/index.astro`) now type API payloads with `MiracleListItem`/`SaintListItem`/`Meta`, new `z.infer` type exports in `src/api/schemas.ts` imported type-only (this was the typing half of backlog #24; the duplicated render logic is still there). Three loose row/body types (`Rec` in `check-data-core.ts` and `list-content.ts`, `Body` in `tests/helpers/apiApp.ts`) keep `any` with a justified `eslint-disable-next-line`; `tests/check-data.test.ts` now types the PGlite client instead. Verified: lint 0 problems, typecheck 0 errors (run with the CI placeholder `.dev.vars`), 236 tests, build. Not verified: the `/miracles` and `/saints` client-side filtering in a browser.
 

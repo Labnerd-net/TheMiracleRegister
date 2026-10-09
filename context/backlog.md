@@ -66,10 +66,8 @@ _None identified._
 
 ### Medium
 - **#23 createDb repetition**: `createDb(env.DATABASE_URL)` is repeated in 17 page files plus API routes. Fix: set `context.locals.db` in `src/middleware.ts` and type it in `src/env.d.ts`.
-- **#24 miracles/index.astro (637 lines), saints/index.astro (469 lines)**: Client scripts hand-build HTML strings (`escHtml`/`esc` re-implemented, `any` payloads at miracles/index 344, 345, 390, 411, 421 and saints/index 259, 279, 299, 309), duplicating server rendering. Pagination HTML is also duplicated (~lines 397-399). Fix: type payloads with `z.infer` from `src/api/schemas.ts`, share one render path (HTML fragment endpoint or shared module in `src/scripts/`). Prerequisite for a strict CSP.
+- **#24 miracles/index.astro (637 lines), saints/index.astro (469 lines)**: Client scripts hand-build HTML strings (`escHtml`/`esc` re-implemented; payloads are now typed via `z.infer`), duplicating server rendering. Pagination HTML is also duplicated (~lines 397-399). Fix: share one render path (HTML fragment endpoint or shared module in `src/scripts/`). Prerequisite for a strict CSP.
 - **#25 miracles/[slug].astro (611 lines)**: Mixes ~9 queries with Leaflet and lightbox inline scripts. Leaflet bootstrap, `escHtml` and tile setup are copied into saints/[slug] and map.astro; the Leaflet version and SRI hash appear in 6 places. Fix: extract `getMiracleDetail(db, slug, isPreview)` into `src/lib/queries/miracles.ts`, a `MiracleMap`/`LeafletMap` component or `src/scripts/map.ts`, and one version/SRI constant.
-- **#26 Accessibility items**: miracles/[slug].astro:251 hero image has `alt=""` (use `images[0].caption ?? miracle.title`); pagination puts `aria-current="page"` on a non-link span; lightbox (`#lb-img`) needs verification of `role="dialog"`, `aria-modal`, focus trap, Esc and focus return; theme toggle should expose its state. Run the existing `context/specs/accessibility-pass.md`.
-- **#27 Color contrast**: `--text-4: #666664` and `--text-5: #6c6c6a` used at 0.65-0.7rem on tinted backgrounds are borderline. Fix: axe/Lighthouse pass in both themes.
 - **#28 Prettier**: ESLint is set up (`npm run lint`, CI step). Prettier is not; the code is not Prettier-formatted, so adding it means a repo-wide reformat. Fix: add Prettier and reformat once the refactors (#21, #23-#25) land, to avoid merge conflicts.
 - **#29 Playwright**: CLAUDE.md lists Playwright but none exists. Fix: build a smoke suite (home, saint page, miracle filters with and without JS, search, preview token, redirects, lightbox) or update the docs.
 - **#30 SEO structured data**: Add `BreadcrumbList` on detail/browse pages, `WebSite` + `SearchAction` on home, `ItemList` on browse pages. Paginated `?page=N` URLs are noindex via the query-string rule; make sure page 1 links reach the content.
@@ -119,6 +117,6 @@ _None identified._
 | Security | 0 | 2 | 3 | 5 |
 | Bugs | 3 | 1 | 4 | 8 |
 | Performance | 0 | 2 | 5 | 7 |
-| Improvements & Refactors | 1 | 10 | 10 | 21 |
+| Improvements & Refactors | 1 | 8 | 10 | 19 |
 | Feature Ideas | 2 | 5 | 5 | 12 |
-| **Total** | **6** | **20** | **27** | **53** |
+| **Total** | **6** | **18** | **27** | **51** |
