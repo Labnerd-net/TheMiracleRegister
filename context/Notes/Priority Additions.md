@@ -9,7 +9,7 @@ Research notes for in-progress cases live directly under the relevant `context/N
 
 | Priority | Saint | Feast Day | Canonized | Notes | Research Notes |
 |---|---|---|---|---|---|
-| 3  | Marguerite d'Youville | Oct 16 | 1990 | Founder of Grey Nuns; 2 miracles | Yes (stubs only) |
+| 3  | Marguerite d'Youville | Oct 16 | 1990 | Founder of Grey Nuns; 1 confirmed miracle (canonization, leukemia/Duffin case) - second miracle unconfirmed, see Miracle 2 note | Yes - Biography/Data/Miracle 1 fully sourced; Miracle 2 flagged as unconfirmed (archival research needed, not published) |
 | 4  | Katharine Drexel | Mar 3 | 2000 | Founder of Sisters of the Blessed Sacrament; 2 miracles | No |
 | 5  | Oscar Romero | Mar 24 | 2018 | Martyr, El Salvador; 1 miracle (canonization — beatification miracle dispensed) | Yes |
 | 6  | Frances Xavier Cabrini | Nov 13 | 1946 | First American citizen canonized; 2 miracles | No |

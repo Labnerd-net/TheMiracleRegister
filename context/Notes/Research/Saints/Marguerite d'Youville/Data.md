@@ -23,7 +23,7 @@ Canonized By:        Pope John Paul II
 Canonization Type:   confessor
 Canonization Stage:  saint
 Patronage:           Widows, difficult marriages, Grey Nuns, Catholic hospitals
-Themes:              charity, poverty, nursing, founders, canada
+Themes:              hope, perseverance, saints-of-everyday-life
 Biography Short:     See Biography note
 Image URL:           [TO BE ADDED]
 Wikipedia URL:       https://en.wikipedia.org/wiki/Marguerite_d%27Youville
@@ -33,7 +33,11 @@ Wikipedia URL:       https://en.wikipedia.org/wiki/Marguerite_d%27Youville
 SAINT SOURCES (saint_sources table)
 =======================================================================
 
-[TO BE ADDED]
+1. URL: https://www.vatican.va/news_services/liturgy/saints/ns_lit_doc_19901209_youville_en.html | Title: Marie Marguerite d'Youville (1701-1771) - biography | Type: vatican_decree
+2. URL: https://www.biographi.ca/en/bio/dufrost_de_lajemmerais_marie_marguerite_4E.html | Title: Dictionary of Canadian Biography - "Dufrost de Lajemmerais, Marie-Marguerite (Youville)" | Type: academic
+3. URL: https://sgm.qc.ca/en/saint-marguerite-dyouville/ | Title: Saint Marguerite d'Youville (Grey Nuns of Montreal official history) | Type: other
+
+Do NOT add Wikipedia as a saint_sources row - wikipedia_url field already covers it.
 
 =======================================================================
 RELATIONS (saint_relations table)
