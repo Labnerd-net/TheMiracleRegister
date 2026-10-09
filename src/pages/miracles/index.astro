@@ -297,7 +297,6 @@ function buildUrl(p: number) {
   const reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
 
   let debounceTimer = 0;
-  let currentPage = 1;
 
   function esc(str: string | null | undefined): string {
     return String(str ?? "").replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;").replace(/"/g, "&quot;");
@@ -402,7 +401,6 @@ function buildUrl(p: number) {
 
   async function applyFilters(page: number = 1) {
     const fd = new FormData(form!);
-    currentPage = page;
     listEl!.classList.add("loading");
     listEl!.setAttribute("aria-busy", "true");
     try {

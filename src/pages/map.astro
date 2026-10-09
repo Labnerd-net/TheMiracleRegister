@@ -267,11 +267,11 @@ const locationData = locationRows.map(l => ({
   </script>
   <script is:inline>
     document.getElementById('skip-map')?.addEventListener('click', function (e) {
-      var d = document.getElementById('locations-list');
+      const d = document.getElementById('locations-list');
       if (!d) return;
       e.preventDefault();
       d.open = true;
-      var sum = d.querySelector('summary');
+      const sum = d.querySelector('summary');
       if (sum) sum.focus();
     });
   </script>
