@@ -38,6 +38,7 @@ A data-driven website documenting miracles attributed to Catholic saints. Focuse
 - Public-facing website with REST API from day one
 - No admin panel — data is edited directly in the database (Neon console or SQL). Unpublished records can be previewed at `/saints/<slug>?preview=<PREVIEW_TOKEN>` and `/miracles/<slug>?preview=<PREVIEW_TOKEN>`.
 - **Style:** use plain hyphens (`-`), never em dashes (`—`), in page copy, UI strings, and any text written into the database (biographies, synopses, cure details, etc.). `check:data` flags em dashes in DB free-text columns, but it can't catch source files — check your own output before writing copy or SQL.
+- **"Saint," spelled out (decided 2026-10-09):** never abbreviate to "St." or "St" — in saint titles ("Saint John Paul II") and in saint-named institutions/places alike ("Saint Peter's Square," "Saint Louis," "Saint Agnes Hospital"). Applies to all free-text DB columns and to `saint_locations.location_name`. Normalized across existing data on 2026-10-09; `check:data` does not enforce this (it only catches em dashes) — check your own output before writing new copy or SQL.
 - **No self-reference (decided):** free-text DB fields that read as narrative content —
   `saints.biography_short`, `miracles.synopsis`, `miracles.cure_details`,
   `miracles.medical_diagnosis`, `miracles.vatican_medical_board_verdict` — must never refer to
