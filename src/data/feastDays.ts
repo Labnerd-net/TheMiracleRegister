@@ -416,6 +416,7 @@ export const FIXED_FEASTS: FixedFeastEntry[] = [
 
 // Days from Easter Sunday; negative = before Easter, positive = after
 export const MOVABLE_FEASTS: MovableFeastEntry[] = [
+  { easterOffset: -7, name: 'Palm Sunday' },
   { easterOffset: 7, name: 'Divine Mercy Sunday' },
   { easterOffset: 39, name: 'Ascension of the Lord' },
   { easterOffset: 49, name: 'Pentecost Sunday' },
