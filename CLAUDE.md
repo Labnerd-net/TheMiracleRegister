@@ -262,6 +262,18 @@ All routes under `/api/v1/`. Hono + `@hono/zod-openapi` — OpenAPI spec generat
 - Data is managed directly in the database (Neon console or SQL; the admin panel was removed). There is no seed script. Always run `npm run check:data` after a change — it replaces the validation the admin forms used to do. `updated_at` is bumped by a DB trigger (`drizzle/0030_updated_at_trigger.sql`), so raw edits are safe.
 - Schema changes: `npm run db:generate` → `npm run db:migrate`
 - Data integrity: `npm run check:data` (`scripts/check-data.ts`) is a read-only check — slug format, topics/themes vs `src/db/topics.ts`, published records have sources, intercessory miracles have a published saint, `saint_relations` mirrored, feast field validity, `// [in DB]` feast entries match a saint, URL schemes, restricted recipient names not leaking into free text, duplicate/copy-pasted `saint_locations` coordinates, and no em dashes in free-text columns (biography_short, synopsis, cure_details, etc. — see style note below). Run it after any data change; exits 1 on errors.
+- **Publishing workflow (decided 2026-10-09):** research and drafting happens in the sibling
+  `catholic-research` repo (`../catholic-research/TheMiracleRegister/Notes/`), not here. Claude
+  writes finished saint/miracle records directly into the production Neon DB from that research
+  — no file hand-off step, no admin panel in between. New records are always inserted with
+  `published: false`. `npm run check:data` must run immediately after every write, before the
+  record is reported as ready — this stands in for the PR-review gate the file-based sibling
+  sites (HallowedTales, UnhallowedTales) get from git, since direct DB writes have no git
+  history to review or revert. A human reviews the draft via
+  `/saints/<slug>?preview=<PREVIEW_TOKEN>` or `/miracles/<slug>?preview=<PREVIEW_TOKEN>` and
+  flips `published` to `true` once satisfied. This repo is pure application code under this
+  model — it has no obligation to track content changes in git, since content was never
+  checked in here.
 
 ---
 
@@ -290,7 +302,10 @@ All routes under `/api/v1/`. Hono + `@hono/zod-openapi` — OpenAPI spec generat
 
 ## Research Notes
 
-Claude handles both coding and research for this project — there are no separate AI handoffs. Research is confined to `context/Notes/`; check there for in-progress research before starting data work.
+Claude handles both coding and research for this project — there are no separate AI handoffs.
+As of 2026-10-09, in-progress research and drafting happens in the sibling `catholic-research`
+repo (see Database → Publishing workflow), not here — `context/Notes/` is a reference snapshot
+of research already incorporated, not the live drafting location going forward.
 
 ---
 
