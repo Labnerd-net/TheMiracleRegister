@@ -30,6 +30,8 @@ export const MetaSchema = z
   })
   .openapi("Meta");
 
+export type Meta = z.infer<typeof MetaSchema>;
+
 export function envelopeSchema<T extends z.ZodTypeAny>(dataSchema: T) {
   return z.object({
     data: dataSchema,
@@ -52,6 +54,8 @@ export const SaintListItemSchema = z
     image_url: z.string().nullable(),
   })
   .openapi("SaintListItem");
+
+export type SaintListItem = z.infer<typeof SaintListItemSchema>;
 
 export const RelatedSaintSchema = z
   .object({
@@ -81,6 +85,8 @@ export const MiracleListItemSchema = z
     saints: z.array(z.object({ id: z.number().int(), slug: z.string(), name: z.string() })),
   })
   .openapi("MiracleListItem");
+
+export type MiracleListItem = z.infer<typeof MiracleListItemSchema>;
 
 export const SaintDetailSchema = z
   .object({

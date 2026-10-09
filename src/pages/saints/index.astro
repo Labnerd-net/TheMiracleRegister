@@ -215,6 +215,7 @@ function buildUrl(p: number) {
 
 <script>
 import { thumbUrl } from "../../lib/image";
+import type { Meta, SaintListItem } from "../../api/schemas";
 
 (function () {
   const form = document.getElementById("filter-form") as HTMLFormElement | null;
@@ -256,7 +257,7 @@ import { thumbUrl } from "../../lib/image";
     return qs ? `/saints?${qs}` : "/saints";
   }
 
-  function renderCard(s: any): string {
+  function renderCard(s: SaintListItem): string {
     const placeholder = `<div style="width:100%;height:100%;display:flex;align-items:center;justify-content:center;font-family:var(--font-display);font-size:3rem;font-weight:300;color:var(--text-4);background:var(--bg-elevated)">${esc(s.name?.charAt(0))}</div>`;
     const img = s.image_url
       ? `<img src="${esc(thumbUrl(s.image_url, 500))}" alt="${esc(s.name)}" loading="lazy" decoding="async" width="300" height="400" style="width:100%;height:100%;object-fit:cover;object-position:top" />`
@@ -276,7 +277,7 @@ import { thumbUrl } from "../../lib/image";
     </a>`;
   }
 
-  function renderPagination(meta: any, fd: FormData): string {
+  function renderPagination(meta: Meta, fd: FormData): string {
     const { page, limit, total } = meta;
     const totalPages = Math.max(1, Math.ceil(total / limit));
     if (totalPages <= 1) return "";
@@ -296,7 +297,7 @@ import { thumbUrl } from "../../lib/image";
     try {
       const res = await fetch(buildApiUrl(fd, page));
       if (!res.ok) throw new Error(String(res.status));
-      const json = await res.json() as any;
+      const json = await res.json() as { data: SaintListItem[]; meta: Meta };
       const { data, meta } = json;
 
       const countText = `${meta.total} saint${meta.total !== 1 ? "s" : ""} documented`;
@@ -306,7 +307,7 @@ import { thumbUrl } from "../../lib/image";
 
       gridEl!.innerHTML = data.length === 0
         ? `<p class="empty-state col-span-full">No saints match the selected filters.</p>`
-        : (data as any[]).map(renderCard).join("");
+        : data.map(renderCard).join("");
 
       const paginationHtml = renderPagination(meta, fd);
       paginationEl!.innerHTML = paginationHtml;
