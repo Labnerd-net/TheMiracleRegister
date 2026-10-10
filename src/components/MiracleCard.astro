@@ -1,0 +1,11 @@
+---
+import { miracleCardHtml, type MiracleCardData } from "../lib/cards";
+
+interface Props {
+  miracle: MiracleCardData;
+  saintNames: string[];
+}
+const { miracle, saintNames } = Astro.props;
+---
+
+<Fragment set:html={miracleCardHtml(miracle, saintNames)} />

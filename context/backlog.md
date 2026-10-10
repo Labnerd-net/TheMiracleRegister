@@ -17,7 +17,7 @@ _None identified._
 - **#2 src/middleware.ts, pages**: Only `/api/v1/*` and `/search` are rate limited. `/miracles`, `/saints/[slug]`, `/map` and `/random` hit Neon on every edge-cache miss, and random query strings bypass the cache. Fix: apply a rate-limit binding in middleware for non-asset requests, ignore unknown params in cache keys, or add a Cloudflare WAF rule. Confirm the `SEARCH_RATE_LIMITER` binding in wrangler.jsonc is actually used.
 
 ### Low
-- **#3 src/middleware.ts (3-8)**: CSP is only `frame-ancestors 'none'`; no HSTS or Permissions-Policy. Fix: add `Strict-Transport-Security` now (or in Cloudflare). A real CSP needs inline scripts moved to files first (depends on #24, #35).
+- **#3 src/middleware.ts (3-8)**: CSP is only `frame-ancestors 'none'`; no HSTS or Permissions-Policy. Fix: add `Strict-Transport-Security` now (or in Cloudflare). A real CSP needs inline scripts moved to files first (depends on #35).
 - **#4 miracles/[slug].astro (415), saints/[slug].astro (370), map.astro (143)**: `MAPTILER_API_KEY` is serialized into page HTML. Fix: restrict the key by HTTP origin in the MapTiler dashboard.
 
 ---
@@ -60,11 +60,9 @@ _None identified._
 ## Improvements & Refactors
 
 ### High
-- **#21 Components and layout**: `SaintCard` and the nav arrays are done. Remaining: `MiracleCard` (the `/miracles` and `/topics/[topic]` cards differ in link structure, tags and badges, so do it with #24), `Lightbox` and `FilterSidebar` (tied to the inline scripts, #24/#25).
 
 ### Medium
 - **#23 createDb repetition**: `createDb(env.DATABASE_URL)` is repeated in 17 page files plus API routes. Fix: set `context.locals.db` in `src/middleware.ts` and type it in `src/env.d.ts`.
-- **#24 miracles/index.astro (637 lines), saints/index.astro (469 lines)**: Client scripts hand-build HTML strings (`escHtml`/`esc` re-implemented; payloads are now typed via `z.infer`), duplicating server rendering. Pagination HTML is also duplicated (~lines 397-399). Fix: share one render path (HTML fragment endpoint or shared module in `src/scripts/`). Prerequisite for a strict CSP.
 - **#25 miracles/[slug].astro (611 lines)**: Mixes ~9 queries with Leaflet and lightbox inline scripts. Leaflet bootstrap, `escHtml` and tile setup are copied into saints/[slug] and map.astro; the Leaflet version and SRI hash appear in 6 places. Fix: extract `getMiracleDetail(db, slug, isPreview)` into `src/lib/queries/miracles.ts`, a `MiracleMap`/`LeafletMap` component or `src/scripts/map.ts`, and one version/SRI constant.
 - **#28 Prettier**: ESLint is set up (`npm run lint`, CI step). Prettier is not; the code is not Prettier-formatted, so adding it means a repo-wide reformat. Fix: add Prettier and reformat once the refactors (#21, #23-#25) land, to avoid merge conflicts.
 - **#29 Playwright**: CLAUDE.md lists Playwright but none exists. Fix: build a smoke suite (home, saint page, miracle filters with and without JS, search, preview token, redirects, lightbox) or update the docs.

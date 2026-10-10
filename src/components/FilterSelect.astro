@@ -1,0 +1,19 @@
+---
+interface Props {
+  id: string;
+  name: string;
+  label: string;
+  allLabel: string;
+  options: { value: string | number; label: string }[];
+  selected?: string | number;
+}
+const { id, name, label, allLabel, options, selected } = Astro.props;
+---
+
+<div class="filter-group">
+  <label class="filter-label" for={id}>{label}</label>
+  <select id={id} name={name} class="filter-select">
+    <option value="">{allLabel}</option>
+    {options.map((o) => <option value={o.value} selected={o.value === selected}>{o.label}</option>)}
+  </select>
+</div>

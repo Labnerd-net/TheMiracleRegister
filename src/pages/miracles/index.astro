@@ -1,7 +1,11 @@
 ---
 import Base from "../../layouts/Base.astro";
+import FilterBar from "../../components/FilterBar.astro";
+import FilterSelect from "../../components/FilterSelect.astro";
+import MiracleCard from "../../components/MiracleCard.astro";
 import { PAGE_DESCRIPTIONS } from "../../lib/seo";
-import { humanizeSnakeCase, approvalBadge } from "../../lib/format";
+import { humanizeSnakeCase } from "../../lib/format";
+import { paginationHtml } from "../../lib/cards";
 import { fetchSaintsByMiracle, miracleFilterConditions } from "../../lib/queries/miracles";
 import { createDb } from "../../db";
 import { miracles, saints } from "../../db/schema";
@@ -88,10 +92,6 @@ const saintNamesByMiracle = new Map<number, string[]>(
 const totalPages = Math.max(1, Math.ceil(total / PAGE_SIZE));
 if (page > totalPages) return Astro.redirect(buildUrl(totalPages));
 
-const hasPrev = page > 1;
-const hasNext = page < totalPages;
-
-
 function buildUrl(p: number) {
   const params = new URLSearchParams();
   if (filterSaintId) params.set("saint_id", String(filterSaintId));
@@ -116,196 +116,78 @@ function buildUrl(p: number) {
     <div class="max-w-6xl mx-auto px-4 sm:px-6 py-10 sm:py-16">
       <p class="eyebrow mb-4">The Register</p>
       <h1 id="page-title" tabindex="-1" style="font-family:var(--font-display);font-size:clamp(2.5rem,5vw,4rem);font-weight:300;color:var(--text-1);line-height:1.05;letter-spacing:-0.01em">Miracles</h1>
-      <p id="miracles-count" style="font-family:var(--font-sans);font-size:0.8rem;color:var(--text-4);margin-top:0.6rem;letter-spacing:0.02em">{total} miracles recorded</p>
-      <p id="miracles-status" class="sr-only" role="status" aria-live="polite" aria-atomic="true"></p>
+      <p data-browse-count style="font-family:var(--font-sans);font-size:0.8rem;color:var(--text-4);margin-top:0.6rem;letter-spacing:0.02em">{total} miracles recorded</p>
+      <p data-browse-status class="sr-only" role="status" aria-live="polite" aria-atomic="true"></p>
     </div>
   </div>
 
   <div class="max-w-6xl mx-auto px-4 sm:px-6 py-8 sm:py-12">
 
-    <!-- Filter bar -->
-    <form id="filter-form" method="get" action="/miracles" class="filter-bar">
-      <div class="filter-controls">
+    <FilterBar action="/miracles" hasActiveFilters={hasActiveFilters}>
+      <FilterSelect id="f-saint" name="saint_id" label="Saint" allLabel="All Saints" options={allSaints.map((s) => ({ value: s.id, label: s.name }))} selected={filterSaintId} />
+      <FilterSelect id="f-type" name="type" label="Type" allLabel="All Types" options={miracleType.enumValues.map((t) => ({ value: t, label: humanizeSnakeCase(t) }))} selected={filterType} />
+      <FilterSelect id="f-topic" name="topic" label="Topic" allLabel="All Topics" options={MIRACLE_TOPICS.map((t) => ({ value: t, label: humanizeSnakeCase(t) }))} selected={filterTopic} />
+      <FilterSelect id="f-category" name="category" label="Category" allLabel="All Categories" options={miracleCategory.enumValues.map((c) => ({ value: c, label: humanizeSnakeCase(c) }))} selected={filterCategory} />
+      <FilterSelect id="f-country" name="country" label="Country" allLabel="All Countries" options={countries.map((c) => ({ value: c, label: c }))} selected={filterCountry} />
 
-        <div class="filter-group">
-          <label class="filter-label" for="f-saint">Saint</label>
-          <select id="f-saint" name="saint_id" class="filter-select">
-            <option value="">All Saints</option>
-            {allSaints.map(s => (
-              <option value={s.id} selected={s.id === filterSaintId}>{s.name}</option>
-            ))}
-          </select>
+      <div class="filter-group filter-group--year">
+        <span class="filter-label" id="f-year-label">Year</span>
+        <div class="year-range" role="group" aria-labelledby="f-year-label">
+          <input type="number" name="year_from" value={filterYearFrom ?? ""} placeholder="From" aria-label="Year from" min="1000" max="2100" class="filter-input filter-input--year" />
+          <span class="year-sep">–</span>
+          <input type="number" name="year_to" value={filterYearTo ?? ""} placeholder="To" aria-label="Year to" min="1000" max="2100" class="filter-input filter-input--year" />
         </div>
-
-        <div class="filter-group">
-          <label class="filter-label" for="f-type">Type</label>
-          <select id="f-type" name="type" class="filter-select">
-            <option value="">All Types</option>
-            {miracleType.enumValues.map(t => (
-              <option value={t} selected={t === filterType}>{humanizeSnakeCase(t)}</option>
-            ))}
-          </select>
-        </div>
-
-        <div class="filter-group">
-          <label class="filter-label" for="f-topic">Topic</label>
-          <select id="f-topic" name="topic" class="filter-select">
-            <option value="">All Topics</option>
-            {MIRACLE_TOPICS.map(t => (
-              <option value={t} selected={t === filterTopic}>{humanizeSnakeCase(t)}</option>
-            ))}
-          </select>
-        </div>
-
-        <div class="filter-group">
-          <label class="filter-label" for="f-category">Category</label>
-          <select id="f-category" name="category" class="filter-select">
-            <option value="">All Categories</option>
-            {miracleCategory.enumValues.map(c => (
-              <option value={c} selected={c === filterCategory}>{humanizeSnakeCase(c)}</option>
-            ))}
-          </select>
-        </div>
-
-        <div class="filter-group">
-          <label class="filter-label" for="f-country">Country</label>
-          <select id="f-country" name="country" class="filter-select">
-            <option value="">All Countries</option>
-            {countries.map(c => (
-              <option value={c} selected={c === filterCountry}>{c}</option>
-            ))}
-          </select>
-        </div>
-
-        <div class="filter-group filter-group--year">
-          <span class="filter-label" id="f-year-label">Year</span>
-          <div class="year-range" role="group" aria-labelledby="f-year-label">
-            <input type="number" name="year_from" value={filterYearFrom ?? ""} placeholder="From" aria-label="Year from" min="1000" max="2100" class="filter-input filter-input--year" />
-            <span class="year-sep">–</span>
-            <input type="number" name="year_to" value={filterYearTo ?? ""} placeholder="To" aria-label="Year to" min="1000" max="2100" class="filter-input filter-input--year" />
-          </div>
-        </div>
-
-        <div class="filter-group">
-          <label class="filter-label" for="f-approval">Approval</label>
-          <select id="f-approval" name="approval_authority" class="filter-select">
-            <option value="">All Approvals</option>
-            <option value="vatican_dicastery" selected={filterApproval === "vatican_dicastery"}>Vatican Approved</option>
-            <option value="lourdes_bureau" selected={filterApproval === "lourdes_bureau"}>Lourdes Bureau</option>
-            <option value="local_bishop" selected={filterApproval === "local_bishop"}>Bishop Approved</option>
-            <option value="nihil_obstat" selected={filterApproval === "nihil_obstat"}>Nihil Obstat</option>
-          </select>
-        </div>
-
-        <div class="filter-group filter-group--checks">
-          <span class="filter-label" id="f-used-label">Used for</span>
-          <div class="check-row" role="group" aria-labelledby="f-used-label">
-            <label class="check-label">
-              <input type="checkbox" name="beatification" value="1" checked={filterBeat} class="filter-check" />
-              Beatification
-            </label>
-            <label class="check-label">
-              <input type="checkbox" name="canonization" value="1" checked={filterCanon} class="filter-check" />
-              Canonization
-            </label>
-          </div>
-        </div>
-
       </div>
 
-      <div class="filter-actions">
-        <button type="submit" class="filter-apply">Apply</button>
-        {hasActiveFilters && <a href="/miracles" class="filter-clear">Clear filters</a>}
-      </div>
-    </form>
+      <FilterSelect
+        id="f-approval"
+        name="approval_authority"
+        label="Approval"
+        allLabel="All Approvals"
+        options={[
+          { value: "vatican_dicastery", label: "Vatican Approved" },
+          { value: "lourdes_bureau", label: "Lourdes Bureau" },
+          { value: "local_bishop", label: "Bishop Approved" },
+          { value: "nihil_obstat", label: "Nihil Obstat" },
+        ]}
+        selected={filterApproval}
+      />
 
-    <!-- List -->
-    <div id="miracles-list" class="space-y-2 mt-6">
+      <div class="filter-group filter-group--checks">
+        <span class="filter-label" id="f-used-label">Used for</span>
+        <div class="check-row" role="group" aria-labelledby="f-used-label">
+          <label class="check-label">
+            <input type="checkbox" name="beatification" value="1" checked={filterBeat} class="filter-check" />
+            Beatification
+          </label>
+          <label class="check-label">
+            <input type="checkbox" name="canonization" value="1" checked={filterCanon} class="filter-check" />
+            Canonization
+          </label>
+        </div>
+      </div>
+    </FilterBar>
+
+    <div data-browse-results class="space-y-2 mt-6">
       {pageMiracles.length === 0 ? (
         <p class="empty-state">No miracles match the selected filters.</p>
       ) : pageMiracles.map((m) => (
-        <div class="block group relative">
-          <div class="card px-6 py-5">
-            <div class="flex items-start justify-between gap-6">
-              <div class="flex-1 min-w-0">
-                <div class="flex flex-wrap items-center gap-x-3 gap-y-1 mb-2">
-                  <span style="font-family:var(--font-sans);font-size:0.68rem;font-weight:600;color:var(--color-accent)">{(saintNamesByMiracle.get(m.id) ?? []).join(", ")}</span>
-                  <span style="color:var(--rule-mid)">·</span>
-                  <span style="font-family:var(--font-sans);font-size:0.68rem;color:var(--text-4)">{humanizeSnakeCase(m.type)}</span>
-                  {m.date_of_event && <><span style="color:var(--rule-mid)">·</span><span style="font-family:var(--font-sans);font-size:0.68rem;color:var(--text-4)">{m.date_of_event}</span></>}
-                  {m.country && <><span style="color:var(--rule-mid)">·</span><span style="font-family:var(--font-sans);font-size:0.68rem;color:var(--text-4)">{m.country}</span></>}
-                </div>
-
-                <h2 style="font-family:var(--font-display);font-size:1.25rem;font-weight:400;color:var(--text-1);line-height:1.3;margin-bottom:0.5rem;transition:color 0.2s" class="group-hover:text-[--color-accent]">
-                  <a href={`/miracles/${m.slug}`} class="card-link">{m.title}</a>
-                </h2>
-
-                {m.cure_details && (
-                  <p style="font-family:var(--font-sans);font-size:0.78rem;color:var(--text-3);line-height:1.65;margin-bottom:0.5rem">
-                    {m.cure_details.length > 140 ? m.cure_details.slice(0, 140) + "…" : m.cure_details}
-                  </p>
-                )}
-
-                {m.topics && m.topics.length > 0 && (
-                  <div class="flex flex-wrap gap-1">
-                    {m.topics.slice(0, 5).map((t) => <a href={`/topics/${encodeURIComponent(t)}`} class="tag tag--link">{t}</a>)}
-                    {m.topics.length > 5 && <span class="tag">+{m.topics.length - 5}</span>}
-                  </div>
-                )}
-              </div>
-
-              <div class="shrink-0 flex flex-col gap-1 items-end">
-                {(() => { const b = approvalBadge(m.approval_authority); return b ? <span class={`approval-badge ${b.cls}`}>{b.label}</span> : null; })()}
-                {m.used_for_beatification && <span class="used-badge">Beatification</span>}
-                {m.used_for_canonization && <span class="used-badge">Canonization</span>}
-              </div>
-            </div>
-          </div>
-        </div>
+        <MiracleCard miracle={m} saintNames={saintNamesByMiracle.get(m.id) ?? []} />
       ))}
     </div>
 
-    <nav id="miracles-pagination" class="pagination" aria-label="Page navigation" hidden={totalPages <= 1}>
-      {totalPages > 1 && (
-        <>
-          {hasPrev
-            ? <a href={buildUrl(page - 1)} class="pagination-btn">← Previous</a>
-            : <span class="pagination-btn disabled" aria-disabled="true">← Previous</span>
-          }
-          <span class="pagination-info">Page {page} of {totalPages}</span>
-          {hasNext
-            ? <a href={buildUrl(page + 1)} class="pagination-btn">Next →</a>
-            : <span class="pagination-btn disabled" aria-disabled="true">Next →</span>
-          }
-        </>
-      )}
-    </nav>
+    <nav data-browse-pagination class="pagination" aria-label="Page navigation" hidden={totalPages <= 1} set:html={paginationHtml(page, totalPages, buildUrl)} />
   </div>
 
 </Base>
 
 <script>
-import type { Meta, MiracleListItem } from "../../api/schemas";
+import { initBrowse } from "../../scripts/browse";
+import { miracleCardHtml } from "../../lib/cards";
+import type { MiracleListItem } from "../../api/schemas";
 
-(function () {
-  const form = document.getElementById("filter-form") as HTMLFormElement | null;
-  const listEl = document.getElementById("miracles-list");
-  const paginationEl = document.getElementById("miracles-pagination");
-  const countEl = document.getElementById("miracles-count");
-  const statusEl = document.getElementById("miracles-status");
-  const titleEl = document.getElementById("page-title");
-  if (!form || !listEl || !paginationEl || !countEl || !statusEl) return;
-
-  const reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
-
-  let debounceTimer = 0;
-
-  function esc(str: string | null | undefined): string {
-    return String(str ?? "").replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;").replace(/"/g, "&quot;");
-  }
-
-  type FilterField = { form: string; api?: string };
-  const FILTER_FIELDS: FilterField[] = [
+initBrowse<MiracleListItem>({
+  fields: [
     { form: "saint_id" },
     { form: "type" },
     { form: "topic" },
@@ -316,322 +198,14 @@ import type { Meta, MiracleListItem } from "../../api/schemas";
     { form: "beatification", api: "used_for_beatification" },
     { form: "canonization", api: "used_for_canonization" },
     { form: "approval_authority" },
-  ];
-
-  function buildParams(fd: FormData, mode: "api" | "page"): URLSearchParams {
-    const p = new URLSearchParams();
-    for (const f of FILTER_FIELDS) {
-      const value = fd.get(f.form) as string;
-      if (!value) continue;
-      p.set(mode === "api" ? (f.api ?? f.form) : f.form, value);
-    }
-    return p;
-  }
-
-  function buildApiUrl(fd: FormData, page: number): string {
-    const p = buildParams(fd, "api");
-    p.set("page", String(page));
-    p.set("limit", "20");
-    return `/api/v1/miracles?${p.toString()}`;
-  }
-
-  function buildPageUrl(fd: FormData, page: number): string {
-    const p = buildParams(fd, "page");
-    if (page > 1) p.set("page", String(page));
-    const qs = p.toString();
-    return qs ? `/miracles?${qs}` : "/miracles";
-  }
-
-  function renderCard(m: MiracleListItem): string {
-    const saintNames = m.saints.map((s) => esc(s.name)).join(", ");
-    const typeLabel = esc(m.type?.replace(/_/g, " "));
-    const meta = [
-      saintNames ? `<span style="font-family:var(--font-sans);font-size:0.68rem;font-weight:600;color:var(--color-accent)">${saintNames}</span>` : "",
-      `<span style="color:var(--rule-mid)">·</span><span style="font-family:var(--font-sans);font-size:0.68rem;color:var(--text-4)">${typeLabel}</span>`,
-      m.date_of_event ? `<span style="color:var(--rule-mid)">·</span><span style="font-family:var(--font-sans);font-size:0.68rem;color:var(--text-4)">${esc(m.date_of_event)}</span>` : "",
-      m.country ? `<span style="color:var(--rule-mid)">·</span><span style="font-family:var(--font-sans);font-size:0.68rem;color:var(--text-4)">${esc(m.country)}</span>` : "",
-    ].filter(Boolean).join("");
-
-    const excerpt = m.cure_details
-      ? `<p style="font-family:var(--font-sans);font-size:0.78rem;color:var(--text-3);line-height:1.65;margin-bottom:0.5rem">${esc(m.cure_details.length > 140 ? m.cure_details.slice(0, 140) + "…" : m.cure_details)}</p>`
-      : "";
-
-    const topics = (m.topics ?? []) as string[];
-    const topicHtml = topics.length > 0
-      ? `<div class="flex flex-wrap gap-1">${topics.slice(0, 5).map((t) => `<a href="/topics/${encodeURIComponent(t)}" class="tag tag--link">${esc(t)}</a>`).join("")}${topics.length > 5 ? `<span class="tag">+${topics.length - 5}</span>` : ""}</div>`
-      : "";
-
-    const approvalMap: Record<string, { cls: string; label: string }> = {
-      vatican_dicastery: { cls: "vatican", label: "Vatican Approved" },
-      lourdes_bureau:    { cls: "lourdes", label: "Lourdes Bureau" },
-      local_bishop:      { cls: "bishop",  label: "Bishop Approved" },
-      nihil_obstat:      { cls: "nihil",   label: "Nihil Obstat" },
-    };
-    const approval = m.approval_authority && approvalMap[m.approval_authority];
-    const badges = [
-      approval ? `<span class="approval-badge ${approval.cls}">${approval.label}</span>` : "",
-      m.used_for_beatification ? `<span class="used-badge">Beatification</span>` : "",
-      m.used_for_canonization ? `<span class="used-badge">Canonization</span>` : "",
-    ].filter(Boolean).join("");
-
-    return `<div class="block group relative">
-      <div class="card px-6 py-5">
-        <div class="flex items-start justify-between gap-6">
-          <div class="flex-1 min-w-0">
-            <div class="flex flex-wrap items-center gap-x-3 gap-y-1 mb-2">${meta}</div>
-            <h2 style="font-family:var(--font-display);font-size:1.25rem;font-weight:400;color:var(--text-1);line-height:1.3;margin-bottom:0.5rem;transition:color 0.2s" class="group-hover:text-[--color-accent]"><a href="/miracles/${esc(m.slug)}" class="card-link">${esc(m.title)}</a></h2>
-            ${excerpt}${topicHtml}
-          </div>
-          ${badges ? `<div class="shrink-0 flex flex-col gap-1 items-end">${badges}</div>` : ""}
-        </div>
-      </div>
-    </div>`;
-  }
-
-  function renderPagination(meta: Meta, fd: FormData): string {
-    const { page, limit, total } = meta;
-    const totalPages = Math.max(1, Math.ceil(total / limit));
-    if (totalPages <= 1) return "";
-    const hasPrev = page > 1;
-    const hasNext = page < totalPages;
-    return `
-      ${hasPrev ? `<a href="${buildPageUrl(fd, page - 1)}" class="pagination-btn js-page" data-page="${page - 1}">← Previous</a>` : `<span class="pagination-btn disabled" aria-disabled="true">← Previous</span>`}
-      <span class="pagination-info" aria-current="page">Page ${page} of ${totalPages}</span>
-      ${hasNext ? `<a href="${buildPageUrl(fd, page + 1)}" class="pagination-btn js-page" data-page="${page + 1}">Next →</a>` : `<span class="pagination-btn disabled" aria-disabled="true">Next →</span>`}
-    `;
-  }
-
-  async function applyFilters(page: number = 1) {
-    const fd = new FormData(form!);
-    listEl!.classList.add("loading");
-    listEl!.setAttribute("aria-busy", "true");
-    try {
-      const res = await fetch(buildApiUrl(fd, page));
-      if (!res.ok) throw new Error(String(res.status));
-      const json = await res.json() as { data: MiracleListItem[]; meta: Meta };
-      const { data, meta } = json;
-
-      const countText = `${meta.total} miracle${meta.total !== 1 ? "s" : ""} recorded`;
-      countEl!.textContent = countText;
-      const pages = Math.max(1, Math.ceil(meta.total / meta.limit));
-      statusEl!.textContent = pages > 1 ? `${countText}. Page ${meta.page} of ${pages}.` : `${countText}.`;
-
-      listEl!.innerHTML = data.length === 0
-        ? `<p class="empty-state">No miracles match the selected filters.</p>`
-        : data.map(renderCard).join("");
-
-      const paginationHtml = renderPagination(meta, fd);
-      paginationEl!.innerHTML = paginationHtml;
-      paginationEl!.hidden = !paginationHtml;
-
-      history.pushState(null, "", buildPageUrl(fd, page));
-    } catch {
-      statusEl!.textContent = "Could not update results. Showing the previous results.";
-    } finally {
-      listEl!.classList.remove("loading");
-      listEl!.setAttribute("aria-busy", "false");
-    }
-  }
-
-  form.addEventListener("change", (e) => {
-    const target = e.target as HTMLInputElement;
-    if (target.type === "number") return;
-    applyFilters();
-  });
-
-  form.addEventListener("input", (e) => {
-    const target = e.target as HTMLInputElement;
-    if (target.type !== "number") return;
-    clearTimeout(debounceTimer);
-    debounceTimer = window.setTimeout(() => applyFilters(), 400);
-  });
-
-  form.addEventListener("submit", (e) => {
-    e.preventDefault();
-    applyFilters();
-  });
-
-  paginationEl.addEventListener("click", (e) => {
-    const target = (e.target as HTMLElement).closest(".js-page") as HTMLAnchorElement | null;
-    if (!target) return;
-    e.preventDefault();
-    const p = parseInt(target.dataset.page ?? "1");
-    applyFilters(p).then(() => titleEl?.focus({ preventScroll: true }));
-    window.scrollTo({ top: 0, behavior: reduceMotion ? "auto" : "smooth" });
-  });
-})();
+  ],
+  apiPath: "/api/v1/miracles",
+  pagePath: "/miracles",
+  pageSize: 20,
+  noun: { singular: "miracle", plural: "miracles", suffix: "recorded" },
+  emptyHtml: `<p class="empty-state">No miracles match the selected filters.</p>`,
+  renderItems: (items) => items.map((m) => miracleCardHtml(m, m.saints.map((s) => s.name))).join(""),
+  debounceNumbers: true,
+});
 </script>
 
-<style>
-  .filter-bar {
-    background: var(--bg-elevated);
-    border: 1px solid var(--rule);
-    border-radius: 6px;
-    padding: 1rem 1.25rem;
-  }
-
-  .filter-controls {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 1rem 1.5rem;
-    align-items: flex-end;
-  }
-
-  .filter-group {
-    display: flex;
-    flex-direction: column;
-    gap: 0.3rem;
-    min-width: 0;
-  }
-
-  .filter-label {
-    font-family: var(--font-sans);
-    font-size: 0.63rem;
-    font-weight: 600;
-    letter-spacing: 0.08em;
-    text-transform: uppercase;
-    color: var(--text-4);
-  }
-
-  .filter-select,
-  .filter-input {
-    font-family: var(--font-sans);
-    font-size: 0.8rem;
-    color: var(--text-2);
-    background: var(--bg-surface);
-    border: 1px solid var(--rule-mid);
-    border-radius: 4px;
-    padding: 0.35rem 0.6rem;
-    appearance: none;
-    height: 2rem;
-  }
-
-  .filter-select {
-    padding-right: 1.8rem;
-    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='10' height='6'%3E%3Cpath d='M0 0l5 6 5-6z' fill='%23666'/%3E%3C/svg%3E");
-    background-repeat: no-repeat;
-    background-position: right 0.55rem center;
-  }
-
-  .filter-select:focus,
-  .filter-input:focus {
-    border-color: var(--color-accent);
-  }
-
-  .filter-group--year .year-range {
-    display: flex;
-    align-items: center;
-    gap: 0.4rem;
-  }
-
-  .filter-input--year {
-    width: 5.5rem;
-  }
-
-  .year-sep {
-    font-family: var(--font-sans);
-    font-size: 0.8rem;
-    color: var(--text-4);
-  }
-
-  .filter-group--checks .check-row {
-    display: flex;
-    gap: 1rem;
-    align-items: center;
-    height: 2rem;
-  }
-
-  .check-label {
-    font-family: var(--font-sans);
-    font-size: 0.78rem;
-    color: var(--text-3);
-    display: flex;
-    align-items: center;
-    gap: 0.35rem;
-    cursor: pointer;
-  }
-
-  .filter-check {
-    accent-color: var(--color-accent);
-    width: 0.85rem;
-    height: 0.85rem;
-  }
-
-  .filter-actions {
-    display: flex;
-    align-items: center;
-    gap: 1rem;
-    margin-top: 0.85rem;
-    padding-top: 0.75rem;
-    border-top: 1px solid var(--rule);
-  }
-
-  .filter-apply {
-    font-family: var(--font-sans);
-    font-size: 0.75rem;
-    font-weight: 600;
-    letter-spacing: 0.04em;
-    color: var(--bg-surface);
-    background: var(--color-accent);
-    border: none;
-    border-radius: 4px;
-    padding: 0.35rem 0.9rem;
-    cursor: pointer;
-  }
-
-  .filter-apply:hover { opacity: 0.85; }
-
-  .filter-clear {
-    font-family: var(--font-sans);
-    font-size: 0.75rem;
-    color: var(--text-4);
-    text-decoration: none;
-  }
-
-  .filter-clear:hover { color: var(--text-2); }
-
-
-  #miracles-list.loading { opacity: 0.4; pointer-events: none; transition: opacity 0.15s; }
-
-  .empty-state {
-    font-family: var(--font-sans);
-    font-size: 0.85rem;
-    color: var(--text-4);
-    padding: 2rem 0;
-    text-align: center;
-  }
-
-  .pagination {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    gap: 1.5rem;
-    margin-top: 3rem;
-    padding-top: 2rem;
-    border-top: 1px solid var(--rule);
-  }
-
-  .pagination[hidden] { display: none; }
-
-  .pagination-btn {
-    font-family: var(--font-sans);
-    font-size: 0.8rem;
-    font-weight: 500;
-    color: var(--color-accent);
-    text-decoration: none;
-    letter-spacing: 0.03em;
-  }
-
-  .pagination-btn:hover { text-decoration: underline; }
-
-  .pagination-btn.disabled {
-    color: var(--text-4);
-    cursor: default;
-  }
-
-  .pagination-info {
-    font-family: var(--font-sans);
-    font-size: 0.78rem;
-    color: var(--text-3);
-  }
-</style>

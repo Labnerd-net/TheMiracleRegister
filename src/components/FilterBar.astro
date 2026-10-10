@@ -1,0 +1,20 @@
+---
+import "../styles/browse.css";
+
+interface Props {
+  action: string;
+  hasActiveFilters: boolean;
+}
+const { action, hasActiveFilters } = Astro.props;
+---
+
+<form id="filter-form" method="get" action={action} class="filter-bar">
+  <div class="filter-controls">
+    <slot />
+  </div>
+
+  <div class="filter-actions">
+    <button type="submit" class="filter-apply">Apply</button>
+    {hasActiveFilters && <a href={action} class="filter-clear">Clear filters</a>}
+  </div>
+</form>
