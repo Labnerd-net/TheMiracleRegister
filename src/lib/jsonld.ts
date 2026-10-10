@@ -1,3 +1,5 @@
+import { safeHttpUrl } from "./url";
+
 export const SITE_URL = "https://themiracleregister.org";
 export const SITE_NAME = "The Miracle Register";
 
@@ -61,7 +63,7 @@ export function saintJsonLd(saint: {
     nationality: saint.nationality,
     image: saint.image_url,
     description: saint.description,
-    sameAs: saint.wikipedia_url ? [saint.wikipedia_url] : undefined,
+    sameAs: safeHttpUrl(saint.wikipedia_url) ? [saint.wikipedia_url!] : undefined,
   });
 }
 
