@@ -29,6 +29,23 @@ const current = (href: string) => {
     : path === href || path.startsWith(href + "/");
   return active ? "page" : undefined;
 };
+const PRIMARY_NAV = [
+  { href: "/saints", label: "Saints" },
+  { href: "/miracles", label: "Miracles" },
+  { href: "/map", label: "Map" },
+  { href: "/miracles/timeline", label: "Timeline" },
+  { href: "/calendar", label: "Calendar" },
+];
+const FOOTER_NAV: { href: string; label: string; noCurrent?: boolean }[] = [
+  ...PRIMARY_NAV,
+  { href: "/topics", label: "Topics" },
+  { href: "/themes", label: "Themes" },
+  { href: "/patronage", label: "Patronage" },
+  { href: "/random", label: "Random", noCurrent: true },
+  { href: "/verification", label: "Verification", noCurrent: true },
+  { href: "/contact", label: "Contact", noCurrent: true },
+  { href: "/api/v1/doc", label: "API", noCurrent: true },
+];
 ---
 
 <html lang="en">
@@ -74,11 +91,7 @@ const current = (href: string) => {
         <a href="/" class="site-logo">The Miracle Register</a>
         <nav aria-label="Primary" class="flex items-center gap-5 sm:gap-8">
           <!-- Desktop nav links -->
-          <a href="/saints" class="nav-link hidden lg:inline" aria-current={current("/saints")}>Saints</a>
-          <a href="/miracles" class="nav-link hidden lg:inline" aria-current={current("/miracles")}>Miracles</a>
-          <a href="/map" class="nav-link hidden lg:inline" aria-current={current("/map")}>Map</a>
-          <a href="/miracles/timeline" class="nav-link hidden lg:inline" aria-current={current("/miracles/timeline")}>Timeline</a>
-          <a href="/calendar" class="nav-link hidden lg:inline" aria-current={current("/calendar")}>Calendar</a>
+          {PRIMARY_NAV.map((l) => <a href={l.href} class="nav-link hidden lg:inline" aria-current={current(l.href)}>{l.label}</a>)}
 
           <!-- Desktop search input -->
           <form action="/search" method="get" class="search-form hidden md:flex" role="search">
@@ -116,11 +129,7 @@ const current = (href: string) => {
       <!-- Mobile dropdown menu -->
       <nav id="mobile-menu" class="mobile-menu" aria-label="Primary mobile" hidden>
         <div class="max-w-6xl mx-auto px-4 py-4 flex flex-col gap-4">
-          <a href="/saints" class="nav-link" aria-current={current("/saints")}>Saints</a>
-          <a href="/miracles" class="nav-link" aria-current={current("/miracles")}>Miracles</a>
-          <a href="/map" class="nav-link" aria-current={current("/map")}>Map</a>
-          <a href="/miracles/timeline" class="nav-link" aria-current={current("/miracles/timeline")}>Timeline</a>
-          <a href="/calendar" class="nav-link" aria-current={current("/calendar")}>Calendar</a>
+          {PRIMARY_NAV.map((l) => <a href={l.href} class="nav-link" aria-current={current(l.href)}>{l.label}</a>)}
         </div>
       </nav>
     </header>
@@ -134,18 +143,7 @@ const current = (href: string) => {
         <span class="site-logo">The Miracle Register</span>
         <div class="flex flex-col lg:flex-row lg:items-center gap-4 lg:gap-6 w-full lg:w-auto">
           <nav class="footer-nav-links" aria-label="Footer">
-            <a href="/saints" class="nav-link" aria-current={current("/saints")}>Saints</a>
-            <a href="/miracles" class="nav-link" aria-current={current("/miracles")}>Miracles</a>
-            <a href="/map" class="nav-link" aria-current={current("/map")}>Map</a>
-            <a href="/miracles/timeline" class="nav-link" aria-current={current("/miracles/timeline")}>Timeline</a>
-            <a href="/calendar" class="nav-link" aria-current={current("/calendar")}>Calendar</a>
-            <a href="/topics" class="nav-link" aria-current={current("/topics")}>Topics</a>
-            <a href="/themes" class="nav-link" aria-current={current("/themes")}>Themes</a>
-            <a href="/patronage" class="nav-link" aria-current={current("/patronage")}>Patronage</a>
-            <a href="/random" class="nav-link">Random</a>
-            <a href="/verification" class="nav-link">Verification</a>
-            <a href="/contact" class="nav-link">Contact</a>
-            <a href="/api/v1/doc" class="nav-link">API</a>
+            {FOOTER_NAV.map((l) => <a href={l.href} class="nav-link" aria-current={l.noCurrent ? undefined : current(l.href)}>{l.label}</a>)}
           </nav>
           <p style="font-family:var(--font-sans);font-size:0.8rem;letter-spacing:0.04em;color:var(--text-4)">
             A structured database of miracles and venerated traditions of the saints

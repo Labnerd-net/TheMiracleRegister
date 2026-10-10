@@ -1,5 +1,6 @@
 ---
 import Base from "../layouts/Base.astro";
+import SaintCard from "../components/SaintCard.astro";
 import { createDb } from "../db";
 import { saints, miracles } from "../db/schema";
 import { sql, asc, eq, ne, and, or, isNotNull } from "drizzle-orm";
@@ -136,29 +137,7 @@ const [[{ saintCount }], [{ miracleCount }], [{ apparitionCount }], featuredSain
     <div class="carousel-viewport">
       <div class="carousel-track" id="saints-track">
         {featuredSaints.map((s) => (
-          <a href={`/saints/${s.slug}`} class="saint-card-link carousel-card group no-underline">
-            <div class="aspect-[3/4] overflow-hidden mb-4" style="background:var(--bg-elevated)">
-              {s.image_url ? (
-                <img
-                  src={thumbUrl(s.image_url, 500)!}
-                  alt={s.name}
-                  decoding="async"
-                  width="300"
-                  height="400"
-                  class="w-full h-full object-cover object-top saint-img"
-                />
-              ) : (
-                <div class="saint-placeholder w-full h-full" />
-              )}
-            </div>
-            <p style="font-family:var(--font-display);font-size:1.25rem;font-weight:400;color:var(--text-1);line-height:1.25;margin-bottom:0.35rem;transition:color 0.2s" class="group-hover:text-[--color-accent]">
-              {s.name}
-            </p>
-            <div class="flex items-center gap-2">
-              <span class={`stage-badge ${s.canonization_stage}`}>{s.canonization_stage}</span>
-              {s.nationality && <span style="font-family:var(--font-sans);font-size:0.68rem;color:var(--text-4)">{s.nationality}</span>}
-            </div>
-          </a>
+          <SaintCard saint={s} variant="carousel" />
         ))}
       </div>
     </div>

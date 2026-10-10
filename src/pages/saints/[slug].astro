@@ -13,6 +13,7 @@ import { LOCATION_TYPE_COLORS } from "../../lib/mapConstants";
 import { thumbUrl } from "../../lib/image";
 import { CACHE_CONTENT } from "../../lib/cache";
 import { getPatronageTerms, hasPatronagePage, resolvePatronage } from "../../lib/patronage";
+import { safeHttpUrl } from "../../lib/url";
 import { saintJsonLd, breadcrumbJsonLd } from "../../lib/jsonld";
 
 const { slug } = Astro.params;
@@ -26,12 +27,14 @@ const [saint] = await db.select().from(saints).where(
 );
 if (!saint) {
   const renamedTo = isPreview ? null : await findSlugRedirect(db, "saint", slug!);
-  if (!renamedTo) return Astro.redirect("/404");
+  if (!renamedTo) return Astro.rewrite("/404");
   return new Response(null, {
     status: 301,
     headers: { Location: `/saints/${renamedTo}`, "Cache-Control": CACHE_REDIRECT },
   });
 }
+
+const wikipediaUrl = safeHttpUrl(saint.wikipedia_url);
 
 Astro.response.headers.set(
   "Cache-Control",
@@ -317,14 +320,14 @@ const jsonLd = [
         </div>
       )}
 
-      {(sources.length > 0 || saint.wikipedia_url) && (
+      {(sources.length > 0 || wikipediaUrl) && (
         <div class="mt-9 pt-9 section-rule">
           <h2 class="eyebrow mb-4">Sources</h2>
           <ul style="list-style:none;padding:0;margin:0;display:flex;flex-direction:column;gap:0.6rem">
-            {saint.wikipedia_url && (
+            {wikipediaUrl && (
               <li style="display:flex;align-items:baseline;gap:0.6rem">
                 <span style="font-family:var(--font-sans);font-size:0.6rem;font-weight:600;letter-spacing:0.08em;text-transform:uppercase;color:var(--text-5);white-space:nowrap;flex-shrink:0;padding-top:0.1rem">Reference</span>
-                <a href={saint.wikipedia_url} target="_blank" rel="noopener" style="font-family:var(--font-sans);font-size:0.82rem;color:var(--color-accent);text-decoration:none;line-height:1.4" class="hover:underline">Wikipedia ↗</a>
+                <a href={wikipediaUrl} target="_blank" rel="noopener" style="font-family:var(--font-sans);font-size:0.82rem;color:var(--color-accent);text-decoration:none;line-height:1.4" class="hover:underline">Wikipedia ↗</a>
               </li>
             )}
             {sources.map((s) => (
@@ -332,9 +335,13 @@ const jsonLd = [
                 <span style="font-family:var(--font-sans);font-size:0.6rem;font-weight:600;letter-spacing:0.08em;text-transform:uppercase;color:var(--text-5);white-space:nowrap;flex-shrink:0;padding-top:0.1rem">
                   {sourceTypeLabel[s.source_type] ?? s.source_type}
                 </span>
-                <a href={s.url} target="_blank" rel="noopener" style="font-family:var(--font-sans);font-size:0.82rem;color:var(--color-accent);text-decoration:none;line-height:1.4" class="hover:underline">
-                  {s.title} ↗
-                </a>
+                {safeHttpUrl(s.url) ? (
+                  <a href={s.url} target="_blank" rel="noopener" style="font-family:var(--font-sans);font-size:0.82rem;color:var(--color-accent);text-decoration:none;line-height:1.4" class="hover:underline">
+                    {s.title} ↗
+                  </a>
+                ) : (
+                  <span style="font-family:var(--font-sans);font-size:0.82rem;color:var(--text-3);line-height:1.4">{s.title}</span>
+                )}
               </li>
             ))}
           </ul>

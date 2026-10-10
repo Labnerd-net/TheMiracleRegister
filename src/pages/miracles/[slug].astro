@@ -11,6 +11,7 @@ import { redactRecipient } from "../../lib/privacy";
 import { isValidPreviewToken } from "../../lib/preview";
 import { findSlugRedirect, CACHE_REDIRECT } from "../../lib/slugRedirect";
 import { CACHE_CONTENT } from "../../lib/cache";
+import { safeHttpUrl } from "../../lib/url";
 import { miracleJsonLd, breadcrumbJsonLd } from "../../lib/jsonld";
 import { fetchSaintsByMiracle } from "../../lib/queries/miracles";
 
@@ -60,7 +61,7 @@ const [miracle] = await db.select({
 );
 if (!miracle) {
   const renamedTo = isPreview ? null : await findSlugRedirect(db, "miracle", slug!);
-  if (!renamedTo) return Astro.redirect("/404");
+  if (!renamedTo) return Astro.rewrite("/404");
   return new Response(null, {
     status: 301,
     headers: { Location: `/miracles/${renamedTo}`, "Cache-Control": CACHE_REDIRECT },
@@ -387,7 +388,7 @@ const jsonLd = [
                 ) : (
                   <span style="font-family:var(--font-sans);font-size:0.6rem;font-weight:600;letter-spacing:0.1em;text-transform:uppercase;white-space:nowrap;color:var(--text-4)">{fmt(s.source_type)}</span>
                 )}
-                {s.url ? (
+                {safeHttpUrl(s.url) ? (
                   <a href={s.url} target="_blank" rel="noopener" style="font-family:var(--font-sans);font-size:0.85rem">{s.title ?? s.url} ↗</a>
                 ) : (
                   <span style="font-family:var(--font-sans);font-size:0.85rem;color:var(--text-3)">{s.title}</span>

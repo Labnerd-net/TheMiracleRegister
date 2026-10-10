@@ -12,7 +12,7 @@ import { humanizeSlug, humanizeSnakeCase, approvalBadge } from "../../lib/format
 import { collectionJsonLd, breadcrumbJsonLd } from "../../lib/jsonld";
 
 const { topic } = Astro.params;
-if (!topic || !(MIRACLE_TOPICS as readonly string[]).includes(topic)) return Astro.redirect("/404");
+if (!topic || !(MIRACLE_TOPICS as readonly string[]).includes(topic)) return Astro.rewrite("/404");
 
 Astro.response.headers.set("Cache-Control", CACHE_CONTENT);
 
