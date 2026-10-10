@@ -1,12 +1,15 @@
 ---
 import Base from "../../layouts/Base.astro";
 import SaintCard from "../../components/SaintCard.astro";
+import FilterBar from "../../components/FilterBar.astro";
+import FilterSelect from "../../components/FilterSelect.astro";
 import { PAGE_DESCRIPTIONS } from "../../lib/seo";
 import { createDb } from "../../db";
 import { saints } from "../../db/schema";
 import { canonizationStage } from "../../db/schema/enums";
 import { SAINT_THEMES } from "../../db/topics";
 import { humanizeSnakeCase } from "../../lib/format";
+import { paginationHtml } from "../../lib/cards";
 import { asc, count, eq, and, isNotNull } from "drizzle-orm";
 import { env } from "cloudflare:workers";
 import { CACHE_CONTENT } from "../../lib/cache";
@@ -94,68 +97,33 @@ function buildUrl(p: number) {
     <div class="max-w-6xl mx-auto px-4 sm:px-6 py-10 sm:py-16">
       <p class="eyebrow mb-4">The Register</p>
       <h1 style="font-family:var(--font-display);font-size:clamp(2.5rem,5vw,4rem);font-weight:300;color:var(--text-1);line-height:1.05;letter-spacing:-0.01em" id="page-title" tabindex="-1">Saints</h1>
-      <p id="saints-count" style="font-family:var(--font-sans);font-size:0.8rem;color:var(--text-4);margin-top:0.6rem;letter-spacing:0.02em">{total} saints documented</p>
-      <p id="saints-status" class="sr-only" role="status" aria-live="polite" aria-atomic="true"></p>
+      <p data-browse-count style="font-family:var(--font-sans);font-size:0.8rem;color:var(--text-4);margin-top:0.6rem;letter-spacing:0.02em">{total} saints documented</p>
+      <p data-browse-status class="sr-only" role="status" aria-live="polite" aria-atomic="true"></p>
     </div>
   </div>
 
   <div class="max-w-6xl mx-auto px-4 sm:px-6 py-8 sm:py-12">
 
-    <!-- Filter bar -->
-    <form id="filter-form" method="get" action="/saints" class="filter-bar">
-      <div class="filter-controls">
+    <FilterBar action="/saints" hasActiveFilters={hasActiveFilters}>
+      <FilterSelect
+        id="f-stage"
+        name="canonization_stage"
+        label="Stage"
+        allLabel="All Stages"
+        options={[
+          { value: "saint", label: "Saint" },
+          { value: "blessed", label: "Blessed" },
+          { value: "venerable", label: "Venerable" },
+          { value: "servant_of_god", label: "Servant of God" },
+        ]}
+        selected={filterStage}
+      />
+      <FilterSelect id="f-theme" name="theme" label="Theme" allLabel="All Themes" options={SAINT_THEMES.map((t) => ({ value: t, label: humanizeSnakeCase(t) }))} selected={filterTheme} />
+      <FilterSelect id="f-order" name="religious_order" label="Religious Order" allLabel="All Orders" options={religiousOrders.map((o) => ({ value: o, label: o }))} selected={filterOrder} />
+      <FilterSelect id="f-nationality" name="nationality" label="Nationality" allLabel="All Nationalities" options={nationalities.map((n) => ({ value: n, label: n }))} selected={filterNationality} />
+    </FilterBar>
 
-        <div class="filter-group">
-          <label class="filter-label" for="f-stage">Stage</label>
-          <select id="f-stage" name="canonization_stage" class="filter-select">
-            <option value="">All Stages</option>
-            <option value="saint" selected={filterStage === "saint"}>Saint</option>
-            <option value="blessed" selected={filterStage === "blessed"}>Blessed</option>
-            <option value="venerable" selected={filterStage === "venerable"}>Venerable</option>
-            <option value="servant_of_god" selected={filterStage === "servant_of_god"}>Servant of God</option>
-          </select>
-        </div>
-
-        <div class="filter-group">
-          <label class="filter-label" for="f-theme">Theme</label>
-          <select id="f-theme" name="theme" class="filter-select">
-            <option value="">All Themes</option>
-            {SAINT_THEMES.map(t => (
-              <option value={t} selected={t === filterTheme}>{humanizeSnakeCase(t)}</option>
-            ))}
-          </select>
-        </div>
-
-        <div class="filter-group">
-          <label class="filter-label" for="f-order">Religious Order</label>
-          <select id="f-order" name="religious_order" class="filter-select">
-            <option value="">All Orders</option>
-            {religiousOrders.map(o => (
-              <option value={o} selected={o === filterOrder}>{o}</option>
-            ))}
-          </select>
-        </div>
-
-        <div class="filter-group">
-          <label class="filter-label" for="f-nationality">Nationality</label>
-          <select id="f-nationality" name="nationality" class="filter-select">
-            <option value="">All Nationalities</option>
-            {nationalities.map(n => (
-              <option value={n} selected={n === filterNationality}>{n}</option>
-            ))}
-          </select>
-        </div>
-
-      </div>
-
-      <div class="filter-actions">
-        <button type="submit" class="filter-apply">Apply</button>
-        {hasActiveFilters && <a href="/saints" class="filter-clear">Clear filters</a>}
-      </div>
-    </form>
-
-    <!-- Grid -->
-    <div id="saints-grid" class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-x-6 gap-y-10 mt-8">
+    <div data-browse-results class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-x-6 gap-y-10 mt-8">
       {pageSaints.length === 0 ? (
         <p class="empty-state col-span-full">No saints match the selected filters.</p>
       ) : pageSaints.map((s, i) => (
@@ -163,277 +131,28 @@ function buildUrl(p: number) {
       ))}
     </div>
 
-    <nav id="saints-pagination" class="pagination" aria-label="Page navigation" hidden={totalPages <= 1}>
-      {totalPages > 1 && (
-        <>
-          {page > 1
-            ? <a href={buildUrl(page - 1)} class="pagination-btn">← Previous</a>
-            : <span class="pagination-btn disabled" aria-disabled="true">← Previous</span>
-          }
-          <span class="pagination-info">Page {page} of {totalPages}</span>
-          {page < totalPages
-            ? <a href={buildUrl(page + 1)} class="pagination-btn">Next →</a>
-            : <span class="pagination-btn disabled" aria-disabled="true">Next →</span>
-          }
-        </>
-      )}
-    </nav>
+    <nav data-browse-pagination class="pagination" aria-label="Page navigation" hidden={totalPages <= 1} set:html={paginationHtml(page, totalPages, buildUrl)} />
   </div>
 
 </Base>
 
 <script>
-import { thumbUrl } from "../../lib/image";
-import type { Meta, SaintListItem } from "../../api/schemas";
+import { initBrowse } from "../../scripts/browse";
+import { saintCardHtml } from "../../lib/cards";
+import type { SaintListItem } from "../../api/schemas";
 
-(function () {
-  const form = document.getElementById("filter-form") as HTMLFormElement | null;
-  const gridEl = document.getElementById("saints-grid");
-  const paginationEl = document.getElementById("saints-pagination");
-  const countEl = document.getElementById("saints-count");
-  const statusEl = document.getElementById("saints-status");
-  const titleEl = document.getElementById("page-title");
-  if (!form || !gridEl || !paginationEl || !countEl || !statusEl) return;
-
-  const reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
-
-  function esc(str: string | null | undefined): string {
-    return String(str ?? "").replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;").replace(/"/g, "&quot;");
-  }
-
-  const FILTER_FIELDS = ["canonization_stage", "theme", "religious_order", "nationality"];
-
-  function buildParams(fd: FormData): URLSearchParams {
-    const p = new URLSearchParams();
-    for (const field of FILTER_FIELDS) {
-      const value = fd.get(field) as string;
-      if (value) p.set(field, value);
-    }
-    return p;
-  }
-
-  function buildApiUrl(fd: FormData, page: number): string {
-    const p = buildParams(fd);
-    p.set("page", String(page));
-    p.set("limit", "20");
-    return `/api/v1/saints?${p.toString()}`;
-  }
-
-  function buildPageUrl(fd: FormData, page: number): string {
-    const p = buildParams(fd);
-    if (page > 1) p.set("page", String(page));
-    const qs = p.toString();
-    return qs ? `/saints?${qs}` : "/saints";
-  }
-
-  function renderCard(s: SaintListItem): string {
-    const placeholder = `<div style="width:100%;height:100%;display:flex;align-items:center;justify-content:center;font-family:var(--font-display);font-size:3rem;font-weight:300;color:var(--text-4);background:var(--bg-elevated)">${esc(s.name?.charAt(0))}</div>`;
-    const img = s.image_url
-      ? `<img src="${esc(thumbUrl(s.image_url, 500))}" alt="${esc(s.name)}" loading="lazy" decoding="async" width="300" height="400" style="width:100%;height:100%;object-fit:cover;object-position:top" />`
-      : placeholder;
-    const stage = s.canonization_stage ?? "";
-    const feastDay = s.feast_day ? `<span style="display:block">${esc(s.feast_day)}</span>` : "";
-    const nationality = s.nationality ? `<span style="display:block">${esc(s.nationality)}</span>` : "";
-    return `<a href="/saints/${esc(s.slug)}" class="saint-card-link group no-underline">
-      <div class="aspect-[3/4] overflow-hidden mb-4" style="background:var(--bg-elevated)">${img}</div>
-      <div>
-        <h2 style="font-family:var(--font-display);font-size:1.2rem;font-weight:400;color:var(--text-1);line-height:1.25;margin-bottom:0.35rem;transition:color 0.2s" class="group-hover:text-[--color-accent]">${esc(s.name)}</h2>
-        <div style="display:flex;align-items:center;gap:0.5rem;flex-wrap:wrap;margin-bottom:0.375rem">
-          <span class="stage-badge ${esc(stage)}">${esc(stage)}</span>
-        </div>
-        <div style="font-family:var(--font-sans);font-size:0.7rem;color:var(--text-4);line-height:1.6">${feastDay}${nationality}</div>
-      </div>
-    </a>`;
-  }
-
-  function renderPagination(meta: Meta, fd: FormData): string {
-    const { page, limit, total } = meta;
-    const totalPages = Math.max(1, Math.ceil(total / limit));
-    if (totalPages <= 1) return "";
-    const hasPrev = page > 1;
-    const hasNext = page < totalPages;
-    return `<div style="display:flex;align-items:center;justify-content:center;gap:1.5rem;margin-top:3rem;padding-top:2rem;border-top:1px solid var(--rule)">
-      ${hasPrev ? `<a href="${buildPageUrl(fd, page - 1)}" class="pagination-btn js-page" data-page="${page - 1}">← Previous</a>` : `<span class="pagination-btn disabled" aria-disabled="true">← Previous</span>`}
-      <span class="pagination-info" aria-current="page">Page ${page} of ${totalPages}</span>
-      ${hasNext ? `<a href="${buildPageUrl(fd, page + 1)}" class="pagination-btn js-page" data-page="${page + 1}">Next →</a>` : `<span class="pagination-btn disabled" aria-disabled="true">Next →</span>`}
-    </div>`;
-  }
-
-  async function applyFilters(page: number = 1) {
-    const fd = new FormData(form!);
-    gridEl!.classList.add("loading");
-    gridEl!.setAttribute("aria-busy", "true");
-    try {
-      const res = await fetch(buildApiUrl(fd, page));
-      if (!res.ok) throw new Error(String(res.status));
-      const json = await res.json() as { data: SaintListItem[]; meta: Meta };
-      const { data, meta } = json;
-
-      const countText = `${meta.total} saint${meta.total !== 1 ? "s" : ""} documented`;
-      countEl!.textContent = countText;
-      const pages = Math.max(1, Math.ceil(meta.total / meta.limit));
-      statusEl!.textContent = pages > 1 ? `${countText}. Page ${meta.page} of ${pages}.` : `${countText}.`;
-
-      gridEl!.innerHTML = data.length === 0
-        ? `<p class="empty-state col-span-full">No saints match the selected filters.</p>`
-        : data.map(renderCard).join("");
-
-      const paginationHtml = renderPagination(meta, fd);
-      paginationEl!.innerHTML = paginationHtml;
-      paginationEl!.hidden = !paginationHtml;
-
-      history.pushState(null, "", buildPageUrl(fd, page));
-    } catch {
-      statusEl!.textContent = "Could not update results. Showing the previous results.";
-    } finally {
-      gridEl!.classList.remove("loading");
-      gridEl!.setAttribute("aria-busy", "false");
-    }
-  }
-
-  form.addEventListener("change", () => applyFilters());
-
-  form.addEventListener("submit", (e) => {
-    e.preventDefault();
-    applyFilters();
-  });
-
-  paginationEl.addEventListener("click", (e) => {
-    const target = (e.target as HTMLElement).closest(".js-page") as HTMLAnchorElement | null;
-    if (!target) return;
-    e.preventDefault();
-    const p = parseInt(target.dataset.page ?? "1");
-    applyFilters(p).then(() => titleEl?.focus({ preventScroll: true }));
-    window.scrollTo({ top: 0, behavior: reduceMotion ? "auto" : "smooth" });
-  });
-})();
+initBrowse<SaintListItem>({
+  fields: [
+    { form: "canonization_stage" },
+    { form: "theme" },
+    { form: "religious_order" },
+    { form: "nationality" },
+  ],
+  apiPath: "/api/v1/saints",
+  pagePath: "/saints",
+  pageSize: 20,
+  noun: { singular: "saint", plural: "saints", suffix: "documented" },
+  emptyHtml: `<p class="empty-state col-span-full">No saints match the selected filters.</p>`,
+  renderItems: (items) => items.map((s, i) => saintCardHtml(s, { eager: i < 4 })).join(""),
+});
 </script>
-
-<style>
-  .filter-bar {
-    background: var(--bg-elevated);
-    border: 1px solid var(--rule);
-    border-radius: 6px;
-    padding: 1rem 1.25rem;
-  }
-
-  .filter-controls {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 1rem 1.5rem;
-    align-items: flex-end;
-  }
-
-  .filter-group {
-    display: flex;
-    flex-direction: column;
-    gap: 0.3rem;
-    min-width: 0;
-  }
-
-  .filter-label {
-    font-family: var(--font-sans);
-    font-size: 0.63rem;
-    font-weight: 600;
-    letter-spacing: 0.08em;
-    text-transform: uppercase;
-    color: var(--text-4);
-  }
-
-  .filter-select,
-  .filter-input {
-    font-family: var(--font-sans);
-    font-size: 0.8rem;
-    color: var(--text-2);
-    background: var(--bg-surface);
-    border: 1px solid var(--rule-mid);
-    border-radius: 4px;
-    padding: 0.35rem 0.6rem;
-    height: 2rem;
-  }
-
-  .filter-select {
-    appearance: none;
-    padding-right: 1.8rem;
-    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='10' height='6'%3E%3Cpath d='M0 0l5 6 5-6z' fill='%23666'/%3E%3C/svg%3E");
-    background-repeat: no-repeat;
-    background-position: right 0.55rem center;
-  }
-
-  .filter-select:focus,
-  .filter-input:focus {
-    border-color: var(--color-accent);
-  }
-
-  .filter-actions {
-    display: flex;
-    align-items: center;
-    gap: 1rem;
-    margin-top: 0.85rem;
-    padding-top: 0.75rem;
-    border-top: 1px solid var(--rule);
-  }
-
-  .filter-apply {
-    font-family: var(--font-sans);
-    font-size: 0.75rem;
-    font-weight: 600;
-    letter-spacing: 0.04em;
-    color: var(--bg-surface);
-    background: var(--color-accent);
-    border: none;
-    border-radius: 4px;
-    padding: 0.35rem 0.9rem;
-    cursor: pointer;
-  }
-
-  .filter-apply:hover { opacity: 0.85; }
-
-  .filter-clear {
-    font-family: var(--font-sans);
-    font-size: 0.75rem;
-    color: var(--text-4);
-    text-decoration: none;
-  }
-
-  .filter-clear:hover { color: var(--text-2); }
-
-  #saints-grid.loading { opacity: 0.4; pointer-events: none; transition: opacity 0.15s; }
-
-  .empty-state {
-    font-family: var(--font-sans);
-    font-size: 0.85rem;
-    color: var(--text-4);
-    padding: 2rem 0;
-    text-align: center;
-  }
-
-  .pagination {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    gap: 1.5rem;
-    margin-top: 3rem;
-    padding-top: 2rem;
-    border-top: 1px solid var(--rule);
-  }
-  .pagination[hidden] { display: none; }
-  .pagination-btn {
-    font-family: var(--font-sans);
-    font-size: 0.8rem;
-    font-weight: 500;
-    color: var(--color-accent);
-    text-decoration: none;
-    letter-spacing: 0.03em;
-  }
-  .pagination-btn:hover { text-decoration: underline; }
-  .pagination-btn.disabled {
-    color: var(--text-4);
-    cursor: default;
-  }
-  .pagination-info {
-    font-family: var(--font-sans);
-    font-size: 0.78rem;
-    color: var(--text-3);
-  }
-</style>
