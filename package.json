@@ -18,6 +18,8 @@
     "types": "wrangler types",
     "check:data": "tsx scripts/check-data.ts",
     "list:content": "tsx scripts/list-content.ts",
+    "import:content": "tsx scripts/import-content.ts",
+    "export:content": "tsx scripts/export-content.ts",
     "typecheck": "astro check",
     "lint": "eslint ."
   },
@@ -41,6 +43,7 @@
     "@astrojs/check": "^0.9.10",
     "@electric-sql/pglite": "^0.5.8",
     "@eslint/js": "^10.0.1",
+    "@types/ws": "^8.18.2",
     "dotenv": "^16.5.0",
     "drizzle-kit": "^0.31.1",
     "eslint": "^10.12.0",
@@ -49,6 +52,7 @@
     "tsx": "^4.19.3",
     "typescript": "^5.8.3",
     "typescript-eslint": "^8.71.1",
-    "vitest": "^3.2.2"
+    "vitest": "^3.2.2",
+    "ws": "^8.22.0"
   }
 }
