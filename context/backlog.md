@@ -19,7 +19,6 @@ _None identified._
 ### Low
 - **#3 src/middleware.ts (3-8)**: CSP is only `frame-ancestors 'none'`; no HSTS or Permissions-Policy. Fix: add `Strict-Transport-Security` now (or in Cloudflare). A real CSP needs inline scripts moved to files first (depends on #24, #35).
 - **#4 miracles/[slug].astro (415), saints/[slug].astro (370), map.astro (143)**: `MAPTILER_API_KEY` is serialized into page HTML. Fix: restrict the key by HTTP origin in the MapTiler dashboard.
-- **#5 miracles/[slug].astro (391), saints/[slug].astro**: `href={s.url}`, `wikipedia_url` and `sameAs` are rendered from DB values with no scheme check; only `check:data` blocks `javascript:`. Fix: add a `safeHttpUrl()` helper (http/https only) as defense in depth.
 
 ---
 
@@ -27,7 +26,6 @@ _None identified._
 
 ### High
 - **#6 src/api/index.ts (26-38)**: The cache middleware sets `public, s-maxage=900, stale-while-revalidate=3600` regardless of status, so 404s, validation errors and 500s are edge-cached. A just-published record can keep returning a cached 404. Fix: set the header only when `c.res.status === 200`, `no-store` otherwise.
-- **#7 miracles/[slug].astro (63), saints/[slug].astro (29)**: `Astro.redirect("/404")` returns a 302, so unknown slugs never return 404 at their own URL (soft 404; whether `/404` itself returns 404 is uncertain). Fix: `Astro.response.status = 404` and render, or `Astro.rewrite("/404")`.
 - **#8 src/api/schemas.ts (205-228), miracles/index.astro (22-27)**: Numeric params have no upper bounds (`saint_id=99999999999`, `year_from=1e12`, `page=1e19`); Postgres overflow produces an unhandled 500. The page uses `parseInt(...) || undefined` with the same flaw. Fix: add `.max()` bounds (years, page, saint_id) and clamp in the page; reject `year_from > year_to`.
 
 ### Medium
@@ -62,7 +60,7 @@ _None identified._
 ## Improvements & Refactors
 
 ### High
-- **#21 Components and layout**: Only one component exists (`Pagination.astro`). Saint card markup is duplicated in saints/index, patronage/[term], themes/[theme], index and miracles/[slug]; `Base.astro` (463 lines) repeats nav links three times (lines 77-81, 119-123, 137-144). Fix: extract `SaintCard`, `MiracleCard`, `Lightbox`, `FilterSidebar`, and drive nav from one array.
+- **#21 Components and layout**: `SaintCard` and the nav arrays are done. Remaining: `MiracleCard` (the `/miracles` and `/topics/[topic]` cards differ in link structure, tags and badges, so do it with #24), `Lightbox` and `FilterSidebar` (tied to the inline scripts, #24/#25).
 
 ### Medium
 - **#23 createDb repetition**: `createDb(env.DATABASE_URL)` is repeated in 17 page files plus API routes. Fix: set `context.locals.db` in `src/middleware.ts` and type it in `src/env.d.ts`.
