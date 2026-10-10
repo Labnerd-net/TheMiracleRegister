@@ -36,7 +36,7 @@ A data-driven website documenting miracles attributed to Catholic saints. Focuse
 - **Secondary:** Associated miracles for famous cases only (Tilma of Guadalupe, stigmata, incorrupt bodies)
 - **Tertiary:** Feast day calendar as a discovery layer — every published saint is reachable by feast date, with the full liturgical calendar as context. Only canonized saints have universal feast days; Blessed, Venerable, and Servants of God do not appear on the calendar unless a local feast day has been specifically recorded.
 - Public-facing website with REST API from day one
-- No admin panel — data is edited directly in the database (Neon console or SQL). Unpublished records can be previewed at `/saints/<slug>?preview=<PREVIEW_TOKEN>` and `/miracles/<slug>?preview=<PREVIEW_TOKEN>`.
+- No admin panel — content is authored as JSON files in `catholic-research` and loaded with `npm run import:content` (see Database → Publishing workflow). Unpublished records can be previewed at `/saints/<slug>?preview=<PREVIEW_TOKEN>` and `/miracles/<slug>?preview=<PREVIEW_TOKEN>`.
 - **Style:** use plain hyphens (`-`), never em dashes (`—`), in page copy, UI strings, and any text written into the database (biographies, synopses, cure details, etc.). `check:data` flags em dashes in DB free-text columns, but it can't catch source files — check your own output before writing copy or SQL.
 - **"Saint," spelled out (decided 2026-10-09):** never abbreviate to "St." or "St" — in saint titles ("Saint John Paul II") and in saint-named institutions/places alike ("Saint Peter's Square," "Saint Louis," "Saint Agnes Hospital"). Applies to all free-text DB columns and to `saint_locations.location_name`. Normalized across existing data on 2026-10-09; `check:data` does not enforce this (it only catches em dashes) — check your own output before writing new copy or SQL.
 - **No self-reference (decided):** free-text DB fields that read as narrative content —
@@ -217,7 +217,7 @@ Mirrors `miracle_sources` for saint biography sources.
 
 ### `saint_locations`
 
-Multiple geocoded locations per saint for map display. Managed directly in the database, like all other data.
+Multiple geocoded locations per saint for map display. Written through the content importer (the `locations` array in each saint file), like all other data.
 
 | Column | Type | Notes |
 |---|---|---|
@@ -263,23 +263,37 @@ All routes under `/api/v1/`. Hono + `@hono/zod-openapi` — OpenAPI spec generat
 ## Database
 
 - The single Neon branch is **production** (`br-proud-block-aptdevzb`). `DATABASE_URL` in `.env` points to it directly.
-- Data is managed directly in the database (Neon console or SQL; the admin panel was removed). There is no seed script. Always run `npm run check:data` after a change — it replaces the validation the admin forms used to do. `updated_at` is bumped by a DB trigger (`drizzle/0030_updated_at_trigger.sql`), so raw edits are safe.
+- Content (saints and miracles) is written through the importer, `npm run import:content`, from files in `catholic-research`; the admin panel was removed and there is no seed script. Direct SQL edits are for emergencies only: the next import overwrites any field a file carries. Run `npm run check:data` after any change; the importer also runs the same rules inside its transaction and rolls back on new errors. `updated_at` is bumped by a DB trigger (`drizzle/0030_updated_at_trigger.sql`), so raw edits are safe.
 - Schema changes: `npm run db:generate` → `npm run db:migrate`. Because the only branch is production, `db:migrate` (`scripts/db-migrate.ts`) prints the target host and database and asks for confirmation before applying; pass `-- --yes` to skip the prompt in scripted use.
 - Data integrity: `npm run check:data` (`scripts/check-data.ts`) is a read-only check — slug format, topics/themes vs `src/db/topics.ts`, published records have sources, intercessory miracles have a published saint, `saint_relations` mirrored, feast field validity, `// [in DB]` feast entries match a saint, URL schemes, restricted recipient names not leaking into free text, duplicate/copy-pasted `saint_locations` coordinates, and no em dashes in free-text columns (biography_short, synopsis, cure_details, etc. — see style note below). Run it after any data change; exits 1 on errors.
-- **Publishing workflow (decided 2026-10-09):** research and drafting happens in the sibling
-  `catholic-research` repo (`../catholic-research/TheMiracleRegister/Notes/`,
-  `github.com/Labnerd-net/catholic-research` — if the sibling-directory path doesn't resolve,
-  clone from there), not here. Claude
-  writes finished saint/miracle records directly into the production Neon DB from that research
-  — no file hand-off step, no admin panel in between. New records are always inserted with
-  `published: false`. `npm run check:data` must run immediately after every write, before the
-  record is reported as ready — this stands in for the PR-review gate the file-based sibling
-  sites (HallowedTales, UnhallowedTales) get from git, since direct DB writes have no git
-  history to review or revert. A human reviews the draft via
-  `/saints/<slug>?preview=<PREVIEW_TOKEN>` or `/miracles/<slug>?preview=<PREVIEW_TOKEN>` and
-  flips `published` to `true` once satisfied. This repo is pure application code under this
-  model — it has no obligation to track content changes in git, since content was never
-  checked in here.
+- **Publishing workflow (decided 2026-10-09, files as source of truth):** content lives as one JSON
+  file per saint and miracle in `../catholic-research/TheMiracleRegister/Content/{saints,miracles}/<slug>.json`
+  (`github.com/Labnerd-net/catholic-research`; marker file `Content/.content-root`). Research notes stay in
+  `../catholic-research/TheMiracleRegister/Notes/`. A new or changed record goes through a normal
+  PR in that repo; the files carry no `published`, `id` or timestamps, and nest child rows (sources, locations,
+  relations, images, `previous_slugs` for `slug_redirects`). Schema: `scripts/content-schema.ts`, built from the
+  Drizzle enums, so a new column fails a test until the schema covers it.
+  - `npm run import:content -- [--content-dir <path>] [--apply] [--yes] [--update-published] [--allow-dirty]`
+    reads the files and upserts them in one transaction. **Dry run is the default** and prints a per-entity diff
+    (new, changed field by field, unchanged, refused, unmanaged, columns the file omits that `--apply` would null).
+    `--apply` shows the target database and asks for confirmation (`--yes` skips the prompt; non-interactive runs
+    refuse without it) and requires the content repo to be clean with HEAD in `origin/main`.
+  - It never sets `published: true`, never deletes a saint, miracle or slug redirect, and refuses changes to
+    published rows unless `--update-published` is passed. New rows are inserted with `published: false`.
+    Child rows are replaced wholesale. `runChecks` runs inside the transaction; new errors roll the run back.
+  - The content directory resolves from `--content-dir`, then `CONTENT_DIR` (git-ignored `.env`), then
+    `../catholic-research/TheMiracleRegister/Content`. A missing, marker-less or empty directory fails before any
+    DB connection, printing the path, which source supplied it and the clone command.
+  - `npm run export:content` is a read-only backfill from the DB into the same file format (used once, 2026-10-09:
+    32 saints and 90 miracles; a dry-run import over the export showed 0 changes).
+  - After an `--apply`, run `npm run check:data`, then a human reviews the draft at
+    `/saints/<slug>?preview=<PREVIEW_TOKEN>` or `/miracles/<slug>?preview=<PREVIEW_TOKEN>` and flips `published`
+    to `true` (a separate step; the importer cannot do it).
+  - A dry run does not show `check:data` errors such as patronage capitalization; only `--apply` does, and it rolls back.
+  - To rehearse an import without touching production, create a copy of the production branch in the Neon console and
+    run the command with `DATABASE_URL` overridden to that branch (dotenv does not override a set variable). Keep that
+    string outside the repo; delete the branch afterward.
+  - Do not edit published content in the DB by hand: change the file, merge it, and import with `--update-published`.
 
 ---
 
@@ -334,7 +348,7 @@ Full source list, tiering, and per-category research links: `../catholic-researc
 - **`miracle_sources` table over JSON blob:** Enables filtering and full-text search on sources
 - **`saint_relations` join table over self-FK:** Handles pairs and groups, extensible
 - **Zod as single source of truth:** Drives runtime validation, TypeScript types, and OpenAPI spec
-- **Neon branches:** A separate dev branch was planned to avoid schema accidents but only the production branch exists; `npm run db:migrate` confirms the target instead. Creating a dev branch and pointing local `.env` at it would remove the risk entirely.
+- **Neon branches:** Only the production branch is permanent; `npm run db:migrate` and `import:content --apply` confirm the target instead. For rehearsals (importer runs, risky migrations), create a short-lived copy of production in the Neon console, point `DATABASE_URL` at it for that command only, and delete it afterward.
 - **`MIRACLE_TOPICS` vs `SAINT_THEMES`:** Topics tag miracle records with any descriptive dimension of the event — recipient role, vocation, life circumstance, or context (e.g. `religious-life`, `veterans`, `mothers`, `conversion`). Themes tag saint records with spiritual/devotional character. Medical conditions belong in `medical_diagnosis`; miracle phenomena belong in the `type` enum.
 - **`noted_for` removed:** Was redundant with `themes` (structured) and `biography_short` (narrative). Saints have two tag fields: `patronage` (formal Catholic designation) and `themes` (standardized spiritual tags).
 - **Carlo Acutis' Eucharistic miracle exhibition** (miracolieucaristici.org) is the primary source for individual Eucharistic miracle records (`type: eucharistic`) — but replicating its full 153-case catalog as original core content is out of scope. Cite it as a source; don't rebuild it.
