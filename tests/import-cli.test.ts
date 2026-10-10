@@ -3,7 +3,7 @@ import { spawnSync } from "node:child_process";
 import { mkdirSync, mkdtempSync, rmSync, writeFileSync } from "node:fs";
 import { tmpdir } from "node:os";
 import { join, resolve } from "node:path";
-import { minimalSaint } from "./helpers/content";
+import { minimalMiracle, minimalSaint } from "./helpers/content";
 
 const dirs: string[] = [];
 afterEach(() => dirs.splice(0).forEach((d) => rmSync(d, { recursive: true, force: true })));
@@ -58,5 +58,45 @@ describe("import-content CLI", { timeout: 30_000 }, () => {
     const r = cli(["--content-dir", root]);
     expect(r.status).toBe(1);
     expect(r.stderr).toContain("saints/a.json");
+  });
+});
+
+const validate = (args: string[]) =>
+  spawnSync(resolve("node_modules/.bin/tsx"), [resolve("scripts/validate-content.ts"), ...args], {
+    cwd: tmp(),
+    encoding: "utf8",
+    env: { PATH: process.env.PATH ?? "", HOME: process.env.HOME ?? "" },
+    timeout: 60_000,
+  });
+
+describe("validate-content CLI", { timeout: 30_000 }, () => {
+  const root = (files: Record<string, unknown>) => {
+    const r = tmp();
+    writeFileSync(join(r, ".content-root"), "");
+    mkdirSync(join(r, "saints"));
+    mkdirSync(join(r, "miracles"));
+    for (const [name, body] of Object.entries(files)) writeFileSync(join(r, name), JSON.stringify(body));
+    return r;
+  };
+
+  it("exits 2 on a missing directory, naming the clone command", () => {
+    const r = validate(["--content-dir", join(tmp(), "nope")]);
+    expect(r.status).toBe(2);
+    expect(r.stderr).toContain("git clone https://github.com/Labnerd-net/catholic-research");
+  });
+
+  it("exits 0 on valid content and never needs a database", () => {
+    const r = validate(["--content-dir", root({ "saints/a.json": minimalSaint("a") })]);
+    expect(r.status).toBe(0);
+    expect(r.stdout).toContain("OK");
+  });
+
+  it("exits 1 on an invalid file and on a dangling saint reference", () => {
+    const bad = validate(["--content-dir", root({ "saints/a.json": { ...minimalSaint("a"), bogus: 1 } })]);
+    expect(bad.status).toBe(1);
+    expect(bad.stderr).toContain("saints/a.json");
+    const dangling = validate(["--content-dir", root({ "miracles/m.json": { ...minimalMiracle("m"), saints: ["ghost"] } })]);
+    expect(dangling.status).toBe(1);
+    expect(dangling.stderr).toContain('unknown saint "ghost"');
   });
 });

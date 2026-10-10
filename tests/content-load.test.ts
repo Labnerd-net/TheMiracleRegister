@@ -6,11 +6,12 @@ import {
   ContentDirError,
   DEFAULT_CONTENT_DIR,
   crossFileErrors,
+  fileOnlyReferenceErrors,
   loadContent,
   resolveContentDir,
   type ContentDir,
 } from "../scripts/content-load";
-import { saintFileSchema } from "../scripts/content-schema";
+import { miracleFileSchema, saintFileSchema } from "../scripts/content-schema";
 import { minimalMiracle, minimalSaint } from "./helpers/content";
 
 const dirs: string[] = [];
@@ -117,5 +118,23 @@ describe("crossFileErrors", () => {
     expect(crossFileErrors([saint("a", { previous_slugs: ["a"] })], []).join()).toContain("its own slug");
     expect(crossFileErrors([saint("a", { previous_slugs: ["b"] }), saint("b")], []).join()).toContain("current slug");
     expect(crossFileErrors([saint("a", { previous_slugs: ["x"] }), saint("b", { previous_slugs: ["x"] })], []).join()).toContain("also claimed");
+  });
+});
+
+describe("fileOnlyReferenceErrors", () => {
+  const saint = (slug: string, extra: Record<string, unknown> = {}) => saintFileSchema.parse(minimalSaint(slug, extra));
+  const miracle = (slug: string, extra: Record<string, unknown> = {}) => miracleFileSchema.parse(minimalMiracle(slug, extra));
+
+  it("accepts references that resolve to a file", () => {
+    expect(fileOnlyReferenceErrors([saint("a")], [miracle("m", { saints: ["a"] })])).toEqual([]);
+  });
+
+  it("flags a miracle that references a saint with no file", () => {
+    expect(fileOnlyReferenceErrors([saint("a")], [miracle("m", { saints: ["ghost"] })]).join()).toContain('unknown saint "ghost"');
+  });
+
+  it("flags a relation to a saint with no file", () => {
+    const errs = fileOnlyReferenceErrors([saint("a", { relations: [{ saint: "ghost", type: "family" }] })], []);
+    expect(errs.join()).toContain('relation to unknown saint "ghost"');
   });
 });

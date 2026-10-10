@@ -146,6 +146,24 @@ export function crossFileErrors(saints: SaintFile[], miracles: MiracleFile[]): s
   return errors;
 }
 
+// Reference checks the importer does against files plus the database; with no database, the files
+// must be self-contained (they are a complete set, since the backfill export covers every row).
+export function fileOnlyReferenceErrors(saints: SaintFile[], miracles: MiracleFile[]): string[] {
+  const errors: string[] = [];
+  const known = new Set(saints.map((s) => s.slug));
+  for (const s of saints) {
+    for (const r of s.relations ?? []) {
+      if (!known.has(r.saint)) errors.push(`saint "${s.slug}": relation to unknown saint "${r.saint}"`);
+    }
+  }
+  for (const m of miracles) {
+    for (const slug of m.saints ?? []) {
+      if (!known.has(slug)) errors.push(`miracle "${m.slug}": references unknown saint "${slug}"`);
+    }
+  }
+  return errors;
+}
+
 export type ContentGit = {
   head: string;
   /** Uncommitted changes under the content directory (untracked files included). */
