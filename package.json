@@ -18,6 +18,7 @@
     "types": "wrangler types",
     "check:data": "tsx scripts/check-data.ts",
     "list:content": "tsx scripts/list-content.ts",
+    "validate:content": "tsx scripts/validate-content.ts",
     "import:content": "tsx scripts/import-content.ts",
     "export:content": "tsx scripts/export-content.ts",
     "typecheck": "astro check",
