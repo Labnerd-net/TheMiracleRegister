@@ -49,11 +49,11 @@ _None identified._
 ### Medium
 - **#14 miracles/index.astro (77-78)**: Every cache miss loads all published saints (id, name) and `SELECT DISTINCT country` to fill filter dropdowns (4 parallel neon-http queries). Fix: cache filter options separately (`CACHE_CONTENT`) or serve from a cached metadata endpoint; use typeahead for saints as the table grows. The same applies to the ad-hoc countries/orders/nationalities queries on saints/index.astro.
 - **#15 src/pages/sitemap.xml.ts (62-64)**: Five DB queries per request and no `Cache-Control`. Fix: set `CACHE_CONTENT` from `src/lib/cache.ts`.
+- **#55 src/lib/search.ts**: Search is `ILIKE '%q%'` over saint name/biography and miracle title/synopsis/diagnosis/cure details. Problems: a sequential scan on every search; results are unranked (a title match looks the same as a passing mention); multi-word queries match only the exact phrase ("child cancer" misses "cancer ... child"); no stemming ("healed" misses "healing"); no accent folding ("Andre" misses "André", "Zelie" misses "Zélie", which matters for saint names). Fix: a `tsvector` column with a GIN index, `websearch_to_tsquery`, `ts_rank` ordering and `unaccent`. Also improves `/api/v1/search`. Needs a Drizzle migration and updated test fixtures. Do together with #13 (SQL-side ordering, pagination and count); otherwise ranking only applies within the 100-row-per-entity cap.
 
 ### Low
 - **#16 src/lib/browse.ts**: `getTopicCounts`/`getThemeCounts` pull every published row and tally in JS; topics, themes, patronage and sitemap recompute the same tallies. Fine now; move to `unnest()` + `GROUP BY` as data grows.
 - **#17 miracles/[slug].astro (106-113)**: The `saintLinked` related-miracles query has no `limit`/`orderBy`; it is capped to 5 only in JS. Fix: `.limit(5)` with an order.
-- **#18 src/lib/search.ts**: `ILIKE '%q%'` across four text columns forces a sequential scan. Fix: `pg_trgm` GIN index or tsvector when data grows.
 - **#19 src/pages/random.astro (18, 27)**: `ORDER BY RANDOM()` scans the table. Fix: random offset from a count, or `TABLESAMPLE`, if it grows.
 - **#20 saints/[slug].astro (22)**: `db.select()` pulls every column. Fix: list only the used fields.
 
@@ -102,7 +102,7 @@ _None identified._
 - **#51 Dispensation display**: Show `beatification_miracle_dispensed`, `canonization_miracle_dispensed` and `dispensation_reason` on saints/[slug].astro.
 - **#52 content_tier**: Render a tier badge or filter on miracles/index.astro, or drop the column.
 - **#53 Similar miracles**: Extend the related logic in miracles/[slug].astro (77-137) to shared `medical_diagnosis`, `type` or `country`.
-- **#54 Accent-insensitive search**: `unaccent`/`pg_trgm` so "Andre" finds "André" and "Zelie" finds "Zélie" (pairs with #18).
+- **#56 Widen search coverage**: `src/lib/search.ts` ignores patronage, themes, topics, location, country and source titles. Depends on #55. Note the array columns (patronage, themes, topics) cannot go in a generated tsvector column directly because `array_to_string` is not immutable; use a trigger or an immutable wrapper function.
 
 ---
 
@@ -112,7 +112,7 @@ _None identified._
 |----------|------|--------|-----|-------|
 | Security | 0 | 2 | 3 | 5 |
 | Bugs | 3 | 1 | 4 | 8 |
-| Performance | 0 | 2 | 5 | 7 |
+| Performance | 0 | 3 | 4 | 7 |
 | Improvements & Refactors | 1 | 7 | 7 | 15 |
 | Feature Ideas | 2 | 5 | 5 | 12 |
-| **Total** | **6** | **17** | **24** | **47** |
+| **Total** | **6** | **18** | **23** | **47** |
