@@ -2,11 +2,11 @@
 
 ## Current Feature Spec File
 
-_None_
+context/specs/content-importer.md
 
 ## Current Feature Plan File
 
-_None_
+context/features/content-importer.md
 
 ## History
 
