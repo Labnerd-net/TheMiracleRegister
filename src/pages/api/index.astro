@@ -1,0 +1,105 @@
+---
+import Base from "../../layouts/Base.astro";
+import { PAGE_DESCRIPTIONS } from "../../lib/seo";
+import { CACHE_REFERENCE } from "../../lib/cache";
+
+Astro.response.headers.set("Cache-Control", CACHE_REFERENCE);
+
+const ENDPOINTS: [string, string][] = [
+  ["/api/v1/saints", "List saints. Filters: canonization_stage, theme, religious_order, nationality, page, limit."],
+  ["/api/v1/saints/:slug", "One saint with related saints and linked miracles."],
+  ["/api/v1/miracles", "Search and filter miracles. Filters: saint_id, type, topic, category, country, year_from, year_to, used_for_beatification, used_for_canonization, approval_authority, page, limit."],
+  ["/api/v1/miracles/:slug", "One miracle with full details, sources and images."],
+  ["/api/v1/search", "Text search across saints and miracles. Parameters: q, topic, page, limit."],
+  ["/api/v1/types", "Miracle types."],
+  ["/api/v1/metadata", "Canonical filter options: types, categories, approval authorities, topics, themes."],
+  ["/api/v1/doc", "The OpenAPI 3 specification, as JSON."],
+];
+---
+
+<Base title="API" description={PAGE_DESCRIPTIONS.api}>
+
+  <div class="page-header">
+    <div class="max-w-6xl mx-auto px-6 py-16">
+      <p class="eyebrow mb-4">The Register</p>
+      <h1 style="font-family:var(--font-display);font-size:clamp(2.5rem,5vw,4rem);font-weight:300;color:var(--text-1);line-height:1.05;letter-spacing:-0.01em">API</h1>
+      <p style="font-family:var(--font-sans);font-size:0.95rem;color:var(--text-3);line-height:1.7;margin-top:1.25rem;max-width:42rem">
+        A free, read-only JSON API for the saints and miracles in the register. No key is needed.
+      </p>
+    </div>
+  </div>
+
+  <div class="max-w-6xl mx-auto px-6 py-16">
+    <div class="max-w-2xl">
+
+      <section class="mb-9 pb-9 section-rule">
+        <p class="eyebrow mb-4">Quick start</p>
+        <pre class="api-code" tabindex="0"><code>curl "https://themiracleregister.org/api/v1/miracles?type=healing&amp;limit=5"</code></pre>
+        <div class="prose">
+          <p>
+            Every response uses the same envelope: <code>data</code> holds the result, <code>meta</code> holds
+            pagination (<code>page</code>, <code>limit</code>, <code>total</code>) on list endpoints, and
+            <code>error</code> is a message on failure and <code>null</code> otherwise. Invalid parameters return
+            400, unknown slugs 404.
+          </p>
+        </div>
+      </section>
+
+      <section class="mb-9 pb-9 section-rule">
+        <p class="eyebrow mb-4">Endpoints</p>
+        <dl class="api-endpoints">
+          {ENDPOINTS.map(([path, text]) => (
+            <>
+              <dt><code>GET {path}</code></dt>
+              <dd>{text}</dd>
+            </>
+          ))}
+        </dl>
+        <div class="prose">
+          <p>
+            The <a href="/api/reference">interactive reference</a> lists every parameter and response field, and
+            lets you try requests. The same information is available as a machine-readable
+            <a href="/api/v1/doc">OpenAPI document</a>.
+          </p>
+        </div>
+      </section>
+
+      <section class="mb-9 pb-9 section-rule">
+        <p class="eyebrow mb-4">Limits and caching</p>
+        <div class="prose">
+          <p>
+            Requests are limited to 60 per minute per IP address. Beyond that the API returns 429 with
+            <code>"Too many requests"</code>; wait a minute and retry. Responses allow cross-origin requests from
+            any site. List and detail responses may be cached for up to fifteen minutes, so a record edited
+            moments ago can take that long to appear.
+          </p>
+          <p>
+            Pagination is <code>page</code> (1 to 10000) and <code>limit</code> (1 to 100, default 20).
+          </p>
+        </div>
+      </section>
+
+      <section>
+        <p class="eyebrow mb-4">About the data</p>
+        <div class="prose">
+          <p>
+            Only published records are returned. Recipient names follow each case's privacy setting: a
+            <code>recipient_name</code> may be shortened to a first name or omitted. How miracles are
+            investigated and what each approval authority means is described on the
+            <a href="/verification">verification standards</a> page. To report an error in the data, use the
+            <a href="/contact">contact</a> page.
+          </p>
+        </div>
+      </section>
+
+    </div>
+  </div>
+</Base>
+
+<style>
+  .api-code { margin: 0 0 1.25rem; padding: 0.9rem 1rem; overflow-x: auto; font-size: 0.82rem; background: var(--bg-elevated); border: 1px solid var(--rule); color: var(--text-1); }
+  .api-endpoints { margin: 0 0 1.5rem; display: grid; gap: 0.2rem 1.5rem; grid-template-columns: max-content 1fr; font-family: var(--font-sans); font-size: 0.85rem; line-height: 1.6; }
+  .api-endpoints dt { color: var(--text-1); }
+  .api-endpoints dd { margin: 0 0 0.8rem; color: var(--text-2); grid-column: 1 / -1; }
+  :global(.prose code), .api-endpoints code { font-size: 0.85em; }
+</style>

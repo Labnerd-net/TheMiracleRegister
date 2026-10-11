@@ -12,7 +12,7 @@ const SECURITY_HEADERS: Record<string, string> = {
 export const onRequest = defineMiddleware(async (context, next) => {
   // The API applies its own limiter; static assets never reach the Worker.
   const limited =
-    !context.url.pathname.startsWith("/api/") &&
+    !context.url.pathname.startsWith("/api/v1/") &&
     (await isRateLimited(env.PAGE_RATE_LIMITER, clientIp(context.request)));
   const response = limited
     ? new Response("Too many requests", {

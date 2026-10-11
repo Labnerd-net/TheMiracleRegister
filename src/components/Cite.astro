@@ -1,0 +1,38 @@
+---
+import { citations } from "../lib/cite";
+
+interface Props {
+  title: string;
+  path: string;
+}
+const { title, path } = Astro.props;
+const items = citations(title, path);
+---
+
+<details class="cite">
+  <summary class="eyebrow">Cite this record</summary>
+  <dl class="cite-list">
+    {items.map((c) => (
+      <>
+        <dt>{c.format}</dt>
+        <dd>{c.before}<span data-cite-date={c.dateTemplate}></span>{c.after}</dd>
+      </>
+    ))}
+  </dl>
+  <p class="cite-link">Permanent link: <a href={path}>{path}</a></p>
+</details>
+
+<style>
+  .cite summary { cursor: pointer; width: fit-content; }
+  .cite-list { margin: 1rem 0 0; display: grid; gap: 0.35rem 1rem; grid-template-columns: max-content 1fr; font-family: var(--font-sans); font-size: 0.82rem; line-height: 1.6; color: var(--text-2); }
+  .cite-list dt { font-size: 0.6rem; font-weight: 600; letter-spacing: 0.08em; text-transform: uppercase; color: var(--text-4); padding-top: 0.2rem; }
+  .cite-list dd { margin: 0 0 0.6rem; overflow-wrap: anywhere; }
+  .cite-link { margin: 0.25rem 0 0; font-family: var(--font-sans); font-size: 0.78rem; color: var(--text-3); }
+</style>
+
+<script>
+  const today = new Date().toLocaleDateString("en-US", { year: "numeric", month: "long", day: "numeric" });
+  document.querySelectorAll<HTMLElement>("[data-cite-date]").forEach((el) => {
+    el.textContent = (el.dataset.citeDate ?? "").replace("{date}", today);
+  });
+</script>

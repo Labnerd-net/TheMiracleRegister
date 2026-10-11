@@ -13,4 +13,5 @@ export const PAGE_DESCRIPTIONS = {
     "A chronological timeline of Catholic miracles and apparitions across the centuries, grouped by decade, with links to each documented case.",
   search:
     "Search the Miracle Register for saints and miracles by name, place, medical condition or keyword across biographies, synopses and cure details.",
+  api: "A free, read-only JSON API for saints and miracles: endpoints, parameters, response format, rate limits and an interactive reference.",
 } as const;

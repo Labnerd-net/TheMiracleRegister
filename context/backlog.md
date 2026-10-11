@@ -2,7 +2,7 @@
 
 > Generated: 2026-10-09
 > Focus: Full audit
-> Updated: 2026-10-10 (closed #6, #8, #9, #10 in PR #50 and #1 on the rate-limiting branch, #2 narrowed; summary recounted from the listed items)
+> Updated: 2026-10-10 (closed #6, #8, #9, #10 in PR #50 and #1 on the rate-limiting branch, #2 narrowed, #43 on the api-docs-cite branch; summary recounted from the listed items)
 
 Note: the code scan did not read `scripts/`, `tests/`, drizzle migrations, or the saints index, calendar, topics, themes and patronage pages. Items marked "uncertain" are partly inference.
 
@@ -81,7 +81,6 @@ _None identified._
 ## Feature Ideas
 
 ### High
-- **#43 API docs page and cite block**: The OpenAPI spec exists at `/api/v1/doc` but nothing renders it. Add a Scalar/Swagger UI page and short `/api` usage page linked from the footer in `Base.astro` and `/verification`. Add a "Cite" block (APA/Chicago text, permalink, access date) on miracle and saint pages.
 - **#44 API gaps**: Add `GET /saints/:slug/miracles`, sources and locations (pages already query `saint_locations`/`saint_sources`); `/api/v1/feast/{month}/{day}` and `/feast/today` backed by `src/lib/feasts.ts`, `easter.ts` and `feastDays.ts`; `ETag`/`Last-Modified` from `updated_at`; `/api/v1/export` (JSON/CSV); missing filters (`topic`, `approval_authority`, `used_for_*`, country on `/saints`) in the OpenAPI schema.
 
 ### Medium
@@ -108,5 +107,5 @@ _None identified._
 | Bugs | 0 | 0 | 3 | 3 |
 | Performance | 0 | 3 | 4 | 7 |
 | Improvements & Refactors | 0 | 6 | 7 | 13 |
-| Feature Ideas | 2 | 5 | 5 | 12 |
-| **Total** | **2** | **15** | **21** | **38** |
+| Feature Ideas | 1 | 5 | 5 | 11 |
+| **Total** | **1** | **15** | **21** | **37** |

@@ -1,0 +1,35 @@
+---
+import Base from "../../layouts/Base.astro";
+import { CACHE_REFERENCE } from "../../lib/cache";
+
+Astro.response.headers.set("Cache-Control", CACHE_REFERENCE);
+
+// Pinned release; the integrity hash covers exactly this file.
+const SCALAR_SRC = "https://cdn.jsdelivr.net/npm/@scalar/api-reference@1.71.0/dist/browser/standalone.js";
+const SCALAR_SRI = "sha384-I7aSmSxf06vl5HT10vzNOAryO+PFCAVHIGwhZerHn6yM/O0642381S3kw9o7fFQd";
+// Keep the page self-contained: no Scalar telemetry, AI agent, developer-tools toolbar or Scalar-hosted fonts.
+const SCALAR_CONFIG = JSON.stringify({
+  telemetry: false,
+  showDeveloperTools: "never",
+  agent: { disabled: true },
+  withDefaultFonts: false,
+});
+---
+
+<Base title="API Reference" description="Interactive reference for the Miracle Register REST API: every endpoint, parameter and response field, with a request tester.">
+  <div class="max-w-6xl mx-auto px-4 sm:px-6 pt-8">
+    <p style="font-family:var(--font-sans);font-size:0.85rem;color:var(--text-3)">
+      <a href="/api">API overview</a> &middot; <a href="/api/v1/doc">OpenAPI JSON</a>
+    </p>
+    <noscript>
+      <p style="font-family:var(--font-sans);font-size:0.9rem;color:var(--text-2);margin-top:1rem">
+        The interactive reference needs JavaScript. The same information is in the
+        <a href="/api/v1/doc">OpenAPI JSON</a>.
+      </p>
+    </noscript>
+  </div>
+  <div>
+    <script is:inline id="api-reference" data-url="/api/v1/doc" data-configuration={SCALAR_CONFIG}></script>
+    <script is:inline src={SCALAR_SRC} integrity={SCALAR_SRI} crossorigin="anonymous"></script>
+  </div>
+</Base>
