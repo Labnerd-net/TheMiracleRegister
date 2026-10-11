@@ -9,11 +9,11 @@ import {
   envelopeSchema,
 } from "../schemas";
 import type { ApiEnv } from "../env";
-import { notFound } from "../errors";
+import { badRequest, notFound, validationHook } from "../errors";
 import { fetchSaintsByMiracle, miracleFilterConditions } from "../../lib/queries/miracles";
 import { redactRecipient } from "../../lib/privacy";
 
-const miraclesRoute = new OpenAPIHono<ApiEnv>();
+const miraclesRoute = new OpenAPIHono<ApiEnv>({ defaultHook: validationHook });
 
 miraclesRoute.openapi(
   createRoute({
@@ -25,10 +25,17 @@ miraclesRoute.openapi(
         content: { "application/json": { schema: envelopeSchema(z.array(MiracleListItemSchema)) } },
         description: "List of miracles",
       },
+      400: {
+        content: { "application/json": { schema: envelopeSchema(z.null()) } },
+        description: "Invalid parameters",
+      },
     },
   }),
   async (c) => {
     const { saint_id, type, topic, category, country, year_from, year_to, used_for_beatification, used_for_canonization, approval_authority, page, limit } = c.req.valid("query");
+    if (year_from !== undefined && year_to !== undefined && year_from > year_to) {
+      return badRequest(c, "year_from must not be greater than year_to");
+    }
     const offset = (page - 1) * limit;
     const db = createDb(c.env.DATABASE_URL);
 

@@ -14,21 +14,21 @@ import { MIRACLE_TOPICS } from "../../db/topics";
 import { and, asc, count, eq, isNotNull, sql } from "drizzle-orm";
 import { env } from "cloudflare:workers";
 import { CACHE_CONTENT } from "../../lib/cache";
+import { MAX_ID, MAX_PAGE, MAX_YEAR, MIN_YEAR, parseBoundedInt } from "../../lib/params";
 
 const PAGE_SIZE = 20;
 
 // Filter params
 const sp = Astro.url.searchParams;
-const rawPage = parseInt(sp.get("page") ?? "1");
-const page = Math.max(1, isNaN(rawPage) ? 1 : rawPage);
+const page = parseBoundedInt(sp.get("page"), 1, MAX_PAGE) ?? 1;
 const offset = (page - 1) * PAGE_SIZE;
 
-const filterSaintId   = parseInt(sp.get("saint_id") ?? "") || undefined;
+const filterSaintId   = parseBoundedInt(sp.get("saint_id"), 1, MAX_ID);
 const rawType = sp.get("type") ?? "";
 const filterType = (miracleType.enumValues as string[]).includes(rawType) ? rawType as typeof miracleType.enumValues[number] : undefined;
 const filterCountry   = sp.get("country") || undefined;
-const filterYearFrom  = parseInt(sp.get("year_from") ?? "") || undefined;
-const filterYearTo    = parseInt(sp.get("year_to") ?? "") || undefined;
+const filterYearFrom  = parseBoundedInt(sp.get("year_from"), MIN_YEAR, MAX_YEAR);
+const filterYearTo    = parseBoundedInt(sp.get("year_to"), MIN_YEAR, MAX_YEAR);
 const filterBeat      = sp.get("beatification") === "1";
 const filterCanon     = sp.get("canonization") === "1";
 const rawApproval = sp.get("approval_authority") ?? "";

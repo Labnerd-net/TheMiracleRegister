@@ -82,6 +82,21 @@ describe("GET /api/v1/miracles", () => {
   });
 
   describe("invalid parameters", () => {
+    it.each([
+      "limit=101", "limit=0", "page=0", "page=10001", "page=1e19", "saint_id=99999999999", "saint_id=0",
+      "year_from=1000000000000", "year_to=0", "year_from=1900&year_to=1800",
+    ])("rejects %s with 400 in the error envelope", async (qs) => {
+      const res = await req(`/api/v1/miracles?${qs}`);
+      expect(res.status).toBe(400);
+      const body = await json(res);
+      expect(body).toMatchObject({ data: null, meta: null });
+      expect(typeof body.error).toBe("string");
+    });
+
+    it("accepts year_from equal to year_to", async () => {
+      expect((await req("/api/v1/miracles?year_from=1900&year_to=1900")).status).toBe(200);
+    });
+
     it.each(["limit=101", "limit=0", "page=0", "type=bogus", "topic=bogus", "category=bogus", "approval_authority=none"])(
       "rejects %s with 400",
       async (qs) => {
