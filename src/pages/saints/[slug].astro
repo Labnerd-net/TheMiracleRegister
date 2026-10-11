@@ -1,4 +1,5 @@
 ---
+import Cite from "../../components/Cite.astro";
 import Base from "../../layouts/Base.astro";
 import { createDb } from "../../db";
 import { saints, miracles, miracleSaints, saintRelations, saintSources, saintLocations } from "../../db/schema";
@@ -345,6 +346,12 @@ const jsonLd = [
               </li>
             ))}
           </ul>
+        </div>
+      )}
+
+      {!isPreview && (
+        <div class="mt-9 pt-9 section-rule">
+          <Cite title={saint.name} path={`/saints/${saint.slug}`} />
         </div>
       )}
     </div>

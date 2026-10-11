@@ -44,6 +44,8 @@ export const GET: APIRoute = async () => {
     url("/calendar"),
     url("/verification"),
     url("/contact"),
+    url("/api"),
+    url("/api/reference"),
     url("/topics"),
     url("/themes"),
     url("/patronage"),

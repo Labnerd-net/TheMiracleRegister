@@ -71,11 +71,16 @@ describe("page rate limiting", () => {
     expect(res.headers.get("X-Frame-Options")).toBe("DENY");
   });
 
-  it("does not limit /api/ requests (the API has its own limiter)", async () => {
+  it("does not limit /api/v1/ requests (the API has its own limiter)", async () => {
     limiter.limit.mockResolvedValue({ success: false });
     const res = await run("https://example.test/api/v1/types", new Response("ok"), ip);
     expect(res.status).toBe(200);
     expect(limiter.limit).not.toHaveBeenCalled();
+  });
+
+  it("limits other /api paths such as the docs pages", async () => {
+    limiter.limit.mockResolvedValue({ success: false });
+    expect((await run("https://example.test/api/reference", new Response("ok"), ip)).status).toBe(429);
   });
 
   it("skips limiting when there is no client IP", async () => {
