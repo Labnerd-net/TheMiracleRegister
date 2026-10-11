@@ -295,6 +295,18 @@ All routes under `/api/v1/`. Hono + `@hono/zod-openapi` — OpenAPI spec generat
     run the command with `DATABASE_URL` overridden to that branch (dotenv does not override a set variable). Keep that
     string outside the repo; delete the branch afterward.
   - Do not edit published content in the DB by hand: change the file, merge it, and import with `--update-published`.
+  - **Retiring a saint or miracle entirely (decided 2026-10-11):** `import:content` never deletes a row or sets
+    `published` back to `false` - by design, since it only ever reads files and never diffs against what's absent.
+    Taking a published record down is a separate, deliberate operation: `npm run retire:content -- --kind
+    <saint|miracle> --slug <slug> [--mode unpublish|delete] [--apply] [--yes] [--allow-dirty]`. Refuses to run if a
+    content file for that slug still exists (remove it and merge first - this script is only for the gap between
+    "file is gone" and "DB row has caught up"). Dry run by default, prints the row, child-row counts, and warnings
+    (e.g. a miracle that would be left with no linked saint, or `slug_redirects` rows that would start 404ing).
+    `--mode unpublish` (the default) just flips `published: false`, reversible, keeps all data. `--mode delete`
+    hard-deletes the row; child rows cascade at the DB level except `saint_relations` (stored in both directions,
+    no cascade), which the script clears explicitly first. Same `--apply`/confirm/git-cleanliness gates as
+    `import:content`. Run `npm run check:data` afterward either way. Source: `scripts/retire-content-core.ts`,
+    `scripts/retire-content.ts`, tests in `tests/retire-content.test.ts`.
 
 ---
 

@@ -21,6 +21,7 @@
     "validate:content": "tsx scripts/validate-content.ts",
     "import:content": "tsx scripts/import-content.ts",
     "export:content": "tsx scripts/export-content.ts",
+    "retire:content": "tsx scripts/retire-content.ts",
     "typecheck": "astro check",
     "lint": "eslint ."
   },
