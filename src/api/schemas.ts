@@ -27,7 +27,6 @@ export const MetaSchema = z
     page: z.number().int().positive(),
     limit: z.number().int().positive(),
     total: z.number().int().nonnegative(),
-    capped: z.boolean().optional(),
   })
   .openapi("Meta");
 

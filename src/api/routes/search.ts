@@ -33,12 +33,9 @@ search.openapi(
     }
 
     const db = createDb(c.env.DATABASE_URL);
-    const { results, capped } = await searchContent(db, { q, topic });
+    const { results, total } = await searchContent(db, { q, topic, limit, offset: (page - 1) * limit });
 
-    const offset = (page - 1) * limit;
-    const paged = results.slice(offset, offset + limit);
-
-    return c.json({ data: paged, meta: { page, limit, total: results.length, ...(capped && { capped: true }) }, error: null }, 200);
+    return c.json({ data: results, meta: { page, limit, total }, error: null }, 200);
   }
 );
 

@@ -253,7 +253,7 @@ All routes under `/api/v1/`. Hono + `@hono/zod-openapi` — OpenAPI spec generat
 | GET | `/api/v1/miracles/:slug` | Single miracle with full details, sources and images |
 | GET | `/api/v1/types` | List miracle types |
 | GET | `/api/v1/metadata` | Canonical filter options: types, categories, approval authorities, topics, themes |
-| GET | `/api/v1/search` | Text search (params: q, topic, page, limit) |
+| GET | `/api/v1/search` | Full-text search over published saints and miracles (params: q, topic, page, limit); q supports `"phrases"`, `OR` and `-exclusions`; q and topic must both match when both are given |
 | GET | `/api/v1/doc` | Generated OpenAPI spec |
 
 **Response envelope:** `{ data, meta (pagination), error }`
@@ -265,6 +265,7 @@ All routes under `/api/v1/`. Hono + `@hono/zod-openapi` — OpenAPI spec generat
 - The single Neon branch is **production** (`br-proud-block-aptdevzb`). `DATABASE_URL` in `.env` points to it directly.
 - Content (saints and miracles) is written through the importer, `npm run import:content`, from files in `catholic-research`; the admin panel was removed and there is no seed script. Direct SQL edits are for emergencies only: the next import overwrites any field a file carries. Run `npm run check:data` after any change; the importer also runs the same rules inside its transaction and rolls back on new errors. `updated_at` is bumped by a DB trigger (`drizzle/0030_updated_at_trigger.sql`), so raw edits are safe.
 - Schema changes: `npm run db:generate` → `npm run db:migrate`. Because the only branch is production, `db:migrate` (`scripts/db-migrate.ts`) prints the target host and database and asks for confirmation before applying; pass `-- --yes` to skip the prompt in scripted use.
+- Search: `saints` and `miracles` each have a stored generated `search_vector` tsvector column with a GIN index (migration 0037, uses the `unaccent` extension through an `immutable_unaccent` wrapper). It is not in the Drizzle schema on purpose; it is queried only through `src/lib/search.ts`. Changing which fields are searchable means a new migration that drops and re-adds the column and index. The PGlite test database loads `unaccent` in `tests/helpers/testDb.ts`.
 - Data integrity: `npm run check:data` (`scripts/check-data.ts`) is a read-only check — slug format, topics/themes vs `src/db/topics.ts`, published records have sources, intercessory miracles have a published saint, `saint_relations` mirrored, feast field validity, `// [in DB]` feast entries match a saint, URL schemes, restricted recipient names not leaking into free text, duplicate/copy-pasted `saint_locations` coordinates, and no em dashes in free-text columns (biography_short, synopsis, cure_details, etc. — see style note below). Run it after any data change; exits 1 on errors.
 - **Publishing workflow (decided 2026-10-09, files as source of truth):** content lives as one JSON
   file per saint and miracle in `../catholic-research/TheMiracleRegister/Content/{saints,miracles}/<slug>.json`
