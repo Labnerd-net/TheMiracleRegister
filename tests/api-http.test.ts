@@ -21,6 +21,19 @@ describe("Cache-Control headers", () => {
   });
 });
 
+describe("Cache-Control on non-200 responses", () => {
+  it.each([
+    "/api/v1/saints/unknown-slug",
+    "/api/v1/miracles/does-not-exist",
+    "/api/v1/miracles?limit=101",
+    "/api/v1/saints?theme=bogus",
+  ])("%s is not cached", async (path) => {
+    const res = await req(path);
+    expect(res.status).toBeGreaterThanOrEqual(400);
+    expect(res.headers.get("Cache-Control")).toBe("no-store");
+  });
+});
+
 describe("CORS", () => {
   it("allows any origin on the public API", async () => {
     expect((await req("/api/v1/types")).headers.get("Access-Control-Allow-Origin")).toBe("*");

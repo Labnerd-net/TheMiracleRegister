@@ -1,5 +1,6 @@
 import { z } from "@hono/zod-openapi";
 import { MIRACLE_TOPICS, SAINT_THEMES } from "../db/topics";
+import { MAX_ID, MAX_PAGE, MAX_YEAR, MIN_YEAR } from "../lib/params";
 import {
   approvalAuthority,
   canonizationStage,
@@ -208,29 +209,29 @@ export const SearchResultSchema = z
 // --- Query params ---
 
 export const MiraclesQuerySchema = z.object({
-  saint_id: z.coerce.number().int().optional(),
+  saint_id: z.coerce.number().int().positive().max(MAX_ID).optional(),
   type: e(miracleType.enumValues).optional(),
   topic: z.enum([...MIRACLE_TOPICS]).optional(),
   category: e(miracleCategory.enumValues).optional(),
   country: z.string().max(100).optional(),
-  year_from: z.coerce.number().int().optional(),
-  year_to: z.coerce.number().int().optional(),
+  year_from: z.coerce.number().int().min(MIN_YEAR).max(MAX_YEAR).optional(),
+  year_to: z.coerce.number().int().min(MIN_YEAR).max(MAX_YEAR).optional(),
   used_for_beatification: z.string().optional(),
   used_for_canonization: z.string().optional(),
   // "none" excluded — not a useful filter value
   approval_authority: z.enum(["vatican_dicastery", "lourdes_bureau", "local_bishop", "nihil_obstat"]).optional(),
-  page: z.coerce.number().int().positive().default(1),
+  page: z.coerce.number().int().positive().max(MAX_PAGE).default(1),
   limit: z.coerce.number().int().positive().max(100).default(20),
 });
 
 export const SearchQuerySchema = z.object({
   q: z.string().min(2).max(100).optional(),
   topic: z.enum([...MIRACLE_TOPICS, ...SAINT_THEMES]).optional(),
-  page: z.coerce.number().int().positive().default(1),
+  page: z.coerce.number().int().positive().max(MAX_PAGE).default(1),
   limit: z.coerce.number().int().positive().max(100).default(20),
 });
 
 export const PaginationQuerySchema = z.object({
-  page: z.coerce.number().int().positive().default(1),
+  page: z.coerce.number().int().positive().max(MAX_PAGE).default(1),
   limit: z.coerce.number().int().positive().max(100).default(20),
 });

@@ -59,10 +59,10 @@ describe("GET /api/v1/search", () => {
     });
   });
 
-  it("returns a helpful envelope when neither q nor topic is given", async () => {
+  it("returns 400 with the envelope when neither q nor topic is given", async () => {
     const res = await req("/api/v1/search");
-    expect(res.status).toBe(200);
-    expect(await json(res)).toMatchObject({ data: [], error: "Provide q or topic" });
+    expect(res.status).toBe(400);
+    expect(await json(res)).toEqual({ data: null, meta: null, error: "Provide q or topic" });
   });
 
   it.each(["q=a", "topic=bogus", "limit=101"])("rejects %s with 400", async (qs) => {

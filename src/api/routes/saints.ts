@@ -11,7 +11,7 @@ import {
   envelopeSchema,
 } from "../schemas";
 import type { ApiEnv } from "../env";
-import { notFound } from "../errors";
+import { notFound, validationHook } from "../errors";
 import { fetchSaintsByMiracle } from "../../lib/queries/miracles";
 import { saintFilterConditions } from "../../lib/queries/saints";
 import { redactRecipient } from "../../lib/privacy";
@@ -23,7 +23,7 @@ const SaintsQuerySchema = PaginationQuerySchema.extend({
   nationality: z.string().max(100).optional(),
 });
 
-const saintsRoute = new OpenAPIHono<ApiEnv>();
+const saintsRoute = new OpenAPIHono<ApiEnv>({ defaultHook: validationHook });
 
 saintsRoute.openapi(
   createRoute({

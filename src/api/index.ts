@@ -1,16 +1,25 @@
 import { OpenAPIHono } from "@hono/zod-openapi";
 import { cors } from "hono/cors";
 import type { Context } from "hono";
+import { HTTPException } from "hono/http-exception";
 import miracles from "./routes/miracles";
 import metadata from "./routes/metadata";
 import saints from "./routes/saints";
 import search from "./routes/search";
 import types from "./routes/types";
 import { isRateLimited } from "../lib/rateLimit";
+import { validationHook } from "./errors";
 import type { ApiEnv } from "./env";
 import { CACHE_CONTENT, CACHE_REFERENCE } from "../lib/cache";
 
-const app = new OpenAPIHono<ApiEnv>().basePath("/api/v1");
+const app = new OpenAPIHono<ApiEnv>({ defaultHook: validationHook }).basePath("/api/v1");
+
+app.onError((err, c) => {
+  if (err instanceof HTTPException) return err.getResponse();
+  console.error("API error", err);
+  c.header("Cache-Control", "no-store");
+  return c.json({ data: null, meta: null, error: "Internal server error" }, 500);
+});
 
 // Public read-only API — open CORS is intentional. Admin endpoints must never be added under /api/v1/.
 app.use("*", cors({ origin: "*" }));
@@ -25,7 +34,8 @@ app.use("*", async (c: Context<ApiEnv>, next: () => Promise<void>) => {
 
 const cache = (value: string) => async (c: Context<ApiEnv>, next: () => Promise<void>) => {
   await next();
-  c.header("Cache-Control", value);
+  // Only successes get the shared-cache policy; a cached 404 would outlive publishing the record.
+  c.header("Cache-Control", c.res.status === 200 ? value : "no-store");
 };
 
 app.use("/saints/*", cache(CACHE_CONTENT));

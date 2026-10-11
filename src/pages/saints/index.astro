@@ -13,12 +13,12 @@ import { paginationHtml } from "../../lib/cards";
 import { asc, count, eq, and, isNotNull } from "drizzle-orm";
 import { env } from "cloudflare:workers";
 import { CACHE_CONTENT } from "../../lib/cache";
+import { MAX_PAGE, parseBoundedInt } from "../../lib/params";
 import { saintFilterConditions } from "../../lib/queries/saints";
 
 const PAGE_SIZE = 20;
 const sp = Astro.url.searchParams;
-const rawPage = parseInt(sp.get("page") ?? "1");
-const page = Math.max(1, isNaN(rawPage) ? 1 : rawPage);
+const page = parseBoundedInt(sp.get("page"), 1, MAX_PAGE) ?? 1;
 const offset = (page - 1) * PAGE_SIZE;
 
 const rawStage = sp.get("canonization_stage") ?? "";
