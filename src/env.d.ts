@@ -6,4 +6,5 @@ interface CloudflareEnv {
   PREVIEW_TOKEN: string;
   API_RATE_LIMITER: RateLimit;
   SEARCH_RATE_LIMITER: RateLimit;
+  PAGE_RATE_LIMITER: RateLimit;
 }

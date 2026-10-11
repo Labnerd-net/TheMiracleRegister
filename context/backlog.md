@@ -2,6 +2,7 @@
 
 > Generated: 2026-10-09
 > Focus: Full audit
+> Updated: 2026-10-10 (closed #6, #8, #9, #10 in PR #50 and #1 on the rate-limiting branch, #2 narrowed; summary recounted from the listed items)
 
 Note: the code scan did not read `scripts/`, `tests/`, drizzle migrations, or the saints index, calendar, topics, themes and patronage pages. Items marked "uncertain" are partly inference.
 
@@ -13,8 +14,7 @@ Note: the code scan did not read `scripts/`, `tests/`, drizzle migrations, or th
 _None identified._
 
 ### Medium
-- **#1 src/api/index.ts (18-24), src/pages/search.astro (16)**: Rate limiting keys on `CF-Connecting-IP ?? "unknown"` (and `Astro.clientAddress ?? "unknown"`). If the header is absent, all clients share one bucket. Fix: skip limiting explicitly or return 400 when the IP is missing; keep fail-open only for limiter outages.
-- **#2 src/middleware.ts, pages**: Only `/api/v1/*` and `/search` are rate limited. `/miracles`, `/saints/[slug]`, `/map` and `/random` hit Neon on every edge-cache miss, and random query strings bypass the cache. Fix: apply a rate-limit binding in middleware for non-asset requests, ignore unknown params in cache keys, or add a Cloudflare WAF rule. Confirm the `SEARCH_RATE_LIMITER` binding in wrangler.jsonc is actually used.
+- **#2 cache keys**: Page requests are now rate limited per IP (120/60s, PR for rate-limiting). Remaining: random query strings still bypass the edge cache, so each distinct URL is an origin and Neon hit. Fix: ignore unknown params in cache keys or add a Cloudflare WAF/cache rule (dashboard work).
 
 ### Low
 - **#3 src/middleware.ts (3-8)**: CSP is only `frame-ancestors 'none'`; no HSTS or Permissions-Policy. Fix: add `Strict-Transport-Security` now (or in Cloudflare). A real CSP needs inline scripts moved to files first (depends on #35).
@@ -25,14 +25,12 @@ _None identified._
 ## Bugs
 
 ### High
-- **#6 src/api/index.ts (26-38)**: The cache middleware sets `public, s-maxage=900, stale-while-revalidate=3600` regardless of status, so 404s, validation errors and 500s are edge-cached. A just-published record can keep returning a cached 404. Fix: set the header only when `c.res.status === 200`, `no-store` otherwise.
-- **#8 src/api/schemas.ts (205-228), miracles/index.astro (22-27)**: Numeric params have no upper bounds (`saint_id=99999999999`, `year_from=1e12`, `page=1e19`); Postgres overflow produces an unhandled 500. The page uses `parseInt(...) || undefined` with the same flaw. Fix: add `.max()` bounds (years, page, saint_id) and clamp in the page; reject `year_from > year_to`.
+_None identified._
 
 ### Medium
-- **#9 src/api/index.ts**: No `app.onError`; DB errors return Hono's plain-text 500, breaking the `{data, meta, error}` envelope. Fix: add `onError` returning the JSON envelope plus a zod `defaultHook` for 400s; use the same 400 helper as #10.
+_None identified._
 
 ### Low
-- **#10 src/api/routes/search.ts (26-28)**: Missing `q` and `topic` returns 200 with `error: "Provide q or topic"`. Fix: return 400 (add a 400 helper next to `notFound` in `src/api/errors.ts`).
 - **#11 src/api/schemas.ts (212-213)**: `used_for_beatification`/`used_for_canonization` are free strings where only `"1"` counts as true; other values silently mean no filter. Fix: `z.enum(["1"])` or boolean coercion, and document it.
 - **#12 src/api/routes/saints.ts (19)**: `nationality` uses exact `eq`, `religious_order` uses `ilike '%..%'`. Fix: pick one and document it.
 - **#13 src/api/routes/search.ts (31-36), src/lib/search.ts**: Pagination is in memory over up to 100 saints + 100 miracles with no `ORDER BY`; `meta.total` caps at 200 and results are arbitrary. With both `q` and `topic` results are unioned, not intersected (uncertain if intended). Fix: add deterministic ordering, push limit/offset and a true count into SQL, decide union vs AND.
@@ -106,9 +104,9 @@ _None identified._
 
 | Category | High | Medium | Low | Total |
 |----------|------|--------|-----|-------|
-| Security | 0 | 2 | 3 | 5 |
-| Bugs | 3 | 1 | 4 | 8 |
+| Security | 0 | 1 | 2 | 3 |
+| Bugs | 0 | 0 | 3 | 3 |
 | Performance | 0 | 3 | 4 | 7 |
-| Improvements & Refactors | 1 | 7 | 7 | 15 |
+| Improvements & Refactors | 0 | 6 | 7 | 13 |
 | Feature Ideas | 2 | 5 | 5 | 12 |
-| **Total** | **6** | **18** | **23** | **47** |
+| **Total** | **2** | **15** | **21** | **38** |

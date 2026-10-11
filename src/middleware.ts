@@ -1,4 +1,6 @@
 import { defineMiddleware } from "astro:middleware";
+import { env } from "cloudflare:workers";
+import { clientIp, isRateLimited } from "./lib/rateLimit";
 
 const SECURITY_HEADERS: Record<string, string> = {
   "X-Content-Type-Options": "nosniff",
@@ -8,7 +10,16 @@ const SECURITY_HEADERS: Record<string, string> = {
 };
 
 export const onRequest = defineMiddleware(async (context, next) => {
-  const response = await next();
+  // The API applies its own limiter; static assets never reach the Worker.
+  const limited =
+    !context.url.pathname.startsWith("/api/") &&
+    (await isRateLimited(env.PAGE_RATE_LIMITER, clientIp(context.request)));
+  const response = limited
+    ? new Response("Too many requests", {
+        status: 429,
+        headers: { "Retry-After": "60", "Cache-Control": "no-store", "Content-Type": "text/plain; charset=utf-8" },
+      })
+    : await next();
   for (const [name, value] of Object.entries(SECURITY_HEADERS)) {
     if (!response.headers.has(name)) response.headers.set(name, value);
   }

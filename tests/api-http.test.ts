@@ -1,4 +1,4 @@
-import { describe, expect, it } from "vitest";
+import { describe, expect, it, vi } from "vitest";
 import { CACHE_CONTENT, CACHE_REFERENCE } from "../src/lib/cache";
 import app from "../src/api/index";
 import { createRequester, json } from "./helpers/apiApp";
@@ -53,6 +53,13 @@ describe("rate limiting", () => {
   it("does not affect a different IP", async () => {
     for (let i = 0; i < 61; i++) await req("/api/v1/types", { ip: "203.0.113.8" });
     expect((await req("/api/v1/types", { ip: "203.0.113.9" })).status).toBe(200);
+  });
+
+  it("does not limit requests with no client IP", async () => {
+    const limit = vi.fn(async () => ({ success: false }));
+    const env = { DATABASE_URL: process.env.DATABASE_URL!, API_RATE_LIMITER: { limit } as unknown as RateLimit };
+    expect((await app.request("/api/v1/types", {}, env)).status).toBe(200);
+    expect(limit).not.toHaveBeenCalled();
   });
 });
 
