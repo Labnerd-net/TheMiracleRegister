@@ -7,7 +7,7 @@ import metadata from "./routes/metadata";
 import saints from "./routes/saints";
 import search from "./routes/search";
 import types from "./routes/types";
-import { isRateLimited } from "../lib/rateLimit";
+import { clientIp, isRateLimited } from "../lib/rateLimit";
 import { validationHook } from "./errors";
 import type { ApiEnv } from "./env";
 import { CACHE_CONTENT, CACHE_REFERENCE } from "../lib/cache";
@@ -25,8 +25,7 @@ app.onError((err, c) => {
 app.use("*", cors({ origin: "*" }));
 
 app.use("*", async (c: Context<ApiEnv>, next: () => Promise<void>) => {
-  const ip = c.req.header("CF-Connecting-IP") ?? "unknown";
-  if (await isRateLimited(c.env.API_RATE_LIMITER, ip)) {
+  if (await isRateLimited(c.env.API_RATE_LIMITER, clientIp(c.req.raw))) {
     return c.json({ data: null, meta: null, error: "Too many requests" }, 429);
   }
   await next();
