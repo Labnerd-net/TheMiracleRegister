@@ -2,7 +2,7 @@
 
 > Generated: 2026-10-09
 > Focus: Full audit
-> Updated: 2026-10-10 (closed #6, #8, #9, #10 in PR #50 and #1 on the rate-limiting branch, #2 narrowed, #43 on the api-docs-cite branch; summary recounted from the listed items)
+> Updated: 2026-10-10 (closed #6, #8, #9, #10 in PR #50 and #1 on the rate-limiting branch, #2 narrowed, #43 in PR #52, #55 and #13 on the fulltext-search branch; summary recounted from the listed items)
 
 Note: the code scan did not read `scripts/`, `tests/`, drizzle migrations, or the saints index, calendar, topics, themes and patronage pages. Items marked "uncertain" are partly inference.
 
@@ -33,7 +33,6 @@ _None identified._
 ### Low
 - **#11 src/api/schemas.ts (212-213)**: `used_for_beatification`/`used_for_canonization` are free strings where only `"1"` counts as true; other values silently mean no filter. Fix: `z.enum(["1"])` or boolean coercion, and document it.
 - **#12 src/api/routes/saints.ts (19)**: `nationality` uses exact `eq`, `religious_order` uses `ilike '%..%'`. Fix: pick one and document it.
-- **#13 src/api/routes/search.ts (31-36), src/lib/search.ts**: Pagination is in memory over up to 100 saints + 100 miracles with no `ORDER BY`; `meta.total` caps at 200 and results are arbitrary. With both `q` and `topic` results are unioned, not intersected (uncertain if intended). Fix: add deterministic ordering, push limit/offset and a true count into SQL, decide union vs AND.
 
 ---
 
@@ -45,7 +44,6 @@ _None identified._
 ### Medium
 - **#14 miracles/index.astro (77-78)**: Every cache miss loads all published saints (id, name) and `SELECT DISTINCT country` to fill filter dropdowns (4 parallel neon-http queries). Fix: cache filter options separately (`CACHE_CONTENT`) or serve from a cached metadata endpoint; use typeahead for saints as the table grows. The same applies to the ad-hoc countries/orders/nationalities queries on saints/index.astro.
 - **#15 src/pages/sitemap.xml.ts (62-64)**: Five DB queries per request and no `Cache-Control`. Fix: set `CACHE_CONTENT` from `src/lib/cache.ts`.
-- **#55 src/lib/search.ts**: Search is `ILIKE '%q%'` over saint name/biography and miracle title/synopsis/diagnosis/cure details. Problems: a sequential scan on every search; results are unranked (a title match looks the same as a passing mention); multi-word queries match only the exact phrase ("child cancer" misses "cancer ... child"); no stemming ("healed" misses "healing"); no accent folding ("Andre" misses "André", "Zelie" misses "Zélie", which matters for saint names). Fix: a `tsvector` column with a GIN index, `websearch_to_tsquery`, `ts_rank` ordering and `unaccent`. Also improves `/api/v1/search`. Needs a Drizzle migration and updated test fixtures. Do together with #13 (SQL-side ordering, pagination and count); otherwise ranking only applies within the 100-row-per-entity cap.
 
 ### Low
 - **#16 src/lib/browse.ts**: `getTopicCounts`/`getThemeCounts` pull every published row and tally in JS; topics, themes, patronage and sitemap recompute the same tallies. Fine now; move to `unnest()` + `GROUP BY` as data grows.
@@ -65,7 +63,7 @@ _None identified._
 - **#28 Prettier**: ESLint is set up (`npm run lint`, CI step). Prettier is not; the code is not Prettier-formatted, so adding it means a repo-wide reformat. Fix: add Prettier and reformat once the refactors (#21, #23-#25) land, to avoid merge conflicts.
 - **#29 Playwright**: CLAUDE.md lists Playwright but none exists. Fix: build a smoke suite (home, saint page, miracle filters with and without JS, search, preview token, redirects, lightbox) or update the docs.
 - **#30 SEO structured data**: Add `BreadcrumbList` on detail/browse pages, `WebSite` + `SearchAction` on home, `ItemList` on browse pages. Paginated `?page=N` URLs are noindex via the query-string rule; make sure page 1 links reach the content.
-- **#32 Browse and search UX**: Add clear-filters and active-filter chips, sort options (event date, recently added) and per-facet counts on miracles/index.astro; confirm filters work fully without JS. On search.astro add result highlighting, saint/miracle grouping, and a notice when `meta.capped` is true.
+- **#32 Browse and search UX**: Add clear-filters and active-filter chips, sort options (event date, recently added) and per-facet counts on miracles/index.astro; confirm filters work fully without JS. On search.astro add result highlighting, saint/miracle grouping, and a notice when results are truncated (the page already says so).
 
 ### Low
 - **#35 Inline styles**: Widespread `style="..."` (miracles/[slug].astro, 404.astro and others) despite Tailwind/global.css. Fix: shared classes or components for eyebrow labels and repeated font combos.
@@ -95,7 +93,7 @@ _None identified._
 - **#51 Dispensation display**: Show `beatification_miracle_dispensed`, `canonization_miracle_dispensed` and `dispensation_reason` on saints/[slug].astro.
 - **#52 content_tier**: Render a tier badge or filter on miracles/index.astro, or drop the column.
 - **#53 Similar miracles**: Extend the related logic in miracles/[slug].astro (77-137) to shared `medical_diagnosis`, `type` or `country`.
-- **#56 Widen search coverage**: `src/lib/search.ts` ignores patronage, themes, topics, location, country and source titles. Depends on #55. Note the array columns (patronage, themes, topics) cannot go in a generated tsvector column directly because `array_to_string` is not immutable; use a trigger or an immutable wrapper function.
+- **#56 Widen search coverage**: `src/lib/search.ts` ignores patronage, themes, topics, location, country and source titles. Depends on #55 (done, migration 0037). Note the array columns (patronage, themes, topics) cannot go in a generated tsvector column directly because `array_to_string` is not immutable; use a trigger or an immutable wrapper function.
 
 ---
 
@@ -104,8 +102,8 @@ _None identified._
 | Category | High | Medium | Low | Total |
 |----------|------|--------|-----|-------|
 | Security | 0 | 1 | 2 | 3 |
-| Bugs | 0 | 0 | 3 | 3 |
-| Performance | 0 | 3 | 4 | 7 |
+| Bugs | 0 | 0 | 2 | 2 |
+| Performance | 0 | 2 | 4 | 6 |
 | Improvements & Refactors | 0 | 6 | 7 | 13 |
 | Feature Ideas | 1 | 5 | 5 | 11 |
-| **Total** | **1** | **15** | **21** | **37** |
+| **Total** | **1** | **14** | **20** | **35** |

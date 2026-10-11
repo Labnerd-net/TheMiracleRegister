@@ -1,4 +1,5 @@
 import { PGlite } from "@electric-sql/pglite";
+import { unaccent } from "@electric-sql/pglite/contrib/unaccent";
 import { drizzle } from "drizzle-orm/pglite";
 import { migrate } from "drizzle-orm/pglite/migrator";
 import { afterAll, beforeAll } from "vitest";
@@ -10,7 +11,7 @@ export type TestDb = ReturnType<typeof drizzle<typeof schema>>;
 
 // In-process Postgres with the real migrations applied (about 2s).
 export async function createTestDb() {
-  const pg = new PGlite();
+  const pg = new PGlite({ extensions: { unaccent } });
   const db = drizzle(pg, { schema });
   await migrate(db, { migrationsFolder: "drizzle" });
   return { db, close: () => pg.close() };

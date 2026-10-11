@@ -11,13 +11,16 @@ const q = (Astro.url.searchParams.get("q")?.trim() ?? "").slice(0, 100);
 let saintResults: SearchResult[] = [];
 let miracleResults: SearchResult[] = [];
 let rateLimited = false;
+let totalMatches = 0;
+const SHOWN = 200;
 
 if (q.length >= 2) {
   rateLimited = await isRateLimited(env.SEARCH_RATE_LIMITER, clientIp(Astro.request));
 
   if (!rateLimited) {
     const db = createDb(env.DATABASE_URL);
-    const { results } = await searchContent(db, { q, excerptLength: 220, perEntityLimit: 200 });
+    const { results, total: matched } = await searchContent(db, { q, excerptLength: 220, limit: SHOWN });
+    totalMatches = matched;
     saintResults = results.filter((r) => r.type === "saint");
     miracleResults = results.filter((r) => r.type === "miracle");
   } else {
@@ -26,6 +29,7 @@ if (q.length >= 2) {
 }
 
 const total = saintResults.length + miracleResults.length;
+const truncated = totalMatches > total;
 const hasQuery = q.length >= 2 && !rateLimited;
 const hasResults = total > 0;
 ---
@@ -68,9 +72,10 @@ const hasResults = total > 0;
     {hasQuery && (
       <div class="results-header">
         {hasResults
-          ? <p class="results-count">{total} result{total !== 1 ? "s" : ""} for <em>"{q}"</em></p>
+          ? <p class="results-count">{truncated ? totalMatches : total} result{(truncated ? totalMatches : total) !== 1 ? "s" : ""} for <em>"{q}"</em></p>
           : <p class="results-count">No results for <em>"{q}"</em></p>
         }
+        {truncated && <p class="search-hint">Showing the {total} most relevant of {totalMatches} matches. Add a word to narrow the search.</p>}
       </div>
     )}
 
