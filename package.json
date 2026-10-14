@@ -26,14 +26,14 @@
     "lint": "eslint ."
   },
   "dependencies": {
-    "@astrojs/cloudflare": "^13.7.0",
+    "@astrojs/cloudflare": "^14.3.4",
     "@fontsource/cormorant-garamond": "^5.2.11",
     "@fontsource/eb-garamond": "^5.2.7",
     "@fontsource/inter": "^5.2.8",
     "@hono/zod-openapi": "^1.4.0",
     "@neondatabase/serverless": "^0.10.4",
     "@tailwindcss/vite": "^4.3.0",
-    "astro": "^6.4.8",
+    "astro": "^7.3.8",
     "drizzle-orm": "^0.45.2",
     "hono": "^4.13.13",
     "marked": "^18.0.5",
@@ -56,5 +56,8 @@
     "typescript-eslint": "^8.71.1",
     "vitest": "^3.2.2",
     "ws": "^8.22.0"
+  },
+  "overrides": {
+    "@cloudflare/vite-plugin": "1.42.4"
   }
 }
