@@ -46,9 +46,9 @@ A data-driven website documenting miracles attributed to Catholic saints. Focuse
   framing. A saint or miracle record gets quoted, screenshotted, or cited out of context (a
   journalist pulling one case, a shared link), and anything that only makes sense next to the
   site around it breaks on the way out. Referencing *other* records (another saint, another
-  miracle by slug/name) or naming a sibling site (HallowedTales, UnhallowedTales) is fine — the
-  rule is about not leaning on this site's own scaffolding to make sense. Same rule as
-  HallowedTales' "Stories stand alone" and UnhallowedTales' "No site self-reference." Audited
+  miracle by slug/name) or naming a sibling site is fine — the
+  rule is about not leaning on this site's own scaffolding to make sense. Sibling sites apply
+  an equivalent rule under their own name. Audited
   2026-10-09: no violations found in current data. UI copy/static pages (About, Verification
   methodology) are exempt — those pages are inherently about the site.
 

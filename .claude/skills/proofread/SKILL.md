@@ -52,7 +52,7 @@ same workflow as `verify-sources`.
 - A bare number (e.g. "check 20") -> pass `--limit=<n>` for a sample run.
 - Nothing specified -> full scan, published only (86 miracles + 28 saints
   as of this writing - unpublished drafts are excluded by default here,
-  unlike the HallowedTales version of this skill, because most unpublished
+  unlike this skill's profile for another site, because most unpublished
   rows are incomplete stubs mid-entry rather than finished drafts awaiting
   a proofread pass; pass `--include-unpublished` explicitly if that's what's
   wanted).
