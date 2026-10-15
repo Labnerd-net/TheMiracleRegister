@@ -385,11 +385,14 @@ const [[{ saintCount }], [{ miracleCount }], [{ apparitionCount }], featuredSain
     track.addEventListener('mouseenter', () => { hovering = true; });
     track.addEventListener('mouseleave', () => { hovering = false; });
 
-    // Keyboard focus: stop autoplay and slide the focused card into view
+    // Keyboard focus: stop autoplay and slide the focused card into view.
+    // Mouse presses also fire focusin; sliding then would move the card out from under
+    // the pointer before the click completes, so only slide for :focus-visible.
     track.addEventListener('focusin', (e) => {
       hasFocus = true;
-      const card = (e.target as HTMLElement).closest('.carousel-card') as HTMLElement | null;
-      const idx = card ? Array.from(track.children).indexOf(card) : -1;
+      const target = e.target as HTMLElement;
+      const card = target.closest('.carousel-card') as HTMLElement | null;
+      const idx = card && target.matches(':focus-visible') ? Array.from(track.children).indexOf(card) : -1;
       if (idx >= 0) {
         current = idx;
         track.style.transition = 'transform 0.3s ease';
