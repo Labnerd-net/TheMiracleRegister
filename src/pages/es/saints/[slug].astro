@@ -1,0 +1,44 @@
+---
+import Base from "../../../layouts/Base.astro";
+import SaintDetail from "../../../components/SaintDetail.astro";
+import { createDb } from "../../../db";
+import { env } from "cloudflare:workers";
+import { ogDescription } from "../../../lib/format";
+import { isValidPreviewToken } from "../../../lib/preview";
+import { CACHE_REDIRECT } from "../../../lib/slugRedirect";
+import { thumbUrl } from "../../../lib/image";
+import { CACHE_CONTENT } from "../../../lib/cache";
+import { saintJsonLd, breadcrumbJsonLd } from "../../../lib/jsonld";
+import { loadSaintDetail } from "../../../lib/queries/saintDetail";
+
+const { slug } = Astro.params;
+const db = createDb(env.DATABASE_URL);
+const isPreview = isValidPreviewToken(Astro.url.searchParams.get("preview"), env.PREVIEW_TOKEN);
+
+const result = await loadSaintDetail(db, slug!, { locale: "es", isPreview });
+
+if (result.status === "not_found") return Astro.rewrite("/404");
+if (result.status === "redirect") {
+  return new Response(null, {
+    status: 301,
+    headers: { Location: `/es/saints/${result.to}`, "Cache-Control": CACHE_REDIRECT },
+  });
+}
+
+const { saint } = result;
+
+Astro.response.headers.set("Cache-Control", isPreview ? "no-store" : CACHE_CONTENT);
+
+const ogDesc = ogDescription(saint.biography_short) || undefined;
+const jsonLd = [
+  saintJsonLd({ ...saint, image_url: thumbUrl(saint.image_url, 1280), description: ogDesc }),
+  breadcrumbJsonLd([
+    { name: "Saints", path: "/es/saints" },
+    { name: saint.name, path: `/es/saints/${saint.slug}` },
+  ]),
+];
+---
+
+<Base title={saint.name} description={ogDesc} ogImage={thumbUrl(saint.image_url, 1280) ?? undefined} ogType="profile" jsonLd={jsonLd} noindex>
+  <SaintDetail data={result} locale="es" isPreview={isPreview} />
+</Base>

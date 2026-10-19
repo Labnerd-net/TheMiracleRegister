@@ -1,0 +1,338 @@
+---
+import Cite from "./Cite.astro";
+import { env } from "cloudflare:workers";
+import { humanizeSnakeCase } from "../lib/format";
+import { redactRecipient } from "../lib/privacy";
+import { renderMarkdown } from "../lib/markdown";
+import { thumbUrl } from "../lib/image";
+import { safeHttpUrl } from "../lib/url";
+import { LOCATION_TYPE_COLORS } from "../lib/mapConstants";
+import { localePath } from "../lib/i18n/locale";
+import { t } from "../lib/i18n/strings";
+import type { Locale } from "../lib/i18n/locale";
+import type { SaintDetailOk } from "../lib/queries/saintDetail";
+
+interface Props {
+  data: SaintDetailOk;
+  locale: Locale;
+  isPreview: boolean;
+}
+const { data, locale, isPreview } = Astro.props;
+const {
+  saint, saintMiracles, relatedRows, sources, wikipediaUrl,
+  mappableLocations, birthLocation, deathLocation, bornDisplay, diedDisplay, patronageLinks,
+} = data;
+
+const p = (path: string) => localePath(locale, path);
+
+const sourceTypeLabel: Record<string, string> = {
+  vatican_decree: "Vatican",
+  news_article: "Press",
+  book: "Book",
+  academic: "Reference",
+  other: "Other",
+};
+
+const relationTypeLabel: Record<string, string> = {
+  canonized_together: "Canonized together",
+  same_order: "Same religious order",
+  family: "Family",
+};
+---
+
+{mappableLocations.length > 0 && (
+  <link slot="head" rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY=" crossorigin="" />
+)}
+
+<div class="page-header">
+  <div class="max-w-6xl mx-auto px-4 sm:px-6 py-4">
+    <a href={p("/saints")} style="font-family:var(--font-sans);font-size:0.68rem;font-weight:500;letter-spacing:0.08em;text-transform:uppercase;color:var(--text-4);text-decoration:none">
+      {t(locale, "backToSaints")}
+    </a>
+  </div>
+
+  <div class="max-w-6xl mx-auto px-4 sm:px-6 pb-10 sm:pb-16 md:grid md:grid-cols-[1fr_280px] md:gap-10 lg:gap-16 md:items-start">
+    <div class="pt-8">
+      <div class="flex items-center gap-3 mb-6">
+        <span class={`stage-badge ${saint.canonization_stage}`}>{saint.canonization_stage}</span>
+        {saint.canonization_type && (
+          <span style="font-family:var(--font-sans);font-size:0.65rem;color:var(--text-4);letter-spacing:0.04em">{humanizeSnakeCase(saint.canonization_type)}</span>
+        )}
+      </div>
+      <h1 style="font-family:var(--font-display);font-size:clamp(2.5rem,6vw,4.5rem);font-weight:300;color:var(--text-1);line-height:1.05;margin-bottom:0.6rem;letter-spacing:-0.01em">
+        {saint.name}
+      </h1>
+      {saint.birth_name && saint.birth_name !== saint.name && (
+        <p style="font-family:var(--font-sans);font-size:0.8rem;color:var(--text-4);margin-bottom:1.5rem;font-style:italic">{saint.birth_name}</p>
+      )}
+
+      <div class="flex flex-wrap gap-x-8 gap-y-3 mt-7 pt-7" style="border-top:1px solid var(--rule)">
+        {saint.feast_day && (
+          <div>
+            <p style="font-family:var(--font-sans);font-size:0.6rem;font-weight:600;letter-spacing:0.1em;text-transform:uppercase;color:var(--text-4);margin-bottom:0.3rem">{t(locale, "feastDay")}</p>
+            <p style="font-family:var(--font-sans);font-size:0.82rem;color:var(--text-2)">{saint.feast_day}</p>
+          </div>
+        )}
+        {saint.nationality && (
+          <div>
+            <p style="font-family:var(--font-sans);font-size:0.6rem;font-weight:600;letter-spacing:0.1em;text-transform:uppercase;color:var(--text-4);margin-bottom:0.3rem">{t(locale, "nationality")}</p>
+            <p style="font-family:var(--font-sans);font-size:0.82rem;color:var(--text-2)">{saint.nationality}</p>
+          </div>
+        )}
+        {saint.religious_order && (
+          <div>
+            <p style="font-family:var(--font-sans);font-size:0.6rem;font-weight:600;letter-spacing:0.1em;text-transform:uppercase;color:var(--text-4);margin-bottom:0.3rem">{t(locale, "order")}</p>
+            <p style="font-family:var(--font-sans);font-size:0.82rem;color:var(--text-2)">{saint.religious_order}</p>
+          </div>
+        )}
+        {saint.canonization_date && (
+          <div>
+            <p style="font-family:var(--font-sans);font-size:0.6rem;font-weight:600;letter-spacing:0.1em;text-transform:uppercase;color:var(--text-4);margin-bottom:0.3rem">{t(locale, "canonized")}</p>
+            <p style="font-family:var(--font-sans);font-size:0.82rem;color:var(--text-2)">{saint.canonization_date}</p>
+          </div>
+        )}
+        {relatedRows.length > 0 && (
+          <div>
+            <p style="font-family:var(--font-sans);font-size:0.6rem;font-weight:600;letter-spacing:0.1em;text-transform:uppercase;color:var(--text-4);margin-bottom:0.3rem">{t(locale, "related")}</p>
+            {relatedRows.map((r) => (
+              <div style="margin-bottom:0.25rem">
+                <a href={p(`/saints/${r.slug}`)} style="font-family:var(--font-sans);font-size:0.82rem;display:block">{r.name}</a>
+                <span style="font-family:var(--font-sans);font-size:0.68rem;color:var(--text-4)">{relationTypeLabel[r.relation_type] ?? r.relation_type}</span>
+              </div>
+            ))}
+          </div>
+        )}
+      </div>
+    </div>
+
+    <div class="mt-8 lg:mt-8">
+      {saint.image_url ? (
+        <div class="saint-header-img overflow-hidden" style="background:var(--bg-elevated)">
+          <img src={thumbUrl(saint.image_url, 500)!} alt={saint.name} class="w-full h-full object-cover object-top" />
+        </div>
+      ) : (
+        <div class="saint-header-img saint-placeholder">
+          {saint.name.charAt(0)}
+        </div>
+      )}
+
+      <div class="card p-5 mt-4 lg:hidden">
+        <h2 class="eyebrow mb-5">{t(locale, "record")}</h2>
+        <dl class="meta-grid">
+          {(bornDisplay || birthLocation) && (
+            <><dt>{t(locale, "born")}</dt><dd>{bornDisplay}{birthLocation ? <><br/><span style="color:var(--text-4)">{birthLocation.location_name}</span></> : ""}</dd></>
+          )}
+          {(diedDisplay || deathLocation) && (
+            <><dt>{t(locale, "died")}</dt><dd>{diedDisplay}{deathLocation ? <><br/><span style="color:var(--text-4)">{deathLocation.location_name}</span></> : ""}</dd></>
+          )}
+          {saint.beatification_date && (
+            <><dt>{t(locale, "beatified")}</dt><dd>{saint.beatification_date}{saint.beatified_by ? <><br/><span style="color:var(--text-4)">{saint.beatified_by}</span></> : ""}</dd></>
+          )}
+          {saint.canonization_date && (
+            <><dt>{t(locale, "canonized")}</dt><dd>{saint.canonization_date}{saint.canonized_by ? <><br/><span style="color:var(--text-4)">{saint.canonized_by}</span></> : ""}</dd></>
+          )}
+        </dl>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="max-w-6xl mx-auto px-4 sm:px-6 py-10 sm:py-14 lg:grid lg:grid-cols-[1fr_240px] lg:gap-12">
+
+  <div>
+    {saint.patronage && saint.patronage.length > 0 && (
+      <div class="mb-9 pb-9 section-rule">
+        <h2 class="eyebrow mb-3">{t(locale, "patronage")}</h2>
+        <p style="font-family:var(--font-sans);font-size:0.875rem;color:var(--text-3);line-height:1.8">
+          {patronageLinks.map((pl, i) => (<>{i > 0 && " · "}{pl.href ? <a href={p(pl.href)} style="color:inherit">{pl.label}</a> : pl.label}</>))}
+        </p>
+      </div>
+    )}
+
+    {saint.biography_short && (
+      <div class="mb-11 pb-11 section-rule">
+        <h2 class="eyebrow mb-5">{t(locale, "biography")}</h2>
+        <div class="prose" set:html={renderMarkdown(saint.biography_short)} />
+      </div>
+    )}
+
+    <div>
+      <h2 class="eyebrow mb-6">{t(locale, "miracles")} <span style="color:var(--text-5);font-weight:400">({saintMiracles.length})</span></h2>
+      {saintMiracles.length === 0 ? (
+        <p style="font-family:var(--font-sans);font-size:0.875rem;color:var(--text-4)">{t(locale, "noMiracles")}</p>
+      ) : (
+        <div class="space-y-3">
+          {saintMiracles.map((m) => (
+            <a href={p(`/miracles/${m.slug}`)} class="block no-underline group">
+              <div class="card p-6">
+                <div class="flex items-start justify-between gap-4 mb-3">
+                  <h3 style="font-family:var(--font-display);font-size:1.25rem;font-weight:400;color:var(--text-1);line-height:1.3;transition:color 0.2s" class="group-hover:text-[--color-accent]">
+                    {m.title}
+                  </h3>
+                  <div class="shrink-0 flex gap-1.5">
+                    {m.used_for_beatification && <span class="used-badge">Beat.</span>}
+                    {m.used_for_canonization && <span class="used-badge">Canon.</span>}
+                  </div>
+                </div>
+
+                {m.cure_details && (
+                  <p style="font-family:var(--font-sans);font-size:0.8rem;color:var(--text-3);line-height:1.65;margin-bottom:0.75rem">
+                    {m.cure_details.length > 160 ? m.cure_details.slice(0, 160) + "…" : m.cure_details}
+                  </p>
+                )}
+
+                <div class="flex flex-wrap items-center gap-3 mb-2">
+                  <span style="font-family:var(--font-sans);font-size:0.7rem;color:var(--text-4)">{m.type}</span>
+                  {m.country && <span style="font-family:var(--font-sans);font-size:0.7rem;color:var(--text-4)">{m.country}</span>}
+                  {m.date_of_event && <span style="font-family:var(--font-sans);font-size:0.7rem;color:var(--text-4)">{m.date_of_event}</span>}
+                  {redactRecipient(m.recipient_name, m.recipient_privacy) && <span style="font-family:var(--font-sans);font-size:0.7rem;color:var(--text-4);font-style:italic">{redactRecipient(m.recipient_name, m.recipient_privacy)}</span>}
+                </div>
+
+                {m.topics && m.topics.length > 0 && (
+                  <div class="flex flex-wrap gap-1">
+                    {m.topics.map((mt) => <span class="tag">{mt}</span>)}
+                  </div>
+                )}
+              </div>
+            </a>
+          ))}
+        </div>
+      )}
+    </div>
+
+    {mappableLocations.length > 0 && (
+      <div class="mt-9 pt-9 section-rule">
+        <h2 class="eyebrow mb-4">{t(locale, "locations")}</h2>
+        <div id="saint-map" role="region" aria-label="Map of locations associated with this saint" style="height:360px;width:100%;background:var(--bg-elevated)"></div>
+        <div class="flex flex-wrap gap-x-5 gap-y-2 mt-4">
+          {[
+            { type: "tomb", color: "#c9a84c", label: "Tomb" },
+            { type: "birthplace", color: "#4a90d9", label: "Birthplace" },
+            { type: "death_place", color: "#888", label: "Death place" },
+            { type: "shrine", color: "#7c5cbf", label: "Shrine" },
+            { type: "relic", color: "#c0392b", label: "Relic" },
+            { type: "major_devotional_center", color: "#27ae60", label: "Devotional center" },
+            { type: "other", color: "#5ba8a0", label: "Other" },
+          ].filter(({ type }) => mappableLocations.some(l => l.location_type === type)).map(({ color, label }) => (
+            <span class="flex items-center gap-1.5">
+              <span style={`width:10px;height:10px;border-radius:50%;background:${color};display:inline-block;flex-shrink:0`}></span>
+              <span style="font-family:var(--font-sans);font-size:0.7rem;color:var(--text-4)">{label}</span>
+            </span>
+          ))}
+        </div>
+        <details class="mt-4" style="font-family:var(--font-sans);font-size:0.85rem;color:var(--text-2)">
+          <summary style="cursor:pointer;font-weight:600;color:var(--text-1)">{t(locale, "listOfLocations")} ({mappableLocations.length})</summary>
+          <ul style="list-style:none;padding:0;margin:0.75rem 0 0">
+            {mappableLocations.map((l) => (
+              <li style="margin-bottom:0.35rem">{l.location_name} <span style="color:var(--text-3)">({humanizeSnakeCase(l.location_type)})</span></li>
+            ))}
+          </ul>
+        </details>
+      </div>
+    )}
+
+    {(sources.length > 0 || wikipediaUrl) && (
+      <div class="mt-9 pt-9 section-rule">
+        <h2 class="eyebrow mb-4">{t(locale, "sources")}</h2>
+        <ul style="list-style:none;padding:0;margin:0;display:flex;flex-direction:column;gap:0.6rem">
+          {wikipediaUrl && (
+            <li style="display:flex;align-items:baseline;gap:0.6rem">
+              <span style="font-family:var(--font-sans);font-size:0.6rem;font-weight:600;letter-spacing:0.08em;text-transform:uppercase;color:var(--text-5);white-space:nowrap;flex-shrink:0;padding-top:0.1rem">{t(locale, "reference")}</span>
+              <a href={wikipediaUrl} target="_blank" rel="noopener" style="font-family:var(--font-sans);font-size:0.82rem;color:var(--color-accent);text-decoration:none;line-height:1.4" class="hover:underline">{t(locale, "wikipedia")}</a>
+            </li>
+          )}
+          {sources.map((s) => (
+            <li style="display:flex;align-items:baseline;gap:0.6rem">
+              <span style="font-family:var(--font-sans);font-size:0.6rem;font-weight:600;letter-spacing:0.08em;text-transform:uppercase;color:var(--text-5);white-space:nowrap;flex-shrink:0;padding-top:0.1rem">
+                {sourceTypeLabel[s.source_type] ?? s.source_type}
+              </span>
+              {safeHttpUrl(s.url) ? (
+                <a href={s.url} target="_blank" rel="noopener" style="font-family:var(--font-sans);font-size:0.82rem;color:var(--color-accent);text-decoration:none;line-height:1.4" class="hover:underline">
+                  {s.title} ↗
+                </a>
+              ) : (
+                <span style="font-family:var(--font-sans);font-size:0.82rem;color:var(--text-3);line-height:1.4">{s.title}</span>
+              )}
+            </li>
+          ))}
+        </ul>
+      </div>
+    )}
+
+    {!isPreview && (
+      <div class="mt-9 pt-9 section-rule">
+        <Cite title={saint.name} path={p(`/saints/${saint.slug}`)} />
+      </div>
+    )}
+  </div>
+
+  <aside class="hidden lg:block">
+    <div class="card p-5 lg:sticky lg:top-24">
+      <h2 class="eyebrow mb-5">{t(locale, "record")}</h2>
+      <dl class="meta-grid">
+        {(bornDisplay || birthLocation) && (
+          <><dt>{t(locale, "born")}</dt><dd>{bornDisplay}{birthLocation ? <><br/><span style="color:var(--text-4)">{birthLocation.location_name}</span></> : ""}</dd></>
+        )}
+        {(diedDisplay || deathLocation) && (
+          <><dt>{t(locale, "died")}</dt><dd>{diedDisplay}{deathLocation ? <><br/><span style="color:var(--text-4)">{deathLocation.location_name}</span></> : ""}</dd></>
+        )}
+        {saint.beatification_date && (
+          <><dt>{t(locale, "beatified")}</dt><dd>{saint.beatification_date}{saint.beatified_by ? <><br/><span style="color:var(--text-4)">{saint.beatified_by}</span></> : ""}</dd></>
+        )}
+        {saint.canonization_date && (
+          <><dt>{t(locale, "canonized")}</dt><dd>{saint.canonization_date}{saint.canonized_by ? <><br/><span style="color:var(--text-4)">{saint.canonized_by}</span></> : ""}</dd></>
+        )}
+      </dl>
+    </div>
+  </aside>
+
+</div>
+
+{mappableLocations.length > 0 && (
+  <>
+    <script is:inline src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=" crossorigin=""></script>
+    <script is:inline define:vars={{ locations: mappableLocations, typeColors: LOCATION_TYPE_COLORS, maptilerKey: env.MAPTILER_API_KEY }}>
+      function escHtml(s) {
+        return String(s ?? "").replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;").replace(/"/g,"&quot;");
+      }
+
+      const map = L.map('saint-map');
+      L.tileLayer(`https://api.maptiler.com/maps/basic-v2/{z}/{x}/{y}.png?key=${maptilerKey}`, {
+        attribution: '© <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors © <a href="https://www.maptiler.com/copyright/">MapTiler</a>',
+        maxZoom: 19,
+      }).addTo(map);
+
+      const bounds = [];
+      locations.forEach(loc => {
+        const lat = Number(loc.lat);
+        const lng = Number(loc.lng);
+        const color = typeColors[loc.location_type] || typeColors.other;
+        const marker = L.circleMarker([lat, lng], {
+          radius: 8,
+          fillColor: color,
+          color: "#fff",
+          weight: 2,
+          opacity: 1,
+          fillOpacity: 0.9,
+        }).addTo(map);
+        const label = loc.location_type.replace(/_/g, " ");
+        marker.bindPopup(`<strong>${escHtml(loc.location_name)}</strong><br><span style="font-size:0.75rem;color:#666">${escHtml(label)}</span>`);
+        bounds.push([lat, lng]);
+      });
+
+      if (bounds.length === 1) {
+        map.setView(bounds[0], 9);
+      } else {
+        map.fitBounds(bounds, { padding: [40, 40] });
+      }
+    </script>
+  </>
+)}
+
+<style>
+  .saint-header-img {
+    width: 100%;
+    max-width: 280px;
+    aspect-ratio: 3 / 4;
+  }
+</style>

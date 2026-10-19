@@ -74,6 +74,41 @@ const locationRows = (rows: { location_name: string; lat?: string | null; lng?: 
   rows.map((r) => ({ location_name: r.location_name, lat: r.lat ?? null, lng: r.lng ?? null, location_type: r.location_type }));
 const sortedUnique = (xs: string[]) => [...new Set(xs)].sort();
 
+// Translations: file side is a record keyed by locale, db side is a row array; both normalize to
+// the same sorted-by-locale shape so `same()` can compare them.
+type SaintTranslationFields = { name: string | null; saint_name: string | null; biography_short: string | null; reviewed: boolean };
+type MiracleTranslationFields = {
+  title: string | null; synopsis: string | null; cure_details: string | null;
+  medical_diagnosis: string | null; vatican_medical_board_verdict: string | null; reviewed: boolean;
+};
+const byLocale = <T>(rows: ({ locale: string } & T)[]) => rows.slice().sort((a, b) => a.locale.localeCompare(b.locale));
+const saintTranslationRowsFromFile = (t?: Record<string, Partial<SaintTranslationFields> & { reviewed?: boolean }>) =>
+  byLocale(Object.entries(t ?? {}).map(([locale, r]) => ({
+    locale, name: r.name ?? null, saint_name: r.saint_name ?? null, biography_short: r.biography_short ?? null, reviewed: r.reviewed ?? false,
+  })));
+const saintTranslationRowsFromDb = (rows: ({ locale: string } & SaintTranslationFields)[]) =>
+  byLocale(rows.map((r) => ({ locale: r.locale, name: r.name, saint_name: r.saint_name, biography_short: r.biography_short, reviewed: r.reviewed })));
+const miracleTranslationRowsFromFile = (t?: Record<string, Partial<MiracleTranslationFields> & { reviewed?: boolean }>) =>
+  byLocale(Object.entries(t ?? {}).map(([locale, r]) => ({
+    locale,
+    title: r.title ?? null,
+    synopsis: r.synopsis ?? null,
+    cure_details: r.cure_details ?? null,
+    medical_diagnosis: r.medical_diagnosis ?? null,
+    vatican_medical_board_verdict: r.vatican_medical_board_verdict ?? null,
+    reviewed: r.reviewed ?? false,
+  })));
+const miracleTranslationRowsFromDb = (rows: ({ locale: string } & MiracleTranslationFields)[]) =>
+  byLocale(rows.map((r) => ({
+    locale: r.locale,
+    title: r.title,
+    synopsis: r.synopsis,
+    cure_details: r.cure_details,
+    medical_diagnosis: r.medical_diagnosis,
+    vatican_medical_board_verdict: r.vatican_medical_board_verdict,
+    reviewed: r.reviewed,
+  })));
+
 class ImportAbort extends Error {
   constructor(public report: ImportReport) {
     super("import aborted");
@@ -83,7 +118,10 @@ class ImportAbort extends Error {
 type DbState = Awaited<ReturnType<typeof readState>>;
 
 async function readState(db: Db) {
-  const [saints, miracles, saintSources, saintLocations, relations, miracleSources, miracleImages, miracleSaints, redirects] =
+  const [
+    saints, miracles, saintSources, saintLocations, relations, miracleSources, miracleImages, miracleSaints, redirects,
+    saintTranslations, miracleTranslations,
+  ] =
     await Promise.all([
       db.select().from(schema.saints),
       db.select().from(schema.miracles),
@@ -94,8 +132,13 @@ async function readState(db: Db) {
       db.select().from(schema.miracleImages).orderBy(asc(schema.miracleImages.display_order), asc(schema.miracleImages.id)),
       db.select().from(schema.miracleSaints),
       db.select().from(schema.slugRedirects),
+      db.select().from(schema.saintTranslations).orderBy(asc(schema.saintTranslations.id)),
+      db.select().from(schema.miracleTranslations).orderBy(asc(schema.miracleTranslations.id)),
     ]);
-  return { saints, miracles, saintSources, saintLocations, relations, miracleSources, miracleImages, miracleSaints, redirects };
+  return {
+    saints, miracles, saintSources, saintLocations, relations, miracleSources, miracleImages, miracleSaints, redirects,
+    saintTranslations, miracleTranslations,
+  };
 }
 
 function groupBy<T>(rows: T[], key: (r: T) => number): Map<number, T[]> {
@@ -125,6 +168,8 @@ function buildPlan(state: DbState, content: LoadedContent, opts: ImportOptions):
   const mSources = groupBy(state.miracleSources, (r) => r.miracle_id);
   const mImages = groupBy(state.miracleImages, (r) => r.miracle_id);
   const mSaints = groupBy(state.miracleSaints, (r) => r.miracle_id);
+  const sTranslations = groupBy(state.saintTranslations, (r) => r.saint_id);
+  const mTranslations = groupBy(state.miracleTranslations, (r) => r.miracle_id);
 
   // Redirects: existing (type, old_slug) -> new_slug.
   const redirectTarget = new Map(state.redirects.map((r) => [`${r.entity_type}:${r.old_slug}`, r.new_slug]));
@@ -165,8 +210,10 @@ function buildPlan(state: DbState, content: LoadedContent, opts: ImportOptions):
         sortedUnique((file.relations ?? []).map((r) => `${r.saint}|${r.type}`)),
         sortedUnique((sRelations.get(existing.id) ?? []).map((r) => `${saintSlugById.get(r.related_saint_id)}|${r.relation_type}`)),
       );
+      cmp("translations", saintTranslationRowsFromFile(file.translations), saintTranslationRowsFromDb(sTranslations.get(existing.id) ?? []));
     } else {
       for (const f of ["sources", "locations", "relations"] as const) if (file[f]?.length) childChanged.add(f);
+      if (file.translations && Object.keys(file.translations).length) childChanged.add("translations");
     }
     for (const r of file.relations ?? []) {
       if (!knownSaint(r.saint)) errors.push(`saint "${file.slug}": relation to unknown saint "${r.saint}"`);
@@ -208,8 +255,10 @@ function buildPlan(state: DbState, content: LoadedContent, opts: ImportOptions):
         sortedUnique(file.saints ?? []),
         sortedUnique((mSaints.get(existing.id) ?? []).map((r) => saintSlugById.get(r.saint_id) ?? `#${r.saint_id}`)),
       );
+      cmp("translations", miracleTranslationRowsFromFile(file.translations), miracleTranslationRowsFromDb(mTranslations.get(existing.id) ?? []));
     } else {
       for (const f of ["sources", "images", "saints"] as const) if (file[f]?.length) childChanged.add(f);
+      if (file.translations && Object.keys(file.translations).length) childChanged.add("translations");
     }
     for (const s of file.saints ?? []) {
       if (!knownSaint(s)) errors.push(`miracle "${file.slug}": references unknown saint "${s}"`);
@@ -306,6 +355,11 @@ async function writePlan(tx: Db, plan: Plan): Promise<void> {
       const rows = locationRows(file.locations ?? []).map((r) => ({ ...r, saint_id: id! }));
       if (rows.length) await tx.insert(schema.saintLocations).values(rows as (typeof schema.saintLocations.$inferInsert)[]);
     }
+    if (sp.childChanged.has("translations")) {
+      await tx.delete(schema.saintTranslations).where(eq(schema.saintTranslations.saint_id, id));
+      const rows = saintTranslationRowsFromFile(file.translations).map((r) => ({ ...r, saint_id: id! }));
+      if (rows.length) await tx.insert(schema.saintTranslations).values(rows);
+    }
   }
 
   // Relations once every saint has an id. Stored in both directions; the mirror of a relation
@@ -355,6 +409,11 @@ async function writePlan(tx: Db, plan: Plan): Promise<void> {
       await tx.delete(schema.miracleSaints).where(eq(schema.miracleSaints.miracle_id, id));
       const rows = sortedUnique(file.saints ?? []).map((s) => ({ miracle_id: id!, saint_id: idBySlug.get(s)! }));
       if (rows.length) await tx.insert(schema.miracleSaints).values(rows);
+    }
+    if (mp.childChanged.has("translations")) {
+      await tx.delete(schema.miracleTranslations).where(eq(schema.miracleTranslations.miracle_id, id));
+      const rows = miracleTranslationRowsFromFile(file.translations).map((r) => ({ ...r, miracle_id: id! }));
+      if (rows.length) await tx.insert(schema.miracleTranslations).values(rows);
     }
   }
 

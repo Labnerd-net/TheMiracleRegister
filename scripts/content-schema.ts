@@ -88,6 +88,22 @@ const relationRow = z.strictObject({
   type: enumOf(relationTypeEnum),
 });
 
+const saintTranslationRow = z.strictObject({
+  name: text.optional(),
+  saint_name: text.optional(),
+  biography_short: text.optional(),
+  reviewed: bool.default(false),
+});
+
+const miracleTranslationRow = z.strictObject({
+  title: text.optional(),
+  synopsis: text.optional(),
+  cure_details: text.optional(),
+  medical_diagnosis: text.optional(),
+  vatican_medical_board_verdict: text.optional(),
+  reviewed: bool.default(false),
+});
+
 export const saintFileSchema = z.strictObject({
   slug,
   name: text,
@@ -126,6 +142,7 @@ export const saintFileSchema = z.strictObject({
   sources: z.array(sourceRow).optional(),
   locations: z.array(locationRow).optional(),
   relations: z.array(relationRow).optional(),
+  translations: z.record(z.literal("es"), saintTranslationRow).optional(),
 });
 
 const coord = scaledDecimal(10, 7);
@@ -174,11 +191,12 @@ export const miracleFileSchema = z.strictObject({
   sources: z.array(sourceRow).optional(),
   images: z.array(imageRow).optional(),
   saints: z.array(slug).optional(),
+  translations: z.record(z.literal("es"), miracleTranslationRow).optional(),
 });
 
 export type SaintFile = z.output<typeof saintFileSchema>;
 export type MiracleFile = z.output<typeof miracleFileSchema>;
 
 // Keys that are not columns of the entity's own table (child rows and slug history).
-export const SAINT_NESTED_KEYS = ["previous_slugs", "sources", "locations", "relations"] as const;
-export const MIRACLE_NESTED_KEYS = ["previous_slugs", "sources", "images", "saints"] as const;
+export const SAINT_NESTED_KEYS = ["previous_slugs", "sources", "locations", "relations", "translations"] as const;
+export const MIRACLE_NESTED_KEYS = ["previous_slugs", "sources", "images", "saints", "translations"] as const;

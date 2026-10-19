@@ -132,6 +132,55 @@ describe("apply", () => {
   });
 });
 
+describe("translations", () => {
+  it("inserts a saint translation row on a new saint", async () => {
+    await run(content([saintA({ translations: { es: { biography_short: "Breve biografía." } } }), saintB()], [miracleM()]));
+    const s = await saintRow("saint-a");
+    const rows = await db.select().from(schema.saintTranslations).where(eq(schema.saintTranslations.saint_id, s.id));
+    expect(rows).toHaveLength(1);
+    expect(rows[0]).toMatchObject({ locale: "es", biography_short: "Breve biografía.", reviewed: false });
+  });
+
+  it("diffs a translation change as a scoped update and leaves other children alone", async () => {
+    await run(base());
+    const s = await saintRow("saint-a");
+    const r = await run(content(
+      [saintA({ translations: { es: { biography_short: "Breve biografía.", reviewed: true } } }), saintB()],
+      [miracleM()],
+    ));
+    expect(r.entities.find((e) => e.slug === "saint-a")?.status).toBe("changed");
+    const rows = await db.select().from(schema.saintTranslations).where(eq(schema.saintTranslations.saint_id, s.id));
+    expect(rows[0]).toMatchObject({ biography_short: "Breve biografía.", reviewed: true });
+    expect(await db.select().from(schema.saintSources)).toHaveLength(1);
+  });
+
+  it("removing the translations block deletes the row", async () => {
+    await run(content([saintA({ translations: { es: { biography_short: "x" } } }), saintB()], [miracleM()]));
+    await run(base());
+    const s = await saintRow("saint-a");
+    expect(await db.select().from(schema.saintTranslations).where(eq(schema.saintTranslations.saint_id, s.id))).toHaveLength(0);
+  });
+
+  it("an unchanged translation reports unchanged on a second run", async () => {
+    const withTranslation = () => content([saintA({ translations: { es: { biography_short: "x" } } }), saintB()], [miracleM()]);
+    await run(withTranslation());
+    const r = await run(withTranslation());
+    expect(r.entities.every((e) => e.status === "unchanged")).toBe(true);
+  });
+
+  it("inserts a miracle translation row and reflects it in a dry-run diff", async () => {
+    await run(base());
+    const r = await dry(content([saintA(), saintB()], [miracleM({ translations: { es: { synopsis: "Un relato breve." } } })]));
+    expect(r.entities.find((e) => e.slug === "miracle-m")?.changes).toContainEqual(
+      expect.objectContaining({ field: "translations" }),
+    );
+    await run(content([saintA(), saintB()], [miracleM({ translations: { es: { synopsis: "Un relato breve." } } })]));
+    const m = await miracleRow("miracle-m");
+    const rows = await db.select().from(schema.miracleTranslations).where(eq(schema.miracleTranslations.miracle_id, m.id));
+    expect(rows[0]).toMatchObject({ locale: "es", synopsis: "Un relato breve.", reviewed: false });
+  });
+});
+
 describe("published rows", () => {
   const publish = async () => {
     await db.execute(sql`update saints set published = true`);

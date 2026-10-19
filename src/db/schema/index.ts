@@ -8,3 +8,5 @@ export * from "./miracle-images";
 export * from "./saint-sources";
 export * from "./saint-locations";
 export * from "./slug-redirects";
+export * from "./saint-translations";
+export * from "./miracle-translations";

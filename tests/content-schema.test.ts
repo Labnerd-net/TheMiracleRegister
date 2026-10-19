@@ -70,6 +70,24 @@ describe("strictness", () => {
   });
 });
 
+describe("translations", () => {
+  it("defaults reviewed to false and accepts a partial block", () => {
+    const s = saintFileSchema.parse({ ...minimalSaint, translations: { es: { biography_short: "Breve biografía." } } });
+    expect(s.translations?.es).toEqual({ biography_short: "Breve biografía.", reviewed: false });
+  });
+  it("rejects an unknown key inside the translation block", () => {
+    expect(saintFileSchema.safeParse({ ...minimalSaint, translations: { es: { nickname: "x" } } }).success).toBe(false);
+  });
+  it("rejects a locale other than es", () => {
+    expect(saintFileSchema.safeParse({ ...minimalSaint, translations: { fr: { biography_short: "x" } } }).success).toBe(false);
+  });
+  it("applies the same rules to miracle translations", () => {
+    const m = miracleFileSchema.parse({ ...minimalMiracle, translations: { es: { synopsis: "Un relato breve.", reviewed: true } } });
+    expect(m.translations?.es).toEqual({ synopsis: "Un relato breve.", reviewed: true });
+    expect(miracleFileSchema.safeParse({ ...minimalMiracle, translations: { es: { unknown_field: "x" } } }).success).toBe(false);
+  });
+});
+
 describe("scaledDecimal", () => {
   const d = scaledDecimal(10, 7);
   it("pads to scale as an exact string", () => {
