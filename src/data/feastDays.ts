@@ -20,6 +20,14 @@ export type MovableFeastEntry = {
   scope?: FeastScope;
 };
 
+export type AnchoredFeastKind = 'holyFamily' | 'baptismOfTheLord' | 'christTheKing';
+
+export type AnchoredFeastEntry = {
+  kind: AnchoredFeastKind;
+  name: string;
+  scope?: FeastScope;
+};
+
 export const FIXED_FEASTS: FixedFeastEntry[] = [
   // January
   { month: 1, day: 1, name: 'Solemnity of Mary, Holy Mother of God' },
@@ -425,6 +433,13 @@ export const MOVABLE_FEASTS: MovableFeastEntry[] = [
   { easterOffset: 60, name: 'Most Holy Body and Blood of Christ (Corpus Christi)' },
   { easterOffset: 68, name: 'Most Sacred Heart of Jesus' },
   { easterOffset: 69, name: 'Immaculate Heart of the Blessed Virgin Mary' },
+];
+
+// Resolved by kind-specific rule (see lib/anchoredFeasts.ts), not literal month/day or Easter offset
+export const ANCHORED_FEASTS: AnchoredFeastEntry[] = [
+  { kind: 'holyFamily', name: 'Holy Family of Jesus, Mary and Joseph' },
+  { kind: 'baptismOfTheLord', name: 'Baptism of the Lord' },
+  { kind: 'christTheKing', name: 'Our Lord Jesus Christ, King of the Universe' },
 ];
 
 export function getFixedFeasts(month: number, day: number): FixedFeastEntry[] {

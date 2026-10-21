@@ -4,7 +4,7 @@ import { createDb } from "../db";
 import { saints } from "../db/schema";
 import { and, eq, inArray, isNotNull, or, asc } from "drizzle-orm";
 import { env } from "cloudflare:workers";
-import { getMovableFeastsInMonth } from "../lib/feasts";
+import { getMovableFeastsInMonth, getAnchoredFeastsInMonth } from "../lib/feasts";
 import { MONTH_NAMES } from "../lib/format";
 import { FIXED_FEASTS } from "../data/feastDays";
 import { CACHE_DAILY } from "../lib/cache";
@@ -41,6 +41,7 @@ const firstDayOfWeek = new Date(Date.UTC(year, month - 1, 1)).getUTCDay(); // 0=
 // Resolve movable feasts that fall in this month
 const movableThisMonth = getMovableFeastsInMonth(year, month);
 const movableOffsets = movableThisMonth.map((f) => f.easterOffset);
+const anchoredThisMonth = getAnchoredFeastsInMonth(year, month);
 
 // DB query: saints with fixed feast in this month OR movable feast in this month
 const dbSaints = await db
@@ -99,6 +100,15 @@ for (const feast of FIXED_FEASTS) {
 
 // Place static movable feasts
 for (const feast of movableThisMonth) {
+  const cell = getCell(feast.day);
+  const alreadyCovered = cell.saints.some(
+    (s) => (s.saint_name ?? s.name).toLowerCase() === feast.name.toLowerCase()
+  );
+  if (!alreadyCovered) cell.feasts.push(feast.name);
+}
+
+// Place static anchored feasts (Holy Family / Baptism of the Lord / Christ the King)
+for (const feast of anchoredThisMonth) {
   const cell = getCell(feast.day);
   const alreadyCovered = cell.saints.some(
     (s) => (s.saint_name ?? s.name).toLowerCase() === feast.name.toLowerCase()

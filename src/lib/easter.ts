@@ -1,3 +1,6 @@
+// Generated from catholic-research/scripts/templates/easter.ts by scripts/sync-feasts.ts.
+// Do not edit by hand - change the template there and re-run the sync.
+
 // Meeus/Jones/Butcher algorithm — returns Easter Sunday in UTC for a given year
 export function getEaster(year: number): Date {
   const a = year % 19;

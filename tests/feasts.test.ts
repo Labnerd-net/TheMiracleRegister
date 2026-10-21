@@ -1,7 +1,7 @@
 import { describe, expect, it } from "vitest";
-import { easterOffsetForDate, getMovableFeastsInMonth } from "../src/lib/feasts";
+import { easterOffsetForDate, getMovableFeastsInMonth, getAnchoredFeastsInMonth } from "../src/lib/feasts";
 import { formatFeastDay, formatApproxDate, MONTH_NAMES } from "../src/lib/format";
-import { FIXED_FEASTS, MOVABLE_FEASTS, getFixedFeasts, getMovableFeast } from "../src/data/feastDays";
+import { FIXED_FEASTS, MOVABLE_FEASTS, ANCHORED_FEASTS, getFixedFeasts, getMovableFeast } from "../src/data/feastDays";
 
 describe("easterOffsetForDate", () => {
   it("is 0 on Easter Sunday", () => expect(easterOffsetForDate(2026, 4, 5)).toBe(0));
@@ -28,6 +28,25 @@ describe("getMovableFeastsInMonth", () => {
     let total = 0;
     for (let m = 1; m <= 12; m++) total += getMovableFeastsInMonth(2025, m).length;
     expect(total).toBe(MOVABLE_FEASTS.length);
+  });
+});
+
+describe("getAnchoredFeastsInMonth", () => {
+  it("places Christ the King in November and the other two outside it", () => {
+    const nov = getAnchoredFeastsInMonth(2025, 11);
+    expect(nov.find((f) => f.kind === "christTheKing")?.day).toBe(23);
+    expect(nov.some((f) => f.kind === "holyFamily")).toBe(false);
+  });
+  it("places Holy Family in December and Baptism of the Lord in January", () => {
+    expect(getAnchoredFeastsInMonth(2025, 12).find((f) => f.kind === "holyFamily")?.day).toBe(28);
+    expect(getAnchoredFeastsInMonth(2026, 1).find((f) => f.kind === "baptismOfTheLord")?.day).toBe(11);
+  });
+  it("each anchored feast appears in exactly one month per year", () => {
+    const counts = new Map<string, number>();
+    for (let m = 1; m <= 12; m++) {
+      for (const f of getAnchoredFeastsInMonth(2026, m)) counts.set(f.kind, (counts.get(f.kind) ?? 0) + 1);
+    }
+    for (const [kind, count] of counts) expect(count, kind).toBe(1);
   });
 });
 
@@ -78,6 +97,12 @@ describe("feastDays data invariants", () => {
   it("movable offsets are unique", () => {
     const offsets = MOVABLE_FEASTS.map((f) => f.easterOffset);
     expect(new Set(offsets).size).toBe(offsets.length);
+  });
+  it("anchored feasts have non-empty names and 3 distinct kinds", () => {
+    for (const f of ANCHORED_FEASTS) expect(f.name.trim(), f.kind).not.toBe("");
+    const kinds = ANCHORED_FEASTS.map((f) => f.kind);
+    expect(new Set(kinds).size).toBe(kinds.length);
+    expect(kinds.sort()).toEqual(["baptismOfTheLord", "christTheKing", "holyFamily"]);
   });
   it("lookup helpers agree with the arrays", () => {
     expect(getFixedFeasts(12, 25).length).toBeGreaterThan(0);
