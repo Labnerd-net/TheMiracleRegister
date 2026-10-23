@@ -57,7 +57,7 @@ const conditions = miracleFilterConditions(db, {
 });
 const where = and(...conditions);
 
-const [[{ total }], pageMiracles, allSaints, countryRows] = await Promise.all([
+const [[{ total }], pageMiracles, allSaints, countryRows, typeRows] = await Promise.all([
   db.select({ total: count() }).from(miracles).where(where),
   db
     .select({
@@ -80,9 +80,11 @@ const [[{ total }], pageMiracles, allSaints, countryRows] = await Promise.all([
     .offset(offset),
   db.select({ id: saints.id, name: saints.name }).from(saints).where(eq(saints.published, true)).orderBy(asc(saints.name)),
   db.selectDistinct({ country: miracles.country }).from(miracles).where(and(eq(miracles.published, true), isNotNull(miracles.country))).orderBy(asc(miracles.country)),
+  db.selectDistinct({ type: miracles.type }).from(miracles).where(eq(miracles.published, true)).orderBy(asc(miracles.type)),
 ]);
 
 const countries = countryRows.map(r => r.country).filter(Boolean) as string[];
+const availableTypes = typeRows.map(r => r.type);
 
 const saintsByMiracle = await fetchSaintsByMiracle(db, pageMiracles.map((m) => m.id));
 const saintNamesByMiracle = new Map<number, string[]>(
@@ -125,7 +127,7 @@ function buildUrl(p: number) {
 
     <FilterBar action="/miracles" hasActiveFilters={hasActiveFilters}>
       <FilterSelect id="f-saint" name="saint_id" label="Saint" allLabel="All Saints" options={allSaints.map((s) => ({ value: s.id, label: s.name }))} selected={filterSaintId} />
-      <FilterSelect id="f-type" name="type" label="Type" allLabel="All Types" options={miracleType.enumValues.map((t) => ({ value: t, label: humanizeSnakeCase(t) }))} selected={filterType} />
+      <FilterSelect id="f-type" name="type" label="Type" allLabel="All Types" options={availableTypes.map((t) => ({ value: t, label: humanizeSnakeCase(t) }))} selected={filterType} />
       <FilterSelect id="f-topic" name="topic" label="Topic" allLabel="All Topics" options={MIRACLE_TOPICS.map((t) => ({ value: t, label: humanizeSnakeCase(t) }))} selected={filterTopic} />
       <FilterSelect id="f-category" name="category" label="Category" allLabel="All Categories" options={miracleCategory.enumValues.map((c) => ({ value: c, label: humanizeSnakeCase(c) }))} selected={filterCategory} />
       <FilterSelect id="f-country" name="country" label="Country" allLabel="All Countries" options={countries.map((c) => ({ value: c, label: c }))} selected={filterCountry} />
