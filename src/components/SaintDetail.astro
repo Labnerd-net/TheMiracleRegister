@@ -6,7 +6,7 @@ import { redactRecipient } from "../lib/privacy";
 import { renderMarkdown } from "../lib/markdown";
 import { thumbUrl } from "../lib/image";
 import { safeHttpUrl } from "../lib/url";
-import { LOCATION_TYPE_COLORS } from "../lib/mapConstants";
+import { LOCATION_TYPE_COLORS, groupLocationsByCoordinate } from "../lib/mapConstants";
 import { localePath } from "../lib/i18n/locale";
 import { t } from "../lib/i18n/strings";
 import type { Locale } from "../lib/i18n/locale";
@@ -38,6 +38,8 @@ const relationTypeLabel: Record<string, string> = {
   same_order: "Same religious order",
   family: "Family",
 };
+
+const locationGroups = groupLocationsByCoordinate(mappableLocations);
 ---
 
 {mappableLocations.length > 0 && (
@@ -291,7 +293,7 @@ const relationTypeLabel: Record<string, string> = {
 {mappableLocations.length > 0 && (
   <>
     <script is:inline src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=" crossorigin=""></script>
-    <script is:inline define:vars={{ locations: mappableLocations, typeColors: LOCATION_TYPE_COLORS, maptilerKey: env.MAPTILER_API_KEY }}>
+    <script is:inline define:vars={{ locationGroups, typeColors: LOCATION_TYPE_COLORS, maptilerKey: env.MAPTILER_API_KEY }}>
       function escHtml(s) {
         return String(s ?? "").replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;").replace(/"/g,"&quot;");
       }
@@ -303,11 +305,9 @@ const relationTypeLabel: Record<string, string> = {
       }).addTo(map);
 
       const bounds = [];
-      locations.forEach(loc => {
-        const lat = Number(loc.lat);
-        const lng = Number(loc.lng);
-        const color = typeColors[loc.location_type] || typeColors.other;
-        const marker = L.circleMarker([lat, lng], {
+      locationGroups.forEach(group => {
+        const color = typeColors[group.primaryType] || typeColors.other;
+        const marker = L.circleMarker([group.lat, group.lng], {
           radius: 8,
           fillColor: color,
           color: "#fff",
@@ -315,9 +315,16 @@ const relationTypeLabel: Record<string, string> = {
           opacity: 1,
           fillOpacity: 0.9,
         }).addTo(map);
-        const label = loc.location_type.replace(/_/g, " ");
-        marker.bindPopup(`<strong>${escHtml(loc.location_name)}</strong><br><span style="font-size:0.75rem;color:#666">${escHtml(label)}</span>`);
-        bounds.push([lat, lng]);
+        const popupHtml = group.items.map(loc => {
+          const itemColor = typeColors[loc.location_type] || typeColors.other;
+          const label = loc.location_type.replace(/_/g, " ");
+          return `<div style="display:flex;align-items:baseline;gap:0.4rem;margin-top:0.3rem">
+            <span style="width:8px;height:8px;border-radius:50%;background:${itemColor};display:inline-block;flex-shrink:0"></span>
+            <span><strong>${escHtml(loc.location_name)}</strong><br><span style="font-size:0.75rem;color:#666">${escHtml(label)}</span></span>
+          </div>`;
+        }).join("");
+        marker.bindPopup(`<div style="margin-top:-0.3rem">${popupHtml}</div>`);
+        bounds.push([group.lat, group.lng]);
       });
 
       if (bounds.length === 1) {

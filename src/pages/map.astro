@@ -6,7 +6,7 @@ import { createDb } from "../db";
 import { miracles, saints, saintLocations } from "../db/schema";
 import { and, eq, isNotNull } from "drizzle-orm";
 import { env } from "cloudflare:workers";
-import { LOCATION_TYPE_COLORS } from "../lib/mapConstants";
+import { LOCATION_TYPE_COLORS, groupLocationsByCoordinate } from "../lib/mapConstants";
 
 const db = createDb(env.DATABASE_URL);
 
@@ -69,6 +69,10 @@ const locationData = locationRows.map(l => ({
   saint_name: l.saint_name,
   saint_slug: l.saint_slug,
 }));
+
+// Scoped by saint_slug so two different saints who happen to share a pilgrimage site
+// (e.g. two popes both entombed at St. Peter's Basilica) stay as separate markers.
+const locationGroups = groupLocationsByCoordinate(locationData, (r) => r.saint_slug);
 ---
 
 <Base title="Map" description={PAGE_DESCRIPTIONS.map}>
@@ -140,7 +144,7 @@ const locationData = locationRows.map(l => ({
   </div>
 
   <script is:inline src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=" crossorigin=""></script>
-  <script is:inline define:vars={{ miracleData, locationData, typeColors: LOCATION_TYPE_COLORS, maptilerKey: env.MAPTILER_API_KEY }}>
+  <script is:inline define:vars={{ miracleData, locationGroups, typeColors: LOCATION_TYPE_COLORS, maptilerKey: env.MAPTILER_API_KEY }}>
     function escHtml(s) {
       return String(s ?? "").replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;").replace(/"/g,"&quot;");
     }
@@ -157,11 +161,14 @@ const locationData = locationRows.map(l => ({
       maxZoom: 19,
     }).addTo(map);
 
-    // Saint markers grouped by location_type
-    const saintMarkersByType = {};
-    locationData.forEach(loc => {
-      const color = typeColors[loc.location_type] || typeColors.other;
-      const marker = L.circleMarker([loc.lat, loc.lng], {
+    // Saint markers: one per location group (rows sharing a coordinate within one saint
+    // become a single marker whose popup lists each of them). A marker is tracked under
+    // every type it contains, so the sub-filter checkboxes can show/hide it correctly.
+    const saintMarkerEntries = [];
+    const controlledSaintTypes = new Set([...document.querySelectorAll('.saint-sub')].map(cb => cb.dataset.type));
+    locationGroups.forEach(group => {
+      const color = typeColors[group.primaryType] || typeColors.other;
+      const marker = L.circleMarker([group.lat, group.lng], {
         radius: 7,
         fillColor: color,
         color: "#fff",
@@ -169,15 +176,29 @@ const locationData = locationRows.map(l => ({
         opacity: 1,
         fillOpacity: 0.9,
       });
-      const typeLabel = loc.location_type.replace(/_/g, " ");
-      marker.bindPopup(
-        `<strong><a href="/saints/${escHtml(loc.saint_slug)}" style="color:inherit">${escHtml(loc.saint_name)}</a></strong><br>` +
-        `<span style="font-size:0.75rem;color:#666">${escHtml(loc.location_name)} · ${escHtml(typeLabel)}</span>`
-      );
+      const saintLink = `<a href="/saints/${escHtml(group.items[0].saint_slug)}" style="color:inherit">${escHtml(group.items[0].saint_name)}</a>`;
+      const popupRows = group.items.map(loc => {
+        const itemColor = typeColors[loc.location_type] || typeColors.other;
+        const typeLabel = loc.location_type.replace(/_/g, " ");
+        return `<div style="display:flex;align-items:baseline;gap:0.4rem;margin-top:0.25rem">
+          <span style="width:8px;height:8px;border-radius:50%;background:${itemColor};display:inline-block;flex-shrink:0"></span>
+          <span style="font-size:0.75rem;color:#666">${escHtml(loc.location_name)} · ${escHtml(typeLabel)}</span>
+        </div>`;
+      }).join("");
+      marker.bindPopup(`<strong>${saintLink}</strong>${popupRows}`);
       marker.addTo(map);
-      if (!saintMarkersByType[loc.location_type]) saintMarkersByType[loc.location_type] = [];
-      saintMarkersByType[loc.location_type].push(marker);
+      saintMarkerEntries.push({ marker, types: group.items.map(i => i.location_type) });
     });
+
+    function refreshSaintMarkers() {
+      const checkedTypes = new Set(
+        [...document.querySelectorAll('.saint-sub')].filter(cb => cb.checked).map(cb => cb.dataset.type)
+      );
+      saintMarkerEntries.forEach(({ marker, types }) => {
+        const visible = types.some(t => !controlledSaintTypes.has(t) || checkedTypes.has(t));
+        if (visible) marker.addTo(map); else marker.removeFrom(map);
+      });
+    }
 
     // Miracle markers grouped by category
     const miracleMarkersByCategory = {};
@@ -237,14 +258,14 @@ const locationData = locationRows.map(l => ({
     document.getElementById('toggle-saints').addEventListener('change', function() {
       document.querySelectorAll('.saint-sub').forEach(cb => {
         cb.checked = this.checked;
-        setVisible(saintMarkersByType[cb.dataset.type], this.checked);
       });
+      refreshSaintMarkers();
     });
 
     // Saint sub-toggles
     document.querySelectorAll('.saint-sub').forEach(cb => {
       cb.addEventListener('change', function() {
-        setVisible(saintMarkersByType[this.dataset.type], this.checked);
+        refreshSaintMarkers();
         updateParent('toggle-saints', '.saint-sub');
       });
     });
