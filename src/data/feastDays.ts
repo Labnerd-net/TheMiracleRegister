@@ -344,6 +344,7 @@ export const FIXED_FEASTS: FixedFeastEntry[] = [
   { month: 10, day: 15, name: 'Saint Teresa of Jesus (Teresa of Ávila)' },
   { month: 10, day: 16, name: 'Saint Hedwig' },
   { month: 10, day: 16, name: 'Saint Margaret Mary Alacoque' },
+  // { month: 10, day: 16, name: 'Saint Marguerite d\'Youville' }, // [in DB]
   { month: 10, day: 17, name: 'Saint Ignatius of Antioch' },
   { month: 10, day: 18, name: 'Saint Luke, Evangelist' },
   { month: 10, day: 18, name: 'Saint Peter of Alcantara', scope: 'martyrologium' },
