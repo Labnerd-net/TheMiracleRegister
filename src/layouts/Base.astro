@@ -177,17 +177,22 @@ const FOOTER_NAV: { href: string; label: string; noCurrent?: boolean }[] = [
     themeToggle?.setAttribute('aria-pressed', String(document.documentElement.getAttribute('data-theme') === 'dark'));
   };
   syncThemeToggle();
-  themeToggle?.addEventListener('click', () => {
-    const html = document.documentElement;
-    const isDark = html.getAttribute('data-theme') === 'dark';
-    if (isDark) {
-      html.removeAttribute('data-theme');
-      localStorage.setItem('theme', 'light');
-    } else {
-      html.setAttribute('data-theme', 'dark');
-      localStorage.setItem('theme', 'dark');
-    }
+  const systemMedia = window.matchMedia('(prefers-color-scheme: dark)');
+  const applyTheme = (dark: boolean) => {
+    if (dark) document.documentElement.setAttribute('data-theme', 'dark');
+    else document.documentElement.removeAttribute('data-theme');
     syncThemeToggle();
+  };
+  themeToggle?.addEventListener('click', () => {
+    const nextDark = document.documentElement.getAttribute('data-theme') !== 'dark';
+    // Choosing the theme the OS already prefers goes back to following the system.
+    if (nextDark === systemMedia.matches) localStorage.removeItem('theme');
+    else localStorage.setItem('theme', nextDark ? 'dark' : 'light');
+    applyTheme(nextDark);
+  });
+  // Follow OS changes live, but only while no explicit choice is stored.
+  systemMedia.addEventListener('change', (e) => {
+    if (!localStorage.getItem('theme')) applyTheme(e.matches);
   });
 </script>
 </html>
