@@ -27,7 +27,7 @@ The data itself is compiled from Vatican decrees, the Consulta Medica's medical 
 | Database | [Neon](https://neon.tech) (serverless Postgres) |
 | ORM | [Drizzle](https://orm.drizzle.team) |
 | Validation / types / OpenAPI | [Zod](https://zod.dev) via `@hono/zod-openapi` — single source of truth |
-| Testing | Vitest (unit), Playwright (e2e) |
+| Testing | Vitest (unit); Playwright (e2e) planned, not yet set up |
 
 Astro renders all public-facing pages (SSR); Hono handles all `/api/v1/*` routes. Zod schemas are shared between the two.
 
@@ -39,7 +39,7 @@ All routes live under `/api/v1/`, with the OpenAPI spec generated automatically 
 |---|---|---|
 | GET | `/api/v1/saints` | List all saints |
 | GET | `/api/v1/saints/:slug` | Single saint with related saints and linked miracles |
-| GET | `/api/v1/miracles` | Search/filter (params: saint_id, type, country, year_from, year_to, page, limit) |
+| GET | `/api/v1/miracles` | Search/filter (params: saint_id, type, topic, category, country, year_from, year_to, used_for_beatification, used_for_canonization, approval_authority, page, limit) |
 | GET | `/api/v1/miracles/:slug` | Single miracle with full details and sources |
 | GET | `/api/v1/types` | List miracle types |
 | GET | `/api/v1/metadata` | Canonical filter options: types, categories, approval authorities, topics, themes |
@@ -50,3 +50,5 @@ Responses follow a `{ data, meta, error }` envelope.
 ## License
 
 All rights reserved. Source is public for portfolio purposes; miracle and saint data is curated and maintained by the project author.
+
+The hosted API at `/api/v1/*` is a separate matter: it's free to use, including commercially, with no key or attribution required. See [Usage terms](https://themiracleregister.org/api#usage-terms) for details.
