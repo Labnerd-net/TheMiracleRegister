@@ -20,7 +20,7 @@ interface Props {
 const { data, locale, isPreview } = Astro.props;
 const {
   saint, saintMiracles, relatedRows, sources, wikipediaUrl,
-  mappableLocations, birthLocation, deathLocation, bornDisplay, diedDisplay, patronageLinks,
+  mappableLocations, birthLocation, deathLocation, bornDisplay, diedDisplay, beatifiedDisplay, canonizedDisplay, patronageLinks,
 } = data;
 
 const p = (path: string) => localePath(locale, path);
@@ -90,7 +90,7 @@ const locationGroups = groupLocationsByCoordinate(mappableLocations);
         {saint.canonization_date && (
           <div>
             <p style="font-family:var(--font-sans);font-size:0.6rem;font-weight:600;letter-spacing:0.1em;text-transform:uppercase;color:var(--text-4);margin-bottom:0.3rem">{t(locale, "canonized")}</p>
-            <p style="font-family:var(--font-sans);font-size:0.82rem;color:var(--text-2)">{saint.canonization_date}</p>
+            <p style="font-family:var(--font-sans);font-size:0.82rem;color:var(--text-2)">{canonizedDisplay}</p>
           </div>
         )}
         {relatedRows.length > 0 && (
@@ -128,10 +128,10 @@ const locationGroups = groupLocationsByCoordinate(mappableLocations);
             <><dt>{t(locale, "died")}</dt><dd>{diedDisplay}{deathLocation ? <><br/><span style="color:var(--text-4)">{deathLocation.location_name}</span></> : ""}</dd></>
           )}
           {saint.beatification_date && (
-            <><dt>{t(locale, "beatified")}</dt><dd>{saint.beatification_date}{saint.beatified_by ? <><br/><span style="color:var(--text-4)">{saint.beatified_by}</span></> : ""}</dd></>
+            <><dt>{t(locale, "beatified")}</dt><dd>{beatifiedDisplay}{saint.beatified_by ? <><br/><span style="color:var(--text-4)">{saint.beatified_by}</span></> : ""}</dd></>
           )}
           {saint.canonization_date && (
-            <><dt>{t(locale, "canonized")}</dt><dd>{saint.canonization_date}{saint.canonized_by ? <><br/><span style="color:var(--text-4)">{saint.canonized_by}</span></> : ""}</dd></>
+            <><dt>{t(locale, "canonized")}</dt><dd>{canonizedDisplay}{saint.canonized_by ? <><br/><span style="color:var(--text-4)">{saint.canonized_by}</span></> : ""}</dd></>
           )}
         </dl>
       </div>
@@ -279,10 +279,10 @@ const locationGroups = groupLocationsByCoordinate(mappableLocations);
           <><dt>{t(locale, "died")}</dt><dd>{diedDisplay}{deathLocation ? <><br/><span style="color:var(--text-4)">{deathLocation.location_name}</span></> : ""}</dd></>
         )}
         {saint.beatification_date && (
-          <><dt>{t(locale, "beatified")}</dt><dd>{saint.beatification_date}{saint.beatified_by ? <><br/><span style="color:var(--text-4)">{saint.beatified_by}</span></> : ""}</dd></>
+          <><dt>{t(locale, "beatified")}</dt><dd>{beatifiedDisplay}{saint.beatified_by ? <><br/><span style="color:var(--text-4)">{saint.beatified_by}</span></> : ""}</dd></>
         )}
         {saint.canonization_date && (
-          <><dt>{t(locale, "canonized")}</dt><dd>{saint.canonization_date}{saint.canonized_by ? <><br/><span style="color:var(--text-4)">{saint.canonized_by}</span></> : ""}</dd></>
+          <><dt>{t(locale, "canonized")}</dt><dd>{canonizedDisplay}{saint.canonized_by ? <><br/><span style="color:var(--text-4)">{saint.canonized_by}</span></> : ""}</dd></>
         )}
       </dl>
     </div>

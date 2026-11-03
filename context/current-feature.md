@@ -10,6 +10,9 @@ _None_
 
 ## History
 
+### Format beatification and canonization dates
+The saint page printed `beatification_date` and `canonization_date` as raw ISO strings ("2026-09-24") while birth and death were formatted ("May 8, 1895"). `saintDetail.ts` now returns `beatifiedDisplay` and `canonizedDisplay` (`formatApproxDate(date, "exact_day")`) and `SaintDetail.astro` uses them in all five places (mobile and desktop record cards and the header canonized date). Neither column has a precision field, so both are treated as exact days. Verified: typecheck, lint, 481 tests and build; on the dev server `/saints/fulton-sheen` showed "September 24, 2026" and `/saints/john-paul-ii` "May 1, 2011" and "April 27, 2014". Not verified: other saints with unusual dates (a placeholder YYYY-01-01 beatification date would print as "January 1"), and no new test (there is no test for the saint detail query). Not changed: Spanish pages still show English-formatted dates and an untranslated "Beatified" label on `/es/saints/fulton-sheen`, as born and died already did.
+
 ### README screenshots
 Added `docs/screenshots/` (home light and dark, saint page, map; cropped from full-page captures and compressed to WebP, 43 to 94 KB each) and embedded them in the README: a light/dark `<picture>` hero plus a collapsed "More screenshots" block. README count line now reads "30 saints and 85 records (68 miracles and 17 apparitions)", matching the home page. Not verified: how the images render on GitHub. Screenshots are a snapshot of the site as of 2026-11-03 and go stale as the design changes.
 
