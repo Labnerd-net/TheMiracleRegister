@@ -146,7 +146,8 @@ const FOOTER_NAV: { href: string; label: string; noCurrent?: boolean }[] = [
             {FOOTER_NAV.map((l) => <a href={l.href} class="nav-link" aria-current={l.noCurrent ? undefined : current(l.href)}>{l.label}</a>)}
           </nav>
           <p style="font-family:var(--font-sans);font-size:0.8rem;letter-spacing:0.04em;color:var(--text-4)">
-            A structured database of miracles and venerated traditions of the saints
+            A structured database of miracles and venerated traditions of the saints.
+            Content licensed <a href="/api#usage-terms" style="color:inherit;text-decoration:underline;text-underline-offset:0.2em">CC BY 4.0</a>.
           </p>
         </div>
       </div>
