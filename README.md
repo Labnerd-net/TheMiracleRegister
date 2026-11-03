@@ -8,13 +8,24 @@ A searchable database of miracles attributed to Catholic saints, with a public R
 
 **Live site: [themiracleregister.org](https://themiracleregister.org)** | **API docs: [themiracleregister.org/api](https://themiracleregister.org/api)**
 
-<!-- TODO: add hero screenshot, e.g. docs/screenshot.png -->
+<picture>
+  <source media="(prefers-color-scheme: dark)" srcset="docs/screenshots/home-dark.webp">
+  <img src="docs/screenshots/home-light.webp" alt="The Miracle Register home page with the featured saints carousel" width="720">
+</picture>
+
+<details>
+<summary>More screenshots</summary>
+
+<img src="docs/screenshots/saint.webp" alt="Saint page for Fulton Sheen with biography, miracle, locations map and sources" width="480">
+<img src="docs/screenshots/map.webp" alt="World map of saint locations and miracle sites with filters" width="480">
+
+</details>
 
 No existing site exposes saint intercession miracles as structured, queryable data. Miracle Hunter and similar sites collect case write-ups, but none lets you filter by saint, diagnosis, approval authority, country or time period, or build on the data through an API.
 
 Each miracle is a record, not an article. A healing links to the saint's canonization case, the recipient's diagnosis and cure characteristics, the medical board verdict that examined it, the decree or other authority that recognized it, and the sources behind the write-up. That structure lets you ask "show me every Vatican-approved miracle used for a canonization" and get an answer.
 
-Currently 30 saints and 85 miracles are published.
+Currently 30 saints and 85 records are published (68 miracles and 17 apparitions).
 
 ## Features
 
