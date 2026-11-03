@@ -106,6 +106,8 @@ export async function loadSaintDetail(
     deathLocation,
     bornDisplay: formatApproxDate(saintRow.birth_date, saintRow.birth_date_precision),
     diedDisplay: formatApproxDate(saintRow.death_date, saintRow.death_date_precision),
+    beatifiedDisplay: formatApproxDate(saintRow.beatification_date, "exact_day"),
+    canonizedDisplay: formatApproxDate(saintRow.canonization_date, "exact_day"),
     wikipediaUrl: safeHttpUrl(saintRow.wikipedia_url),
     patronageLinks,
   };
