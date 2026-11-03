@@ -37,7 +37,7 @@ Currently 30 saints and 85 records are published (68 miracles and 17 apparitions
 - Read-only REST API with a generated OpenAPI spec and an interactive reference
 - Machine-translated Spanish saint pages
 
-## Tech stack
+## Tech Stack
 
 | Layer | Choice |
 |---|---|
@@ -68,7 +68,7 @@ flowchart LR
 
 Zod schemas are shared by the pages and the API and generate the OpenAPI spec, so the spec cannot drift from the implementation.
 
-## Engineering highlights
+## Engineering Highlights
 
 - **Files as the source of truth.** Content lives as one JSON file per saint and miracle in a separate repository and goes through pull request review. `npm run import:content` upserts the files in a single transaction. It is a dry run by default and prints a field-level diff. It never publishes, never deletes, and refuses changes to published rows unless asked. The same data-integrity rules that `npm run check:data` runs also run inside the import transaction, and new errors roll it back.
 - **Deliberate retirement path.** Taking a record down is a separate script, `retire:content`, with its own dry run and safeguards, so an import can never remove content by omission.
@@ -126,7 +126,7 @@ curl "https://themiracleregister.org/api/v1/miracles?approval_authority=vatican_
 
 Responses use a `{ data, meta, error }` envelope. The API is rate limited to 60 requests per minute per client.
 
-## Getting started
+## Local Development
 
 Requires Node 22.13 or later (`.nvmrc` pins the version CI uses).
 
@@ -146,7 +146,7 @@ npm run build
 
 `npm run dev` reads from the database in `DATABASE_URL`. The tests do not use it. The site's content is not included in this repository, so to run the site locally you need your own Postgres database with the schema applied (`npm run db:migrate`) and your own content files for `npm run import:content`.
 
-## Project status
+## Project Status
 
 The site, API, search, calendar, map and importer are live. Not built yet: end-to-end tests (Playwright), a Prettier-formatted codebase and a larger corpus of published records.
 
