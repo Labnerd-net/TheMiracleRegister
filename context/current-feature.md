@@ -10,6 +10,9 @@ _None_
 
 ## History
 
+### README for portfolio and licensing
+Rewrote `README.md` for portfolio use: badges, live and API links, features, architecture diagram (Mermaid), engineering highlights, API example with a real trimmed response, getting started, project status and licensing. Fixed stale claims (Playwright is not set up, API params were incomplete, content is no longer "entered by hand"). Added `LICENSE` (MIT, code only). Decision: content (saint and miracle text and data) is CC BY 4.0 with the attribution string "The Miracle Register, themiracleregister.org, CC BY 4.0"; Wikimedia images keep their own licenses; research is AI-assisted with human review and the Spanish pages are machine translated. Verified: the API example was captured from a local dev server against production data; counts (30 saints, 85 miracles published) from a read-only query. Not verified: the CI badge URL renders, the Mermaid diagram on GitHub, the hero screenshot (placeholder comment left in the README). Not done: a `/terms` page stating the content license and AI disclosure on the site itself (the content license currently lives only in the README; planned as a separate branch), per-page license links. Counts in the README go stale as records are published.
+
 ### System theme (follow OS, return to system)
 The theme toggle wrote `light` or `dark` to localStorage on first click and never cleared it, so a visitor could not return to following their OS, and an open tab ignored OS theme changes. The toggle now removes the stored value when the chosen theme matches the OS preference, and a `matchMedia` change listener applies OS changes live while nothing is stored. Initial-load script unchanged. No UI change. Verified: typecheck, lint, build.
 
